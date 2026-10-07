@@ -9,213 +9,223 @@
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:Tahoma,Arial,sans-serif;
-  background:#f1f5f9;
-  color:#0f172a;
+margin:0;
+font-family:Tahoma,Arial,sans-serif;
+background:#f1f5f9;
+color:#0f172a
 }
-button,input,select{font:inherit}
-button{cursor:pointer}
-.app{
-  max-width:1100px;
-  margin:auto;
-  padding:16px;
-}
-header{
-  background:#0f172a;
-  color:#fff;
-  border-radius:18px;
-  padding:18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:16px;
-}
-header h1{margin:0;font-size:22px}
-header small{display:block;margin-top:5px;color:#cbd5e1}
-#lockStatus{font-size:13px;color:#cbd5e1}
-.card{
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 4px 18px rgba(15,23,42,.06);
-}
-.rate-grid,.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-.rate-box,.stat{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  border-radius:14px;
-  padding:14px;
-}
-.rate-box strong,.stat strong{
-  display:block;
-  font-size:22px;
-  margin-top:7px;
-}
-.toolbar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-}
+button,input{font:inherit}
 button{
-  border:0;
-  border-radius:10px;
-  padding:10px 14px;
-  background:#2563eb;
-  color:#fff;
+border:0;
+border-radius:10px;
+padding:10px 14px;
+cursor:pointer;
+background:#2563eb;
+color:white
 }
 button.secondary{background:#e2e8f0;color:#0f172a}
 button.danger{background:#dc2626}
 button.success{background:#16a34a}
 button:disabled{opacity:.5;cursor:not-allowed}
 input{
-  width:100%;
-  padding:11px 12px;
-  border:1px solid #cbd5e1;
-  border-radius:10px;
-  outline:none;
+width:100%;
+padding:11px 12px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+outline:none
 }
 input:focus{border-color:#2563eb}
-.form-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
+.app{
+max-width:1100px;
+margin:auto;
+padding:16px
 }
-.form-grid .full{grid-column:1/-1}
+header{
+background:#0f172a;
+color:white;
+border-radius:18px;
+padding:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+margin-bottom:16px
+}
+header h1{margin:0;font-size:22px}
+header small{color:#cbd5e1}
+#lockStatus{
+font-size:13px;
+color:#cbd5e1;
+margin-bottom:7px
+}
+.card{
+background:white;
+border-radius:16px;
+padding:16px;
+margin-bottom:16px;
+box-shadow:0 4px 18px rgba(15,23,42,.06)
+}
+.rate-grid,.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px
+}
+.rate-box,.stat{
+background:#f8fafc;
+border:1px solid #e2e8f0;
+border-radius:14px;
+padding:14px
+}
+.rate-box strong,.stat strong{
+display:block;
+font-size:22px;
+margin-top:7px
+}
+.form-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:10px
+}
 .search-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:8px;
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px
+}
+.toolbar,.actions{
+display:flex;
+flex-wrap:wrap;
+gap:8px
 }
 .product-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:12px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+gap:12px
 }
 .product{
-  border:1px solid #e2e8f0;
-  border-radius:14px;
-  overflow:hidden;
-  background:#fff;
+border:1px solid #e2e8f0;
+border-radius:14px;
+overflow:hidden;
+background:white
 }
 .product img{
-  width:100%;
-  height:170px;
-  object-fit:cover;
-  background:#e2e8f0;
+width:100%;
+height:170px;
+object-fit:cover;
+background:#e2e8f0
 }
 .product-body{padding:13px}
-.product-name{font-weight:bold;font-size:17px;margin-bottom:8px}
+.product-name{
+font-weight:bold;
+font-size:17px;
+margin-bottom:8px
+}
 .price{
-  font-size:20px;
-  font-weight:bold;
-  color:#2563eb;
+font-size:20px;
+font-weight:bold;
+color:#2563eb
 }
 .meta{
-  color:#64748b;
-  font-size:12px;
-  margin-top:7px;
-  word-break:break-word;
+color:#64748b;
+font-size:12px;
+margin-top:7px;
+word-break:break-word
 }
 .actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-  margin-top:12px;
+margin-top:12px
 }
-.actions button{font-size:12px;padding:8px 10px}
+.actions button{
+font-size:12px;
+padding:8px 10px
+}
 .history-row{
-  display:grid;
-  grid-template-columns:1.3fr 1fr 1fr 1fr;
-  gap:8px;
-  padding:10px 0;
-  border-bottom:1px solid #e2e8f0;
-  font-size:13px;
+display:grid;
+grid-template-columns:1.3fr 1fr 1fr 1fr;
+gap:8px;
+padding:10px 0;
+border-bottom:1px solid #e2e8f0;
+font-size:13px
 }
 .empty{
-  text-align:center;
-  color:#64748b;
-  padding:30px 10px;
+text-align:center;
+color:#64748b;
+padding:30px 10px
 }
 .modal{
-  position:fixed;
-  inset:0;
-  background:rgba(15,23,42,.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-  z-index:1000;
+position:fixed;
+inset:0;
+background:rgba(15,23,42,.6);
+display:none;
+align-items:center;
+justify-content:center;
+padding:16px;
+z-index:1000
 }
 .modal.show{display:flex}
 .modal-box{
-  width:min(520px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:#fff;
-  border-radius:18px;
-  padding:18px;
+width:min(520px,100%);
+max-height:90vh;
+overflow:auto;
+background:white;
+border-radius:18px;
+padding:18px
 }
 .modal-box h2{margin-top:0}
 .modal-actions{
-  display:flex;
-  gap:8px;
-  margin-top:14px;
-  flex-wrap:wrap;
+display:flex;
+gap:8px;
+margin-top:14px;
+flex-wrap:wrap
 }
 .toast{
-  position:fixed;
-  bottom:20px;
-  left:20px;
-  right:20px;
-  max-width:500px;
-  margin:auto;
-  background:#0f172a;
-  color:#fff;
-  padding:12px 15px;
-  border-radius:12px;
-  text-align:center;
-  display:none;
-  z-index:3000;
+position:fixed;
+bottom:20px;
+left:20px;
+right:20px;
+max-width:500px;
+margin:auto;
+background:#0f172a;
+color:white;
+padding:12px 15px;
+border-radius:12px;
+text-align:center;
+display:none;
+z-index:3000
 }
 .toast.show{display:block}
+.error{
+display:none;
+background:#fee2e2;
+color:#991b1b;
+border:1px solid #fecaca;
+padding:12px;
+border-radius:12px;
+margin-bottom:16px;
+white-space:pre-wrap;
+word-break:break-word
+}
+.error.show{display:block}
 .seller-banner{
-  display:none;
-  background:#fff7ed;
-  color:#9a3412;
-  border:1px solid #fed7aa;
-  border-radius:12px;
-  padding:11px;
-  margin-bottom:16px;
+display:none;
+background:#fff7ed;
+color:#9a3412;
+border:1px solid #fed7aa;
+border-radius:12px;
+padding:11px;
+margin-bottom:16px
 }
 body.seller-mode .seller-banner{display:block}
 body.seller-mode .owner-only{display:none!important}
-.error-box{
-  display:none;
-  background:#fee2e2;
-  color:#991b1b;
-  border:1px solid #fecaca;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:16px;
-  white-space:pre-wrap;
-  word-break:break-word;
-}
-body.has-error .error-box{display:block}
 #scanner{
-  width:100%;
-  min-height:100px;
+width:100%;
+min-height:100px
 }
 @media(max-width:700px){
-  .rate-grid,.stats,.form-grid{grid-template-columns:1fr}
-  .history-row{grid-template-columns:1fr 1fr}
-  header{align-items:flex-start;flex-direction:column}
+.rate-grid,.stats,.form-grid{grid-template-columns:1fr}
+.history-row{grid-template-columns:1fr 1fr}
+header{
+align-items:flex-start;
+flex-direction:column
+}
 }
 </style>
 </head>
@@ -225,182 +235,277 @@ body.has-error .error-box{display:block}
 <div class="app">
 
 <header>
-  <div>
-    <h1>محاسبه‌گر قیمت</h1>
-    <small>مدیریت قیمت، محصولات و نرخ ارز</small>
-  </div>
-  <div>
-    <div id="lockStatus">در حال آماده‌سازی...</div>
-    <button id="lockBtn" class="secondary owner-only" style="margin-top:7px">قفل</button>
-  </div>
+<div>
+<h1>محاسبه‌گر قیمت</h1>
+<small>مدیریت قیمت، محصولات و نرخ ارز</small>
+</div>
+
+<div>
+<div id="lockStatus">در حال آماده‌سازی...</div>
+<button id="lockBtn" class="secondary owner-only">قفل</button>
+</div>
 </header>
 
-<div id="errorBox" class="error-box"></div>
+<div id="errorBox" class="error"></div>
 
 <div class="seller-banner">
-  حالت فروشنده فعال است. این نسخه فقط برای مشاهده اطلاعات است و امکان ویرایش یا حذف ندارد.
+حالت فروشنده فعال است. این نسخه فقط برای مشاهده اطلاعات است.
 </div>
 
 <section class="card">
-  <div class="rate-grid">
-    <div class="rate-box">
-      نرخ قبلی
-      <strong id="oldRateView">۰</strong>
-    </div>
-    <div class="rate-box">
-      نرخ فعلی
-      <strong id="currentRateView">۰</strong>
-    </div>
-    <div class="rate-box">
-      تغییر
-      <strong id="rateChangeView">۰٪</strong>
-    </div>
-  </div>
+<div class="rate-grid">
+
+<div class="rate-box">
+نرخ قبلی
+<strong id="oldRateView">۰</strong>
+</div>
+
+<div class="rate-box">
+نرخ فعلی
+<strong id="currentRateView">۰</strong>
+</div>
+
+<div class="rate-box">
+تغییر
+<strong id="rateChangeView">۰٪</strong>
+</div>
+
+</div>
 </section>
 
 <section class="card owner-only">
-  <h2>تغییر نرخ</h2>
-  <div class="form-grid">
-    <div>
-      <label>نرخ جدید</label>
-      <input id="rateInput" type="number" min="0" step="any">
-    </div>
-  </div>
-  <div class="modal-actions">
-    <button id="saveRateBtn">ذخیره نرخ</button>
-  </div>
+
+<h2>تغییر نرخ</h2>
+
+<div class="form-grid">
+<div>
+<label>نرخ جدید</label>
+<input id="rateInput" type="number" min="0" step="any">
+</div>
+</div>
+
+<div class="modal-actions">
+<button id="saveRateBtn">ذخیره نرخ</button>
+</div>
+
 </section>
 
 <section class="card">
-  <div class="search-row">
-    <input id="searchInput" placeholder="جستجوی محصول...">
-    <button id="scanSearchBtn" class="secondary">اسکن</button>
-  </div>
+
+<div class="search-row">
+<input id="searchInput" placeholder="جستجوی محصول...">
+<button id="scanSearchBtn" class="secondary">اسکن</button>
+</div>
+
 </section>
 
 <section class="card owner-only">
-  <h2 id="productFormTitle">افزودن محصول</h2>
 
-  <div class="form-grid">
-    <div>
-      <label>نام محصول</label>
-      <input id="productName" placeholder="مثلاً آیفون ۱۵">
-    </div>
+<h2 id="productFormTitle">افزودن محصول</h2>
 
-    <div>
-      <label>قیمت</label>
-      <input id="productPrice" type="number" min="0" step="any">
-    </div>
+<div class="form-grid">
 
-    <div>
-      <label>کد QR / بارکد</label>
-      <input id="productQr" placeholder="اختیاری">
-    </div>
+<div>
+<label>نام محصول</label>
+<input id="productName" placeholder="مثلاً آیفون ۱۵">
+</div>
 
-    <div>
-      <label>تصویر</label>
-      <input id="productImage" type="file" accept="image/*">
-    </div>
-  </div>
+<div>
+<label>قیمت</label>
+<input id="productPrice" type="number" min="0" step="any">
+</div>
 
-  <div class="modal-actions">
-    <button id="saveProductBtn">افزودن محصول</button>
-    <button id="cancelEditBtn" class="secondary" style="display:none">لغو ویرایش</button>
-  </div>
+<div>
+<label>کد QR / بارکد</label>
+<input id="productQr" placeholder="اختیاری">
+</div>
+
+<div>
+<label>تصویر</label>
+<input id="productImage" type="file" accept="image/*">
+</div>
+
+</div>
+
+<div class="modal-actions">
+<button id="saveProductBtn">افزودن محصول</button>
+<button id="cancelEditBtn" class="secondary" style="display:none">
+لغو ویرایش
+</button>
+</div>
+
 </section>
 
 <section class="card">
-  <h2>محصولات</h2>
-  <div id="products" class="product-grid"></div>
+
+<h2>محصولات</h2>
+<div id="products" class="product-grid"></div>
+
 </section>
 
 <section class="card">
-  <h2>ابزارها</h2>
 
-  <div class="toolbar">
-    <button id="exportBtn" class="secondary owner-only">پشتیبان‌گیری</button>
-    <button id="importBtn" class="secondary owner-only">بازیابی</button>
-    <button id="passwordBtn" class="secondary owner-only">تغییر رمز</button>
-    <button id="historyBtn" class="secondary owner-only">پاک کردن تاریخچه</button>
-    <button id="ownerLinkBtn" class="success owner-only">ساخت لینک مالک</button>
-    <button id="sellerLinkBtn" class="secondary owner-only">ساخت لینک فروشنده</button>
-  </div>
+<h2>ابزارها</h2>
 
-  <input id="restoreInput" type="file" accept=".json,application/json" hidden>
+<div class="toolbar">
+
+<button id="exportBtn" class="secondary owner-only">
+پشتیبان‌گیری
+</button>
+
+<button id="importBtn" class="secondary owner-only">
+بازیابی
+</button>
+
+<button id="passwordBtn" class="secondary owner-only">
+تغییر رمز
+</button>
+
+<button id="historyBtn" class="secondary owner-only">
+پاک کردن تاریخچه
+</button>
+
+<button id="ownerLinkBtn" class="success owner-only">
+ساخت لینک مالک
+</button>
+
+<button id="sellerLinkBtn" class="secondary owner-only">
+ساخت لینک فروشنده
+</button>
+
+</div>
+
+<input id="restoreInput" type="file" accept=".json,application/json" hidden>
+
 </section>
 
 <section class="card">
-  <h2>آمار</h2>
-  <div class="stats">
-    <div class="stat">
-      تعداد محصولات
-      <strong id="productCount">۰</strong>
-    </div>
-    <div class="stat">
-      نرخ فعلی
-      <strong id="statRate">۰</strong>
-    </div>
-    <div class="stat">
-      سوابق
-      <strong id="historyCount">۰</strong>
-    </div>
-  </div>
+
+<h2>آمار</h2>
+
+<div class="stats">
+
+<div class="stat">
+تعداد محصولات
+<strong id="productCount">۰</strong>
+</div>
+
+<div class="stat">
+نرخ فعلی
+<strong id="statRate">۰</strong>
+</div>
+
+<div class="stat">
+سوابق
+<strong id="historyCount">۰</strong>
+</div>
+
+</div>
+
 </section>
 
 <section class="card">
-  <h2>تاریخچه نرخ</h2>
-  <div id="history"></div>
+
+<h2>تاریخچه نرخ</h2>
+<div id="history"></div>
+
 </section>
 
 </div>
 
-<!-- Password Modal -->
+
+<!-- PASSWORD -->
+
 <div id="passwordModal" class="modal">
-  <div class="modal-box">
-    <h2 id="passwordTitle">رمز عبور</h2>
 
-    <div id="setupFields">
-      <label>رمز عبور</label>
-      <input id="passwordInput" type="password" minlength="8">
-      <small>حداقل ۸ کاراکتر</small>
+<div class="modal-box">
 
-      <div id="passwordConfirmWrap" style="margin-top:10px">
-        <label>تکرار رمز</label>
-        <input id="passwordConfirm" type="password" minlength="8">
-      </div>
-    </div>
+<h2 id="passwordTitle">رمز عبور</h2>
 
-    <div class="modal-actions">
-      <button id="passwordSubmitBtn">تأیید</button>
-      <button id="passwordCancelBtn" class="secondary">لغو</button>
-    </div>
-  </div>
+<label>رمز عبور</label>
+<input id="passwordInput" type="password" minlength="8">
+
+<small>حداقل ۸ کاراکتر</small>
+
+<div id="passwordConfirmWrap" style="margin-top:10px">
+
+<label>تکرار رمز</label>
+<input id="passwordConfirm" type="password" minlength="8">
+
 </div>
 
-<!-- Product Image Modal -->
+<div class="modal-actions">
+
+<button id="passwordSubmitBtn">
+تأیید
+</button>
+
+<button id="passwordCancelBtn" class="secondary">
+لغو
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- IMAGE -->
+
 <div id="imageModal" class="modal">
-  <div class="modal-box">
-    <h2>تصویر محصول</h2>
-    <img id="imagePreview" style="width:100%;border-radius:12px" alt="تصویر محصول">
-    <div class="modal-actions">
-      <button id="closeImageBtn" class="secondary">بستن</button>
-    </div>
-  </div>
+
+<div class="modal-box">
+
+<h2>تصویر محصول</h2>
+
+<img
+id="imagePreview"
+style="width:100%;border-radius:12px"
+alt="تصویر محصول">
+
+<div class="modal-actions">
+
+<button id="closeImageBtn" class="secondary">
+بستن
+</button>
+
 </div>
 
-<!-- Scanner Modal -->
-<div id="scannerModal" class="modal">
-  <div class="modal-box">
-    <h2>اسکن بارکد</h2>
-    <div id="scanner"></div>
-    <p id="scannerStatus">آماده اسکن...</p>
-    <div class="modal-actions">
-      <button id="closeScannerBtn" class="secondary">بستن</button>
-    </div>
-  </div>
 </div>
+
+</div>
+
+
+<!-- SCANNER -->
+
+<div id="scannerModal" class="modal">
+
+<div class="modal-box">
+
+<h2>اسکن بارکد</h2>
+
+<div id="scanner"></div>
+
+<p id="scannerStatus">
+آماده اسکن...
+</p>
+
+<div class="modal-actions">
+
+<button id="closeScannerBtn" class="secondary">
+بستن
+</button>
+
+</div>
+
+</div>
+
+</div>
+
 
 <div id="toast" class="toast"></div>
+
 
 <script src="https://unpkg.com/html5-qrcode" defer></script>
 
@@ -409,1561 +514,2899 @@ body.has-error .error-box{display:block}
 
 "use strict";
 
-/* =========================
-   GLOBAL ERROR HANDLING
-========================= */
 
-window.addEventListener("error", function(event){
-  const message = event && event.message ? event.message : "خطای ناشناخته";
-  showFatalError(message);
-});
+/* =====================================
+   STATE
+===================================== */
 
-window.addEventListener("unhandledrejection", function(event){
-  const reason = event && event.reason;
-  const message = reason && reason.message ? reason.message : String(reason || "خطای ناشناخته");
-  showFatalError(message);
-});
-
-function showFatalError(message){
-  const box=document.getElementById("errorBox");
-  if(!box)return;
-  box.textContent="خطای برنامه:\\n"+message;
-  document.body.classList.add("has-error");
-}
-
-/* =========================
-   CONSTANTS
-========================= */
-
+const STORAGE_KEY="price_calculator_state_v4";
 const DB_NAME="PriceCalculatorDB";
-const STORE_NAME="appData";
-const STATE_KEY="state";
-const DB_VERSION=2;
-
-const DEFAULT_STATE={
-  products:[],
-  oldRate:0,
-  currentRate:0,
-  history:[],
-  locked:true,
-  passwordHash:null,
-  autoLockMinutes:5,
-  schemaVersion:2
-};
-
-let state={
-  products:[],
-  oldRate:0,
-  currentRate:0,
-  history:[],
-  locked:true,
-  passwordHash:null,
-  autoLockMinutes:5,
-  schemaVersion:2
-};
+const DB_STORE="appData";
+const DB_KEY="state";
 
 let db=null;
-let editingProductId=null;
+let storageMode="local";
 let sellerMode=false;
+let editingProductId=null;
 let passwordMode="unlock";
 let qrScanner=null;
 let scannerTarget=null;
 let autoLockTimer=null;
-let inactivityTimer=null;
 
-/* =========================
-   BASIC HELPERS
-========================= */
+
+let state={
+products:[],
+oldRate:0,
+currentRate:0,
+history:[],
+locked:true,
+passwordHash:null,
+autoLockMinutes:5,
+schemaVersion:4
+};
+
+
+/* =====================================
+   HELPERS
+===================================== */
 
 function $(id){
-  return document.getElementById(id);
+return document.getElementById(id);
 }
+
 
 function uid(){
-  if(window.crypto && typeof window.crypto.randomUUID==="function"){
-    return window.crypto.randomUUID();
-  }
 
-  return "id-"+Date.now()+"-"+Math.random().toString(36).slice(2);
+if(
+window.crypto &&
+typeof window.crypto.randomUUID==="function"
+){
+return window.crypto.randomUUID();
 }
 
-function cloneState(source){
-  return JSON.parse(JSON.stringify(source));
+return "id-"+Date.now()+"-"+Math.random()
+.toString(36)
+.slice(2);
 }
+
 
 function numberFormat(value){
-  const n=Number(value)||0;
-  return n.toLocaleString("fa-IR");
+
+return (Number(value)||0)
+.toLocaleString("fa-IR");
 }
 
-function escapeHtml(value){
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+
+function clone(obj){
+
+return JSON.parse(JSON.stringify(obj));
 }
+
 
 function showToast(message){
-  const el=$("toast");
-  if(!el)return;
 
-  el.textContent=message;
-  el.classList.add("show");
+const el=$("toast");
 
-  clearTimeout(showToast.timer);
-  showToast.timer=setTimeout(function(){
-    el.classList.remove("show");
-  },3000);
+if(!el)return;
+
+el.textContent=message;
+el.classList.add("show");
+
+clearTimeout(showToast.timer);
+
+showToast.timer=setTimeout(function(){
+el.classList.remove("show");
+},3000);
 }
 
-/* =========================
-   INDEXED DB
-========================= */
 
-function openDatabase(){
-  return new Promise(function(resolve,reject){
+function showError(message){
 
-    if(!("indexedDB" in window)){
-      reject(new Error("مرورگر از IndexedDB پشتیبانی نمی‌کند."));
-      return;
-    }
+const box=$("errorBox");
 
-    let request;
+if(!box)return;
 
-    try{
-      request=indexedDB.open(DB_NAME,DB_VERSION);
-    }catch(error){
-      reject(error);
-      return;
-    }
-
-    request.onupgradeneeded=function(event){
-      const database=event.target.result;
-
-      if(!database.objectStoreNames.contains(STORE_NAME)){
-        database.createObjectStore(STORE_NAME);
-      }
-    };
-
-    request.onsuccess=function(){
-      db=request.result;
-
-      db.onversionchange=function(){
-        db.close();
-      };
-
-      resolve(db);
-    };
-
-    request.onerror=function(){
-      reject(request.error || new Error("خطا در باز کردن پایگاه داده"));
-    };
-  });
+box.textContent="خطای برنامه:\n"+message;
+box.classList.add("show");
 }
 
-function saveState(){
-  if(sellerMode)return Promise.resolve();
 
-  if(!db){
-    return Promise.reject(new Error("پایگاه داده آماده نیست."));
-  }
+function clearError(){
 
-  return new Promise(function(resolve,reject){
+const box=$("errorBox");
 
-    let transaction;
-
-    try{
-      transaction=db.transaction(STORE_NAME,"readwrite");
-    }catch(error){
-      reject(error);
-      return;
-    }
-
-    const store=transaction.objectStore(STORE_NAME);
-
-    store.put(cloneState(state),STATE_KEY);
-
-    transaction.oncomplete=function(){
-      resolve();
-    };
-
-    transaction.onerror=function(){
-      reject(transaction.error || new Error("ذخیره اطلاعات انجام نشد."));
-    };
-  });
+if(box){
+box.textContent="";
+box.classList.remove("show");
 }
 
-function loadState(){
-  if(!db){
-    return Promise.reject(new Error("پایگاه داده آماده نیست."));
-  }
-
-  return new Promise(function(resolve,reject){
-
-    let transaction;
-
-    try{
-      transaction=db.transaction(STORE_NAME,"readonly");
-    }catch(error){
-      reject(error);
-      return;
-    }
-
-    const request=transaction
-      .objectStore(STORE_NAME)
-      .get(STATE_KEY);
-
-    request.onsuccess=function(){
-      resolve(request.result || null);
-    };
-
-    request.onerror=function(){
-      reject(request.error || new Error("خواندن اطلاعات انجام نشد."));
-    };
-  });
 }
 
-/* =========================
-   PASSWORD
-========================= */
 
-async function hashPassword(password){
+function escapeHtml(value){
 
-  if(!window.crypto || !window.crypto.subtle){
-    throw new Error("رمزنگاری امن در این مرورگر در دسترس نیست.");
-  }
-
-  const data=new TextEncoder().encode(password);
-  const hash=await crypto.subtle.digest("SHA-256",data);
-
-  return Array.from(new Uint8Array(hash))
-    .map(function(byte){
-      return byte.toString(16).padStart(2,"0");
-    })
-    .join("");
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 }
 
-async function setPassword(password){
-  if(!password || password.length<8){
-    throw new Error("رمز باید حداقل ۸ کاراکتر باشد.");
-  }
 
-  state.passwordHash=await hashPassword(password);
-  state.locked=false;
+/* =====================================
+   LOCAL STORAGE
+===================================== */
 
-  await saveState();
-  applyLockState();
-  startAutoLock();
+function saveLocal(){
+
+try{
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(state)
+);
+
+return true;
+
+}catch(error){
+
+console.error(error);
+
+return false;
 }
 
-async function verifyPassword(password){
-  if(!state.passwordHash)return false;
 
-  const hash=await hashPassword(password);
-  return hash===state.passwordHash;
 }
 
-/* =========================
-   MODALS
-========================= */
 
-function openPasswordModal(mode){
-  passwordMode=mode;
+function loadLocal(){
 
-  $("passwordModal").classList.add("show");
+try{
 
-  $("passwordInput").value="";
-  $("passwordConfirm").value="";
+const raw=localStorage.getItem(STORAGE_KEY);
 
-  const isSetup=mode==="setup";
-  const isChange=mode==="change";
+if(!raw)return null;
 
-  if(isSetup){
-    $("passwordTitle").textContent="ساخت رمز مالک";
-    $("passwordConfirmWrap").style.display="block";
-  }else if(isChange){
-    $("passwordTitle").textContent="تغییر رمز";
-    $("passwordConfirmWrap").style.display="block";
-  }else{
-    $("passwordTitle").textContent="ورود مالک";
-    $("passwordConfirmWrap").style.display="none";
-  }
+return JSON.parse(raw);
 
-  setTimeout(function(){
-    $("passwordInput").focus();
-  },100);
+}catch(error){
+
+console.error(error);
+
+return null;
 }
 
-function closePasswordModal(){
-  $("passwordModal").classList.remove("show");
 }
 
-$("passwordCancelBtn").addEventListener("click",closePasswordModal);
 
-$("passwordSubmitBtn").addEventListener("click",async function(){
+/* =====================================
+   INDEXED DB - OPTIONAL
+===================================== */
 
-  const password=$("passwordInput").value;
-  const confirm=$("passwordConfirm").value;
+function openDatabaseWithTimeout(){
 
-  try{
+return new Promise(function(resolve,reject){
 
-    if(password.length<8){
-      showToast("رمز باید حداقل ۸ کاراکتر باشد.");
-      return;
-    }
+if(!("indexedDB" in window)){
+reject(new Error("IndexedDB unavailable"));
+return;
+}
 
-    if(passwordMode==="setup"){
+let finished=false;
 
-      if(password!==confirm){
-        showToast("رمزها یکسان نیستند.");
-        return;
-      }
+const timer=setTimeout(function(){
 
-      await setPassword(password);
+if(finished)return;
 
-      closePasswordModal();
-      renderAll();
-      showToast("رمز مالک ساخته شد.");
-      return;
-    }
+finished=true;
+reject(new Error("IndexedDB timeout"));
 
-    if(passwordMode==="change"){
+},3000);
 
-      if(password!==confirm){
-        showToast("رمزها یکسان نیستند.");
-        return;
-      }
 
-      state.passwordHash=await hashPassword(password);
-      await saveState();
+let request;
 
-      closePasswordModal();
-      showToast("رمز تغییر کرد.");
-      return;
-    }
+try{
 
-    const valid=await verifyPassword(password);
+request=indexedDB.open(DB_NAME,2);
 
-    if(!valid){
-      showToast("رمز اشتباه است.");
-      return;
-    }
+}catch(error){
 
-    state.locked=false;
+clearTimeout(timer);
 
-    closePasswordModal();
-    applyLockState();
-    startAutoLock();
+if(!finished){
+finished=true;
+reject(error);
+}
 
-    showToast("ورود موفق بود.");
+return;
+}
 
-  }catch(error){
-    showToast(error.message || "خطایی رخ داد.");
-  }
+
+request.onupgradeneeded=function(event){
+
+try{
+
+const database=event.target.result;
+
+if(
+!database.objectStoreNames
+.contains(DB_STORE)
+){
+
+database.createObjectStore(DB_STORE);
+
+}
+
+}catch(error){
+
+console.error(error);
+
+}
+
+};
+
+
+request.onsuccess=function(){
+
+if(finished)return;
+
+finished=true;
+clearTimeout(timer);
+
+db=request.result;
+
+if(db){
+
+db.onversionchange=function(){
+try{db.close()}catch(e){}
+};
+
+}
+
+resolve(db);
+
+};
+
+
+request.onerror=function(){
+
+if(finished)return;
+
+finished=true;
+clearTimeout(timer);
+
+reject(
+request.error ||
+new Error("IndexedDB error")
+);
+
+};
+
+
+request.onblocked=function(){
+
+console.warn("IndexedDB blocked");
+
+};
+
 });
 
-/* =========================
-   LOCK
-========================= */
-
-function applyLockState(){
-
-  const locked=!!state.locked;
-
-  $("lockStatus").textContent=
-    sellerMode
-      ? "حالت فروشنده"
-      : locked
-        ? "قفل است"
-        : "باز است";
-
-  $("lockBtn").textContent=locked ? "باز کردن" : "قفل کردن";
-
-  document.querySelectorAll(".editable").forEach(function(el){
-    el.disabled=locked || sellerMode;
-  });
 }
 
-$("lockBtn").addEventListener("click",function(){
 
-  if(sellerMode)return;
+function loadIndexedDb(){
 
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
+return new Promise(function(resolve,reject){
 
-  state.locked=true;
-  stopAutoLock();
-  applyLockState();
-  showToast("برنامه قفل شد.");
+if(!db){
+reject(new Error("No database"));
+return;
+}
+
+let done=false;
+
+const timer=setTimeout(function(){
+
+if(done)return;
+
+done=true;
+reject(new Error("IndexedDB read timeout"));
+
+},2000);
+
+
+try{
+
+const tx=db.transaction(
+DB_STORE,
+"readonly"
+);
+
+const request=tx
+.objectStore(DB_STORE)
+.get(DB_KEY);
+
+
+request.onsuccess=function(){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+resolve(request.result || null);
+
+};
+
+
+request.onerror=function(){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+reject(
+request.error ||
+new Error("IndexedDB read failed")
+);
+
+};
+
+
+}catch(error){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+reject(error);
+
+}
+
 });
 
-function startAutoLock(){
-
-  stopAutoLock();
-
-  if(sellerMode || state.locked)return;
-
-  const minutes=Number(state.autoLockMinutes);
-
-  if(!minutes || minutes<=0)return;
-
-  autoLockTimer=setTimeout(function(){
-
-    state.locked=true;
-    applyLockState();
-    showToast("به دلیل عدم فعالیت، برنامه قفل شد.");
-
-  },minutes*60*1000);
 }
 
-function stopAutoLock(){
-  if(autoLockTimer){
-    clearTimeout(autoLockTimer);
-    autoLockTimer=null;
-  }
+
+function saveIndexedDb(){
+
+return new Promise(function(resolve,reject){
+
+if(!db){
+reject(new Error("No database"));
+return;
 }
 
-function resetActivityTimer(){
-  if(sellerMode || state.locked)return;
+let done=false;
 
-  clearTimeout(inactivityTimer);
+const timer=setTimeout(function(){
 
-  inactivityTimer=setTimeout(function(){
-    startAutoLock();
-  },1000);
+if(done)return;
+
+done=true;
+reject(new Error("IndexedDB write timeout"));
+
+},3000);
+
+
+try{
+
+const tx=db.transaction(
+DB_STORE,
+"readwrite"
+);
+
+tx.objectStore(DB_STORE)
+.put(clone(state),DB_KEY);
+
+
+tx.oncomplete=function(){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+resolve();
+
+};
+
+
+tx.onerror=function(){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+reject(
+tx.error ||
+new Error("IndexedDB write failed")
+);
+
+};
+
+
+}catch(error){
+
+if(done)return;
+
+done=true;
+clearTimeout(timer);
+
+reject(error);
+
 }
 
-["click","touchstart","keydown","input"].forEach(function(eventName){
-  document.addEventListener(eventName,resetActivityTimer,{passive:true});
 });
 
-/* =========================
-   PRODUCTS
-========================= */
+}
+
+
+/* =====================================
+   UNIFIED STORAGE
+===================================== */
+
+async function saveState(){
+
+const localOK=saveLocal();
+
+if(!localOK){
+throw new Error("فضای ذخیره‌سازی مرورگر در دسترس نیست.");
+}
+
+if(storageMode==="indexeddb" && db){
+
+try{
+
+await saveIndexedDb();
+
+}catch(error){
+
+console.warn(
+"IndexedDB failed, switching to localStorage",
+error
+);
+
+storageMode="local";
+}
+
+}
+
+}
+
+
+async function loadState(){
+
+/*
+اول localStorage را می‌خوانیم تا برنامه
+هرگز منتظر IndexedDB نماند.
+*/
+
+const localData=loadLocal();
+
+if(localData){
+return localData;
+}
+
+
+if(storageMode==="indexeddb" && db){
+
+try{
+
+const data=await loadIndexedDb();
+
+if(data){
+
+saveLocal();
+
+return data;
+}
+
+}catch(error){
+
+console.warn(error);
+
+}
+
+}
+
+
+return null;
+}
+
+
+/* =====================================
+   NORMALIZE STATE
+===================================== */
 
 function normalizeProduct(product){
 
-  return {
-    id:product.id || uid(),
-    name:String(product.name || ""),
-    price:Number(product.price)||0,
-    qr:String(product.qr || ""),
-    image:String(product.image || "")
-  };
+return {
+
+id:product && product.id
+? String(product.id)
+: uid(),
+
+name:product && product.name
+? String(product.name)
+: "",
+
+price:
+product && Number.isFinite(Number(product.price))
+? Number(product.price)
+: 0,
+
+qr:product && product.qr
+? String(product.qr)
+: "",
+
+image:product && product.image
+? String(product.image)
+: ""
+
+};
+
 }
 
-function renderProducts(){
 
-  const container=$("products");
-  const query=$("searchInput").value.trim().toLowerCase();
+function normalizeState(data){
 
-  let products=Array.isArray(state.products)
-    ? state.products.map(normalizeProduct)
-    : [];
+if(!data || typeof data!=="object"){
 
-  if(query){
-    products=products.filter(function(product){
+return {
+products:[],
+oldRate:0,
+currentRate:0,
+history:[],
+locked:true,
+passwordHash:null,
+autoLockMinutes:5,
+schemaVersion:4
+};
 
-      return (
-        product.name.toLowerCase().includes(query) ||
-        product.qr.toLowerCase().includes(query)
-      );
-
-    });
-  }
-
-  if(!products.length){
-    container.innerHTML='<div class="empty">محصولی وجود ندارد.</div>';
-    return;
-  }
-
-  container.innerHTML=products.map(function(product){
-
-    const image=product.image
-      ? '<img src="'+product.image+'" alt="'+escapeHtml(product.name)+'">'
-      : "";
-
-    const ownerActions=sellerMode
-      ? ""
-      : `
-        <button class="secondary edit-product" data-id="${product.id}">ویرایش</button>
-        <button class="danger delete-product" data-id="${product.id}">حذف</button>
-      `;
-
-    return `
-      <article class="product">
-        ${image}
-
-        <div class="product-body">
-          <div class="product-name">${escapeHtml(product.name)}</div>
-
-          <div class="price">
-            ${numberFormat(product.price)}
-          </div>
-
-          <div class="meta">
-            کد: ${escapeHtml(product.qr || "ندارد")}
-          </div>
-
-          <div class="actions">
-            ${ownerActions}
-
-            ${
-              product.image
-              ? `<button class="secondary view-image" data-id="${product.id}">تصویر</button>`
-              : ""
-            }
-
-            ${
-              product.qr
-              ? `<button class="secondary scan-product" data-id="${product.id}">اسکن</button>`
-              : ""
-            }
-          </div>
-        </div>
-      </article>
-    `;
-
-  }).join("");
-
-  container.querySelectorAll(".edit-product").forEach(function(button){
-    button.addEventListener("click",function(){
-      editProduct(button.dataset.id);
-    });
-  });
-
-  container.querySelectorAll(".delete-product").forEach(function(button){
-    button.addEventListener("click",function(){
-      deleteProduct(button.dataset.id);
-    });
-  });
-
-  container.querySelectorAll(".view-image").forEach(function(button){
-    button.addEventListener("click",function(){
-      viewProductImage(button.dataset.id);
-    });
-  });
-
-  container.querySelectorAll(".scan-product").forEach(function(button){
-    button.addEventListener("click",function(){
-      startScanner(button.dataset.id);
-    });
-  });
 }
 
-async function imageToDataUrl(file){
 
-  if(!file)return "";
+return {
 
-  if(!file.type.startsWith("image/")){
-    throw new Error("فایل انتخاب‌شده تصویر نیست.");
-  }
+products:
+Array.isArray(data.products)
+? data.products.map(normalizeProduct)
+: [],
 
-  if(file.size>5*1024*1024){
-    throw new Error("حجم تصویر باید کمتر از ۵ مگابایت باشد.");
-  }
+oldRate:Number(data.oldRate)||0,
 
-  return new Promise(function(resolve,reject){
+currentRate:Number(data.currentRate)||0,
 
-    const reader=new FileReader();
+history:
+Array.isArray(data.history)
+? data.history
+: [],
 
-    reader.onload=function(){
-      resolve(String(reader.result || ""));
-    };
+locked:true,
 
-    reader.onerror=function(){
-      reject(new Error("خواندن تصویر انجام نشد."));
-    };
+passwordHash:
+data.passwordHash || null,
 
-    reader.readAsDataURL(file);
-  });
+autoLockMinutes:
+Number(data.autoLockMinutes)>0
+? Number(data.autoLockMinutes)
+: 5,
+
+schemaVersion:4
+
+};
+
 }
 
-$("saveProductBtn").addEventListener("click",async function(){
 
-  if(sellerMode){
-    showToast("در حالت فروشنده امکان ویرایش وجود ندارد.");
-    return;
-  }
+/* =====================================
+   PASSWORD
+===================================== */
 
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
+async function hashPassword(password){
 
-  const name=$("productName").value.trim();
-  const price=Number($("productPrice").value);
-  const qr=$("productQr").value.trim();
-  const imageFile=$("productImage").files[0];
+if(
+!window.crypto ||
+!window.crypto.subtle
+){
 
-  if(!name){
-    showToast("نام محصول را وارد کنید.");
-    return;
-  }
+throw new Error(
+"امکانات رمزنگاری مرورگر در دسترس نیست."
+);
 
-  if(!Number.isFinite(price) || price<0){
-    showToast("قیمت معتبر وارد کنید.");
-    return;
-  }
-
-  try{
-
-    let image="";
-
-    if(imageFile){
-      image=await imageToDataUrl(imageFile);
-    }
-
-    if(editingProductId){
-
-      const product=state.products.find(function(item){
-        return item.id===editingProductId;
-      });
-
-      if(!product){
-        showToast("محصول پیدا نشد.");
-        return;
-      }
-
-      product.name=name;
-      product.price=price;
-      product.qr=qr;
-
-      if(image){
-        product.image=image;
-      }
-
-      showToast("محصول ویرایش شد.");
-
-    }else{
-
-      state.products.push({
-        id:uid(),
-        name:name,
-        price:price,
-        qr:qr,
-        image:image
-      });
-
-      showToast("محصول اضافه شد.");
-    }
-
-    await saveState();
-
-    resetProductForm();
-    renderAll();
-
-  }catch(error){
-    showToast(error.message || "ذخیره محصول انجام نشد.");
-  }
-});
-
-function editProduct(id){
-
-  if(state.locked || sellerMode){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  const product=state.products.find(function(item){
-    return item.id===id;
-  });
-
-  if(!product)return;
-
-  editingProductId=id;
-
-  $("productFormTitle").textContent="ویرایش محصول";
-  $("saveProductBtn").textContent="ذخیره تغییرات";
-  $("cancelEditBtn").style.display="inline-block";
-
-  $("productName").value=product.name;
-  $("productPrice").value=product.price;
-  $("productQr").value=product.qr;
-  $("productImage").value="";
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 }
 
-function resetProductForm(){
+const data=
+new TextEncoder().encode(password);
 
-  editingProductId=null;
+const hash=
+await crypto.subtle.digest(
+"SHA-256",
+data
+);
 
-  $("productFormTitle").textContent="افزودن محصول";
-  $("saveProductBtn").textContent="افزودن محصول";
-  $("cancelEditBtn").style.display="none";
+return Array.from(
+new Uint8Array(hash)
+)
+.map(function(byte){
+return byte.toString(16).padStart(2,"0");
+})
+.join("");
 
-  $("productName").value="";
-  $("productPrice").value="";
-  $("productQr").value="";
-  $("productImage").value="";
 }
 
-$("cancelEditBtn").addEventListener("click",resetProductForm);
 
-async function deleteProduct(id){
+async function setPassword(password){
 
-  if(sellerMode)return;
+if(!password || password.length<8){
 
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
+throw new Error(
+"رمز باید حداقل ۸ کاراکتر باشد."
+);
 
-  const product=state.products.find(function(item){
-    return item.id===id;
-  });
-
-  if(!product)return;
-
-  if(!confirm("این محصول حذف شود؟"))return;
-
-  state.products=state.products.filter(function(item){
-    return item.id!==id;
-  });
-
-  await saveState();
-  renderAll();
-
-  showToast("محصول حذف شد.");
 }
 
-function viewProductImage(id){
+state.passwordHash=
+await hashPassword(password);
 
-  const product=state.products.find(function(item){
-    return item.id===id;
-  });
+state.locked=false;
 
-  if(!product || !product.image)return;
+await saveState();
 
-  $("imagePreview").src=product.image;
-  $("imageModal").classList.add("show");
+applyLockState();
+
+startAutoLock();
+
 }
 
-$("closeImageBtn").addEventListener("click",function(){
-  $("imageModal").classList.remove("show");
-});
 
-/* =========================
-   RATES
-========================= */
+async function verifyPassword(password){
 
-$("saveRateBtn").addEventListener("click",async function(){
+if(!state.passwordHash)return false;
 
-  if(sellerMode){
-    showToast("در حالت فروشنده امکان تغییر نرخ وجود ندارد.");
-    return;
-  }
+const hash=
+await hashPassword(password);
 
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
+return hash===state.passwordHash;
 
-  const value=Number($("rateInput").value);
+}
 
-  if(!Number.isFinite(value) || value<0){
-    showToast("نرخ معتبر وارد کنید.");
-    return;
-  }
 
-  state.oldRate=Number(state.currentRate)||0;
-  state.currentRate=value;
+/* =====================================
+   PASSWORD MODAL
+===================================== */
 
-  let percent=0;
+function openPasswordModal(mode){
 
-  if(state.oldRate!==0){
-    percent=((state.currentRate-state.oldRate)/state.oldRate)*100;
-  }
+passwordMode=mode;
 
-  state.history.unshift({
-    date:new Date().toISOString(),
-    oldRate:state.oldRate,
-    newRate:state.currentRate,
-    percent:percent
-  });
+$("passwordModal")
+.classList.add("show");
 
-  await saveState();
+$("passwordInput").value="";
+$("passwordConfirm").value="";
 
-  $("rateInput").value="";
+if(mode==="setup"){
 
-  renderAll();
+$("passwordTitle").textContent=
+"ساخت رمز مالک";
 
-  showToast("نرخ ذخیره شد.");
-});
+$("passwordConfirmWrap")
+.style.display="block";
+
+}else if(mode==="change"){
+
+$("passwordTitle").textContent=
+"تغییر رمز";
+
+$("passwordConfirmWrap")
+.style.display="block";
+
+}else{
+
+$("passwordTitle").textContent=
+"ورود مالک";
+
+$("passwordConfirmWrap")
+.style.display="none";
+
+}
+
+setTimeout(function(){
+$("passwordInput").focus();
+},100);
+
+}
+
+
+$("passwordCancelBtn")
+.addEventListener(
+"click",
+function(){
+
+if(passwordMode==="setup"){
+return;
+}
+
+$("passwordModal")
+.classList.remove("show");
+
+}
+);
+
+
+$("passwordSubmitBtn")
+.addEventListener(
+"click",
+async function(){
+
+const password=
+$("passwordInput").value;
+
+const confirm=
+$("passwordConfirm").value;
+
+try{
+
+if(password.length<8){
+
+showToast(
+"رمز باید حداقل ۸ کاراکتر باشد."
+);
+
+return;
+}
+
+
+if(passwordMode==="setup"){
+
+if(password!==confirm){
+
+showToast(
+"رمزها یکسان نیستند."
+);
+
+return;
+}
+
+await setPassword(password);
+
+$("passwordModal")
+.classList.remove("show");
+
+renderAll();
+
+showToast(
+"رمز مالک ساخته شد."
+);
+
+return;
+
+}
+
+
+if(passwordMode==="change"){
+
+if(password!==confirm){
+
+showToast(
+"رمزها یکسان نیستند."
+);
+
+return;
+}
+
+state.passwordHash=
+await hashPassword(password);
+
+await saveState();
+
+$("passwordModal")
+.classList.remove("show");
+
+showToast("رمز تغییر کرد.");
+
+return;
+
+}
+
+
+const valid=
+await verifyPassword(password);
+
+if(!valid){
+
+showToast("رمز اشتباه است.");
+return;
+
+}
+
+state.locked=false;
+
+$("passwordModal")
+.classList.remove("show");
+
+applyLockState();
+startAutoLock();
+
+showToast("ورود موفق بود.");
+
+}catch(error){
+
+showToast(
+error.message ||
+"خطایی رخ داد."
+);
+
+}
+
+}
+);
+
+
+/* =====================================
+   LOCK
+===================================== */
+
+function applyLockState(){
+
+$("lockStatus").textContent=
+sellerMode
+? "حالت فروشنده"
+: state.locked
+? "قفل است"
+: "باز است";
+
+$("lockBtn").textContent=
+state.locked
+? "باز کردن"
+: "قفل کردن";
+
+}
+
+
+$("lockBtn")
+.addEventListener(
+"click",
+function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+state.locked=true;
+
+stopAutoLock();
+
+applyLockState();
+
+showToast("برنامه قفل شد.");
+
+}
+);
+
+
+function startAutoLock(){
+
+stopAutoLock();
+
+if(
+sellerMode ||
+state.locked
+)return;
+
+const minutes=
+Number(state.autoLockMinutes);
+
+if(!minutes || minutes<=0)return;
+
+autoLockTimer=
+setTimeout(
+function(){
+
+state.locked=true;
+
+applyLockState();
+
+showToast(
+"برنامه به دلیل عدم فعالیت قفل شد."
+);
+
+},
+minutes*60*1000
+);
+
+}
+
+
+function stopAutoLock(){
+
+if(autoLockTimer){
+
+clearTimeout(autoLockTimer);
+
+autoLockTimer=null;
+
+}
+
+}
+
+
+/* =====================================
+   RENDER RATE
+===================================== */
 
 function renderRate(){
 
-  $("oldRateView").textContent=numberFormat(state.oldRate);
-  $("currentRateView").textContent=numberFormat(state.currentRate);
+$("oldRateView")
+.textContent=
+numberFormat(state.oldRate);
 
-  let percent=0;
+$("currentRateView")
+.textContent=
+numberFormat(state.currentRate);
 
-  if(Number(state.oldRate)!==0){
-    percent=((Number(state.currentRate)-Number(state.oldRate))/Number(state.oldRate))*100;
-  }
+let percent=0;
 
-  $("rateChangeView").textContent=
-    percent.toLocaleString("fa-IR",{
-      maximumFractionDigits:2
-    })+"٪";
+if(Number(state.oldRate)!==0){
 
-  $("statRate").textContent=numberFormat(state.currentRate);
+percent=
+(
+(Number(state.currentRate)-
+Number(state.oldRate))
+/
+Number(state.oldRate)
+)*100;
+
 }
 
-/* =========================
+$("rateChangeView")
+.textContent=
+percent.toLocaleString(
+"fa-IR",
+{maximumFractionDigits:2}
+)+"٪";
+
+$("statRate")
+.textContent=
+numberFormat(state.currentRate);
+
+}
+
+
+/* =====================================
+   RATE UPDATE
+===================================== */
+
+$("saveRateBtn")
+.addEventListener(
+"click",
+async function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const value=
+Number($("rateInput").value);
+
+if(
+!Number.isFinite(value) ||
+value<0
+){
+
+showToast(
+"نرخ معتبر وارد کنید."
+);
+
+return;
+
+}
+
+state.oldRate=
+Number(state.currentRate)||0;
+
+state.currentRate=value;
+
+let percent=0;
+
+if(state.oldRate!==0){
+
+percent=
+(
+(state.currentRate-state.oldRate)
+/
+state.oldRate
+)*100;
+
+}
+
+state.history.unshift({
+
+date:new Date().toISOString(),
+
+oldRate:state.oldRate,
+
+newRate:state.currentRate,
+
+percent:percent
+
+});
+
+await saveState();
+
+$("rateInput").value="";
+
+renderAll();
+
+showToast("نرخ ذخیره شد.");
+
+}
+);
+
+
+/* =====================================
+   PRODUCTS
+===================================== */
+
+function renderProducts(){
+
+const container=$("products");
+
+const query=
+$("searchInput")
+.value
+.trim()
+.toLowerCase();
+
+let products=
+Array.isArray(state.products)
+? state.products
+: [];
+
+if(query){
+
+products=
+products.filter(
+function(product){
+
+return (
+
+String(product.name)
+.toLowerCase()
+.includes(query)
+
+||
+
+String(product.qr)
+.toLowerCase()
+.includes(query)
+
+);
+
+}
+);
+
+}
+
+
+if(!products.length){
+
+container.innerHTML=
+'<div class="empty">محصولی وجود ندارد.</div>';
+
+return;
+
+}
+
+
+container.innerHTML=
+products
+.map(function(product){
+
+const image=
+product.image
+?
+'<img src="'+
+product.image+
+'" alt="'+
+escapeHtml(product.name)+
+'">'
+:"";
+
+
+const actions=
+sellerMode
+?""
+:
+`
+<button
+class="secondary edit-product"
+data-id="${product.id}">
+ویرایش
+</button>
+
+<button
+class="danger delete-product"
+data-id="${product.id}">
+حذف
+</button>
+`;
+
+
+return `
+<article class="product">
+
+${image}
+
+<div class="product-body">
+
+<div class="product-name">
+${escapeHtml(product.name)}
+</div>
+
+<div class="price">
+${numberFormat(product.price)}
+</div>
+
+<div class="meta">
+کد: ${escapeHtml(product.qr || "ندارد")}
+</div>
+
+<div class="actions">
+
+${actions}
+
+${
+product.image
+?
+`
+<button
+class="secondary view-image"
+data-id="${product.id}">
+تصویر
+</button>
+`
+:""
+}
+
+${
+product.qr
+?
+`
+<button
+class="secondary scan-product"
+data-id="${product.id}">
+اسکن
+</button>
+`
+:""
+}
+
+</div>
+
+</div>
+
+</article>
+`;
+
+})
+.join("");
+
+
+document
+.querySelectorAll(".edit-product")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+editProduct(
+button.dataset.id
+);
+
+}
+);
+
+});
+
+
+document
+.querySelectorAll(".delete-product")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+deleteProduct(
+button.dataset.id
+);
+
+}
+);
+
+});
+
+
+document
+.querySelectorAll(".view-image")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+viewImage(
+button.dataset.id
+);
+
+}
+);
+
+});
+
+
+document
+.querySelectorAll(".scan-product")
+.forEach(function(button){
+
+button.addEventListener(
+"click",
+function(){
+
+startScanner(
+button.dataset.id
+);
+
+}
+);
+
+});
+
+}
+
+
+/* =====================================
+   ADD / EDIT PRODUCT
+===================================== */
+
+async function imageToDataUrl(file){
+
+if(!file)return "";
+
+if(!file.type.startsWith("image/")){
+
+throw new Error(
+"فایل انتخاب‌شده تصویر نیست."
+);
+
+}
+
+if(file.size>5*1024*1024){
+
+throw new Error(
+"حجم تصویر باید کمتر از ۵ مگابایت باشد."
+);
+
+}
+
+return new Promise(
+function(resolve,reject){
+
+const reader=
+new FileReader();
+
+reader.onload=
+function(){
+
+resolve(
+String(reader.result||"")
+);
+
+};
+
+reader.onerror=
+function(){
+
+reject(
+new Error("خواندن تصویر انجام نشد.")
+);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+);
+
+}
+
+
+$("saveProductBtn")
+.addEventListener(
+"click",
+async function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const name=
+$("productName")
+.value
+.trim();
+
+const price=
+Number($("productPrice").value);
+
+const qr=
+$("productQr")
+.value
+.trim();
+
+const file=
+$("productImage")
+.files[0];
+
+if(!name){
+
+showToast(
+"نام محصول را وارد کنید."
+);
+
+return;
+
+}
+
+if(
+!Number.isFinite(price) ||
+price<0
+){
+
+showToast(
+"قیمت معتبر وارد کنید."
+);
+
+return;
+
+}
+
+
+try{
+
+let image="";
+
+if(file){
+image=
+await imageToDataUrl(file);
+}
+
+
+if(editingProductId){
+
+const product=
+state.products.find(
+function(item){
+return item.id===
+editingProductId;
+}
+);
+
+if(!product){
+
+showToast(
+"محصول پیدا نشد."
+);
+
+return;
+
+}
+
+product.name=name;
+product.price=price;
+product.qr=qr;
+
+if(image){
+product.image=image;
+}
+
+showToast(
+"محصول ویرایش شد."
+);
+
+}else{
+
+state.products.push({
+
+id:uid(),
+
+name:name,
+
+price:price,
+
+qr:qr,
+
+image:image
+
+});
+
+showToast(
+"محصول اضافه شد."
+);
+
+}
+
+
+await saveState();
+
+resetProductForm();
+
+renderAll();
+
+}catch(error){
+
+showToast(
+error.message ||
+"ذخیره محصول انجام نشد."
+);
+
+}
+
+}
+);
+
+
+function editProduct(id){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const product=
+state.products.find(
+function(item){
+return item.id===id;
+}
+);
+
+if(!product)return;
+
+editingProductId=id;
+
+$("productFormTitle")
+.textContent="ویرایش محصول";
+
+$("saveProductBtn")
+.textContent="ذخیره تغییرات";
+
+$("cancelEditBtn")
+.style.display="inline-block";
+
+$("productName").value=
+product.name;
+
+$("productPrice").value=
+product.price;
+
+$("productQr").value=
+product.qr;
+
+$("productImage").value="";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+
+function resetProductForm(){
+
+editingProductId=null;
+
+$("productFormTitle")
+.textContent="افزودن محصول";
+
+$("saveProductBtn")
+.textContent="افزودن محصول";
+
+$("cancelEditBtn")
+.style.display="none";
+
+$("productName").value="";
+$("productPrice").value="";
+$("productQr").value="";
+$("productImage").value="";
+
+}
+
+
+$("cancelEditBtn")
+.addEventListener(
+"click",
+resetProductForm
+);
+
+
+async function deleteProduct(id){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const product=
+state.products.find(
+function(item){
+return item.id===id;
+}
+);
+
+if(!product)return;
+
+if(!confirm(
+"این محصول حذف شود؟"
+))return;
+
+state.products=
+state.products.filter(
+function(item){
+return item.id!==id;
+}
+);
+
+await saveState();
+
+renderAll();
+
+showToast(
+"محصول حذف شد."
+);
+
+}
+
+
+/* =====================================
+   IMAGE
+===================================== */
+
+function viewImage(id){
+
+const product=
+state.products.find(
+function(item){
+return item.id===id;
+}
+);
+
+if(
+!product ||
+!product.image
+)return;
+
+$("imagePreview").src=
+product.image;
+
+$("imageModal")
+.classList.add("show");
+
+}
+
+
+$("closeImageBtn")
+.addEventListener(
+"click",
+function(){
+
+$("imageModal")
+.classList.remove("show");
+
+}
+);
+
+
+/* =====================================
+   SEARCH
+===================================== */
+
+$("searchInput")
+.addEventListener(
+"input",
+renderProducts
+);
+
+
+/* =====================================
    HISTORY
-========================= */
+===================================== */
 
 function renderHistory(){
 
-  const container=$("history");
+const container=$("history");
 
-  if(!state.history.length){
-    container.innerHTML='<div class="empty">تاریخچه‌ای وجود ندارد.</div>';
-    return;
-  }
+if(!state.history.length){
 
-  container.innerHTML=state.history.map(function(item){
+container.innerHTML=
+'<div class="empty">تاریخچه‌ای وجود ندارد.</div>';
 
-    const date=new Date(item.date);
+return;
 
-    return `
-      <div class="history-row">
-        <div>${date.toLocaleString("fa-IR")}</div>
-        <div>${numberFormat(item.oldRate)}</div>
-        <div>${numberFormat(item.newRate)}</div>
-        <div>
-          ${Number(item.percent || 0).toLocaleString("fa-IR",{
-            maximumFractionDigits:2
-          })}٪
-        </div>
-      </div>
-    `;
-
-  }).join("");
 }
 
-$("historyBtn").addEventListener("click",async function(){
+container.innerHTML=
+state.history
+.map(function(item){
 
-  if(sellerMode)return;
+const date=
+new Date(item.date);
 
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
+return `
+<div class="history-row">
 
-  if(!confirm("تمام تاریخچه نرخ حذف شود؟"))return;
+<div>
+${date.toLocaleString("fa-IR")}
+</div>
 
-  state.history=[];
+<div>
+${numberFormat(item.oldRate)}
+</div>
 
-  await saveState();
-  renderAll();
+<div>
+${numberFormat(item.newRate)}
+</div>
 
-  showToast("تاریخچه پاک شد.");
-});
+<div>
+${Number(item.percent||0)
+.toLocaleString(
+"fa-IR",
+{maximumFractionDigits:2}
+)}٪
+</div>
 
-/* =========================
-   SEARCH
-========================= */
+</div>
+`;
 
-$("searchInput").addEventListener("input",renderProducts);
+})
+.join("");
 
-/* =========================
-   BACKUP / RESTORE
-========================= */
-
-$("exportBtn").addEventListener("click",function(){
-
-  if(sellerMode)return;
-
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  const backup={
-    type:"PriceCalculatorBackup",
-    version:2,
-    exportedAt:new Date().toISOString(),
-    state:cloneState(state)
-  };
-
-  const blob=new Blob(
-    [JSON.stringify(backup,null,2)],
-    {type:"application/json"}
-  );
-
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-
-  a.href=url;
-  a.download="price-calculator-backup.json";
-
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-
-  setTimeout(function(){
-    URL.revokeObjectURL(url);
-  },1000);
-
-  showToast("فایل پشتیبان ساخته شد.");
-});
-
-$("importBtn").addEventListener("click",function(){
-
-  if(sellerMode)return;
-
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  $("restoreInput").click();
-});
-
-$("restoreInput").addEventListener("change",async function(){
-
-  const file=this.files[0];
-
-  if(!file)return;
-
-  try{
-
-    const text=await file.text();
-    const data=JSON.parse(text);
-
-    const imported=data && data.state
-      ? data.state
-      : data;
-
-    if(!imported || !Array.isArray(imported.products)){
-      throw new Error("فایل پشتیبان معتبر نیست.");
-    }
-
-    state={
-      products:Array.isArray(imported.products)
-        ? imported.products.map(normalizeProduct)
-        : [],
-
-      oldRate:Number(imported.oldRate)||0,
-      currentRate:Number(imported.currentRate)||0,
-
-      history:Array.isArray(imported.history)
-        ? imported.history
-        : [],
-
-      locked:false,
-
-      passwordHash:
-        imported.passwordHash ||
-        state.passwordHash ||
-        null,
-
-      autoLockMinutes:
-        Number(imported.autoLockMinutes)||5,
-
-      schemaVersion:2
-    };
-
-    await saveState();
-
-    renderAll();
-
-    showToast("اطلاعات بازیابی شد.");
-
-  }catch(error){
-
-    showToast(error.message || "بازیابی انجام نشد.");
-
-  }finally{
-
-    this.value="";
-  }
-});
-
-/* =========================
-   PASSWORD CHANGE
-========================= */
-
-$("passwordBtn").addEventListener("click",function(){
-
-  if(sellerMode)return;
-
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  openPasswordModal("change");
-});
-
-/* =========================
-   INVITE LINKS
-========================= */
-
-function encodeInviteData(data){
-
-  const json=JSON.stringify(data);
-  const bytes=new TextEncoder().encode(json);
-
-  let binary="";
-
-  for(let i=0;i<bytes.length;i++){
-    binary+=String.fromCharCode(bytes[i]);
-  }
-
-  return btoa(binary)
-    .replace(/\+/g,"-")
-    .replace(/\//g,"_")
-    .replace(/=+$/,"");
 }
 
-function decodeInviteData(encoded){
 
-  try{
+$("historyBtn")
+.addEventListener(
+"click",
+async function(){
 
-    let value=String(encoded||"")
-      .replace(/-/g,"+")
-      .replace(/_/g,"/");
+if(sellerMode)return;
 
-    while(value.length%4){
-      value+="=";
-    }
+if(state.locked){
 
-    const binary=atob(value);
+openPasswordModal("unlock");
+return;
 
-    const bytes=Uint8Array.from(
-      binary,
-      function(char){
-        return char.charCodeAt(0);
-      }
-    );
-
-    return JSON.parse(
-      new TextDecoder().decode(bytes)
-    );
-
-  }catch(error){
-
-    console.error("Invite decode error:",error);
-    return null;
-  }
 }
 
-function getBaseAppUrl(){
-  return window.location.origin+window.location.pathname;
+if(!confirm(
+"تمام تاریخچه نرخ حذف شود؟"
+))return;
+
+state.history=[];
+
+await saveState();
+
+renderAll();
+
+showToast(
+"تاریخچه پاک شد."
+);
+
 }
+);
 
-function buildOwnerInvite(){
 
-  return {
-    type:"price-calculator-owner",
-    version:1,
-    products:state.products,
-    oldRate:state.oldRate,
-    currentRate:state.currentRate,
-    history:state.history,
-    autoLockMinutes:state.autoLockMinutes
-  };
-}
-
-function buildSellerInvite(){
-
-  return {
-    type:"price-calculator-seller",
-    version:1,
-    products:state.products,
-    oldRate:state.oldRate,
-    currentRate:state.currentRate
-  };
-}
-
-function createInviteLink(type){
-
-  const data=
-    type==="seller"
-      ? buildSellerInvite()
-      : buildOwnerInvite();
-
-  const encoded=encodeInviteData(data);
-
-  const key=
-    type==="seller"
-      ? "seller"
-      : "owner";
-
-  return getBaseAppUrl()+"?"+key+"="+encoded;
-}
-
-async function copyText(text){
-
-  try{
-
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-
-  }catch(error){}
-
-  const input=document.createElement("textarea");
-
-  input.value=text;
-  input.style.position="fixed";
-  input.style.opacity="0";
-
-  document.body.appendChild(input);
-  input.focus();
-  input.select();
-
-  let success=false;
-
-  try{
-    success=document.execCommand("copy");
-  }catch(error){}
-
-  input.remove();
-
-  return success;
-}
-
-$("ownerLinkBtn").addEventListener("click",async function(){
-
-  if(sellerMode)return;
-
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  const link=createInviteLink("owner");
-
-  const copied=await copyText(link);
-
-  if(copied){
-    showToast("لینک مالک کپی شد.");
-  }else{
-    prompt("لینک مالک:",link);
-  }
-});
-
-$("sellerLinkBtn").addEventListener("click",async function(){
-
-  if(sellerMode)return;
-
-  if(state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  const link=createInviteLink("seller");
-
-  const copied=await copyText(link);
-
-  if(copied){
-    showToast("لینک فروشنده کپی شد.");
-  }else{
-    prompt("لینک فروشنده:",link);
-  }
-});
-
-/* =========================
-   INVITE IMPORT
-========================= */
-
-function normalizeInviteProducts(products){
-
-  if(!Array.isArray(products))return [];
-
-  return products.map(function(product){
-    return normalizeProduct(product);
-  });
-}
-
-async function importSellerInvite(data){
-
-  if(!data || data.type!=="price-calculator-seller"){
-    return false;
-  }
-
-  sellerMode=true;
-
-  state={
-    products:normalizeInviteProducts(data.products),
-    oldRate:Number(data.oldRate)||0,
-    currentRate:Number(data.currentRate)||0,
-    history:[],
-    locked:false,
-    passwordHash:null,
-    autoLockMinutes:0,
-    schemaVersion:2
-  };
-
-  document.body.classList.add("seller-mode");
-
-  renderAll();
-
-  showToast("لینک فروشنده فعال شد.");
-
-  return true;
-}
-
-async function importOwnerInvite(data){
-
-  if(!data || data.type!=="price-calculator-owner"){
-    return false;
-  }
-
-  sellerMode=false;
-  document.body.classList.remove("seller-mode");
-
-  state={
-    products:normalizeInviteProducts(data.products),
-    oldRate:Number(data.oldRate)||0,
-    currentRate:Number(data.currentRate)||0,
-    history:Array.isArray(data.history)
-      ? data.history
-      : [],
-    locked:true,
-    passwordHash:null,
-    autoLockMinutes:Number(data.autoLockMinutes)||5,
-    schemaVersion:2
-  };
-
-  await saveState();
-
-  renderAll();
-
-  openPasswordModal("setup");
-
-  return true;
-}
-
-async function checkInviteLink(){
-
-  const params=new URLSearchParams(window.location.search);
-
-  const seller=params.get("seller");
-  const owner=params.get("owner");
-
-  if(seller){
-
-    const data=decodeInviteData(seller);
-
-    if(data){
-      await importSellerInvite(data);
-      return true;
-    }
-
-    showToast("لینک فروشنده معتبر نیست.");
-  }
-
-  if(owner){
-
-    const data=decodeInviteData(owner);
-
-    if(data){
-      await importOwnerInvite(data);
-      return true;
-    }
-
-    showToast("لینک مالک معتبر نیست.");
-  }
-
-  return false;
-}
-
-/* =========================
-   SCANNER
-========================= */
-
-function waitForQrLibrary(timeout){
-
-  timeout=timeout || 10000;
-
-  return new Promise(function(resolve,reject){
-
-    const start=Date.now();
-
-    function check(){
-
-      if(typeof window.Html5Qrcode==="function"){
-        resolve();
-        return;
-      }
-
-      if(Date.now()-start>=timeout){
-        reject(
-          new Error("کتابخانه اسکنر بارگذاری نشد.")
-        );
-        return;
-      }
-
-      setTimeout(check,200);
-    }
-
-    check();
-  });
-}
-
-async function startScanner(productId){
-
-  if(!sellerMode && state.locked){
-    openPasswordModal("unlock");
-    return;
-  }
-
-  scannerTarget=productId || null;
-
-  $("scannerModal").classList.add("show");
-  $("scannerStatus").textContent="در حال آماده‌سازی دوربین...";
-
-  try{
-
-    await waitForQrLibrary();
-
-    if(qrScanner){
-      try{
-        await qrScanner.stop();
-      }catch(error){}
-      qrScanner=null;
-    }
-
-    qrScanner=new Html5Qrcode("scanner");
-
-    await qrScanner.start(
-      {facingMode:"environment"},
-      {
-        fps:10,
-        qrbox:{width:250,height:150},
-        formatsToSupport:[
-          Html5QrcodeSupportedFormats.QR_CODE,
-          Html5QrcodeSupportedFormats.CODE_128,
-          Html5QrcodeSupportedFormats.CODE_39,
-          Html5QrcodeSupportedFormats.EAN_13,
-          Html5QrcodeSupportedFormats.EAN_8,
-          Html5QrcodeSupportedFormats.UPC_A,
-          Html5QrcodeSupportedFormats.UPC_E
-        ]
-      },
-      function(decodedText){
-
-        $("scannerStatus").textContent=
-          "کد پیدا شد: "+decodedText;
-
-        handleScannedCode(decodedText);
-
-        stopScanner();
-
-      },
-      function(){
-        /* scan failure is normal */
-      }
-    );
-
-    $("scannerStatus").textContent="دوربین فعال است؛ کد را مقابل دوربین بگیرید.";
-
-  }catch(error){
-
-    $("scannerStatus").textContent=
-      error.message ||
-      "دوربین یا اسکنر در دسترس نیست.";
-
-  }
-}
-
-function handleScannedCode(code){
-
-  code=String(code||"").trim();
-
-  if(!code)return;
-
-  if(scannerTarget){
-
-    const product=state.products.find(function(item){
-      return item.id===scannerTarget;
-    });
-
-    if(product){
-
-      if(!sellerMode && !state.locked){
-        product.qr=code;
-
-        saveState()
-          .then(renderAll)
-          .catch(function(error){
-            showToast(error.message);
-          });
-      }
-
-      showToast("کد محصول: "+code);
-      return;
-    }
-  }
-
-  $("searchInput").value=code;
-  renderProducts();
-
-  showToast("نتیجه اسکن نمایش داده شد.");
-}
-
-async function stopScanner(){
-
-  if(qrScanner){
-
-    try{
-      await qrScanner.stop();
-    }catch(error){}
-
-    try{
-      qrScanner.clear();
-    }catch(error){}
-
-    qrScanner=null;
-  }
-
-  scannerTarget=null;
-  $("scannerModal").classList.remove("show");
-}
-
-$("closeScannerBtn").addEventListener("click",stopScanner);
-
-$("scanSearchBtn").addEventListener("click",function(){
-  startScanner(null);
-});
-
-/* =========================
-   RENDER
-========================= */
+/* =====================================
+   STATS
+===================================== */
 
 function renderStats(){
 
-  $("productCount").textContent=
-    Number(state.products.length).toLocaleString("fa-IR");
+$("productCount")
+.textContent=
+state.products.length
+.toLocaleString("fa-IR");
 
-  $("historyCount").textContent=
-    Number(state.history.length).toLocaleString("fa-IR");
+$("historyCount")
+.textContent=
+state.history.length
+.toLocaleString("fa-IR");
+
 }
+
+
+/* =====================================
+   BACKUP
+===================================== */
+
+$("exportBtn")
+.addEventListener(
+"click",
+function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const backup={
+
+type:"PriceCalculatorBackup",
+
+version:4,
+
+exportedAt:
+new Date().toISOString(),
+
+state:clone(state)
+
+};
+
+const blob=
+new Blob(
+[
+JSON.stringify(
+backup,
+null,
+2
+)
+],
+{
+type:"application/json"
+}
+);
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+"price-calculator-backup.json";
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+setTimeout(
+function(){
+URL.revokeObjectURL(url);
+},
+1000
+);
+
+showToast(
+"پشتیبان ساخته شد."
+);
+
+}
+);
+
+
+/* =====================================
+   RESTORE
+===================================== */
+
+$("importBtn")
+.addEventListener(
+"click",
+function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+$("restoreInput").click();
+
+}
+);
+
+
+$("restoreInput")
+.addEventListener(
+"change",
+async function(){
+
+const file=this.files[0];
+
+if(!file)return;
+
+try{
+
+const text=
+await file.text();
+
+const data=
+JSON.parse(text);
+
+const imported=
+data && data.state
+? data.state
+: data;
+
+if(
+!imported ||
+!Array.isArray(imported.products)
+){
+
+throw new Error(
+"فایل پشتیبان معتبر نیست."
+);
+
+}
+
+state=
+normalizeState(imported);
+
+state.locked=false;
+
+await saveState();
+
+renderAll();
+
+showToast(
+"اطلاعات بازیابی شد."
+);
+
+}catch(error){
+
+showToast(
+error.message ||
+"بازیابی انجام نشد."
+);
+
+}finally{
+
+this.value="";
+
+}
+
+}
+);
+
+
+/* =====================================
+   PASSWORD CHANGE
+===================================== */
+
+$("passwordBtn")
+.addEventListener(
+"click",
+function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+openPasswordModal("change");
+
+}
+);
+
+
+/* =====================================
+   INVITE LINKS
+===================================== */
+
+function encodeInvite(data){
+
+const json=
+JSON.stringify(data);
+
+const bytes=
+new TextEncoder()
+.encode(json);
+
+let binary="";
+
+for(
+let i=0;
+i<bytes.length;
+i++
+){
+
+binary+=
+String.fromCharCode(
+bytes[i]
+);
+
+}
+
+return btoa(binary)
+.replace(/\+/g,"-")
+.replace(/\//g,"_")
+.replace(/=+$/,"");
+
+}
+
+
+function decodeInvite(value){
+
+try{
+
+let encoded=
+String(value||"")
+.replace(/-/g,"+")
+.replace(/_/g,"/");
+
+while(encoded.length%4){
+encoded+="=";
+}
+
+const binary=
+atob(encoded);
+
+const bytes=
+Uint8Array.from(
+binary,
+function(char){
+return char.charCodeAt(0);
+}
+);
+
+return JSON.parse(
+new TextDecoder()
+.decode(bytes)
+);
+
+}catch(error){
+
+console.error(error);
+
+return null;
+
+}
+
+}
+
+
+function baseUrl(){
+
+return window.location.origin+
+window.location.pathname;
+
+}
+
+
+function ownerInvite(){
+
+return {
+
+type:"price-calculator-owner",
+
+version:4,
+
+products:state.products,
+
+oldRate:state.oldRate,
+
+currentRate:state.currentRate,
+
+history:state.history,
+
+autoLockMinutes:
+state.autoLockMinutes
+
+};
+
+}
+
+
+function sellerInvite(){
+
+return {
+
+type:"price-calculator-seller",
+
+version:4,
+
+products:state.products,
+
+oldRate:state.oldRate,
+
+currentRate:state.currentRate
+
+};
+
+}
+
+
+function makeInvite(type){
+
+const data=
+type==="seller"
+? sellerInvite()
+: ownerInvite();
+
+const encoded=
+encodeInvite(data);
+
+return baseUrl()+
+"?" +
+(type==="seller"
+? "seller="
+: "owner=")+
+encoded;
+
+}
+
+
+async function copyText(text){
+
+try{
+
+if(
+navigator.clipboard &&
+navigator.clipboard.writeText
+){
+
+await navigator.clipboard.writeText(text);
+
+return true;
+
+}
+
+}catch(error){}
+
+
+const area=
+document.createElement("textarea");
+
+area.value=text;
+
+area.style.position="fixed";
+area.style.opacity="0";
+
+document.body.appendChild(area);
+
+area.focus();
+area.select();
+
+let ok=false;
+
+try{
+ok=document.execCommand("copy");
+}catch(error){}
+
+area.remove();
+
+return ok;
+
+}
+
+
+$("ownerLinkBtn")
+.addEventListener(
+"click",
+async function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const link=
+makeInvite("owner");
+
+if(
+await copyText(link)
+){
+
+showToast(
+"لینک مالک کپی شد."
+);
+
+}else{
+
+prompt(
+"لینک مالک:",
+link
+);
+
+}
+
+}
+);
+
+
+$("sellerLinkBtn")
+.addEventListener(
+"click",
+async function(){
+
+if(sellerMode)return;
+
+if(state.locked){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+const link=
+makeInvite("seller");
+
+if(
+await copyText(link)
+){
+
+showToast(
+"لینک فروشنده کپی شد."
+);
+
+}else{
+
+prompt(
+"لینک فروشنده:",
+link
+);
+
+}
+
+}
+);
+
+
+/* =====================================
+   INVITE IMPORT
+===================================== */
+
+async function checkInvite(){
+
+const params=
+new URLSearchParams(
+window.location.search
+);
+
+const seller=
+params.get("seller");
+
+const owner=
+params.get("owner");
+
+
+if(seller){
+
+const data=
+decodeInvite(seller);
+
+if(
+data &&
+data.type===
+"price-calculator-seller"
+){
+
+sellerMode=true;
+
+document.body
+.classList.add("seller-mode");
+
+state={
+products:
+Array.isArray(data.products)
+? data.products.map(normalizeProduct)
+:[],
+
+oldRate:Number(data.oldRate)||0,
+
+currentRate:
+Number(data.currentRate)||0,
+
+history:[],
+
+locked:false,
+
+passwordHash:null,
+
+autoLockMinutes:0,
+
+schemaVersion:4
+
+};
+
+renderAll();
+
+showToast(
+"حالت فروشنده فعال شد."
+);
+
+return true;
+
+}
+
+showToast(
+"لینک فروشنده معتبر نیست."
+);
+
+}
+
+
+if(owner){
+
+const data=
+decodeInvite(owner);
+
+if(
+data &&
+data.type===
+"price-calculator-owner"
+){
+
+sellerMode=false;
+
+document.body
+.classList.remove("seller-mode");
+
+state={
+products:
+Array.isArray(data.products)
+? data.products.map(normalizeProduct)
+:[],
+
+oldRate:Number(data.oldRate)||0,
+
+currentRate:
+Number(data.currentRate)||0,
+
+history:
+Array.isArray(data.history)
+? data.history
+:[],
+
+locked:true,
+
+passwordHash:null,
+
+autoLockMinutes:
+Number(data.autoLockMinutes)||5,
+
+schemaVersion:4
+
+};
+
+await saveState();
+
+renderAll();
+
+openPasswordModal("setup");
+
+return true;
+
+}
+
+showToast(
+"لینک مالک معتبر نیست."
+);
+
+}
+
+
+return false;
+
+}
+
+
+/* =====================================
+   SCANNER
+===================================== */
+
+function waitForScanner(){
+
+return new Promise(
+function(resolve,reject){
+
+const start=Date.now();
+
+function check(){
+
+if(
+typeof window.Html5Qrcode===
+"function"
+){
+
+resolve();
+return;
+
+}
+
+if(
+Date.now()-start>10000
+){
+
+reject(
+new Error(
+"کتابخانه اسکنر بارگذاری نشد."
+)
+);
+
+return;
+
+}
+
+setTimeout(
+check,
+200
+);
+
+}
+
+check();
+
+}
+);
+
+}
+
+
+async function startScanner(productId){
+
+if(
+!sellerMode &&
+state.locked
+){
+
+openPasswordModal("unlock");
+return;
+
+}
+
+scannerTarget=
+productId||null;
+
+$("scannerModal")
+.classList.add("show");
+
+$("scannerStatus")
+.textContent=
+"در حال آماده‌سازی دوربین...";
+
+
+try{
+
+await waitForScanner();
+
+if(qrScanner){
+
+try{
+await qrScanner.stop();
+}catch(error){}
+
+qrScanner=null;
+
+}
+
+qrScanner=
+new Html5Qrcode(
+"scanner"
+);
+
+const formats=[];
+
+if(
+window.Html5QrcodeSupportedFormats
+){
+
+const f=
+window.Html5QrcodeSupportedFormats;
+
+[
+"QR_CODE",
+"CODE_128",
+"CODE_39",
+"EAN_13",
+"EAN_8",
+"UPC_A",
+"UPC_E"
+].forEach(function(name){
+
+if(f[name]!==undefined){
+formats.push(f[name]);
+}
+
+});
+
+}
+
+
+const config={
+fps:10,
+qrbox:{
+width:250,
+height:150
+}
+};
+
+if(formats.length){
+config.formatsToSupport=formats;
+}
+
+
+await qrScanner.start(
+
+{
+facingMode:"environment"
+},
+
+config,
+
+function(decodedText){
+
+handleScannedCode(
+decodedText
+);
+
+stopScanner();
+
+},
+
+function(){}
+
+);
+
+$("scannerStatus")
+.textContent=
+"دوربین فعال است؛ کد را مقابل دوربین بگیرید.";
+
+}catch(error){
+
+$("scannerStatus")
+.textContent=
+error.message ||
+"دوربین در دسترس نیست.";
+
+}
+
+}
+
+
+function handleScannedCode(code){
+
+code=
+String(code||"")
+.trim();
+
+if(!code)return;
+
+
+if(scannerTarget){
+
+const product=
+state.products.find(
+function(item){
+return item.id===
+scannerTarget;
+}
+);
+
+if(product){
+
+if(
+!sellerMode &&
+!state.locked
+){
+
+product.qr=code;
+
+saveState()
+.then(renderAll)
+.catch(function(error){
+showToast(error.message);
+});
+
+}
+
+showToast(
+"کد محصول: "+code
+);
+
+return;
+
+}
+
+}
+
+
+$("searchInput").value=code;
+
+renderProducts();
+
+showToast(
+"نتیجه اسکن نمایش داده شد."
+);
+
+}
+
+
+async function stopScanner(){
+
+if(qrScanner){
+
+try{
+await qrScanner.stop();
+}catch(error){}
+
+try{
+qrScanner.clear();
+}catch(error){}
+
+qrScanner=null;
+
+}
+
+scannerTarget=null;
+
+$("scannerModal")
+.classList.remove("show");
+
+}
+
+
+$("closeScannerBtn")
+.addEventListener(
+"click",
+stopScanner
+);
+
+
+$("scanSearchBtn")
+.addEventListener(
+"click",
+function(){
+startScanner(null);
+}
+);
+
+
+/* =====================================
+   RENDER ALL
+===================================== */
 
 function renderAll(){
 
-  renderRate();
-  renderProducts();
-  renderHistory();
-  renderStats();
-  applyLockState();
+renderRate();
+
+renderProducts();
+
+renderHistory();
+
+renderStats();
+
+applyLockState();
+
 }
 
-/* =========================
+
+/* =====================================
    INIT
-========================= */
+===================================== */
 
 async function init(){
 
-  try{
+try{
 
-    $("lockStatus").textContent="در حال بارگذاری...";
+clearError();
 
-    db=await openDatabase();
+$("lockStatus")
+.textContent=
+"در حال بارگذاری...";
 
-    const saved=await loadState();
-
-    if(saved && typeof saved==="object"){
-
-      state={
-        products:Array.isArray(saved.products)
-          ? saved.products.map(normalizeProduct)
-          : [],
-
-        oldRate:Number(saved.oldRate)||0,
-        currentRate:Number(saved.currentRate)||0,
-
-        history:Array.isArray(saved.history)
-          ? saved.history
-          : [],
-
-        locked:true,
-
-        passwordHash:
-          saved.passwordHash || null,
-
-        autoLockMinutes:
-          Number(saved.autoLockMinutes)||5,
-
-        schemaVersion:2
-      };
-    }
-
-    const hasInvite=await checkInviteLink();
-
-    if(hasInvite){
-      return;
-    }
-
-    if(!state.passwordHash){
-
-      state.locked=true;
-
-      renderAll();
-
-      openPasswordModal("setup");
-
-      $("lockStatus").textContent="ساخت رمز مالک";
-
-      return;
-    }
-
-    state.locked=true;
-
-    renderAll();
-
-    $("lockStatus").textContent="قفل است";
-
-  }catch(error){
-
-    console.error(error);
-
-    showFatalError(
-      error && error.message
-        ? error.message
-        : "خطا در راه‌اندازی برنامه"
-    );
-
-    $("lockStatus").textContent="خطا در راه‌اندازی";
-
-  }
-}
-
-/* =========================
-   STARTUP
-========================= */
-
-document.addEventListener("visibilitychange",function(){
-
-  if(document.hidden){
-    return;
-  }
-
-  if(!sellerMode && state.passwordHash){
-    state.locked=true;
-    stopAutoLock();
-    applyLockState();
-  }
-});
 
 /*
-  Service Worker عمداً در این نسخه ثبت نمی‌شود
-  تا نسخه قدیمی cache باعث گیر کردن برنامه نشود.
+نسخه localStorage فوراً آماده است.
+سپس تلاش می‌کنیم IndexedDB را نیز فعال کنیم.
 */
+
+const localData=
+loadLocal();
+
+if(localData){
+
+state=
+normalizeState(localData);
+
+}
+
+
+try{
+
+db=
+await openDatabaseWithTimeout();
+
+storageMode="indexeddb";
+
+}catch(error){
+
+console.warn(
+"IndexedDB unavailable. Using localStorage.",
+error
+);
+
+db=null;
+
+storageMode="local";
+
+}
+
+
+/*
+اگر localStorage داده نداشت،
+از IndexedDB اطلاعات قبلی را امتحان می‌کنیم.
+*/
+
+if(!localData && db){
+
+try{
+
+const dbData=
+await loadIndexedDb();
+
+if(dbData){
+
+state=
+normalizeState(dbData);
+
+saveLocal();
+
+}
+
+}catch(error){
+
+console.warn(
+"Could not load IndexedDB data.",
+error
+);
+
+}
+
+}
+
+
+renderAll();
+
+
+/*
+لینک دعوت باید قبل از setup مالک بررسی شود.
+*/
+
+const invite=
+await checkInvite();
+
+if(invite){
+
+$("lockStatus").textContent=
+sellerMode
+? "حالت فروشنده"
+: "ساخت رمز مالک";
+
+return;
+
+}
+
+
+if(!state.passwordHash){
+
+state.locked=true;
+
+renderAll();
+
+$("lockStatus")
+.textContent=
+"ساخت رمز مالک";
+
+openPasswordModal("setup");
+
+return;
+
+}
+
+
+state.locked=true;
+
+renderAll();
+
+$("lockStatus")
+.textContent=
+"قفل است";
+
+
+}catch(error){
+
+console.error(
+"INIT ERROR:",
+error
+);
+
+
+/*
+حتی اگر هر سیستم ذخیره‌سازی
+خراب شود، خود برنامه بالا می‌آید.
+*/
+
+try{
+
+state={
+products:[],
+oldRate:0,
+currentRate:0,
+history:[],
+locked:true,
+passwordHash:null,
+autoLockMinutes:5,
+schemaVersion:4
+};
+
+renderAll();
+
+$("lockStatus")
+.textContent=
+"آماده";
+
+openPasswordModal("setup");
+
+showToast(
+"ذخیره‌سازی قبلی قابل خواندن نبود؛ برنامه با فضای جدید اجرا شد."
+);
+
+}catch(secondError){
+
+showError(
+secondError.message ||
+"خطای جدی در اجرای برنامه"
+);
+
+$("lockStatus")
+.textContent=
+"خطا";
+
+}
+
+}
+
+}
+
+
+/* =====================================
+   PAGE VISIBILITY
+===================================== */
+
+document.addEventListener(
+"visibilitychange",
+function(){
+
+if(
+!document.hidden &&
+!sellerMode &&
+state.passwordHash
+){
+
+state.locked=true;
+
+stopAutoLock();
+
+applyLockState();
+
+}
+
+}
+);
+
+
+/*
+Service Worker عمداً ثبت نشده است.
+این کار جلوی cache قدیمی را می‌گیرد.
+*/
+
+
+/* =====================================
+   GLOBAL ERROR HANDLERS
+===================================== */
+
+window.addEventListener(
+"error",
+function(event){
+
+if(
+event &&
+event.message
+){
+
+showError(
+event.message
+);
+
+}
+
+}
+);
+
+
+window.addEventListener(
+"unhandledrejection",
+function(event){
+
+const reason=
+event && event.reason;
+
+showError(
+reason && reason.message
+? reason.message
+: String(
+reason ||
+"خطای ناشناخته"
+)
+);
+
+}
+);
+
+
+/* =====================================
+   START
+===================================== */
 
 init();
 
