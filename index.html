@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2563eb">
+<link rel="manifest" href="./manifest.webmanifest">
+<title>ماشین‌حساب دقیق قیمت‌گذاری</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f4f7fb;color:#172033}
+header{background:#2563eb;color:white;padding:22px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:22px}
+header a{color:white}
+main{max-width:900px;margin:auto;padding:16px}
+.card{background:white;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 3px 14px #0001}
+h2{font-size:18px;margin-top:0}
+label{display:block;margin:10px 0 5px;font-weight:bold}
+input,button{font:inherit}
+input{width:100%;padding:12px;border:1px solid #ccd3df;border-radius:10px}
+button{border:0;border-radius:10px;padding:11px 15px;cursor:pointer;margin:4px}
+.primary{background:#2563eb;color:white}
+.success{background:#16a34a;color:white}
+.danger{background:#dc2626;color:white}
+.gray{background:#e5e7eb}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.actions{display:flex;flex-wrap:wrap;gap:5px}
+.product{border:1px solid #e1e6ef;border-radius:14px;padding:14px;margin-top:12px}
+.product img{width:90px;height:90px;object-fit:cover;border-radius:12px;display:block;margin-bottom:10px}
+.price{font-size:20px;font-weight:bold}
+.newprice{color:#2563eb}
+.up{color:#16a34a}
+.down{color:#dc2626}
+.words{color:#555;font-size:13px;margin-top:4px}
+.small{font-size:13px;color:#667085}
+.stat{background:#eef4ff;border-radius:12px;padding:12px}
+#lockButton{position:fixed;top:12px;left:12px;z-index:20;width:48px;height:48px;border-radius:50%;font-size:22px;background:#16a34a;color:white}
+body.locked .editable{opacity:.5;pointer-events:none}
+body.locked .deleteBtn,
+body.locked .importBtn,
+body.locked .rateBtn,
+body.locked .addBtn{opacity:.45;pointer-events:none}
+table{width:100%;border-collapse:collapse}
+td,th{padding:8px;border-bottom:1px solid #eee;text-align:right;font-size:13px}
+.scanner{position:fixed;inset:0;background:#000d;z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.scannerBox{background:white;border-radius:16px;padding:16px;width:min(500px,100%)}
+#reader{width:100%}
+.hidden{display:none}
+.notice{background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:10px}
+@media(max-width:500px){main{padding:10px}.card{padding:14px}}
+</style>
+</head>
+
+<body>
+
+<button id="lockButton" title="قفل">🔓</button>
+
+<header>
+<h1>ماشین‌حساب دقیق قیمت‌گذاری</h1>
+<a href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener">
+مشاهده نرخ دلار در سایت نرخ‌آرا
+</a>
+</header>
+
+<main>
+
+<section class="card">
+<h2>نرخ دلار</h2>
+
+<div class="grid">
+<div>
+<label>نرخ قبلی</label>
+<input id="oldRate" type="number" readonly>
+</div>
+
+<div>
+<label>نرخ جدید</label>
+<input id="newRate" class="editable" type="number" placeholder="مثلاً 100000">
+</div>
+
+<div>
+<label>تاریخ و ساعت</label>
+<input id="rateDate" class="editable" type="datetime-local">
+</div>
+</div>
+
+<div class="actions">
+<button class="primary rateBtn" id="saveRate">ثبت نرخ جدید و محاسبه</button>
+</div>
+
+<p id="rateMessage" class="small"></p>
+</section>
+
+<section class="card">
+<h2>جست‌وجوی کالا</h2>
+
+<input id="searchInput" placeholder="جست‌وجوی کالا با نام یا QR">
+
+<div class="actions">
+<button class="primary" id="searchScan">📷 اسکن QR</button>
+<button class="success addBtn" id="addProduct">＋ افزودن کالا</button>
+</div>
+</section>
+
+<section class="card">
+<h2>پشتیبان‌گیری</h2>
+
+<div class="actions">
+<button class="primary" id="exportBtn">دانلود نسخه پشتیبان</button>
+<button class="gray importBtn" id="importBtn">انتخاب فایل پشتیبان</button>
+<input id="importFile" type="file" accept=".json" class="hidden">
+</div>
+
+<p class="small">
+اطلاعات کالاها، تصاویر، QRها، نرخ دلار، تاریخچه و وضعیت قفل ذخیره می‌شود.
+</p>
+</section>
+
+<section class="card">
+<h2>آمار</h2>
+<div class="grid">
+<div class="stat">تعداد کالا: <b id="count">0</b></div>
+<div class="stat">نرخ فعلی دلار: <b id="currentRate">—</b></div>
+</div>
+</section>
+
+<section class="card">
+<h2>لیست کالاها</h2>
+<div id="products"></div>
+</section>
+
+<section class="card">
+<h2>تاریخچه نرخ دلار</h2>
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>تاریخ</th>
+<th>نرخ قبلی</th>
+<th>نرخ جدید</th>
+<th>تغییر</th>
+</tr>
+</thead>
+<tbody id="history"></tbody>
+</table>
+</div>
+</section>
+
+</main>
+
+<div class="scanner" id="scanner">
+<div class="scannerBox">
+<h2>اسکن QR</h2>
+<div id="reader"></div>
+<button class="danger" id="closeScanner">بستن</button>
+<p id="scannerMessage" class="small"></p>
+</div>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode" defer></script>
+
+<script>
+const DB_NAME="PriceCalculatorDB";
+const STORE="appData";
+const KEY="state";
+
+let state={
+ products:[],
+ oldRate:0,
+ currentRate:0,
+ history:[],
+ locked:false
+};
+
+let scanner=null;
+let scanMode=null;
+let scanProductId=null;
+
+function openDB(){
+ return new Promise((resolve,reject)=>{
+  const req=indexedDB.open(DB_NAME,1);
+
+  req.onupgradeneeded=()=>{
+   const db=req.result;
+   if(!db.objectStoreNames.contains(STORE))
+    db.createObjectStore(STORE);
+  };
+
+  req.onsuccess=()=>resolve(req.result);
+  req.onerror=()=>reject(req.error);
+ });
+}
+
+async function loadState(){
+ const db=await openDB();
+
+ return new Promise(resolve=>{
+  const tx=db.transaction(STORE,"readonly");
+  const req=tx.objectStore(STORE).get(KEY);
+
+  req.onsuccess=()=>{
+   if(req.result) state=req.result;
+   if(!Array.isArray(state.products)) state.products=[];
+   if(!Array.isArray(state.history)) state.history=[];
+   applyLock();
+   resolve();
+  };
+ });
+}
+
+async function saveState(){
+ const db=await openDB();
+
+ return new Promise(resolve=>{
+  const tx=db.transaction(STORE,"readwrite");
+  tx.objectStore(STORE).put(state,KEY);
+  tx.oncomplete=resolve;
+ });
+}
+
+function money(n){
+ return Number(n||0).toLocaleString("fa-IR");
+}
+
+const ones=[
+"","یک","دو","سه","چهار","پنج","شش","هفت","هشت","نه",
+"ده","یازده","دوازده","سیزده","چهارده","پانزده","شانزده",
+"هفده","هجده","نوزده"
+];
+
+const tens=["","","بیست","سی","چهل","پنجاه","شصت","هفتاد","هشتاد","نود"];
+
+const hundreds=[
+"","صد","دویست","سیصد","چهارصد","پانصد","ششصد","هفتصد","هشتصد","نهصد"
+];
+
+const scales=["","هزار","میلیون","میلیارد","تریلیون"];
+
+function threeWords(n){
+ let result=[];
+
+ let h=Math.floor(n/100);
+ let r=n%100;
+
+ if(h) result.push(hundreds[h]);
+
+ if(r){
+  if(r<20) result.push(ones[r]);
+  else{
+   result.push(tens[Math.floor(r/10)]);
+   if(r%10) result.push(ones[r%10]);
+  }
+ }
+
+ return result.join(" و ");
+}
+
+function numberToWords(n){
+ n=Math.floor(Number(n));
+
+ if(!Number.isFinite(n) || n===0) return "صفر";
+
+ let parts=[];
+ let scale=0;
+
+ while(n>0){
+  const group=n%1000;
+
+  if(group){
+   let text=threeWords(group);
+   if(scale) text+=" "+scales[scale];
+   parts.unshift(text);
+  }
+
+  n=Math.floor(n/1000);
+  scale++;
+ }
+
+ return parts.join(" و ")+" تومان";
+}
+
+function escapeHTML(text){
+ return String(text??"")
+ .replace(/&/g,"&amp;")
+ .replace(/</g,"&lt;")
+ .replace(/>/g,"&gt;")
+ .replace(/"/g,"&quot;")
+ .replace(/'/g,"&#039;");
+}
+
+function applyLock(){
+ document.body.classList.toggle("locked",!!state.locked);
+
+ const btn=document.getElementById("lockButton");
+ btn.textContent=state.locked?"🔒":"🔓";
+ btn.style.background=state.locked?"#dc2626":"#16a34a";
+}
+
+document.getElementById("lockButton").addEventListener("click",async()=>{
+ state.locked=!state.locked;
+ applyLock();
+ await saveState();
+});
+
+function renderRates(){
+ document.getElementById("oldRate").value=state.oldRate||"";
+ document.getElementById("currentRate").textContent=
+   state.currentRate?money(state.currentRate):"—";
+}
+
+function renderProducts(){
+ const box=document.getElementById("products");
+ const search=document.getElementById("searchInput").value.trim().toLowerCase();
+
+ let list=state.products.filter(p=>{
+  if(!search)return true;
+  return String(p.name||"").toLowerCase().includes(search) ||
+         String(p.qr||"").toLowerCase().includes(search);
+ });
+
+ document.getElementById("count").textContent=state.products.length;
+
+ if(!list.length){
+  box.innerHTML='<p class="small">کالایی پیدا نشد.</p>';
+  return;
+ }
+
+ box.innerHTML=list.map(p=>{
+  const oldPrice=Number(p.price)||0;
+
+  let newPrice=oldPrice;
+  let percent=0;
+
+  if(state.oldRate>0 && state.currentRate>0){
+   newPrice=oldPrice*(state.currentRate/state.oldRate);
+   percent=((state.currentRate/state.oldRate)-1)*100;
+  }
+
+  const diff=newPrice-oldPrice;
+
+  let changeClass=diff>0?"up":diff<0?"down":"";
+  let image=p.image?
+   `<img src="${p.image}" alt="تصویر کالا">`:"";
+
+  return `
+  <div class="product" id="product-${p.id}">
+   ${image}
+
+   <label>نام کالا</label>
+   <input class="editable productName"
+          data-id="${p.id}"
+          value="${escapeHTML(p.name)}">
+
+   <label>قیمت فعلی (تومان)</label>
+   <input class="editable productPrice"
+          data-id="${p.id}"
+          type="number"
+          value="${oldPrice}">
+
+   <div class="words" id="words-${p.id}">
+    ${numberToWords(oldPrice)}
+   </div>
+
+   <label>QR کالا</label>
+   <div class="actions">
+    <input class="editable productQR"
+           data-id="${p.id}"
+           value="${escapeHTML(p.qr||"")}"
+           placeholder="کد QR">
+    <button class="gray editable scanProduct"
+            data-id="${p.id}">📷 اسکن</button>
+   </div>
+
+   <label>تصویر کالا</label>
+   <input class="editable productImage"
+          data-id="${p.id}"
+          type="file"
+          accept="image/*">
+
+   <hr>
+
+   <div>قیمت جدید:</div>
+   <div class="price newprice">${money(Math.round(newPrice))} تومان</div>
+
+   <div class="${changeClass}">
+    تغییر: ${money(Math.round(Math.abs(diff)))} تومان
+    (${percent.toFixed(2)}٪)
+   </div>
+
+   <div class="actions">
+    <button class="danger deleteBtn"
+            data-id="${p.id}">حذف کالا</button>
+   </div>
+  </div>
+  `;
+ }).join("");
+
+ document.querySelectorAll(".productName").forEach(el=>{
+  el.addEventListener("change",async()=>{
+   if(state.locked)return;
+   const p=state.products.find(x=>x.id==el.dataset.id);
+   if(p){
+    p.name=el.value;
+    await saveState();
+   }
+  });
+ });
+
+ document.querySelectorAll(".productPrice").forEach(el=>{
+  el.addEventListener("input",async()=>{
+   if(state.locked)return;
+
+   const p=state.products.find(x=>x.id==el.dataset.id);
+   if(p){
+    p.price=Math.max(0,Number(el.value)||0);
+    document.getElementById("words-"+p.id).textContent=
+      numberToWords(p.price);
+    await saveState();
+    renderProducts();
+   }
+  });
+ });
+
+ document.querySelectorAll(".productQR").forEach(el=>{
+  el.addEventListener("change",async()=>{
+   if(state.locked)return;
+
+   const p=state.products.find(x=>x.id==el.dataset.id);
+   if(p){
+    p.qr=el.value.trim();
+    await saveState();
+   }
+  });
+ });
+
+ document.querySelectorAll(".productImage").forEach(el=>{
+  el.addEventListener("change",async()=>{
+   if(state.locked)return;
+
+   const file=el.files[0];
+   if(!file)return;
+
+   const reader=new FileReader();
+
+   reader.onload=async()=>{
+    const p=state.products.find(x=>x.id==el.dataset.id);
+    if(p){
+     p.image=reader.result;
+     await saveState();
+     renderProducts();
+    }
+   };
+
+   reader.readAsDataURL(file);
+  });
+ });
+
+ document.querySelectorAll(".deleteBtn").forEach(btn=>{
+  btn.addEventListener("click",async()=>{
+   if(state.locked)return;
+
+   if(!confirm("این کالا حذف شود؟"))return;
+
+   state.products=state.products.filter(
+    p=>p.id!=btn.dataset.id
+   );
+
+   await saveState();
+   renderProducts();
+  });
+ });
+
+ document.querySelectorAll(".scanProduct").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+   if(state.locked)return;
+   openScanner("product",btn.dataset.id);
+  });
+ });
+}
+
+function renderHistory(){
+ const box=document.getElementById("history");
+
+ box.innerHTML=state.history.map(h=>`
+ <tr>
+  <td>${escapeHTML(h.date)}</td>
+  <td>${money(h.oldRate)}</td>
+  <td>${money(h.newRate)}</td>
+  <td>${Number(h.percent).toFixed(2)}٪</td>
+ </tr>
+ `).join("");
+}
+
+document.getElementById("searchInput")
+.addEventListener("input",renderProducts);
+
+document.getElementById("addProduct")
+.addEventListener("click",async()=>{
+ if(state.locked)return;
+
+ state.products.unshift({
+  id:Date.now().toString(),
+  name:"کالای جدید",
+  price:0,
+  image:"",
+  qr:""
+ });
+
+ await saveState();
+ renderProducts();
+});
+
+document.getElementById("saveRate")
+.addEventListener("click",async()=>{
+ if(state.locked)return;
+
+ const newRate=Number(document.getElementById("newRate").value);
+ const date=document.getElementById("rateDate").value ||
+   new Date().toISOString().slice(0,16);
+
+ if(!newRate || newRate<=0){
+  alert("نرخ جدید را وارد کنید.");
+  return;
+ }
+
+ if(state.currentRate>0){
+  const percent=((newRate/state.currentRate)-1)*100;
+
+  state.history.unshift({
+   date:date,
+   oldRate:state.currentRate,
+   newRate:newRate,
+   percent:percent
+  });
+
+  state.oldRate=state.currentRate;
+ }else{
+  state.oldRate=newRate;
+ }
+
+ state.currentRate=newRate;
+
+ document.getElementById("newRate").value="";
+ document.getElementById("rateMessage").textContent=
+   "نرخ با موفقیت ذخیره شد.";
+
+ await saveState();
+ renderRates();
+ renderHistory();
+ renderProducts();
+});
+
+document.getElementById("rateDate").value=
+ new Date().toISOString().slice(0,16);
+
+document.getElementById("exportBtn")
+.addEventListener("click",()=>{
+ const data={
+  version:2,
+  exportedAt:new Date().toISOString(),
+  state:state
+ };
+
+ const blob=new Blob(
+  [JSON.stringify(data,null,2)],
+  {type:"application/json"}
+ );
+
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download="price-calculator-backup.json";
+ a.click();
+
+ URL.revokeObjectURL(url);
+});
+
+document.getElementById("importBtn")
+.addEventListener("click",()=>{
+ if(state.locked)return;
+ document.getElementById("importFile").click();
+});
+
+document.getElementById("importFile")
+.addEventListener("change",async e=>{
+ if(state.locked)return;
+
+ const file=e.target.files[0];
+ if(!file)return;
+
+ try{
+  const text=await file.text();
+  const data=JSON.parse(text);
+
+  if(!data.state || !Array.isArray(data.state.products)){
+   throw new Error("invalid");
+  }
+
+  state=data.state;
+
+  await saveState();
+  applyLock();
+  renderAll();
+
+  alert("پشتیبان با موفقیت بازیابی شد.");
+ }catch(err){
+  alert("فایل پشتیبان معتبر نیست.");
+ }
+
+ e.target.value="";
+});
+
+document.getElementById("searchScan")
+.addEventListener("click",()=>{
+ openScanner("search");
+});
+
+document.getElementById("closeScanner")
+.addEventListener("click",closeScanner);
+
+async function openScanner(mode,productId=null){
+ scanMode=mode;
+ scanProductId=productId;
+
+ document.getElementById("scanner").style.display="flex";
+ document.getElementById("scannerMessage").textContent=
+   "در حال آماده‌سازی دوربین...";
+
+ if(typeof Html5Qrcode==="undefined"){
+  document.getElementById("scannerMessage").textContent=
+   "کتابخانه اسکنر هنوز بارگذاری نشده است. اینترنت را بررسی کنید.";
+  return;
+ }
+
+ scanner=new Html5Qrcode("reader");
+
+ try{
+  await scanner.start(
+   {facingMode:"environment"},
+   {
+    fps:10,
+    qrbox:{width:250,height:250}
+   },
+   async decodedText=>{
+    await handleQR(decodedText);
+   },
+   ()=>{}
+  );
+
+  document.getElementById("scannerMessage").textContent=
+   "QR را مقابل دوربین قرار دهید.";
+ }catch(err){
+  document.getElementById("scannerMessage").textContent=
+   "دوربین باز نشد. اجازه دوربین را بدهید و مطمئن شوید سایت با HTTPS باز شده است.";
+ }
+}
+
+async function handleQR(code){
+ if(scanner){
+  try{await scanner.stop()}catch(e){}
+  scanner.clear();
+  scanner=null;
+ }
+
+ document.getElementById("scanner").style.display="none";
+
+ if(scanMode==="product"){
+  const p=state.products.find(x=>x.id==scanProductId);
+
+  if(p){
+   p.qr=code;
+   await saveState();
+   renderProducts();
+   alert("QR برای کالا ثبت شد.");
+  }
+ }
+
+ if(scanMode==="search"){
+  document.getElementById("searchInput").value=code;
+  renderProducts();
+
+  const p=state.products.find(x=>x.qr===code);
+
+  if(p){
+   setTimeout(()=>{
+    const el=document.getElementById("product-"+p.id);
+    if(el){
+     el.scrollIntoView({behavior:"smooth",block:"center"});
+     el.style.outline="4px solid #2563eb";
+     setTimeout(()=>el.style.outline="",2000);
+    }
+   },100);
+  }else{
+   alert("کالایی با این QR ثبت نشده است.");
+  }
+ }
+}
+
+async function closeScanner(){
+ if(scanner){
+  try{await scanner.stop()}catch(e){}
+  try{scanner.clear()}catch(e){}
+  scanner=null;
+ }
+
+ document.getElementById("scanner").style.display="none";
+}
+
+function renderAll(){
+ renderRates();
+ renderProducts();
+ renderHistory();
+ applyLock();
+}
+
+(async()=>{
+ await loadState();
+ renderAll();
+
+ if("serviceWorker" in navigator){
+  try{
+   await navigator.serviceWorker.register("./sw.js");
+  }catch(e){}
+ }
+})();
+</script>
+
+</body>
+  </html>
