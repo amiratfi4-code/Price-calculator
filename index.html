@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ef394e">
+<meta name="description" content="ماشین‌حساب دقیق قیمت‌گذاری کالا بر اساس نرخ دلار">
 <link rel="manifest" href="./manifest.webmanifest">
 <title>ماشین‌حساب دقیق قیمت‌گذاری</title>
 
@@ -44,6 +45,7 @@ header{
   margin:auto;
   display:flex;
   align-items:center;
+  justify-content:space-between;
   gap:14px;
 }
 
@@ -51,7 +53,6 @@ header{
   color:var(--red);
   font-size:20px;
   font-weight:900;
-  white-space:nowrap;
 }
 
 header a{
@@ -165,6 +166,17 @@ button:active{
   border:1px solid var(--line);
   border-radius:12px;
   padding:12px;
+}
+
+.rate-words{
+  margin-top:8px;
+  padding:9px 10px;
+  background:#fafafa;
+  border-radius:9px;
+  color:#555;
+  font-size:12px;
+  line-height:1.9;
+  min-height:20px;
 }
 
 .search-input{
@@ -313,6 +325,63 @@ body.locked .lock-message{
   display:block;
 }
 
+.rate-summary{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+
+.rate-summary-item{
+  flex:1 1 180px;
+  background:#fafafa;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:11px;
+}
+
+.rate-summary-title{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.rate-summary-value{
+  margin-top:4px;
+  font-size:17px;
+  font-weight:900;
+}
+
+.rate-section-button{
+  width:100%;
+  text-align:right;
+  background:#fff;
+  border:1px solid var(--line);
+  padding:14px;
+  margin-bottom:14px;
+  border-radius:15px;
+}
+
+.rate-section-button strong{
+  display:block;
+  color:var(--text);
+  font-size:15px;
+}
+
+.rate-section-button span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+#ratePanel{
+  display:none;
+}
+
+#ratePanel.open{
+  display:block;
+}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -372,6 +441,10 @@ th,td{
     margin-bottom:7px;
   }
 
+  header a{
+    display:inline-block;
+  }
+
   .products{
     grid-template-columns:1fr;
   }
@@ -389,7 +462,10 @@ th,td{
 
 <header>
   <div class="header-inner">
-    <div class="brand">ماشین‌حساب دقیق قیمت‌گذاری</div>
+
+    <div class="brand">
+      ماشین‌حساب دقیق قیمت‌گذاری
+    </div>
 
     <a
       href="https://nerkhara.com/?utm_source=chatgpt.com"
@@ -398,25 +474,72 @@ th,td{
     >
       مشاهده نرخ دلار در نرخ‌آرا
     </a>
+
   </div>
 </header>
 
 <main>
 
-<!-- نرخ دلار -->
-<section class="card">
+<!-- =========================
+     بخش مستقل نرخ دلار
+========================= -->
 
-  <h2>نرخ دلار</h2>
+<button
+  id="rateToggle"
+  class="rate-section-button"
+  type="button"
+>
+
+  <strong>
+    💵 نرخ دلار و تاریخچه
+  </strong>
+
+  <span id="rateToggleText">
+    برای ثبت یا تغییر نرخ دلار کلیک کنید
+  </span>
+
+</button>
+
+
+<section
+  id="ratePanel"
+  class="card"
+>
+
+  <h2>
+    مدیریت نرخ دلار
+  </h2>
 
   <div class="grid">
 
     <div class="rate-box">
-      <label>نرخ قبلی</label>
-      <input id="oldRate" type="number" readonly>
+
+      <label>
+        نرخ قبلی
+      </label>
+
+      <input
+        id="oldRate"
+        type="number"
+        readonly
+      >
+
+      <div
+        id="oldRateWords"
+        class="rate-words"
+      >
+        نرخ قبلی ثبت نشده است.
+      </div>
+
     </div>
 
+
     <div class="rate-box">
-      <label>نرخ جدید</label>
+
+      <label>
+        نرخ جدید
+      </label>
+
       <input
         id="newRate"
         class="editable"
@@ -424,146 +547,101 @@ th,td{
         inputmode="numeric"
         placeholder="مثلاً 100000"
       >
+
+      <div
+        id="newRateWords"
+        class="rate-words"
+      >
+        نرخ جدید را وارد کنید.
+      </div>
+
     </div>
 
+
     <div class="rate-box">
-      <label>تاریخ و ساعت</label>
+
+      <label>
+        تاریخ و ساعت
+      </label>
+
       <input
         id="rateDate"
         class="editable"
         type="datetime-local"
       >
+
     </div>
 
   </div>
 
+
+  <div class="rate-summary">
+
+    <div class="rate-summary-item">
+
+      <div class="rate-summary-title">
+        نرخ فعلی دلار
+      </div>
+
+      <div
+        id="rateCurrentDisplay"
+        class="rate-summary-value"
+      >
+        —
+      </div>
+
+    </div>
+
+
+    <div class="rate-summary-item">
+
+      <div class="rate-summary-title">
+        تغییر آخرین نرخ
+      </div>
+
+      <div
+        id="rateChangeDisplay"
+        class="rate-summary-value"
+      >
+        —
+      </div>
+
+    </div>
+
+  </div>
+
+
   <div class="actions">
+
     <button
       class="primary rateBtn"
       id="saveRate"
+      type="button"
     >
       ثبت نرخ جدید و محاسبه
     </button>
+
   </div>
 
-  <p id="rateMessage" class="small"></p>
+
+  <p
+    id="rateMessage"
+    class="small"
+  ></p>
+
 
   <div class="lock-message">
-    برنامه قفل است؛ ویرایش اطلاعات غیرفعال است.
+    برنامه قفل است؛ ویرایش نرخ دلار غیرفعال است.
   </div>
 
-</section>
+
+  <hr>
 
 
-<!-- جستجو -->
-<section class="card">
+  <h2>
+    تاریخچه نرخ دلار
+  </h2>
 
-  <h2>جست‌وجوی کالا</h2>
-
-  <input
-    id="searchInput"
-    class="search-input"
-    placeholder="جست‌وجو با نام کالا یا QR"
-    autocomplete="off"
-  >
-
-  <div class="actions">
-
-    <button
-      class="primary"
-      id="searchScan"
-    >
-      📷 اسکن QR
-    </button>
-
-    <button
-      class="success addBtn"
-      id="addProduct"
-    >
-      ＋ افزودن کالا
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- پشتیبان -->
-<section class="card">
-
-  <h2>پشتیبان‌گیری</h2>
-
-  <div class="actions">
-
-    <button
-      class="blue"
-      id="exportBtn"
-    >
-      دانلود نسخه پشتیبان
-    </button>
-
-    <button
-      class="gray importBtn"
-      id="importBtn"
-    >
-      انتخاب فایل پشتیبان
-    </button>
-
-    <input
-      id="importFile"
-      type="file"
-      accept=".json"
-      class="hidden"
-    >
-
-  </div>
-
-  <p class="small">
-    کالاها، قیمت‌ها، تصاویر، QRها، نرخ دلار، تاریخچه و وضعیت قفل ذخیره می‌شوند.
-  </p>
-
-</section>
-
-
-<!-- آمار -->
-<section class="card">
-
-  <h2>آمار</h2>
-
-  <div class="grid">
-
-    <div class="stat">
-      تعداد کالا:
-      <b id="count">0</b>
-    </div>
-
-    <div class="stat">
-      نرخ فعلی دلار:
-      <b id="currentRate">—</b>
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- محصولات -->
-<section class="card">
-
-  <h2>لیست کالاها</h2>
-
-  <div
-    id="products"
-    class="products"
-  ></div>
-
-</section>
-
-
-<!-- تاریخچه -->
-<section class="card">
-
-  <h2>تاریخچه نرخ دلار</h2>
 
   <div style="overflow:auto">
 
@@ -588,10 +666,142 @@ th,td{
 
 </section>
 
+
+<!-- =========================
+     جست‌وجوی کالا
+========================= -->
+
+<section class="card">
+
+  <h2>
+    جست‌وجوی کالا
+  </h2>
+
+  <input
+    id="searchInput"
+    class="search-input"
+    placeholder="جست‌وجو با نام کالا یا QR"
+    autocomplete="off"
+  >
+
+  <div class="actions">
+
+    <button
+      class="primary"
+      id="searchScan"
+      type="button"
+    >
+      📷 اسکن QR
+    </button>
+
+    <button
+      class="success addBtn"
+      id="addProduct"
+      type="button"
+    >
+      ＋ افزودن کالا
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     پشتیبان
+========================= -->
+
+<section class="card">
+
+  <h2>
+    پشتیبان‌گیری
+  </h2>
+
+  <div class="actions">
+
+    <button
+      class="blue"
+      id="exportBtn"
+      type="button"
+    >
+      دانلود نسخه پشتیبان
+    </button>
+
+    <button
+      class="gray importBtn"
+      id="importBtn"
+      type="button"
+    >
+      انتخاب فایل پشتیبان
+    </button>
+
+    <input
+      id="importFile"
+      type="file"
+      accept=".json"
+      class="hidden"
+    >
+
+  </div>
+
+  <p class="small">
+    کالاها، قیمت‌ها، تصاویر، QRها، نرخ دلار، تاریخچه و وضعیت قفل ذخیره می‌شوند.
+  </p>
+
+</section>
+
+
+<!-- =========================
+     آمار
+========================= -->
+
+<section class="card">
+
+  <h2>
+    آمار
+  </h2>
+
+  <div class="grid">
+
+    <div class="stat">
+      تعداد کالا:
+      <b id="count">0</b>
+    </div>
+
+    <div class="stat">
+      نرخ فعلی دلار:
+      <b id="currentRate">—</b>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     محصولات
+========================= -->
+
+<section class="card">
+
+  <h2>
+    لیست کالاها
+  </h2>
+
+  <div
+    id="products"
+    class="products"
+  ></div>
+
+</section>
+
 </main>
 
 
-<!-- اسکنر -->
+<!-- =========================
+     اسکنر
+========================= -->
+
 <div
   class="scanner"
   id="scanner"
@@ -599,13 +809,16 @@ th,td{
 
   <div class="scanner-box">
 
-    <h2>اسکن QR</h2>
+    <h2>
+      اسکن QR
+    </h2>
 
     <div id="reader"></div>
 
     <button
       class="danger"
       id="closeScanner"
+      type="button"
     >
       بستن
     </button>
@@ -628,16 +841,26 @@ const DB_NAME = "PriceCalculatorDB";
 const STORE = "appData";
 const KEY = "state";
 
+
 let state = {
+
   products: [],
+
   oldRate: 0,
+
   currentRate: 0,
+
   history: [],
+
   locked: false
+
 };
 
+
 let scanner = null;
+
 let scanMode = null;
+
 let scanProductId = null;
 
 
@@ -649,24 +872,42 @@ function openDB(){
 
   return new Promise((resolve,reject)=>{
 
-    const request = indexedDB.open(DB_NAME,1);
+    const request =
+      indexedDB.open(DB_NAME,1);
+
 
     request.onupgradeneeded = ()=>{
 
-      const db = request.result;
+      const db =
+        request.result;
 
-      if(!db.objectStoreNames.contains(STORE)){
+
+      if(
+        !db.objectStoreNames.contains(STORE)
+      ){
+
         db.createObjectStore(STORE);
+
       }
 
     };
 
+
     request.onsuccess = ()=>{
-      resolve(request.result);
+
+      resolve(
+        request.result
+      );
+
     };
 
+
     request.onerror = ()=>{
-      reject(request.error);
+
+      reject(
+        request.error
+      );
+
     };
 
   });
@@ -676,33 +917,63 @@ function openDB(){
 
 async function loadState(){
 
-  const db = await openDB();
+  const db =
+    await openDB();
+
 
   return new Promise(resolve=>{
 
     const request =
       db
-      .transaction(STORE,"readonly")
+      .transaction(
+        STORE,
+        "readonly"
+      )
       .objectStore(STORE)
       .get(KEY);
+
 
     request.onsuccess = ()=>{
 
       if(request.result){
-        state = request.result;
+
+        state =
+          request.result;
+
       }
 
-      if(!Array.isArray(state.products)){
+
+      if(
+        !Array.isArray(
+          state.products
+        )
+      ){
+
         state.products = [];
+
       }
 
-      if(!Array.isArray(state.history)){
+
+      if(
+        !Array.isArray(
+          state.history
+        )
+      ){
+
         state.history = [];
+
       }
 
-      if(typeof state.locked !== "boolean"){
+
+      if(
+        typeof state.locked !==
+        "boolean"
+      ){
+
         state.locked = false;
+
       }
+
 
       applyLock();
 
@@ -717,19 +988,27 @@ async function loadState(){
 
 async function saveState(){
 
-  const db = await openDB();
+  const db =
+    await openDB();
+
 
   return new Promise(resolve=>{
 
     const tx =
-      db.transaction(STORE,"readwrite");
+      db.transaction(
+        STORE,
+        "readwrite"
+      );
+
 
     tx.objectStore(STORE).put(
       state,
       KEY
     );
 
-    tx.oncomplete = resolve;
+
+    tx.oncomplete =
+      resolve;
 
   });
 
@@ -737,7 +1016,7 @@ async function saveState(){
 
 
 /* =========================
-   اعداد
+   فرمت پول
 ========================= */
 
 function money(number){
@@ -753,60 +1032,112 @@ function money(number){
 ========================= */
 
 const ones = [
+
   "",
+
   "یک",
+
   "دو",
+
   "سه",
+
   "چهار",
+
   "پنج",
+
   "شش",
+
   "هفت",
+
   "هشت",
+
   "نه",
+
   "ده",
+
   "یازده",
+
   "دوازده",
+
   "سیزده",
+
   "چهارده",
+
   "پانزده",
+
   "شانزده",
+
   "هفده",
+
   "هجده",
+
   "نوزده"
+
 ];
+
 
 const tens = [
+
   "",
+
   "",
+
   "بیست",
+
   "سی",
+
   "چهل",
+
   "پنجاه",
+
   "شصت",
+
   "هفتاد",
+
   "هشتاد",
+
   "نود"
+
 ];
+
 
 const hundreds = [
+
   "",
+
   "صد",
+
   "دویست",
+
   "سیصد",
+
   "چهارصد",
+
   "پانصد",
+
   "ششصد",
+
   "هفتصد",
+
   "هشتصد",
+
   "نهصد"
+
 ];
 
+
 const scales = [
+
   "",
+
   "هزار",
+
   "میلیون",
+
   "میلیارد",
+
   "تریلیون"
+
 ];
 
 
@@ -814,37 +1145,59 @@ function threeWords(number){
 
   const result = [];
 
+
   const h =
-    Math.floor(number / 100);
+    Math.floor(
+      number / 100
+    );
+
 
   const r =
     number % 100;
 
+
   if(h){
-    result.push(hundreds[h]);
+
+    result.push(
+      hundreds[h]
+    );
+
   }
+
 
   if(r){
 
     if(r < 20){
 
-      result.push(ones[r]);
+      result.push(
+        ones[r]
+      );
 
     }else{
 
       result.push(
-        tens[Math.floor(r / 10)]
+        tens[
+          Math.floor(
+            r / 10
+          )
+        ]
       );
 
+
       if(r % 10){
+
         result.push(
-          ones[r % 10]
+          ones[
+            r % 10
+          ]
         );
+
       }
 
     }
 
   }
+
 
   return result.join(" و ");
 
@@ -853,46 +1206,65 @@ function threeWords(number){
 
 function numberToWords(number){
 
-  number = Math.floor(
-    Number(number)
-  );
+  number =
+    Math.floor(
+      Number(number)
+    );
+
 
   if(
     !Number.isFinite(number) ||
     number === 0
   ){
+
     return "صفر تومان";
+
   }
+
 
   const parts = [];
 
   let scale = 0;
+
 
   while(number > 0){
 
     const group =
       number % 1000;
 
+
     if(group){
 
       let text =
         threeWords(group);
 
+
       if(scale){
+
         text +=
-          " " + scales[scale];
+          " " +
+          scales[scale];
+
       }
 
-      parts.unshift(text);
+
+      parts.unshift(
+        text
+      );
 
     }
 
+
     number =
-      Math.floor(number / 1000);
+      Math.floor(
+        number / 1000
+      );
+
 
     scale++;
 
   }
+
 
   return (
     parts.join(" و ") +
@@ -929,15 +1301,18 @@ function applyLock(){
     !!state.locked
   );
 
+
   const button =
     document.getElementById(
       "lockButton"
     );
 
+
   button.textContent =
     state.locked
       ? "🔒"
       : "🔓";
+
 
   button.style.background =
     state.locked
@@ -956,7 +1331,9 @@ document
       state.locked =
         !state.locked;
 
+
       applyLock();
+
 
       await saveState();
 
@@ -973,10 +1350,13 @@ function calculateProduct(product){
   const oldPrice =
     Number(product.price) || 0;
 
+
   let newPrice =
     oldPrice;
 
+
   let percent = 0;
+
 
   if(
     state.oldRate > 0 &&
@@ -990,6 +1370,7 @@ function calculateProduct(product){
         state.oldRate
       );
 
+
     percent =
       (
         state.currentRate /
@@ -999,12 +1380,16 @@ function calculateProduct(product){
 
   }
 
+
   return {
 
     oldPrice,
+
     newPrice,
+
     diff:
       newPrice - oldPrice,
+
     percent
 
   };
@@ -1013,24 +1398,185 @@ function calculateProduct(product){
 
 
 /* =========================
-   نرخ دلار
+   نمایش نرخ دلار
 ========================= */
 
 function renderRates(){
 
-  document
-    .getElementById("oldRate")
-    .value =
-      state.oldRate || "";
+  const oldRate =
+    document.getElementById(
+      "oldRate"
+    );
 
-  document
-    .getElementById("currentRate")
-    .textContent =
-      state.currentRate
-        ? money(state.currentRate)
-        : "—";
+
+  const newRate =
+    document.getElementById(
+      "newRate"
+    );
+
+
+  const oldRateWords =
+    document.getElementById(
+      "oldRateWords"
+    );
+
+
+  const newRateWords =
+    document.getElementById(
+      "newRateWords"
+    );
+
+
+  const currentDisplay =
+    document.getElementById(
+      "rateCurrentDisplay"
+    );
+
+
+  const changeDisplay =
+    document.getElementById(
+      "rateChangeDisplay"
+    );
+
+
+  const currentRate =
+    Number(
+      state.currentRate || 0
+    );
+
+
+  const previousRate =
+    Number(
+      state.oldRate || 0
+    );
+
+
+  oldRate.value =
+    previousRate || "";
+
+
+  if(previousRate){
+
+    oldRateWords.textContent =
+      numberToWords(
+        previousRate
+      );
+
+  }else{
+
+    oldRateWords.textContent =
+      "نرخ قبلی ثبت نشده است.";
+
+  }
+
+
+  currentDisplay.textContent =
+    currentRate
+      ? money(currentRate) +
+        " تومان"
+      : "—";
+
+
+  if(currentRate){
+
+    newRateWords.textContent =
+      "نرخ فعلی: " +
+      numberToWords(
+        currentRate
+      );
+
+  }else{
+
+    newRateWords.textContent =
+      "نرخ جدید را وارد کنید.";
+
+  }
+
+
+  if(
+    previousRate > 0 &&
+    currentRate > 0
+  ){
+
+    const percent =
+      (
+        currentRate /
+        previousRate -
+        1
+      ) * 100;
+
+
+    changeDisplay.textContent =
+      (
+        percent > 0
+          ? "+"
+          : ""
+      ) +
+      percent.toFixed(2) +
+      "٪";
+
+
+    changeDisplay.style.color =
+      percent > 0
+        ? "var(--green)"
+        : percent < 0
+          ? "var(--danger)"
+          : "var(--text)";
+
+  }else{
+
+    changeDisplay.textContent =
+      "—";
+
+  }
+
+
+  const toggleText =
+    document.getElementById(
+      "rateToggleText"
+    );
+
+
+  if(currentRate){
+
+    toggleText.textContent =
+      "نرخ فعلی: " +
+      money(currentRate) +
+      " تومان — " +
+      "برای مدیریت نرخ کلیک کنید.";
+
+  }else{
+
+    toggleText.textContent =
+      "برای ثبت نرخ دلار کلیک کنید.";
+
+  }
 
 }
+
+
+/* =========================
+   پنل نرخ دلار
+========================= */
+
+document
+  .getElementById("rateToggle")
+  .addEventListener(
+    "click",
+    ()=>{
+
+      const panel =
+        document.getElementById(
+          "ratePanel"
+        );
+
+
+      panel.classList.toggle(
+        "open"
+      );
+
+    }
+  );
 
 
 /* =========================
@@ -1044,32 +1590,48 @@ function renderProducts(){
       "products"
     );
 
+
   const search =
     document
-      .getElementById("searchInput")
+      .getElementById(
+        "searchInput"
+      )
       .value
       .trim()
       .toLowerCase();
 
 
   const list =
-    state.products.filter(product=>{
+    state.products.filter(
+      product=>{
 
-      if(!search){
-        return true;
+        if(!search){
+
+          return true;
+
+        }
+
+
+        return (
+
+          String(
+            product.name || ""
+          )
+          .toLowerCase()
+          .includes(search)
+
+          ||
+
+          String(
+            product.qr || ""
+          )
+          .toLowerCase()
+          .includes(search)
+
+        );
+
       }
-
-      return (
-        String(product.name || "")
-          .toLowerCase()
-          .includes(search)
-        ||
-        String(product.qr || "")
-          .toLowerCase()
-          .includes(search)
-      );
-
-    });
+    );
 
 
   document
@@ -1089,161 +1651,185 @@ function renderProducts(){
 
 
   box.innerHTML =
-    list.map(product=>{
+    list.map(
+      product=>{
 
-      const result =
-        calculateProduct(product);
+        const result =
+          calculateProduct(
+            product
+          );
 
-      const changeClass =
-        result.diff > 0
-          ? "up"
-          : result.diff < 0
-            ? "down"
+
+        const changeClass =
+          result.diff > 0
+            ? "up"
+            : result.diff < 0
+              ? "down"
+              : "";
+
+
+        const image =
+          product.image
+            ? `
+              <img
+                class="product-image"
+                src="${product.image}"
+                alt="تصویر کالا"
+              >
+            `
             : "";
 
 
-      const image =
-        product.image
-          ? `
-            <img
-              class="product-image"
-              src="${product.image}"
-              alt="تصویر کالا"
-            >
-          `
-          : "";
+        return `
 
-
-      return `
-
-      <article
-        class="product"
-        id="product-${product.id}"
-      >
-
-        ${image}
-
-
-        <label>
-          نام کالا
-        </label>
-
-        <input
-          class="editable productName"
-          data-id="${product.id}"
-          value="${escapeHTML(product.name)}"
+        <article
+          class="product"
+          id="product-${product.id}"
         >
 
-
-        <label>
-          قیمت فعلی (تومان)
-        </label>
-
-        <input
-          class="editable productPrice"
-          data-id="${product.id}"
-          type="number"
-          inputmode="numeric"
-          value="${result.oldPrice}"
-        >
+          ${image}
 
 
-        <div
-          class="words"
-          id="words-${product.id}"
-        >
-          ${numberToWords(result.oldPrice)}
-        </div>
-
-
-        <label>
-          QR کالا
-        </label>
-
-        <div class="qr-row">
+          <label>
+            نام کالا
+          </label>
 
           <input
-            class="editable productQR"
+            class="editable productName"
             data-id="${product.id}"
-            value="${escapeHTML(product.qr || "")}"
-            placeholder="کد QR"
+            value="${escapeHTML(product.name)}"
           >
 
-          <button
-            class="gray editable scanProduct"
+
+          <label>
+            قیمت فعلی (تومان)
+          </label>
+
+          <input
+            class="editable productPrice"
             data-id="${product.id}"
+            type="number"
+            inputmode="numeric"
+            value="${result.oldPrice}"
           >
-            📷 اسکن
-          </button>
-
-        </div>
-
-
-        <label>
-          تصویر کالا
-        </label>
-
-        <input
-          class="editable productImage"
-          data-id="${product.id}"
-          type="file"
-          accept="image/*"
-        >
-
-
-        <div class="price-box">
-
-          <div class="price-label">
-            قیمت فعلی
-          </div>
-
-          <div class="price">
-            ${money(result.oldPrice)} تومان
-          </div>
-
-
-          <div class="price-label">
-            قیمت جدید محاسبه‌شده
-          </div>
-
-          <div
-            class="price new-price"
-            id="new-price-${product.id}"
-          >
-            ${money(Math.round(result.newPrice))}
-            تومان
-          </div>
 
 
           <div
-            id="change-${product.id}"
-            class="change ${changeClass}"
+            class="words"
+            id="words-${product.id}"
           >
-            تغییر:
-            ${money(Math.round(Math.abs(result.diff)))}
-            تومان
-            (${result.percent.toFixed(2)}٪)
+            ${numberToWords(result.oldPrice)}
           </div>
 
-        </div>
+
+          <label>
+            QR کالا
+          </label>
 
 
-        <div class="actions">
+          <div class="qr-row">
 
-          <button
-            class="danger deleteBtn"
+            <input
+              class="editable productQR"
+              data-id="${product.id}"
+              value="${escapeHTML(product.qr || "")}"
+              placeholder="کد QR"
+            >
+
+
+            <button
+              class="gray editable scanProduct"
+              data-id="${product.id}"
+              type="button"
+            >
+              📷 اسکن
+            </button>
+
+          </div>
+
+
+          <label>
+            تصویر کالا
+          </label>
+
+
+          <input
+            class="editable productImage"
             data-id="${product.id}"
+            type="file"
+            accept="image/*"
           >
-            حذف کالا
-          </button>
 
-        </div>
 
-      </article>
+          <div class="price-box">
 
-      `;
+            <div class="price-label">
+              قیمت فعلی
+            </div>
 
-    }).join("");
+
+            <div class="price">
+              ${money(result.oldPrice)}
+              تومان
+            </div>
+
+
+            <div class="price-label">
+              قیمت جدید محاسبه‌شده
+            </div>
+
+
+            <div
+              class="price new-price"
+              id="new-price-${product.id}"
+            >
+              ${money(
+                Math.round(
+                  result.newPrice
+                )
+              )}
+              تومان
+            </div>
+
+
+            <div
+              id="change-${product.id}"
+              class="change ${changeClass}"
+            >
+              تغییر:
+              ${money(
+                Math.round(
+                  Math.abs(
+                    result.diff
+                  )
+                )
+              )}
+              تومان
+              (${result.percent.toFixed(2)}٪)
+            </div>
+
+          </div>
+
+
+          <div class="actions">
+
+            <button
+              class="danger deleteBtn"
+              data-id="${product.id}"
+              type="button"
+            >
+              حذف کالا
+            </button>
+
+          </div>
+
+        </article>
+
+        `;
+
+      }
+    )
+    .join("");
 
 
   /* =========================
@@ -1251,171 +1837,186 @@ function renderProducts(){
   ========================= */
 
   document
-    .querySelectorAll(".productName")
-    .forEach(input=>{
+    .querySelectorAll(
+      ".productName"
+    )
+    .forEach(
+      input=>{
 
-      input.addEventListener(
-        "change",
-        async ()=>{
+        input.addEventListener(
+          "change",
+          async ()=>{
 
-          if(state.locked){
-            return;
+            if(state.locked){
+
+              return;
+
+            }
+
+
+            const product =
+              state.products.find(
+                item =>
+                  item.id ==
+                  input.dataset.id
+              );
+
+
+            if(!product){
+
+              return;
+
+            }
+
+
+            product.name =
+              input.value;
+
+
+            await saveState();
+
           }
+        );
 
-          const product =
-            state.products.find(
-              item =>
-                item.id ==
-                input.dataset.id
-            );
-
-          if(!product){
-            return;
-          }
-
-          product.name =
-            input.value;
-
-          await saveState();
-
-        }
-      );
-
-    });
+      }
+    );
 
 
   /* =========================
      قیمت فعلی
      
-     نکته مهم:
-     اینجا renderProducts()
-     صدا زده نمی‌شود.
-     
-     همین موضوع مشکل
-     بسته شدن کیبورد را حل می‌کند.
+     بدون renderProducts
+     برای جلوگیری از بسته شدن کیبورد
   ========================= */
 
   document
-    .querySelectorAll(".productPrice")
-    .forEach(input=>{
+    .querySelectorAll(
+      ".productPrice"
+    )
+    .forEach(
+      input=>{
 
-      input.addEventListener(
-        "input",
-        async ()=>{
+        input.addEventListener(
+          "input",
+          async ()=>{
 
-          if(state.locked){
-            return;
-          }
+            if(state.locked){
 
-          const product =
-            state.products.find(
-              item =>
-                item.id ==
-                input.dataset.id
-            );
+              return;
 
-          if(!product){
-            return;
-          }
+            }
 
 
-          product.price =
-            Math.max(
-              0,
-              Number(input.value) || 0
-            );
-
-
-          const result =
-            calculateProduct(product);
-
-
-          /* مبلغ به حروف */
-
-          const words =
-            document.getElementById(
-              "words-" +
-              product.id
-            );
-
-          if(words){
-
-            words.textContent =
-              numberToWords(
-                product.price
+            const product =
+              state.products.find(
+                item =>
+                  item.id ==
+                  input.dataset.id
               );
 
-          }
+
+            if(!product){
+
+              return;
+
+            }
 
 
-          /* قیمت جدید */
-
-          const newPrice =
-            document.getElementById(
-              "new-price-" +
-              product.id
-            );
-
-          if(newPrice){
-
-            newPrice.textContent =
-              money(
-                Math.round(
-                  result.newPrice
-                )
-              ) +
-              " تومان";
-
-          }
-
-
-          /* مقدار تغییر */
-
-          const change =
-            document.getElementById(
-              "change-" +
-              product.id
-            );
-
-          if(change){
-
-            change.className =
-              "change " +
-              (
-                result.diff > 0
-                  ? "up"
-                  : result.diff < 0
-                    ? "down"
-                    : ""
+            product.price =
+              Math.max(
+                0,
+                Number(
+                  input.value
+                ) || 0
               );
 
-            change.textContent =
-              "تغییر: " +
-              money(
-                Math.round(
-                  Math.abs(
-                    result.diff
+
+            const result =
+              calculateProduct(
+                product
+              );
+
+
+            const words =
+              document.getElementById(
+                "words-" +
+                product.id
+              );
+
+
+            if(words){
+
+              words.textContent =
+                numberToWords(
+                  product.price
+                );
+
+            }
+
+
+            const newPrice =
+              document.getElementById(
+                "new-price-" +
+                product.id
+              );
+
+
+            if(newPrice){
+
+              newPrice.textContent =
+                money(
+                  Math.round(
+                    result.newPrice
                   )
-                )
-              ) +
-              " تومان (" +
-              result.percent.toFixed(2) +
-              "٪)";
+                ) +
+                " تومان";
+
+            }
+
+
+            const change =
+              document.getElementById(
+                "change-" +
+                product.id
+              );
+
+
+            if(change){
+
+              change.className =
+                "change " +
+                (
+                  result.diff > 0
+                    ? "up"
+                    : result.diff < 0
+                      ? "down"
+                      : ""
+                );
+
+
+              change.textContent =
+                "تغییر: " +
+                money(
+                  Math.round(
+                    Math.abs(
+                      result.diff
+                    )
+                  )
+                ) +
+                " تومان (" +
+                result.percent.toFixed(2) +
+                "٪)";
+
+            }
+
+
+            await saveState();
 
           }
+        );
 
-
-          /*
-            ذخیره مستقیم بدون
-            بازسازی DOM
-          */
-
-          await saveState();
-
-        }
-      );
-
-    });
+      }
+    );
 
 
   /* =========================
@@ -1423,37 +2024,49 @@ function renderProducts(){
   ========================= */
 
   document
-    .querySelectorAll(".productQR")
-    .forEach(input=>{
+    .querySelectorAll(
+      ".productQR"
+    )
+    .forEach(
+      input=>{
 
-      input.addEventListener(
-        "change",
-        async ()=>{
+        input.addEventListener(
+          "change",
+          async ()=>{
 
-          if(state.locked){
-            return;
+            if(state.locked){
+
+              return;
+
+            }
+
+
+            const product =
+              state.products.find(
+                item =>
+                  item.id ==
+                  input.dataset.id
+              );
+
+
+            if(!product){
+
+              return;
+
+            }
+
+
+            product.qr =
+              input.value.trim();
+
+
+            await saveState();
+
           }
+        );
 
-          const product =
-            state.products.find(
-              item =>
-                item.id ==
-                input.dataset.id
-            );
-
-          if(!product){
-            return;
-          }
-
-          product.qr =
-            input.value.trim();
-
-          await saveState();
-
-        }
-      );
-
-    });
+      }
+    );
 
 
   /* =========================
@@ -1461,56 +2074,77 @@ function renderProducts(){
   ========================= */
 
   document
-    .querySelectorAll(".productImage")
-    .forEach(input=>{
+    .querySelectorAll(
+      ".productImage"
+    )
+    .forEach(
+      input=>{
 
-      input.addEventListener(
-        "change",
-        async ()=>{
+        input.addEventListener(
+          "change",
+          async ()=>{
 
-          if(state.locked){
-            return;
+            if(state.locked){
+
+              return;
+
+            }
+
+
+            const file =
+              input.files[0];
+
+
+            if(!file){
+
+              return;
+
+            }
+
+
+            const reader =
+              new FileReader();
+
+
+            reader.onload =
+              async ()=>{
+
+                const product =
+                  state.products.find(
+                    item =>
+                      item.id ==
+                      input.dataset.id
+                  );
+
+
+                if(!product){
+
+                  return;
+
+                }
+
+
+                product.image =
+                  reader.result;
+
+
+                await saveState();
+
+
+                renderProducts();
+
+              };
+
+
+            reader.readAsDataURL(
+              file
+            );
+
           }
+        );
 
-          const file =
-            input.files[0];
-
-          if(!file){
-            return;
-          }
-
-          const reader =
-            new FileReader();
-
-          reader.onload =
-            async ()=>{
-
-              const product =
-                state.products.find(
-                  item =>
-                    item.id ==
-                    input.dataset.id
-                );
-
-              if(!product){
-                return;
-              }
-
-              product.image =
-                reader.result;
-
-              await saveState();
-
-              renderProducts();
-
-            };
-
-          reader.readAsDataURL(file);
-
-        }
-      );
-
-    });
+      }
+    );
 
 
   /* =========================
@@ -1518,40 +2152,51 @@ function renderProducts(){
   ========================= */
 
   document
-    .querySelectorAll(".deleteBtn")
-    .forEach(button=>{
+    .querySelectorAll(
+      ".deleteBtn"
+    )
+    .forEach(
+      button=>{
 
-      button.addEventListener(
-        "click",
-        async ()=>{
+        button.addEventListener(
+          "click",
+          async ()=>{
 
-          if(state.locked){
-            return;
+            if(state.locked){
+
+              return;
+
+            }
+
+
+            if(
+              !confirm(
+                "این کالا حذف شود؟"
+              )
+            ){
+
+              return;
+
+            }
+
+
+            state.products =
+              state.products.filter(
+                product =>
+                  product.id !=
+                  button.dataset.id
+              );
+
+
+            await saveState();
+
+            renderProducts();
+
           }
+        );
 
-          if(
-            !confirm(
-              "این کالا حذف شود؟"
-            )
-          ){
-            return;
-          }
-
-          state.products =
-            state.products.filter(
-              product =>
-                product.id !=
-                button.dataset.id
-            );
-
-          await saveState();
-
-          renderProducts();
-
-        }
-      );
-
-    });
+      }
+    );
 
 
   /* =========================
@@ -1559,26 +2204,33 @@ function renderProducts(){
   ========================= */
 
   document
-    .querySelectorAll(".scanProduct")
-    .forEach(button=>{
+    .querySelectorAll(
+      ".scanProduct"
+    )
+    .forEach(
+      button=>{
 
-      button.addEventListener(
-        "click",
-        ()=>{
+        button.addEventListener(
+          "click",
+          ()=>{
 
-          if(state.locked){
-            return;
+            if(state.locked){
+
+              return;
+
+            }
+
+
+            openScanner(
+              "product",
+              button.dataset.id
+            );
+
           }
+        );
 
-          openScanner(
-            "product",
-            button.dataset.id
-          );
-
-        }
-      );
-
-    });
+      }
+    );
 
 }
 
@@ -1594,31 +2246,64 @@ function renderHistory(){
       "history"
     );
 
+
+  if(!state.history.length){
+
+    box.innerHTML =
+      `
+      <tr>
+        <td colspan="4">
+          هنوز سابقه‌ای ثبت نشده است.
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
   box.innerHTML =
     state.history
-      .map(item=>`
+      .map(
+        item=>`
 
-        <tr>
+          <tr>
 
-          <td>
-            ${escapeHTML(item.date)}
-          </td>
+            <td>
+              ${escapeHTML(
+                item.date
+              )}
+            </td>
 
-          <td>
-            ${money(item.oldRate)}
-          </td>
+            <td>
+              ${money(
+                item.oldRate
+              )}
+            </td>
 
-          <td>
-            ${money(item.newRate)}
-          </td>
+            <td>
+              ${money(
+                item.newRate
+              )}
+            </td>
 
-          <td>
-            ${Number(item.percent).toFixed(2)}٪
-          </td>
+            <td>
+              ${
+                Number(
+                  item.percent
+                ) > 0
+                  ? "+"
+                  : ""
+              }${Number(
+                item.percent
+              ).toFixed(2)}٪
+            </td>
 
-        </tr>
+          </tr>
 
-      `)
+        `
+      )
       .join("");
 
 }
@@ -1629,7 +2314,9 @@ function renderHistory(){
 ========================= */
 
 document
-  .getElementById("searchInput")
+  .getElementById(
+    "searchInput"
+  )
   .addEventListener(
     "input",
     renderProducts
@@ -1641,14 +2328,19 @@ document
 ========================= */
 
 document
-  .getElementById("addProduct")
+  .getElementById(
+    "addProduct"
+  )
   .addEventListener(
     "click",
     async ()=>{
 
       if(state.locked){
+
         return;
+
       }
+
 
       state.products.unshift({
 
@@ -1669,9 +2361,54 @@ document
 
       });
 
+
       await saveState();
 
       renderProducts();
+
+    }
+  );
+
+
+/* =========================
+   تغییر لحظه‌ای نرخ جدید
+========================= */
+
+document
+  .getElementById(
+    "newRate"
+  )
+  .addEventListener(
+    "input",
+    ()=>{
+
+      const value =
+        Number(
+          document.getElementById(
+            "newRate"
+          ).value
+        );
+
+
+      const words =
+        document.getElementById(
+          "newRateWords"
+        );
+
+
+      if(value > 0){
+
+        words.textContent =
+          numberToWords(
+            value
+          );
+
+      }else{
+
+        words.textContent =
+          "نرخ جدید را وارد کنید.";
+
+      }
 
     }
   );
@@ -1682,25 +2419,35 @@ document
 ========================= */
 
 document
-  .getElementById("saveRate")
+  .getElementById(
+    "saveRate"
+  )
   .addEventListener(
     "click",
     async ()=>{
 
       if(state.locked){
+
         return;
+
       }
+
 
       const newRate =
         Number(
           document
-            .getElementById("newRate")
+            .getElementById(
+              "newRate"
+            )
             .value
         );
 
+
       const date =
         document
-          .getElementById("rateDate")
+          .getElementById(
+            "rateDate"
+          )
           .value
         ||
         new Date()
@@ -1762,17 +2509,22 @@ document
 
 
       document
-        .getElementById("newRate")
+        .getElementById(
+          "newRate"
+        )
         .value = "";
 
 
       document
-        .getElementById("rateMessage")
+        .getElementById(
+          "rateMessage"
+        )
         .textContent =
           "نرخ با موفقیت ذخیره شد.";
 
 
       await saveState();
+
 
       renderRates();
 
@@ -1784,10 +2536,14 @@ document
   );
 
 
-/* تاریخ پیش‌فرض */
+/* =========================
+   تاریخ پیش‌فرض
+========================= */
 
 document
-  .getElementById("rateDate")
+  .getElementById(
+    "rateDate"
+  )
   .value =
     new Date()
       .toISOString()
@@ -1799,14 +2555,16 @@ document
 ========================= */
 
 document
-  .getElementById("exportBtn")
+  .getElementById(
+    "exportBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
 
       const data = {
 
-        version: 3,
+        version:4,
 
         exportedAt:
           new Date().toISOString(),
@@ -1843,17 +2601,23 @@ document
           "a"
         );
 
-      link.href = url;
+
+      link.href =
+        url;
+
 
       link.download =
         "price-calculator-backup.json";
+
 
       link.click();
 
 
       setTimeout(
         ()=>{
-          URL.revokeObjectURL(url);
+          URL.revokeObjectURL(
+            url
+          );
         },
         1000
       );
@@ -1867,17 +2631,24 @@ document
 ========================= */
 
 document
-  .getElementById("importBtn")
+  .getElementById(
+    "importBtn"
+  )
   .addEventListener(
     "click",
     ()=>{
 
       if(state.locked){
+
         return;
+
       }
 
+
       document
-        .getElementById("importFile")
+        .getElementById(
+          "importFile"
+        )
         .click();
 
     }
@@ -1885,26 +2656,36 @@ document
 
 
 document
-  .getElementById("importFile")
+  .getElementById(
+    "importFile"
+  )
   .addEventListener(
     "change",
     async event=>{
 
       if(state.locked){
+
         return;
+
       }
+
 
       const file =
         event.target.files[0];
 
+
       if(!file){
+
         return;
+
       }
+
 
       try{
 
         const text =
           await file.text();
+
 
         const data =
           JSON.parse(text);
@@ -1930,11 +2711,14 @@ document
 
         await saveState();
 
+
         renderAll();
+
 
         alert(
           "پشتیبان با موفقیت بازیابی شد."
         );
+
 
       }catch(error){
 
@@ -1956,17 +2740,25 @@ document
 ========================= */
 
 document
-  .getElementById("searchScan")
+  .getElementById(
+    "searchScan"
+  )
   .addEventListener(
     "click",
     ()=>{
-      openScanner("search");
+
+      openScanner(
+        "search"
+      );
+
     }
   );
 
 
 document
-  .getElementById("closeScanner")
+  .getElementById(
+    "closeScanner"
+  )
   .addEventListener(
     "click",
     closeScanner
@@ -1981,18 +2773,23 @@ async function openScanner(
   scanMode =
     mode;
 
+
   scanProductId =
     productId;
 
 
   document
-    .getElementById("scanner")
+    .getElementById(
+      "scanner"
+    )
     .style.display =
       "flex";
 
 
   document
-    .getElementById("scannerMessage")
+    .getElementById(
+      "scannerMessage"
+    )
     .textContent =
       "در حال آماده‌سازی دوربین...";
 
@@ -2031,10 +2828,12 @@ async function openScanner(
 
       {
         fps:10,
+
         qrbox:{
           width:250,
           height:250
         }
+
       },
 
       async decodedText=>{
@@ -2057,6 +2856,7 @@ async function openScanner(
       .textContent =
         "QR را مقابل دوربین قرار دهید.";
 
+
   }catch(error){
 
     document
@@ -2076,12 +2876,18 @@ async function handleQR(code){
   if(scanner){
 
     try{
+
       await scanner.stop();
+
     }catch(error){}
 
+
     try{
+
       scanner.clear();
+
     }catch(error){}
+
 
     scanner = null;
 
@@ -2089,12 +2895,14 @@ async function handleQR(code){
 
 
   document
-    .getElementById("scanner")
+    .getElementById(
+      "scanner"
+    )
     .style.display =
       "none";
 
 
-  /* ثبت QR برای کالا */
+  /* ثبت QR کالا */
 
   if(
     scanMode ===
@@ -2114,15 +2922,19 @@ async function handleQR(code){
       product.qr =
         code;
 
+
       await saveState();
 
+
       renderProducts();
+
 
       alert(
         "QR برای کالا ثبت شد."
       );
 
     }
+
 
     return;
 
@@ -2171,10 +2983,13 @@ async function handleQR(code){
           if(element){
 
             element.scrollIntoView({
+
               behavior:
                 "smooth",
+
               block:
                 "center"
+
             });
 
 
@@ -2184,8 +2999,10 @@ async function handleQR(code){
 
             setTimeout(
               ()=>{
+
                 element.style.outline =
                   "";
+
               },
               2000
             );
@@ -2214,12 +3031,18 @@ async function closeScanner(){
   if(scanner){
 
     try{
+
       await scanner.stop();
+
     }catch(error){}
 
+
     try{
+
       scanner.clear();
+
     }catch(error){}
+
 
     scanner = null;
 
@@ -2227,7 +3050,9 @@ async function closeScanner(){
 
 
   document
-    .getElementById("scanner")
+    .getElementById(
+      "scanner"
+    )
     .style.display =
       "none";
 
@@ -2261,6 +3086,7 @@ function renderAll(){
 
     await loadState();
 
+
     renderAll();
 
 
@@ -2293,4 +3119,4 @@ function renderAll(){
 </script>
 
 </body>
- </html>
+</html>
