@@ -12,6 +12,7 @@
 
 <style>
 *{box-sizing:border-box}
+
 :root{
   --red:#d71920;
   --red-dark:#b51218;
@@ -24,7 +25,9 @@
   --danger:#b42318;
   --shadow:0 2px 12px rgba(0,0,0,.06);
 }
+
 html{scroll-behavior:smooth}
+
 body{
   margin:0;
   background:var(--bg);
@@ -32,17 +35,22 @@ body{
   font-family:Tahoma,Arial,sans-serif;
   font-size:14px;
 }
+
 button,input{font:inherit}
 button{cursor:pointer}
-button:disabled,input:disabled{
+
+button:disabled,
+input:disabled{
   cursor:not-allowed;
   opacity:.55;
 }
+
 .app{
   max-width:920px;
   margin:auto;
   padding-bottom:40px;
 }
+
 header{
   position:sticky;
   top:0;
@@ -51,6 +59,7 @@ header{
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 10px rgba(0,0,0,.06);
 }
+
 .header-inner{
   min-height:62px;
   display:flex;
@@ -58,6 +67,7 @@ header{
   gap:10px;
   padding:8px 12px;
 }
+
 .logo{
   width:40px;
   height:40px;
@@ -70,18 +80,22 @@ header{
   font-weight:bold;
   flex:none;
 }
+
 .header-title{
   flex:1;
   min-width:0;
 }
+
 .header-title strong{
   display:block;
   font-size:15px;
 }
+
 .header-title span{
   color:var(--muted);
   font-size:11px;
 }
+
 .lock-btn{
   width:43px;
   height:43px;
@@ -90,7 +104,9 @@ header{
   background:#fff;
   font-size:20px;
 }
+
 main{padding:12px}
+
 .card{
   background:var(--card);
   border:1px solid var(--border);
@@ -98,20 +114,24 @@ main{padding:12px}
   box-shadow:var(--shadow);
   margin-bottom:12px;
 }
+
 .search-card{
   padding:10px;
   position:sticky;
   top:62px;
   z-index:40;
 }
+
 .search-row{
   display:flex;
   gap:8px;
 }
+
 .search-wrap{
   position:relative;
   flex:1;
 }
+
 .search{
   width:100%;
   height:47px;
@@ -121,10 +141,12 @@ main{padding:12px}
   outline:none;
   background:#fafafa;
 }
+
 .search:focus{
   border-color:var(--red);
   background:#fff;
 }
+
 .search-icon{
   position:absolute;
   right:13px;
@@ -132,6 +154,7 @@ main{padding:12px}
   color:#888;
   font-size:19px;
 }
+
 .scan-search{
   width:47px;
   height:47px;
@@ -141,6 +164,7 @@ main{padding:12px}
   color:#fff;
   font-size:20px;
 }
+
 .quick-result{
   display:none;
   margin-top:8px;
@@ -149,21 +173,26 @@ main{padding:12px}
   padding:11px;
   background:#fff;
 }
+
 .quick-result.show{display:block}
+
 .quick-result-title{
   font-weight:bold;
   margin-bottom:5px;
 }
+
 .quick-price{
   color:var(--red);
   font-size:25px;
   font-weight:bold;
 }
+
 .quick-words{
   color:var(--muted);
   margin-top:4px;
   font-size:12px;
 }
+
 .section-head{
   display:flex;
   align-items:center;
@@ -171,28 +200,35 @@ main{padding:12px}
   padding:12px;
   border-bottom:1px solid var(--border);
 }
+
 .section-head strong{flex:1}
+
 .section-head button{
   border:0;
   background:none;
   font-size:19px;
 }
+
 .lock-info{
   color:var(--muted);
   font-size:11px;
 }
+
 .rate-body{padding:12px}
+
 .rate-grid{
   display:grid;
   grid-template-columns:1fr 1fr auto;
   gap:8px;
 }
+
 .field label{
   display:block;
   color:var(--muted);
   font-size:11px;
   margin-bottom:5px;
 }
+
 .field input{
   width:100%;
   height:43px;
@@ -202,8 +238,13 @@ main{padding:12px}
   outline:none;
   background:#fff;
 }
-.field input:focus{border-color:var(--red)}
-.rate-btn,.add-btn{
+
+.field input:focus{
+  border-color:var(--red);
+}
+
+.rate-btn,
+.add-btn{
   min-height:43px;
   align-self:end;
   padding:0 15px;
@@ -213,17 +254,20 @@ main{padding:12px}
   color:#fff;
   font-weight:bold;
 }
+
 .rate-words{
   margin-top:7px;
   color:var(--muted);
   font-size:12px;
 }
+
 .toolbar{
   display:flex;
   gap:8px;
   padding:10px 12px;
   flex-wrap:wrap;
 }
+
 .toolbar button{
   min-height:41px;
   border:1px solid var(--border);
@@ -231,32 +275,47 @@ main{padding:12px}
   background:#fff;
   padding:0 12px;
 }
+
 .toolbar .primary{
   background:var(--red);
   color:#fff;
   border-color:var(--red);
 }
+
+.toolbar .danger{
+  color:var(--danger);
+  background:#fff1f1;
+  border-color:#ffd1d1;
+}
+
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
   padding:10px 12px;
 }
+
 .stat{
   background:#f8f8f8;
   border-radius:10px;
   padding:10px;
   text-align:center;
 }
+
 .stat strong{
   display:block;
   font-size:18px;
 }
+
 .stat span{
   color:var(--muted);
   font-size:10px;
 }
-.products{padding:0 8px 8px}
+
+.products{
+  padding:0 8px 8px;
+}
+
 .product{
   background:#fff;
   border:1px solid var(--border);
@@ -264,6 +323,7 @@ main{padding:12px}
   margin:7px 0;
   overflow:hidden;
 }
+
 .product-summary{
   min-height:78px;
   display:flex;
@@ -271,6 +331,7 @@ main{padding:12px}
   gap:9px;
   padding:8px;
 }
+
 .product-thumb{
   width:58px;
   height:58px;
@@ -279,10 +340,12 @@ main{padding:12px}
   background:#f1f2f4;
   flex:none;
 }
+
 .product-main{
   flex:1;
   min-width:0;
 }
+
 .product-name{
   font-weight:bold;
   white-space:nowrap;
@@ -290,23 +353,29 @@ main{padding:12px}
   text-overflow:ellipsis;
   margin-bottom:5px;
 }
+
 .prices{
   display:flex;
   gap:9px;
   flex-wrap:wrap;
   font-size:12px;
 }
+
 .current-price{color:#444}
+
 .new-price{
   color:var(--red);
   font-weight:bold;
 }
+
 .change{
   margin-top:3px;
   font-size:11px;
 }
+
 .change.up{color:var(--danger)}
 .change.down{color:var(--green)}
+
 .edit-product-btn{
   width:40px;
   height:40px;
@@ -316,25 +385,35 @@ main{padding:12px}
   background:#fff;
   font-size:17px;
 }
+
 .product-details{
   display:none;
   padding:10px;
   border-top:1px solid var(--border);
   background:#fafafa;
 }
-.product.open .product-details{display:block}
+
+.product.open .product-details{
+  display:block;
+}
+
 .detail-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
 }
-.detail-grid .full{grid-column:1/-1}
+
+.detail-grid .full{
+  grid-column:1/-1;
+}
+
 .detail-actions{
   display:flex;
   gap:7px;
   margin-top:9px;
   flex-wrap:wrap;
 }
+
 .detail-actions button{
   min-height:41px;
   padding:0 12px;
@@ -342,47 +421,68 @@ main{padding:12px}
   border-radius:9px;
   background:#fff;
 }
+
 .delete-btn{
   color:var(--danger);
   background:#fff1f1!important;
   border-color:#ffd1d1!important;
 }
+
+.scan-product-btn{
+  background:#111!important;
+  color:#fff!important;
+  border-color:#111!important;
+}
+
 .words{
   color:var(--muted);
   font-size:11px;
   margin-top:4px;
 }
+
 .qr-box{
   padding:9px;
   border:1px dashed #ccc;
   border-radius:9px;
   background:#fff;
 }
+
 .qr-code{
   direction:ltr;
   font-family:monospace;
   word-break:break-all;
   margin-top:4px;
 }
-.history-list{padding:0 12px 12px}
+
+.history-list{
+  padding:0 12px 12px;
+}
+
 .history-item{
   padding:9px 0;
   border-bottom:1px solid var(--border);
   font-size:12px;
 }
-.history-item:last-child{border-bottom:0}
+
+.history-item:last-child{
+  border-bottom:0;
+}
+
 .history-top{
   display:flex;
   justify-content:space-between;
   gap:10px;
 }
+
 .history-percent.up{color:var(--danger)}
 .history-percent.down{color:var(--green)}
+
 .empty{
   padding:35px 10px;
   text-align:center;
   color:var(--muted);
 }
+
 .image-modal,
 .scanner-modal,
 .password-modal,
@@ -396,23 +496,27 @@ main{padding:12px}
   padding:16px;
   background:rgba(0,0,0,.72);
 }
+
 .image-modal.show,
 .scanner-modal.show,
 .password-modal.show,
 .setup-modal.show{
   display:flex;
 }
+
 .image-modal-content{
   position:relative;
   max-width:95vw;
   max-height:90vh;
 }
+
 .image-modal img{
   max-width:95vw;
   max-height:85vh;
   border-radius:12px;
   display:block;
 }
+
 .close-image{
   position:absolute;
   top:-45px;
@@ -424,13 +528,39 @@ main{padding:12px}
   background:#fff;
   font-size:25px;
 }
+
 .scanner-box{
   width:min(500px,95vw);
   padding:12px;
   border-radius:15px;
   background:#fff;
 }
-#reader{width:100%}
+
+.scanner-title{
+  font-weight:bold;
+  margin-bottom:10px;
+  text-align:center;
+}
+
+.scanner-status{
+  min-height:20px;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:11px;
+  text-align:center;
+}
+
+#reader{
+  width:100%;
+  overflow:hidden;
+  border-radius:12px;
+}
+
+#reader video{
+  width:100%!important;
+  border-radius:12px;
+}
+
 .scanner-close{
   width:100%;
   min-height:43px;
@@ -440,6 +570,7 @@ main{padding:12px}
   background:#111;
   color:#fff;
 }
+
 .password-box,
 .setup-box{
   width:min(420px,94vw);
@@ -447,16 +578,19 @@ main{padding:12px}
   border-radius:18px;
   background:#fff;
 }
+
 .password-box h3,
 .setup-box h3{
   margin:0 0 7px;
 }
+
 .password-box p,
 .setup-box p{
   color:var(--muted);
   font-size:12px;
   line-height:1.8;
 }
+
 .password-box input,
 .setup-box input{
   width:100%;
@@ -467,10 +601,12 @@ main{padding:12px}
   border-radius:11px;
   outline:none;
 }
+
 .password-box input:focus,
 .setup-box input:focus{
   border-color:var(--red);
 }
+
 .password-error,
 .setup-error{
   min-height:18px;
@@ -478,21 +614,28 @@ main{padding:12px}
   color:var(--danger);
   font-size:11px;
 }
+
 .password-actions{
   display:flex;
   gap:8px;
 }
+
 .password-actions button{
   flex:1;
   min-height:43px;
   border:0;
   border-radius:10px;
 }
+
 .password-submit{
   color:#fff;
   background:var(--red);
 }
-.password-cancel{background:#eee}
+
+.password-cancel{
+  background:#eee;
+}
+
 .setup-submit{
   width:100%;
   min-height:44px;
@@ -502,11 +645,19 @@ main{padding:12px}
   color:#fff;
   font-weight:bold;
 }
-.change-password-fields{display:none}
-.change-password-fields.show{display:block}
+
+.change-password-fields{
+  display:none;
+}
+
+.change-password-fields.show{
+  display:block;
+}
+
 .password-toggle{
   position:relative;
 }
+
 .password-toggle button{
   position:absolute;
   left:8px;
@@ -515,6 +666,7 @@ main{padding:12px}
   border:0;
   background:none;
 }
+
 .toast{
   position:fixed;
   left:50%;
@@ -528,17 +680,42 @@ main{padding:12px}
   background:#111;
   color:#fff;
   font-size:12px;
+  text-align:center;
 }
-.toast.show{display:block}
+
+.toast.show{
+  display:block;
+}
+
 body.locked .edit-product-btn{
   opacity:.45;
 }
+
 @media(max-width:650px){
-  main{padding:8px}
-  .rate-grid{grid-template-columns:1fr 1fr}
-  .rate-btn{grid-column:1/-1}
-  .detail-grid{grid-template-columns:1fr}
-  .detail-grid .full{grid-column:auto}
+
+  main{
+    padding:8px;
+  }
+
+  .rate-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .rate-btn{
+    grid-column:1/-1;
+  }
+
+  .detail-grid{
+    grid-template-columns:1fr;
+  }
+
+  .detail-grid .full{
+    grid-column:auto;
+  }
+
+  .toolbar button{
+    flex:1;
+  }
 }
 </style>
 </head>
@@ -549,6 +726,7 @@ body.locked .edit-product-btn{
 
 <header>
   <div class="header-inner">
+
     <div class="logo">₿</div>
 
     <div class="header-title">
@@ -562,6 +740,7 @@ body.locked .edit-product-btn{
       type="button"
       title="ورود مالک"
     >🔒</button>
+
   </div>
 </header>
 
@@ -572,6 +751,7 @@ body.locked .edit-product-btn{
   <div class="search-row">
 
     <div class="search-wrap">
+
       <span class="search-icon">⌕</span>
 
       <input
@@ -582,21 +762,35 @@ body.locked .edit-product-btn{
         inputmode="search"
         placeholder="نام کالا یا کد QR را وارد کنید..."
       >
+
     </div>
 
     <button
       id="searchScanBtn"
       class="scan-search"
       type="button"
-      title="اسکن QR"
+      title="اسکن QR با دوربین"
     >▣</button>
 
   </div>
 
   <div id="quickResult" class="quick-result">
-    <div id="quickResultTitle" class="quick-result-title"></div>
-    <div id="quickResultPrice" class="quick-price"></div>
-    <div id="quickResultWords" class="quick-words"></div>
+
+    <div
+      id="quickResultTitle"
+      class="quick-result-title"
+    ></div>
+
+    <div
+      id="quickResultPrice"
+      class="quick-price"
+    ></div>
+
+    <div
+      id="quickResultWords"
+      class="quick-words"
+    ></div>
+
   </div>
 
 </section>
@@ -604,33 +798,59 @@ body.locked .edit-product-btn{
 <section class="card">
 
   <div class="section-head">
+
     <strong>نرخ دلار</strong>
-    <span class="lock-info">فقط مالک</span>
-    <button id="rateToggle" type="button">⌄</button>
+
+    <span class="lock-info">
+      فقط مالک
+    </span>
+
+    <button
+      id="rateToggle"
+      type="button"
+    >⌄</button>
+
   </div>
 
-  <div id="rateBody" class="rate-body" style="display:none">
+  <div
+    id="rateBody"
+    class="rate-body"
+    style="display:none"
+  >
 
     <div class="rate-grid">
 
       <div class="field">
+
         <label>نرخ قبلی</label>
-        <input id="oldRate" type="number" inputmode="decimal" disabled>
+
+        <input
+          id="oldRate"
+          type="text"
+          inputmode="decimal"
+          disabled
+        >
+
       </div>
 
       <div class="field">
+
         <label>نرخ جدید</label>
 
         <input
           id="newRate"
           class="editable rate-input"
-          type="number"
+          type="text"
           inputmode="decimal"
-          min="0"
-          step="any"
+          autocomplete="off"
+          placeholder="مثلاً 100000"
         >
 
-        <div id="rateWords" class="rate-words"></div>
+        <div
+          id="rateWords"
+          class="rate-words"
+        ></div>
+
       </div>
 
       <button
@@ -665,6 +885,12 @@ body.locked .edit-product-btn{
       class="importBtn"
       type="button"
     >بازیابی</button>
+
+    <button
+      id="resetHistoryBtn"
+      class="danger"
+      type="button"
+    >↻ ریست تاریخچه</button>
 
     <input
       id="importFile"
@@ -703,19 +929,34 @@ body.locked .edit-product-btn{
 <section class="card">
 
   <div class="section-head">
+
     <strong>کالاها</strong>
-    <span id="resultCount" class="lock-info"></span>
+
+    <span
+      id="resultCount"
+      class="lock-info"
+    ></span>
+
   </div>
 
-  <div id="products" class="products"></div>
+  <div
+    id="products"
+    class="products"
+  ></div>
 
 </section>
 
 <section class="card">
 
   <div class="section-head">
+
     <strong>تاریخچه نرخ دلار</strong>
-    <button id="historyToggle" type="button">⌄</button>
+
+    <button
+      id="historyToggle"
+      type="button"
+    >⌄</button>
+
   </div>
 
   <div
@@ -730,7 +971,11 @@ body.locked .edit-product-btn{
 </div>
 
 <!-- IMAGE MODAL -->
-<div id="imageModal" class="image-modal">
+
+<div
+  id="imageModal"
+  class="image-modal"
+>
 
   <div class="image-modal-content">
 
@@ -751,11 +996,26 @@ body.locked .edit-product-btn{
 </div>
 
 <!-- SCANNER -->
-<div id="scannerModal" class="scanner-modal">
+
+<div
+  id="scannerModal"
+  class="scanner-modal"
+>
 
   <div class="scanner-box">
 
+    <div class="scanner-title">
+      اسکن QR با دوربین
+    </div>
+
     <div id="reader"></div>
+
+    <div
+      id="scannerStatus"
+      class="scanner-status"
+    >
+      در حال آماده‌سازی دوربین...
+    </div>
 
     <button
       id="scannerClose"
@@ -768,11 +1028,17 @@ body.locked .edit-product-btn{
 </div>
 
 <!-- PASSWORD -->
-<div id="passwordModal" class="password-modal">
+
+<div
+  id="passwordModal"
+  class="password-modal"
+>
 
   <div class="password-box">
 
-    <h3 id="passwordTitle">ورود مالک</h3>
+    <h3 id="passwordTitle">
+      ورود مالک
+    </h3>
 
     <p id="passwordDescription">
       برای دسترسی به بخش مدیریت، رمز مالک را وارد کنید.
@@ -859,7 +1125,11 @@ body.locked .edit-product-btn{
 </div>
 
 <!-- FIRST SETUP -->
-<div id="setupModal" class="setup-modal">
+
+<div
+  id="setupModal"
+  class="setup-modal"
+>
 
   <div class="setup-box">
 
@@ -870,7 +1140,10 @@ body.locked .edit-product-btn{
       حداقل ۸ کاراکتر استفاده کنید.
     </p>
 
-    <div id="setupError" class="setup-error"></div>
+    <div
+      id="setupError"
+      class="setup-error"
+    ></div>
 
     <input
       id="setupPassword"
@@ -896,7 +1169,10 @@ body.locked .edit-product-btn{
 
 </div>
 
-<div id="toast" class="toast"></div>
+<div
+  id="toast"
+  class="toast"
+></div>
 
 <script>
 "use strict";
@@ -930,21 +1206,37 @@ let scannerTarget = null;
 let passwordMode = "unlock";
 let autoLockTimer = null;
 let hiddenTimer = null;
+let saveTimer = null;
+let scanBusy = false;
 
 /* =========================================================
    HELPERS
 ========================================================= */
 
-function money(value){
-  const n = Number(value);
+function normalizeDigits(value){
 
-  if(!Number.isFinite(n)) return "0";
-
-  return Math.round(n).toLocaleString("en-US");
+  return String(value ?? "")
+    .replace(/[۰-۹]/g,d =>
+      String("۰۱۲۳۴۵۶۷۸۹".indexOf(d))
+    )
+    .replace(/[٠-٩]/g,d =>
+      String("٠١٢٣٤٥٦٧٨٩".indexOf(d))
+    );
 }
 
-function cleanNumber(value){
-  const n = Number(value);
+function parseNumber(value){
+
+  let s = normalizeDigits(value)
+    .trim()
+    .replace(/,/g,"")
+    .replace(/٬/g,"")
+    .replace(/٫/g,".");
+
+  if(!s){
+    return 0;
+  }
+
+  const n = Number(s);
 
   if(!Number.isFinite(n) || n < 0){
     return 0;
@@ -953,7 +1245,24 @@ function cleanNumber(value){
   return n;
 }
 
+function money(value){
+
+  const n = Number(value);
+
+  if(!Number.isFinite(n)){
+    return "0";
+  }
+
+  return Math.round(n)
+    .toLocaleString("en-US");
+}
+
+function cleanNumber(value){
+  return parseNumber(value);
+}
+
 function uid(){
+
   if(window.crypto?.randomUUID){
     return crypto.randomUUID();
   }
@@ -963,6 +1272,7 @@ function uid(){
 }
 
 function escapeHtml(value){
+
   return String(value ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
@@ -972,20 +1282,33 @@ function escapeHtml(value){
 }
 
 function showToast(message){
-  const toast = document.getElementById("toast");
+
+  const toast =
+    document.getElementById("toast");
 
   toast.textContent = message;
   toast.classList.add("show");
 
   clearTimeout(showToast.timer);
 
-  showToast.timer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },2200);
+  showToast.timer =
+    setTimeout(()=>{
+      toast.classList.remove("show");
+    },2200);
+}
+
+function debounceSave(){
+
+  clearTimeout(saveTimer);
+
+  saveTimer =
+    setTimeout(()=>{
+      saveState().catch(console.error);
+    },350);
 }
 
 /* =========================================================
-   PERSIAN NUMBER WORDS
+   NUMBER WORDS
 ========================================================= */
 
 const ones = [
@@ -1035,9 +1358,7 @@ function threeDigitsToWords(n){
       if(o){
         result.push(ones[o]);
       }
-
     }
-
   }
 
   return result.join(" و ");
@@ -1052,7 +1373,8 @@ function numberToWords(value){
   }
 
   if(n < 0){
-    return "منفی " + numberToWords(Math.abs(n));
+    return "منفی " +
+      numberToWords(Math.abs(n));
   }
 
   const result = [];
@@ -1064,7 +1386,8 @@ function numberToWords(value){
 
     if(chunk){
 
-      let text = threeDigitsToWords(chunk);
+      let text =
+        threeDigitsToWords(chunk);
 
       if(scales[group]){
         text += " " + scales[group];
@@ -1077,60 +1400,92 @@ function numberToWords(value){
     group++;
   }
 
-  return result.join(" و ") + " تومان";
+  return result.join(" و ") +
+    " تومان";
 }
 
 /* =========================================================
-   EXACT DECIMAL CALCULATION
+   DECIMAL / PRICE CALCULATION
 ========================================================= */
 
 function decimalParts(value){
 
-  const s = String(value);
+  let s =
+    normalizeDigits(value)
+      .trim()
+      .replace(/,/g,"")
+      .replace(/٬/g,"")
+      .replace(/٫/g,".");
 
-  if(!s.includes(".")){
+  if(!s){
     return {
-      integer:BigInt(s || "0"),
+      integer:0n,
       scale:0
     };
   }
 
-  const [a,b] = s.split(".");
+  let negative = false;
 
-  const digits = (b || "").replace(/[^0-9]/g,"");
+  if(s.startsWith("-")){
+    negative = true;
+    s = s.slice(1);
+  }
+
+  if(!s.includes(".")){
+
+    return {
+      integer:
+        BigInt(
+          s.replace(/\D/g,"") || "0"
+        ) *
+        (negative ? -1n : 1n),
+      scale:0
+    };
+  }
+
+  const parts = s.split(".");
+  const a =
+    (parts[0] || "").replace(/\D/g,"") || "0";
+
+  const b =
+    (parts[1] || "").replace(/\D/g,"");
 
   return {
-    integer:BigInt((a || "0") + digits),
-    scale:digits.length
+    integer:
+      BigInt(a + b) *
+      (negative ? -1n : 1n),
+    scale:b.length
   };
 }
 
-function exactDivide(a,b,precision=6){
+function roundDivide(numerator,denominator){
 
-  if(b === 0n){
-    return 0;
+  if(denominator === 0n){
+    return 0n;
   }
 
-  const sign =
-    (a < 0n) !== (b < 0n) ? -1 : 1;
+  const negative =
+    (numerator < 0n) !==
+    (denominator < 0n);
 
-  a = a < 0n ? -a : a;
-  b = b < 0n ? -b : b;
+  let a =
+    numerator < 0n
+      ? -numerator
+      : numerator;
 
-  const scale = 10n ** BigInt(precision);
+  let b =
+    denominator < 0n
+      ? -denominator
+      : denominator;
 
-  const q = (a * scale) / b;
+  let q = a / b;
+  let r = a % b;
 
-  const remainder = (a * scale) % b;
-
-  let result = Number(q) / Number(scale);
-
-  if(remainder !== 0n){
-    result += Number(remainder) /
-      Number(b * scale);
+  if(r * 2n >= b){
+    q++;
   }
 
-  return sign * result;
+  return negative ? -q : q;
 }
 
 function calculateProduct(product){
@@ -1151,49 +1506,45 @@ function calculateProduct(product){
     };
   }
 
+  const priceParts =
+    decimalParts(product.price);
+
+  const oldParts =
+    decimalParts(state.oldRate);
+
+  const currentParts =
+    decimalParts(state.currentRate);
+
   /*
-    قیمت جدید = قیمت فعلی × نرخ جدید ÷ نرخ قبلی
+    قیمت جدید:
+    price × currentRate ÷ oldRate
 
-    محاسبه نسبت با BigInt انجام می‌شود تا خطای
-    رایج floating point تا حد ممکن حذف شود.
+    محاسبه اصلی با BigInt انجام می‌شود.
   */
-
-  const priceParts = decimalParts(price);
-  const oldParts = decimalParts(oldRate);
-  const currentParts = decimalParts(currentRate);
 
   const numerator =
-    priceParts.integer *
-    currentParts.integer;
-
-  const denominator =
-    oldParts.integer *
-    (10n ** BigInt(priceParts.scale)) *
-    (10n ** BigInt(currentParts.scale));
-
-  /*
-    oldRate scale باید در صورت کسر وارد شود.
-  */
-
-  const correctedNumerator =
     priceParts.integer *
     currentParts.integer *
     (10n ** BigInt(oldParts.scale));
 
-  const correctedDenominator =
+  const denominator =
     oldParts.integer *
-    (10n ** BigInt(priceParts.scale + currentParts.scale));
+    (10n ** BigInt(
+      priceParts.scale +
+      currentParts.scale
+    ));
 
-  const ratio =
-    exactDivide(
-      correctedNumerator,
-      correctedDenominator,
-      8
+  const roundedInteger =
+    roundDivide(
+      numerator,
+      denominator
     );
 
-  const newPrice = price * ratio;
+  const newPrice =
+    Number(roundedInteger);
 
-  const diff = newPrice - price;
+  const diff =
+    newPrice - Math.round(price);
 
   const percent =
     price === 0
@@ -1208,7 +1559,7 @@ function calculateProduct(product){
 }
 
 /* =========================================================
-   INDEXED DB
+   DATABASE
 ========================================================= */
 
 function openDB(){
@@ -1216,25 +1567,37 @@ function openDB(){
   return new Promise((resolve,reject)=>{
 
     const request =
-      indexedDB.open(DB_NAME,DB_VERSION);
+      indexedDB.open(
+        DB_NAME,
+        DB_VERSION
+      );
 
     request.onupgradeneeded = ()=>{
-      const database = request.result;
 
-      if(!database.objectStoreNames.contains(STORE_NAME)){
-        database.createObjectStore(STORE_NAME);
+      const database =
+        request.result;
+
+      if(
+        !database.objectStoreNames
+          .contains(STORE_NAME)
+      ){
+
+        database.createObjectStore(
+          STORE_NAME
+        );
       }
     };
 
     request.onsuccess = ()=>{
+
       db = request.result;
+
       resolve();
     };
 
     request.onerror = ()=>{
       reject(request.error);
     };
-
   });
 }
 
@@ -1243,10 +1606,15 @@ function loadState(){
   return new Promise((resolve,reject)=>{
 
     const tx =
-      db.transaction(STORE_NAME,"readonly");
+      db.transaction(
+        STORE_NAME,
+        "readonly"
+      );
 
     const request =
-      tx.objectStore(STORE_NAME).get(STATE_KEY);
+      tx.objectStore(
+        STORE_NAME
+      ).get(STATE_KEY);
 
     request.onsuccess = ()=>{
 
@@ -1274,7 +1642,6 @@ function loadState(){
     request.onerror = ()=>{
       reject(request.error);
     };
-
   });
 }
 
@@ -1283,17 +1650,23 @@ function saveState(){
   return new Promise((resolve,reject)=>{
 
     const tx =
-      db.transaction(STORE_NAME,"readwrite");
+      db.transaction(
+        STORE_NAME,
+        "readwrite"
+      );
 
-    tx.objectStore(STORE_NAME)
-      .put(state,STATE_KEY);
+    tx.objectStore(
+      STORE_NAME
+    ).put(
+      state,
+      STATE_KEY
+    );
 
     tx.oncomplete = resolve;
 
     tx.onerror = ()=>{
       reject(tx.error);
     };
-
   });
 }
 
@@ -1304,7 +1677,8 @@ function saveState(){
 async function hashPassword(password){
 
   const data =
-    new TextEncoder().encode(password);
+    new TextEncoder()
+      .encode(password);
 
   const hash =
     await crypto.subtle.digest(
@@ -1312,8 +1686,13 @@ async function hashPassword(password){
       data
     );
 
-  return Array.from(new Uint8Array(hash))
-    .map(x=>x.toString(16).padStart(2,"0"))
+  return Array.from(
+    new Uint8Array(hash)
+  )
+    .map(x =>
+      x.toString(16)
+       .padStart(2,"0")
+    )
     .join("");
 }
 
@@ -1340,25 +1719,35 @@ function closeSetupModal(){
 async function createInitialPassword(){
 
   const p =
-    document.getElementById("setupPassword").value;
+    document.getElementById(
+      "setupPassword"
+    ).value;
 
   const c =
-    document.getElementById("setupPasswordConfirm").value;
+    document.getElementById(
+      "setupPasswordConfirm"
+    ).value;
 
   const error =
-    document.getElementById("setupError");
+    document.getElementById(
+      "setupError"
+    );
 
   error.textContent = "";
 
   if(p.length < 8){
+
     error.textContent =
       "رمز باید حداقل ۸ کاراکتر باشد.";
+
     return false;
   }
 
   if(p !== c){
+
     error.textContent =
       "دو رمز یکسان نیستند.";
+
     return false;
   }
 
@@ -1371,7 +1760,11 @@ async function createInitialPassword(){
 
   closeSetupModal();
 
-  showToast("رمز مالک ساخته شد");
+  showToast(
+    "رمز مالک ساخته شد"
+  );
+
+  updateLockUI();
 
   return true;
 }
@@ -1381,33 +1774,51 @@ function openPasswordModal(mode="unlock"){
   passwordMode = mode;
 
   const modal =
-    document.getElementById("passwordModal");
+    document.getElementById(
+      "passwordModal"
+    );
 
   const title =
-    document.getElementById("passwordTitle");
+    document.getElementById(
+      "passwordTitle"
+    );
 
   const description =
-    document.getElementById("passwordDescription");
+    document.getElementById(
+      "passwordDescription"
+    );
 
   const input =
-    document.getElementById("passwordInput");
+    document.getElementById(
+      "passwordInput"
+    );
 
   const error =
-    document.getElementById("passwordError");
+    document.getElementById(
+      "passwordError"
+    );
 
   const fields =
-    document.getElementById("changePasswordFields");
+    document.getElementById(
+      "changePasswordFields"
+    );
 
   error.textContent = "";
 
   input.value = "";
 
-  document.getElementById("newPasswordInput").value = "";
-  document.getElementById("confirmPasswordInput").value = "";
+  document.getElementById(
+    "newPasswordInput"
+  ).value = "";
+
+  document.getElementById(
+    "confirmPasswordInput"
+  ).value = "";
 
   if(mode === "unlock"){
 
-    title.textContent = "ورود مالک";
+    title.textContent =
+      "ورود مالک";
 
     description.textContent =
       "برای ویرایش کالاها و تنظیمات، رمز مالک را وارد کنید.";
@@ -1416,7 +1827,8 @@ function openPasswordModal(mode="unlock"){
 
   }else{
 
-    title.textContent = "تغییر رمز مالک";
+    title.textContent =
+      "تغییر رمز مالک";
 
     description.textContent =
       "رمز فعلی و سپس رمز جدید را وارد کنید.";
@@ -1434,29 +1846,41 @@ function openPasswordModal(mode="unlock"){
 function closePasswordModal(){
 
   document
-    .getElementById("passwordModal")
+    .getElementById(
+      "passwordModal"
+    )
     .classList.remove("show");
 }
 
 async function handlePasswordSubmit(){
 
   const error =
-    document.getElementById("passwordError");
+    document.getElementById(
+      "passwordError"
+    );
 
   const current =
-    document.getElementById("passwordInput").value;
+    document.getElementById(
+      "passwordInput"
+    ).value;
 
   error.textContent = "";
 
   if(!current){
-    error.textContent = "رمز را وارد کنید.";
+
+    error.textContent =
+      "رمز را وارد کنید.";
+
     return;
   }
 
   const currentHash =
     await hashPassword(current);
 
-  if(currentHash !== state.passwordHash){
+  if(
+    currentHash !==
+    state.passwordHash
+  ){
 
     error.textContent =
       "رمز مالک اشتباه است.";
@@ -1476,7 +1900,9 @@ async function handlePasswordSubmit(){
 
     startAutoLockTimer();
 
-    showToast("ویرایش فعال شد");
+    showToast(
+      "ویرایش فعال شد"
+    );
 
     return;
   }
@@ -1484,10 +1910,14 @@ async function handlePasswordSubmit(){
   if(passwordMode === "change"){
 
     const newPassword =
-      document.getElementById("newPasswordInput").value;
+      document.getElementById(
+        "newPasswordInput"
+      ).value;
 
     const confirmPassword =
-      document.getElementById("confirmPasswordInput").value;
+      document.getElementById(
+        "confirmPasswordInput"
+      ).value;
 
     if(newPassword.length < 8){
 
@@ -1497,7 +1927,10 @@ async function handlePasswordSubmit(){
       return;
     }
 
-    if(newPassword !== confirmPassword){
+    if(
+      newPassword !==
+      confirmPassword
+    ){
 
       error.textContent =
         "دو رمز جدید یکسان نیستند.";
@@ -1506,13 +1939,17 @@ async function handlePasswordSubmit(){
     }
 
     state.passwordHash =
-      await hashPassword(newPassword);
+      await hashPassword(
+        newPassword
+      );
 
     await saveState();
 
     closePasswordModal();
 
-    showToast("رمز مالک تغییر کرد");
+    showToast(
+      "رمز مالک تغییر کرد"
+    );
   }
 }
 
@@ -1523,15 +1960,21 @@ async function handlePasswordSubmit(){
 function closeOpenProducts(){
 
   document
-    .querySelectorAll(".product.open")
+    .querySelectorAll(
+      ".product.open"
+    )
     .forEach(el=>{
       el.classList.remove("open");
     });
 }
 
-async function lockNow(showMessage=false){
+async function lockNow(
+  showMessage=false
+){
 
-  clearTimeout(autoLockTimer);
+  clearTimeout(
+    autoLockTimer
+  );
 
   state.locked = true;
 
@@ -1542,13 +1985,17 @@ async function lockNow(showMessage=false){
   updateLockUI();
 
   if(showMessage){
-    showToast("ویرایش قفل شد");
+    showToast(
+      "ویرایش قفل شد"
+    );
   }
 }
 
 function startAutoLockTimer(){
 
-  clearTimeout(autoLockTimer);
+  clearTimeout(
+    autoLockTimer
+  );
 
   if(state.locked){
     return;
@@ -1557,7 +2004,11 @@ function startAutoLockTimer(){
   autoLockTimer =
     setTimeout(()=>{
       lockNow(true);
-    },state.autoLockMinutes * 60 * 1000);
+    },
+    Math.max(
+      1,
+      Number(state.autoLockMinutes) || 5
+    ) * 60 * 1000);
 }
 
 function resetAutoLockTimer(){
@@ -1570,10 +2021,14 @@ function resetAutoLockTimer(){
 function updateLockUI(){
 
   const btn =
-    document.getElementById("lockBtn");
+    document.getElementById(
+      "lockBtn"
+    );
 
   const status =
-    document.getElementById("lockStatus");
+    document.getElementById(
+      "lockStatus"
+    );
 
   if(state.locked){
 
@@ -1583,7 +2038,8 @@ function updateLockUI(){
     status.textContent =
       "قفل ویرایش فعال است";
 
-    document.body.classList.add("locked");
+    document.body
+      .classList.add("locked");
 
   }else{
 
@@ -1593,7 +2049,8 @@ function updateLockUI(){
     status.textContent =
       "ویرایش فعال — قفل خودکار";
 
-    document.body.classList.remove("locked");
+    document.body
+      .classList.remove("locked");
   }
 
   applyLockState();
@@ -1607,13 +2064,10 @@ function applyLockState(){
       el.disabled = state.locked;
     });
 
-  document
-    .querySelectorAll(
-      ".delete-btn,.rateBtn,.addBtn"
-    )
-    .forEach(el=>{
-      el.disabled = state.locked;
-    });
+  /*
+    این دکمه‌ها عمداً disabled نمی‌شوند.
+    در حالت قفل، کلیک روی آن‌ها پنجره رمز را باز می‌کند.
+  */
 }
 
 /* =========================================================
@@ -1622,21 +2076,37 @@ function applyLockState(){
 
 function renderRates(){
 
-  document.getElementById("oldRate").value =
-    state.oldRate || "";
-
-  document.getElementById("newRate").value =
-    state.currentRate || "";
-
-  document.getElementById("rateDisplay").textContent =
-    money(state.currentRate);
-
-  document.getElementById("rateWords").textContent =
-    state.currentRate
-      ? numberToWords(state.currentRate)
+  document.getElementById(
+    "oldRate"
+  ).value =
+    state.oldRate
+      ? money(state.oldRate)
       : "";
 
-  document.getElementById("historyCount").textContent =
+  document.getElementById(
+    "newRate"
+  ).value =
+    state.currentRate
+      ? String(state.currentRate)
+      : "";
+
+  document.getElementById(
+    "rateDisplay"
+  ).textContent =
+    money(state.currentRate);
+
+  document.getElementById(
+    "rateWords"
+  ).textContent =
+    state.currentRate
+      ? numberToWords(
+          state.currentRate
+        )
+      : "";
+
+  document.getElementById(
+    "historyCount"
+  ).textContent =
     state.history.length;
 
   applyLockState();
@@ -1646,14 +2116,19 @@ function renderRates(){
    PRODUCTS
 ========================================================= */
 
-function productMatches(product,query){
+function productMatches(
+  product,
+  query
+){
 
   if(!query){
     return true;
   }
 
   const q =
-    query.trim().toLocaleLowerCase("fa");
+    normalizeDigits(query)
+      .trim()
+      .toLocaleLowerCase("fa");
 
   return (
     String(product.name || "")
@@ -1691,20 +2166,32 @@ function productImage(product){
 function renderProducts(){
 
   const container =
-    document.getElementById("products");
+    document.getElementById(
+      "products"
+    );
 
   const query =
-    document.getElementById("searchInput").value.trim();
+    document.getElementById(
+      "searchInput"
+    ).value.trim();
 
   const products =
     state.products.filter(
-      p=>productMatches(p,query)
+      p =>
+        productMatches(
+          p,
+          query
+        )
     );
 
-  document.getElementById("productCount").textContent =
+  document.getElementById(
+    "productCount"
+  ).textContent =
     state.products.length;
 
-  document.getElementById("resultCount").textContent =
+  document.getElementById(
+    "resultCount"
+  ).textContent =
     query
       ? `${products.length} نتیجه`
       : "";
@@ -1718,7 +2205,8 @@ function renderProducts(){
             ? "کالایی با این مشخصات پیدا نشد."
             : "هنوز کالایی ثبت نشده است."
         }
-      `;
+      </div>
+    `;
 
     return;
   }
@@ -1727,16 +2215,22 @@ function renderProducts(){
     products.map(product=>{
 
       const result =
-        calculateProduct(product);
+        calculateProduct(
+          product
+        );
 
       const roundedNewPrice =
-        Math.round(result.newPrice);
+        Math.round(
+          result.newPrice
+        );
 
       const changeText =
         result.diff === 0
           ? "بدون تغییر"
           : "تغییر: " +
-            money(Math.abs(result.diff)) +
+            money(
+              Math.abs(result.diff)
+            ) +
             " تومان (" +
             result.percent.toFixed(4) +
             "٪)";
@@ -1755,18 +2249,23 @@ function renderProducts(){
 
               <div class="product-name">
                 ${escapeHtml(
-                  product.name || "کالای بدون نام"
+                  product.name ||
+                  "کالای بدون نام"
                 )}
               </div>
 
               <div class="prices">
 
                 <span class="current-price">
-                  فعلی: ${money(product.price)} تومان
+                  فعلی:
+                  ${money(product.price)}
+                  تومان
                 </span>
 
                 <span class="new-price">
-                  جدید: ${money(roundedNewPrice)} تومان
+                  جدید:
+                  ${money(roundedNewPrice)}
+                  تومان
                 </span>
 
               </div>
@@ -1817,11 +2316,9 @@ function renderProducts(){
                 <input
                   class="editable productPrice"
                   data-id="${escapeHtml(product.id)}"
-                  type="number"
+                  type="text"
                   inputmode="decimal"
-                  min="0"
-                  step="any"
-                  value="${cleanNumber(product.price)}"
+                  value="${escapeHtml(String(product.price ?? 0))}"
                 >
 
                 <div
@@ -1861,13 +2358,25 @@ function renderProducts(){
 
                 <label>QR / کد کالا</label>
 
-                <input
-                  class="editable productQR"
-                  data-id="${escapeHtml(product.id)}"
-                  value="${escapeHtml(product.qr || "")}"
-                  placeholder="کد QR یا بارکد"
-                  dir="ltr"
-                >
+                <div style="display:flex;gap:7px">
+
+                  <input
+                    style="flex:1"
+                    class="editable productQR"
+                    data-id="${escapeHtml(product.id)}"
+                    value="${escapeHtml(product.qr || "")}"
+                    placeholder="کد QR یا بارکد"
+                    dir="ltr"
+                  >
+
+                  <button
+                    type="button"
+                    class="scan-product-btn"
+                    data-scan-product="${escapeHtml(product.id)}"
+                    title="اسکن با دوربین"
+                  >📷</button>
+
+                </div>
 
               </div>
 
@@ -1888,11 +2397,14 @@ function renderProducts(){
 
                 <div class="qr-box">
 
-                  <div>کد ثبت‌شده:</div>
+                  <div>
+                    کد ثبت‌شده:
+                  </div>
 
                   <div class="qr-code">
                     ${escapeHtml(
-                      product.qr || "ثبت نشده"
+                      product.qr ||
+                      "ثبت نشده"
                     )}
                   </div>
 
@@ -1908,7 +2420,7 @@ function renderProducts(){
                 type="button"
                 class="scan-product-btn"
                 data-scan-product="${escapeHtml(product.id)}"
-              >اسکن QR</button>
+              >📷 اسکن QR</button>
 
               <button
                 type="button"
@@ -1941,26 +2453,35 @@ function renderProducts(){
 function updateQuickResult(){
 
   const query =
-    document.getElementById("searchInput")
-      .value.trim();
+    document.getElementById(
+      "searchInput"
+    ).value.trim();
 
   const box =
-    document.getElementById("quickResult");
+    document.getElementById(
+      "quickResult"
+    );
 
   if(!query){
 
     box.classList.remove("show");
+
     return;
   }
 
   const matches =
     state.products.filter(
-      p=>productMatches(p,query)
+      p =>
+        productMatches(
+          p,
+          query
+        )
     );
 
   if(matches.length !== 1){
 
     box.classList.remove("show");
+
     return;
   }
 
@@ -1977,13 +2498,17 @@ function updateQuickResult(){
   document.getElementById(
     "quickResultPrice"
   ).textContent =
-    money(Math.round(result.newPrice)) +
+    money(
+      Math.round(result.newPrice)
+    ) +
     " تومان";
 
   document.getElementById(
     "quickResultWords"
   ).textContent =
-    numberToWords(Math.round(result.newPrice));
+    numberToWords(
+      Math.round(result.newPrice)
+    );
 
   box.classList.add("show");
 }
@@ -1995,13 +2520,15 @@ function updateQuickResult(){
 function renderHistory(){
 
   const container =
-    document.getElementById("historyList");
+    document.getElementById(
+      "historyList"
+    );
 
   if(!state.history.length){
 
     container.innerHTML =
       `<div class="empty">
-        هنوز تغییری در نرخ ثبت نشده است.
+        تاریخچه خالی است.
       </div>`;
 
     return;
@@ -2015,23 +2542,27 @@ function renderHistory(){
         <div class="history-top">
 
           <strong>
-            ${escapeHtml(item.date)}
+            ${escapeHtml(
+              item.date || ""
+            )}
           </strong>
 
           <span
             class="history-percent ${
-              item.percent > 0
+              Number(item.percent || 0) > 0
                 ? "up"
-                : item.percent < 0
+                : Number(item.percent || 0) < 0
                   ? "down"
                   : ""
             }"
           >
             ${
-              item.percent > 0
+              Number(item.percent || 0) > 0
                 ? "+"
                 : ""
-            }${Number(item.percent || 0).toFixed(4)}٪
+            }${Number(
+              item.percent || 0
+            ).toFixed(4)}٪
           </span>
 
         </div>
@@ -2048,6 +2579,60 @@ function renderHistory(){
 }
 
 /* =========================================================
+   RESET HISTORY
+========================================================= */
+
+async function resetHistory(){
+
+  if(state.locked){
+
+    openPasswordModal("unlock");
+
+    return;
+  }
+
+  if(!state.history.length){
+
+    showToast(
+      "تاریخچه‌ای برای پاک‌کردن وجود ندارد"
+    );
+
+    return;
+  }
+
+  const firstConfirm =
+    confirm(
+      "تمام تاریخچه تغییرات نرخ دلار پاک می‌شود. ادامه می‌دهید؟"
+    );
+
+  if(!firstConfirm){
+    return;
+  }
+
+  const secondConfirm =
+    confirm(
+      "تأیید نهایی: تاریخچه برای همیشه پاک شود؟"
+    );
+
+  if(!secondConfirm){
+    return;
+  }
+
+  state.history = [];
+
+  await saveState();
+
+  renderHistory();
+  renderRates();
+
+  showToast(
+    "تمام تاریخچه پاک شد"
+  );
+
+  resetAutoLockTimer();
+}
+
+/* =========================================================
    ADD PRODUCT
 ========================================================= */
 
@@ -2056,6 +2641,7 @@ async function addProduct(){
   if(state.locked){
 
     openPasswordModal("unlock");
+
     return;
   }
 
@@ -2067,7 +2653,9 @@ async function addProduct(){
     image:""
   };
 
-  state.products.unshift(product);
+  state.products.unshift(
+    product
+  );
 
   await saveState();
 
@@ -2083,7 +2671,9 @@ async function addProduct(){
     el.classList.add("open");
 
     const input =
-      el.querySelector(".productName");
+      el.querySelector(
+        ".productName"
+      );
 
     if(input){
 
@@ -2101,78 +2691,140 @@ async function addProduct(){
 
 function compressImage(file){
 
-  return new Promise((resolve,reject)=>{
+  return new Promise(
+    (resolve,reject)=>{
 
-    if(!file.type.startsWith("image/")){
-      reject(new Error("not-image"));
-      return;
-    }
+      if(!file.type.startsWith("image/")){
 
-    const reader = new FileReader();
-
-    reader.onload = ()=>{
-
-      const img = new Image();
-
-      img.onload = ()=>{
-
-        const max = 900;
-
-        const scale =
-          Math.min(
-            1,
-            max /
-            Math.max(img.width,img.height)
-          );
-
-        const canvas =
-          document.createElement("canvas");
-
-        canvas.width =
-          Math.max(
-            1,
-            Math.round(img.width * scale)
-          );
-
-        canvas.height =
-          Math.max(
-            1,
-            Math.round(img.height * scale)
-          );
-
-        const ctx =
-          canvas.getContext("2d");
-
-        ctx.drawImage(
-          img,
-          0,
-          0,
-          canvas.width,
-          canvas.height
+        reject(
+          new Error("not-image")
         );
 
-        resolve(
-          canvas.toDataURL(
-            "image/jpeg",
-            .80
-          )
-        );
+        return;
+      }
+
+      const reader =
+        new FileReader();
+
+      reader.onload = ()=>{
+
+        const img =
+          new Image();
+
+        img.onload = ()=>{
+
+          const max = 900;
+
+          const scale =
+            Math.min(
+              1,
+              max /
+              Math.max(
+                img.width,
+                img.height
+              )
+            );
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          canvas.width =
+            Math.max(
+              1,
+              Math.round(
+                img.width * scale
+              )
+            );
+
+          canvas.height =
+            Math.max(
+              1,
+              Math.round(
+                img.height * scale
+              )
+            );
+
+          const ctx =
+            canvas.getContext("2d");
+
+          ctx.drawImage(
+            img,
+            0,
+            0,
+            canvas.width,
+            canvas.height
+          );
+
+          resolve(
+            canvas.toDataURL(
+              "image/jpeg",
+              .80
+            )
+          );
+        };
+
+        img.onerror = reject;
+
+        img.src =
+          reader.result;
       };
 
-      img.onerror = reject;
+      reader.onerror = reject;
 
-      img.src = reader.result;
-    };
-
-    reader.onerror = reject;
-
-    reader.readAsDataURL(file);
-  });
+      reader.readAsDataURL(file);
+    }
+  );
 }
 
 /* =========================================================
    QR SCANNER
 ========================================================= */
+
+function waitForQrLibrary(
+  timeout=10000
+){
+
+  return new Promise(
+    resolve=>{
+
+      if(window.Html5Qrcode){
+
+        resolve(true);
+
+        return;
+      }
+
+      const started =
+        Date.now();
+
+      const timer =
+        setInterval(()=>{
+
+          if(window.Html5Qrcode){
+
+            clearInterval(timer);
+
+            resolve(true);
+
+            return;
+          }
+
+          if(
+            Date.now() - started >=
+            timeout
+          ){
+
+            clearInterval(timer);
+
+            resolve(false);
+          }
+
+        },100);
+    }
+  );
+}
 
 async function stopScanner(){
 
@@ -2188,20 +2840,47 @@ async function stopScanner(){
 
     scanner = null;
   }
+
+  scanBusy = false;
 }
 
 async function openScanner(target){
 
   scannerTarget = target;
+  scanBusy = false;
 
-  document
-    .getElementById("scannerModal")
-    .classList.add("show");
+  const modal =
+    document.getElementById(
+      "scannerModal"
+    );
 
-  if(!window.Html5Qrcode){
+  const status =
+    document.getElementById(
+      "scannerStatus"
+    );
+
+  const reader =
+    document.getElementById(
+      "reader"
+    );
+
+  modal.classList.add("show");
+
+  reader.innerHTML = "";
+
+  status.textContent =
+    "در حال آماده‌سازی دوربین...";
+
+  const ready =
+    await waitForQrLibrary();
+
+  if(!ready){
+
+    status.textContent =
+      "اسکنر بارگذاری نشد. اینترنت را بررسی کنید.";
 
     showToast(
-      "اسکنر هنوز آماده نشده است"
+      "کتابخانه اسکنر آماده نشد"
     );
 
     return;
@@ -2209,40 +2888,61 @@ async function openScanner(target){
 
   await stopScanner();
 
-  document.getElementById("reader").innerHTML = "";
+  reader.innerHTML = "";
 
   try{
 
     scanner =
-      new Html5Qrcode("reader");
+      new Html5Qrcode(
+        "reader"
+      );
+
+    status.textContent =
+      "دوربین را روبه‌روی QR بگیرید.";
+
+    const config = {
+      fps:10,
+      qrbox:{
+        width:250,
+        height:180
+      },
+      aspectRatio:1.777778
+    };
 
     await scanner.start(
-      {facingMode:"environment"},
       {
-        fps:10,
-        qrbox:{
-          width:250,
-          height:180
-        }
+        facingMode:"environment"
       },
+      config,
       async decodedText=>{
-        await handleScannedCode(decodedText);
+
+        if(scanBusy){
+          return;
+        }
+
+        scanBusy = true;
+
+        await handleScannedCode(
+          decodedText
+        );
       },
       ()=>{}
     );
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      "QR scanner error:",
+      error
+    );
 
     await stopScanner();
 
-    document
-      .getElementById("scannerModal")
-      .classList.remove("show");
+    status.textContent =
+      "دسترسی به دوربین ممکن نیست.";
 
     showToast(
-      "دسترسی به دوربین ممکن نیست"
+      "دسترسی به دوربین ممکن نیست؛ مجوز دوربین مرورگر را فعال کنید."
     );
   }
 }
@@ -2252,38 +2952,68 @@ async function handleScannedCode(code){
   await stopScanner();
 
   document
-    .getElementById("scannerModal")
+    .getElementById(
+      "scannerModal"
+    )
     .classList.remove("show");
 
-  if(scannerTarget?.type === "search"){
+  const cleanCode =
+    String(code ?? "").trim();
+
+  if(!cleanCode){
+    return;
+  }
+
+  if(
+    scannerTarget?.type ===
+    "search"
+  ){
 
     const input =
-      document.getElementById("searchInput");
+      document.getElementById(
+        "searchInput"
+      );
 
-    input.value = code;
+    input.value =
+      cleanCode;
 
     renderProducts();
     updateQuickResult();
 
+    showToast(
+      "QR پیدا شد"
+    );
+
     return;
   }
 
-  if(scannerTarget?.type === "product"){
+  if(
+    scannerTarget?.type ===
+    "product"
+  ){
 
     if(state.locked){
+
+      openPasswordModal(
+        "unlock"
+      );
+
       return;
     }
 
     const product =
       state.products.find(
-        p=>p.id === scannerTarget.id
+        p =>
+          p.id ===
+          scannerTarget.id
       );
 
     if(!product){
       return;
     }
 
-    product.qr = code;
+    product.qr =
+      cleanCode;
 
     await saveState();
 
@@ -2291,14 +3021,17 @@ async function handleScannedCode(code){
 
     const el =
       document.getElementById(
-        "product-" + product.id
+        "product-" +
+        product.id
       );
 
     if(el){
       el.classList.add("open");
     }
 
-    showToast("QR کالا ثبت شد");
+    showToast(
+      "QR کالا ثبت شد"
+    );
 
     resetAutoLockTimer();
   }
@@ -2312,18 +3045,23 @@ async function exportBackup(){
 
   if(state.locked){
 
-    openPasswordModal("unlock");
+    openPasswordModal(
+      "unlock"
+    );
+
     return;
   }
 
   const backup = {
     version:2,
-    exportedAt:new Date().toISOString(),
+    exportedAt:
+      new Date().toISOString(),
     products:state.products,
     oldRate:state.oldRate,
     currentRate:state.currentRate,
     history:state.history,
-    autoLockMinutes:state.autoLockMinutes
+    autoLockMinutes:
+      state.autoLockMinutes
   };
 
   const data =
@@ -2336,14 +3074,21 @@ async function exportBackup(){
   const blob =
     new Blob(
       [data],
-      {type:"application/json"}
+      {
+        type:
+          "application/json"
+      }
     );
 
   const url =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+      blob
+    );
 
   const a =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
   a.href = url;
 
@@ -2361,10 +3106,14 @@ async function exportBackup(){
   a.remove();
 
   setTimeout(()=>{
-    URL.revokeObjectURL(url);
+    URL.revokeObjectURL(
+      url
+    );
   },1000);
 
-  showToast("پشتیبان ذخیره شد");
+  showToast(
+    "پشتیبان ذخیره شد"
+  );
 
   resetAutoLockTimer();
 }
@@ -2373,7 +3122,10 @@ async function importBackup(file){
 
   if(state.locked){
 
-    openPasswordModal("unlock");
+    openPasswordModal(
+      "unlock"
+    );
+
     return;
   }
 
@@ -2385,10 +3137,16 @@ async function importBackup(file){
 
     if(
       file.type &&
-      file.type !== "application/json" &&
-      !file.name.toLowerCase().endsWith(".json")
+      file.type !==
+        "application/json" &&
+      !file.name
+        .toLowerCase()
+        .endsWith(".json")
     ){
-      throw new Error("invalid-type");
+
+      throw new Error(
+        "invalid-type"
+      );
     }
 
     const text =
@@ -2399,36 +3157,90 @@ async function importBackup(file){
 
     if(
       !imported ||
-      !Array.isArray(imported.products)
+      !Array.isArray(
+        imported.products
+      )
     ){
-      throw new Error("invalid-data");
+
+      throw new Error(
+        "invalid-data"
+      );
     }
 
     const passwordHash =
       state.passwordHash;
 
     const normalizedProducts =
-      imported.products.map(p=>({
-        id:String(p.id || uid()),
-        name:String(p.name || "کالای بدون نام"),
-        price:cleanNumber(p.price),
-        qr:String(p.qr || ""),
-        image:String(p.image || "")
-      }));
+      imported.products.map(
+        p=>({
+          id:String(
+            p.id || uid()
+          ),
+
+          name:String(
+            p.name ||
+            "کالای بدون نام"
+          ),
+
+          price:
+            cleanNumber(p.price),
+
+          qr:String(
+            p.qr || ""
+          ),
+
+          image:String(
+            p.image || ""
+          )
+        })
+      );
+
+    const normalizedHistory =
+      Array.isArray(
+        imported.history
+      )
+        ? imported.history
+            .filter(Boolean)
+            .map(item=>({
+              date:String(
+                item.date || ""
+              ),
+              oldRate:
+                cleanNumber(
+                  item.oldRate
+                ),
+              newRate:
+                cleanNumber(
+                  item.newRate
+                ),
+              percent:
+                Number(
+                  item.percent || 0
+                ) || 0
+            }))
+        : [];
 
     state = {
       ...DEFAULT_STATE,
       ...state,
-      products:normalizedProducts,
-      oldRate:cleanNumber(imported.oldRate),
-      currentRate:cleanNumber(imported.currentRate),
-      history:Array.isArray(imported.history)
-        ? imported.history
-        : [],
+      products:
+        normalizedProducts,
+      oldRate:
+        cleanNumber(
+          imported.oldRate
+        ),
+      currentRate:
+        cleanNumber(
+          imported.currentRate
+        ),
+      history:
+        normalizedHistory,
       autoLockMinutes:
         Math.max(
           1,
-          Number(imported.autoLockMinutes) || 5
+          Number(
+            imported.autoLockMinutes
+          ) || 5
         ),
       passwordHash,
       locked:false
@@ -2440,7 +3252,9 @@ async function importBackup(file){
 
     startAutoLockTimer();
 
-    showToast("پشتیبان با موفقیت بازیابی شد");
+    showToast(
+      "پشتیبان با موفقیت بازیابی شد"
+    );
 
   }catch(error){
 
@@ -2469,7 +3283,9 @@ function renderAll(){
    PASSWORD VISIBILITY
 ========================================================= */
 
-function togglePasswordVisibility(id){
+function togglePasswordVisibility(
+  id
+){
 
   const input =
     document.getElementById(id);
@@ -2486,17 +3302,22 @@ function togglePasswordVisibility(id){
 
 document
   .getElementById("lockBtn")
-  .addEventListener("click",async()=>{
+  .addEventListener(
+    "click",
+    async()=>{
 
-    if(state.locked){
+      if(state.locked){
 
-      openPasswordModal("unlock");
+        openPasswordModal(
+          "unlock"
+        );
 
-    }else{
+      }else{
 
-      await lockNow(true);
+        await lockNow(true);
+      }
     }
-  });
+  );
 
 document
   .getElementById("passwordSubmit")
@@ -2514,12 +3335,15 @@ document
 
 document
   .getElementById("passwordInput")
-  .addEventListener("keydown",e=>{
+  .addEventListener(
+    "keydown",
+    e=>{
 
-    if(e.key === "Enter"){
-      handlePasswordSubmit();
+      if(e.key === "Enter"){
+        handlePasswordSubmit();
+      }
     }
-  });
+  );
 
 document
   .getElementById("setupSubmit")
@@ -2529,169 +3353,217 @@ document
   );
 
 document
-  .getElementById("setupPasswordConfirm")
-  .addEventListener("keydown",e=>{
+  .getElementById(
+    "setupPasswordConfirm"
+  )
+  .addEventListener(
+    "keydown",
+    e=>{
 
-    if(e.key === "Enter"){
-      createInitialPassword();
+      if(e.key === "Enter"){
+        createInitialPassword();
+      }
     }
-  });
+  );
 
 document
-  .getElementById("passwordVisibility")
-  .addEventListener("click",()=>{
-    togglePasswordVisibility(
-      "passwordInput"
-    );
-  });
+  .getElementById(
+    "passwordVisibility"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      togglePasswordVisibility(
+        "passwordInput"
+      );
+    }
+  );
 
 document
-  .getElementById("newPasswordVisibility")
-  .addEventListener("click",()=>{
-    togglePasswordVisibility(
-      "newPasswordInput"
-    );
-  });
+  .getElementById(
+    "newPasswordVisibility"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      togglePasswordVisibility(
+        "newPasswordInput"
+      );
+    }
+  );
 
 document
-  .getElementById("confirmPasswordVisibility")
-  .addEventListener("click",()=>{
-    togglePasswordVisibility(
-      "confirmPasswordInput"
-    );
-  });
+  .getElementById(
+    "confirmPasswordVisibility"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
+      togglePasswordVisibility(
+        "confirmPasswordInput"
+      );
+    }
+  );
 
 document
   .getElementById("searchInput")
-  .addEventListener("input",()=>{
+  .addEventListener(
+    "input",
+    ()=>{
 
-    renderProducts();
-    updateQuickResult();
-  });
+      renderProducts();
+      updateQuickResult();
+    }
+  );
 
 document
   .getElementById("searchScanBtn")
-  .addEventListener("click",()=>{
+  .addEventListener(
+    "click",
+    ()=>{
 
-    openScanner({
-      type:"search"
-    });
-  });
+      openScanner({
+        type:"search"
+      });
+    }
+  );
 
 document
   .getElementById("rateToggle")
-  .addEventListener("click",()=>{
+  .addEventListener(
+    "click",
+    ()=>{
 
-    const body =
-      document.getElementById("rateBody");
+      const body =
+        document.getElementById(
+          "rateBody"
+        );
 
-    body.style.display =
-      body.style.display === "none"
-        ? "block"
-        : "none";
-  });
+      body.style.display =
+        body.style.display === "none"
+          ? "block"
+          : "none";
+    }
+  );
 
 document
   .getElementById("historyToggle")
-  .addEventListener("click",()=>{
+  .addEventListener(
+    "click",
+    ()=>{
 
-    const list =
-      document.getElementById("historyList");
+      const list =
+        document.getElementById(
+          "historyList"
+        );
 
-    list.style.display =
-      list.style.display === "none"
-        ? "block"
-        : "none";
-  });
+      list.style.display =
+        list.style.display === "none"
+          ? "block"
+          : "none";
+    }
+  );
 
 document
   .getElementById("newRate")
-  .addEventListener("input",()=>{
+  .addEventListener(
+    "input",
+    ()=>{
 
-    const value =
-      cleanNumber(
-        document.getElementById("newRate").value
-      );
+      const value =
+        cleanNumber(
+          document.getElementById(
+            "newRate"
+          ).value
+        );
 
-    document.getElementById("rateWords")
-      .textContent =
+      document.getElementById(
+        "rateWords"
+      ).textContent =
         value
           ? numberToWords(value)
           : "";
-  });
+    }
+  );
 
 document
   .getElementById("rateBtn")
-  .addEventListener("click",async()=>{
+  .addEventListener(
+    "click",
+    async()=>{
 
-    if(state.locked){
+      if(state.locked){
 
-      openPasswordModal("unlock");
-      return;
-    }
+        openPasswordModal(
+          "unlock"
+        );
 
-    const newRate =
-      cleanNumber(
-        document.getElementById("newRate").value
-      );
+        return;
+      }
 
-    if(newRate <= 0){
+      const newRate =
+        cleanNumber(
+          document.getElementById(
+            "newRate"
+          ).value
+        );
+
+      if(newRate <= 0){
+
+        showToast(
+          "نرخ جدید را وارد کنید"
+        );
+
+        return;
+      }
+
+      if(state.currentRate > 0){
+
+        const oldRate =
+          state.currentRate;
+
+        const percent =
+          (
+            (
+              newRate /
+              oldRate
+            ) - 1
+          ) * 100;
+
+        state.history.unshift({
+          date:
+            new Date()
+              .toLocaleString(
+                "fa-IR"
+              ),
+          oldRate,
+          newRate,
+          percent
+        });
+
+        state.oldRate =
+          oldRate;
+
+      }else{
+
+        state.oldRate =
+          newRate;
+      }
+
+      state.currentRate =
+        newRate;
+
+      await saveState();
+
+      renderAll();
+
+      resetAutoLockTimer();
 
       showToast(
-        "نرخ جدید را وارد کنید"
+        "نرخ جدید ثبت شد"
       );
-
-      return;
     }
-
-    if(state.currentRate > 0){
-
-      const oldRate =
-        state.currentRate;
-
-      const percent =
-        ((newRate / oldRate) - 1) * 100;
-
-      state.history.unshift({
-        date:new Date()
-          .toLocaleString("fa-IR"),
-        oldRate,
-        newRate,
-        percent
-      });
-
-      /*
-        نرخ قبلی برای محاسبه قیمت‌ها
-        همان نرخ قبل از تغییر است.
-      */
-
-      state.oldRate =
-        oldRate;
-
-    }else{
-
-      /*
-        اولین نرخ:
-        قیمت جدید = قیمت فعلی
-      */
-
-      state.oldRate =
-        newRate;
-    }
-
-    state.currentRate =
-      newRate;
-
-    await saveState();
-
-    renderAll();
-
-    resetAutoLockTimer();
-
-    showToast(
-      "نرخ جدید ثبت شد"
-    );
-  });
+  );
 
 document
   .getElementById("addBtn")
@@ -2709,18 +3581,35 @@ document
 
 document
   .getElementById("importBtn")
-  .addEventListener("click",()=>{
+  .addEventListener(
+    "click",
+    ()=>{
 
-    if(state.locked){
+      if(state.locked){
 
-      openPasswordModal("unlock");
-      return;
+        openPasswordModal(
+          "unlock"
+        );
+
+        return;
+      }
+
+      document
+        .getElementById(
+          "importFile"
+        )
+        .click();
     }
+  );
 
-    document
-      .getElementById("importFile")
-      .click();
-  });
+document
+  .getElementById(
+    "resetHistoryBtn"
+  )
+  .addEventListener(
+    "click",
+    resetHistory
+  );
 
 document
   .getElementById("importFile")
@@ -2758,7 +3647,10 @@ document
 
         if(state.locked){
 
-          openPasswordModal("unlock");
+          openPasswordModal(
+            "unlock"
+          );
+
           return;
         }
 
@@ -2775,20 +3667,31 @@ document
         }
 
         document
-          .querySelectorAll(".product.open")
+          .querySelectorAll(
+            ".product.open"
+          )
           .forEach(other=>{
 
             if(other !== el){
-              other.classList.remove("open");
+              other.classList
+                .remove("open");
             }
           });
 
-        el.classList.toggle("open");
+        el.classList.toggle(
+          "open"
+        );
 
-        if(el.classList.contains("open")){
+        if(
+          el.classList.contains(
+            "open"
+          )
+        ){
 
           const input =
-            el.querySelector(".productName");
+            el.querySelector(
+              ".productName"
+            );
 
           if(input){
 
@@ -2811,12 +3714,16 @@ document
       if(image){
 
         document
-          .getElementById("largeImage")
+          .getElementById(
+            "largeImage"
+          )
           .src =
             image.dataset.image;
 
         document
-          .getElementById("imageModal")
+          .getElementById(
+            "imageModal"
+          )
           .classList.add("show");
 
         return;
@@ -2831,16 +3738,20 @@ document
 
         if(state.locked){
 
-          openPasswordModal("unlock");
+          openPasswordModal(
+            "unlock"
+          );
+
           return;
         }
 
         const id =
-          deleteBtn.dataset.deleteProduct;
+          deleteBtn.dataset
+            .deleteProduct;
 
         const product =
           state.products.find(
-            p=>p.id === id
+            p => p.id === id
           );
 
         if(!product){
@@ -2855,14 +3766,16 @@ document
 
         state.products =
           state.products.filter(
-            p=>p.id !== id
+            p => p.id !== id
           );
 
         await saveState();
 
         renderProducts();
 
-        showToast("کالا حذف شد");
+        showToast(
+          "کالا حذف شد"
+        );
 
         resetAutoLockTimer();
 
@@ -2877,7 +3790,8 @@ document
       if(closeBtn){
 
         const id =
-          closeBtn.dataset.closeProduct;
+          closeBtn.dataset
+            .closeProduct;
 
         const el =
           document.getElementById(
@@ -2885,7 +3799,8 @@ document
           );
 
         if(el){
-          el.classList.remove("open");
+          el.classList
+            .remove("open");
         }
 
         return;
@@ -2900,13 +3815,18 @@ document
 
         if(state.locked){
 
-          openPasswordModal("unlock");
+          openPasswordModal(
+            "unlock"
+          );
+
           return;
         }
 
         openScanner({
           type:"product",
-          id:scanBtn.dataset.scanProduct
+          id:
+            scanBtn.dataset
+              .scanProduct
         });
 
         return;
@@ -2916,25 +3836,31 @@ document
 
 /* =========================================================
    PRODUCT INPUT
-   بدون render هنگام تایپ
 ========================================================= */
 
 document
   .getElementById("products")
   .addEventListener(
     "input",
-    async e=>{
+    e=>{
 
       if(state.locked){
         return;
       }
 
-      const input = e.target;
+      const input =
+        e.target;
 
       if(
-        !input.classList.contains("productPrice") &&
-        !input.classList.contains("productName") &&
-        !input.classList.contains("productQR")
+        !input.classList.contains(
+          "productPrice"
+        ) &&
+        !input.classList.contains(
+          "productName"
+        ) &&
+        !input.classList.contains(
+          "productQR"
+        )
       ){
         return;
       }
@@ -2944,7 +3870,7 @@ document
 
       const product =
         state.products.find(
-          p=>p.id === id
+          p => p.id === id
         );
 
       if(!product){
@@ -2958,7 +3884,9 @@ document
       ){
 
         product.price =
-          cleanNumber(input.value);
+          cleanNumber(
+            input.value
+          );
       }
 
       if(
@@ -2988,7 +3916,9 @@ document
       ){
 
         const result =
-          calculateProduct(product);
+          calculateProduct(
+            product
+          );
 
         const words =
           document.getElementById(
@@ -3019,7 +3949,9 @@ document
 
             current.textContent =
               "فعلی: " +
-              money(product.price) +
+              money(
+                product.price
+              ) +
               " تومان";
           }
 
@@ -3077,7 +4009,9 @@ document
               ".field input[disabled]"
             );
 
-          if(disabledInputs.length >= 2){
+          if(
+            disabledInputs.length >= 2
+          ){
 
             disabledInputs[0].value =
               money(
@@ -3096,11 +4030,12 @@ document
       }
 
       /*
-        ذخیره می‌شود ولی DOM دوباره ساخته نمی‌شود؛
-        بنابراین کیبورد موبایل بسته نمی‌شود.
+        ذخیره با تاخیر کوتاه انجام می‌شود
+        تا هنگام تایپ، IndexedDB روی هر
+        ضربه کیبورد اجرا نشود.
       */
 
-      await saveState();
+      debounceSave();
 
       resetAutoLockTimer();
 
@@ -3132,7 +4067,8 @@ document
         return;
       }
 
-      const input = e.target;
+      const input =
+        e.target;
 
       if(
         !input.classList.contains(
@@ -3151,7 +4087,9 @@ document
 
       const product =
         state.products.find(
-          p=>p.id === input.dataset.id
+          p =>
+            p.id ===
+            input.dataset.id
         );
 
       if(!product){
@@ -3161,22 +4099,28 @@ document
       try{
 
         product.image =
-          await compressImage(file);
+          await compressImage(
+            file
+          );
 
         await saveState();
 
         const wasOpen =
           document
             .getElementById(
-              "product-" + product.id
+              "product-" +
+              product.id
             )
-            ?.classList.contains("open");
+            ?.classList.contains(
+              "open"
+            );
 
         renderProducts();
 
         const el =
           document.getElementById(
-            "product-" + product.id
+            "product-" +
+            product.id
           );
 
         if(wasOpen && el){
@@ -3205,27 +4149,48 @@ document
 ========================================================= */
 
 document
-  .getElementById("closeImageModal")
-  .addEventListener("click",()=>{
+  .getElementById(
+    "closeImageModal"
+  )
+  .addEventListener(
+    "click",
+    ()=>{
 
-    document
-      .getElementById("imageModal")
-      .classList.remove("show");
-  });
-
-document
-  .getElementById("imageModal")
-  .addEventListener("click",e=>{
-
-    if(e.target.id === "imageModal"){
-
-      e.currentTarget
-        .classList.remove("show");
+      document
+        .getElementById(
+          "imageModal"
+        )
+        .classList.remove(
+          "show"
+        );
     }
-  });
+  );
 
 document
-  .getElementById("scannerClose")
+  .getElementById(
+    "imageModal"
+  )
+  .addEventListener(
+    "click",
+    e=>{
+
+      if(
+        e.target.id ===
+        "imageModal"
+      ){
+
+        e.currentTarget
+          .classList.remove(
+            "show"
+          );
+      }
+    }
+  );
+
+document
+  .getElementById(
+    "scannerClose"
+  )
   .addEventListener(
     "click",
     async()=>{
@@ -3233,32 +4198,54 @@ document
       await stopScanner();
 
       document
-        .getElementById("scannerModal")
-        .classList.remove("show");
+        .getElementById(
+          "scannerModal"
+        )
+        .classList.remove(
+          "show"
+        );
     }
   );
 
 document
-  .getElementById("passwordModal")
-  .addEventListener("click",e=>{
+  .getElementById(
+    "passwordModal"
+  )
+  .addEventListener(
+    "click",
+    e=>{
 
-    if(e.target.id === "passwordModal"){
-      closePasswordModal();
+      if(
+        e.target.id ===
+        "passwordModal"
+      ){
+        closePasswordModal();
+      }
     }
-  });
+  );
 
 document
-  .getElementById("scannerModal")
-  .addEventListener("click",async e=>{
+  .getElementById(
+    "scannerModal"
+  )
+  .addEventListener(
+    "click",
+    async e=>{
 
-    if(e.target.id === "scannerModal"){
+      if(
+        e.target.id ===
+        "scannerModal"
+      ){
 
-      await stopScanner();
+        await stopScanner();
 
-      e.currentTarget
-        .classList.remove("show");
+        e.currentTarget
+          .classList.remove(
+            "show"
+          );
+      }
     }
-  });
+  );
 
 /* =========================================================
    ESCAPE
@@ -3273,30 +4260,40 @@ document.addEventListener(
     }
 
     document
-      .getElementById("imageModal")
-      .classList.remove("show");
+      .getElementById(
+        "imageModal"
+      )
+      .classList.remove(
+        "show"
+      );
 
     closePasswordModal();
 
     if(
       document
-        .getElementById("scannerModal")
-        .classList.contains("show")
+        .getElementById(
+          "scannerModal"
+        )
+        .classList.contains(
+          "show"
+        )
     ){
 
       await stopScanner();
 
       document
-        .getElementById("scannerModal")
-        .classList.remove("show");
+        .getElementById(
+          "scannerModal"
+        )
+        .classList.remove(
+          "show"
+        );
     }
   }
 );
 
 /* =========================================================
-   MOBILE SECURITY
-   هنگام بازگشت سریع از انتخاب فایل قفل نمی‌شود.
-   اگر صفحه بیشتر از ۴۵ ثانیه مخفی باشد قفل می‌شود.
+   VISIBILITY / SECURITY
 ========================================================= */
 
 document.addEventListener(
@@ -3305,24 +4302,33 @@ document.addEventListener(
 
     if(document.hidden){
 
-      clearTimeout(hiddenTimer);
+      clearTimeout(
+        hiddenTimer
+      );
 
       hiddenTimer =
-        setTimeout(()=>{
+        setTimeout(
+          ()=>{
 
-          if(!document.hidden){
-            return;
-          }
+            if(
+              !document.hidden
+            ){
+              return;
+            }
 
-          if(!state.locked){
-            lockNow(false);
-          }
+            if(!state.locked){
+              lockNow(false);
+            }
 
-        },45000);
+          },
+          45000
+        );
 
     }else{
 
-      clearTimeout(hiddenTimer);
+      clearTimeout(
+        hiddenTimer
+      );
 
       if(!state.locked){
         resetAutoLockTimer();
@@ -3339,20 +4345,22 @@ document.addEventListener(
   "keydown",
   e=>{
 
+    const tag =
+      document.activeElement?.tagName;
+
     if(
       e.key === "/" &&
-      document.activeElement.tagName !== "INPUT" &&
-      document.activeElement.tagName !== "TEXTAREA"
+      tag !== "INPUT" &&
+      tag !== "TEXTAREA"
     ){
 
       e.preventDefault();
 
-      const search =
-        document.getElementById(
+      document
+        .getElementById(
           "searchInput"
-        );
-
-      search.focus();
+        )
+        .focus();
     }
   }
 );
@@ -3370,9 +4378,8 @@ async function init(){
     await loadState();
 
     /*
-      اگر برنامه برای اولین بار اجرا شده،
-      رمز پیش‌فرض وجود ندارد و کاربر باید
-      خودش رمز مالک بسازد.
+      هیچ رمز پیش‌فرضی وجود ندارد.
+      اولین بار کاربر خودش رمز را می‌سازد.
     */
 
     if(!state.passwordHash){
@@ -3385,7 +4392,8 @@ async function init(){
     }
 
     /*
-      برنامه همیشه بعد از باز شدن قفل است.
+      هر بار برنامه باز می‌شود
+      در حالت قفل شروع می‌کند.
     */
 
     state.locked = true;
