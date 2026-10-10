@@ -1,1236 +1,1478 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111827">
-  <title>ماشین حساب قیمت</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت محصولات و محاسبه قیمت</title>
 
   <style>
     :root {
-      --bg: #f3f4f6;
-      --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
       --primary: #2563eb;
       --primary-dark: #1d4ed8;
-      --border: #e5e7eb;
+      --bg: #f3f6fb;
+      --card: #fff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #e2e8f0;
       --danger: #dc2626;
       --success: #15803d;
-      --radius: 16px;
+      --radius: 14px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
+      font-family: Tahoma, Arial, sans-serif;
       line-height: 1.8;
     }
 
-    button, input, select {
-      font: inherit;
+    header {
+      background: linear-gradient(135deg, #1d4ed8, #4338ca);
+      color: white;
+      padding: 24px 16px;
     }
 
-    button {
-      cursor: pointer;
-      border: 0;
-      border-radius: 10px;
-      padding: 10px 14px;
-      background: var(--primary);
-      color: #fff;
+    header .inner {
+      max-width: 1100px;
+      margin: auto;
     }
 
-    button:hover { background: var(--primary-dark); }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-
-    input {
-      width: 100%;
-      min-width: 0;
-      padding: 11px 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      background: #fff;
-      color: var(--text);
-      outline: none;
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
     }
 
-    input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px #2563eb20;
+    header p {
+      margin: 0;
+      opacity: .9;
+      font-size: 14px;
     }
 
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 13px;
-      color: var(--muted);
+    main {
+      max-width: 1100px;
+      padding: 20px 14px 50px;
+      margin: auto;
     }
-
-    h1, h2, h3, p { margin-top: 0; }
-    h1 { font-size: 23px; }
-    h2 { font-size: 18px; }
-    h3 { font-size: 15px; }
-
-    .container {
-      width: min(100% - 28px, 900px);
-      margin: 22px auto 50px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-    }
-
-    .header h1 { margin: 0; }
-    .muted { color: var(--muted); font-size: 13px; }
-    .small { font-size: 12px; }
-    .hidden { display: none !important; }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 18px;
-      margin-bottom: 16px;
-      box-shadow: 0 3px 12px #11182708;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, .04);
     }
 
-    .card h2 { margin-bottom: 12px; }
+    h2 {
+      font-size: 19px;
+      margin: 0 0 16px;
+    }
 
-    .rate-grid, .form-grid {
+    .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
+      gap: 14px;
     }
 
-    .rate-card {
-      background: #eff6ff;
-      border-color: #bfdbfe;
+    .field {
+      min-width: 0;
     }
 
-    .rate-value {
-      font-size: 25px;
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
       font-weight: bold;
-      color: #1d4ed8;
-      overflow-wrap: anywhere;
+      margin-bottom: 6px;
     }
 
-    .form-group { min-width: 0; }
-    .full { grid-column: 1 / -1; }
+    input,
+    textarea,
+    button {
+      font: inherit;
+    }
 
-    .button-row {
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      padding: 10px 12px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+    }
+
+    input[readonly] {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       align-items: center;
-      margin-top: 12px;
     }
 
-    .secondary { background: #4b5563; }
-    .secondary:hover { background: #374151; }
-    .danger { background: var(--danger); }
-    .danger:hover { background: #b91c1c; }
-    .success { background: var(--success); }
-    .success:hover { background: #166534; }
-    .light {
-      color: var(--text);
-      background: #e5e7eb;
-    }
-    .light:hover { background: #d1d5db; }
-
-    .status {
-      font-size: 13px;
-      margin-top: 9px;
-      min-height: 22px;
-      overflow-wrap: anywhere;
+    button,
+    .file-button {
+      border: 0;
+      border-radius: 9px;
+      padding: 9px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: .15s;
     }
 
-    .status.error { color: var(--danger); }
-    .status.ok { color: var(--success); }
-
-    .owner-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
-    .badge {
-      display: inline-block;
-      border-radius: 999px;
-      background: #e5e7eb;
-      padding: 3px 10px;
-      font-size: 12px;
-      color: #374151;
+    .primary {
+      background: var(--primary);
+      color: white;
     }
 
-    .badge.owner {
+    .primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .secondary {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .success {
       background: #dcfce7;
       color: #166534;
     }
 
-    .product-list {
+    .rate-row {
+      display: flex;
+      align-items: end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .rate-row .field {
+      flex: 1;
+      min-width: 190px;
+    }
+
+    .rate-current {
+      margin-top: 12px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 10px 12px;
+      border-radius: 9px;
+      font-size: 14px;
+    }
+
+    .notice {
+      padding: 10px 12px;
+      background: #fffbeb;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      border-radius: 9px;
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .search {
+      margin-bottom: 14px;
+    }
+
+    .products {
       display: grid;
-      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .product {
+      min-width: 0;
       border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 13px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .product-image {
+      width: 100%;
+      height: 190px;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
       align-items: center;
+      overflow: hidden;
     }
 
-    .product-name {
-      font-weight: bold;
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .placeholder {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .product-body {
+      padding: 14px;
+    }
+
+    .product-title {
+      margin: 0 0 8px;
+      font-size: 17px;
       overflow-wrap: anywhere;
     }
 
-    .product-meta {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 4px;
+    .product-info {
+      font-size: 13px;
+      color: #475569;
+      margin: 5px 0;
       overflow-wrap: anywhere;
     }
 
-    .product-price {
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--success);
-      overflow-wrap: anywhere;
+    .product-info strong {
+      color: #0f172a;
     }
 
     .product-actions {
       display: flex;
-      gap: 6px;
+      gap: 7px;
       flex-wrap: wrap;
-      margin-top: 8px;
+      margin-top: 13px;
     }
 
     .product-actions button {
-      padding: 6px 9px;
+      padding: 7px 10px;
       font-size: 12px;
     }
-
-    .history-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .history-item {
-      border-bottom: 1px solid var(--border);
-      padding: 8px 0;
-      font-size: 13px;
-    }
-
-    .history-item:last-child { border-bottom: 0; }
 
     .empty {
-      text-align: center;
-      padding: 25px 10px;
+      padding: 28px 12px;
       color: var(--muted);
-      font-size: 13px;
+      text-align: center;
+      border: 1px dashed #cbd5e1;
+      border-radius: 10px;
+      grid-column: 1 / -1;
     }
 
-    .notice {
-      background: #fffbeb;
-      border: 1px solid #fde68a;
-      color: #92400e;
-      padding: 11px 13px;
-      border-radius: 10px;
-      font-size: 12px;
+    .status {
       margin-top: 12px;
+      font-size: 13px;
+      min-height: 24px;
+    }
+
+    .status.error {
+      color: var(--danger);
+    }
+
+    .status.ok {
+      color: var(--success);
     }
 
     .modal {
       position: fixed;
       inset: 0;
-      background: #111827a8;
-      display: flex;
+      z-index: 1000;
+      background: rgba(15, 23, 42, .78);
+      display: none;
       align-items: center;
       justify-content: center;
+      padding: 16px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: 100%;
+      max-width: 540px;
+      background: white;
+      border-radius: 15px;
       padding: 18px;
-      z-index: 1000;
     }
 
-    .modal-box {
-      background: #fff;
-      width: min(100%, 430px);
-      border-radius: 18px;
-      padding: 22px;
-      max-height: 90vh;
-      overflow: auto;
+    .modal-panel h2 {
+      margin-bottom: 10px;
     }
 
-    .modal-box h2 { margin-bottom: 6px; }
-    .modal-box .form-group { margin-top: 12px; }
-
-    .file-label {
-      display: inline-flex;
-      align-items: center;
-      background: #4b5563;
-      color: white;
+    #scannerVideo {
+      width: 100%;
+      max-height: 55vh;
+      background: #0f172a;
       border-radius: 10px;
-      padding: 10px 14px;
-      cursor: pointer;
+      object-fit: cover;
     }
 
-    .file-label input { display: none; }
+    .scan-message {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 10px 0;
+    }
+
+    .preview-wrap {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .preview-wrap img {
+      max-width: 100%;
+      max-height: 180px;
+      object-fit: contain;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #f8fafc;
+    }
 
     footer {
-      text-align: center;
       color: var(--muted);
+      text-align: center;
       font-size: 12px;
-      padding: 10px 0;
+      padding: 10px 14px 25px;
     }
 
-    @media (max-width: 560px) {
-      .container { width: min(100% - 18px, 900px); margin-top: 12px; }
-      .card { padding: 14px; }
-      .rate-grid, .form-grid { grid-template-columns: 1fr; }
-      .product { grid-template-columns: 1fr; }
-      .product-price { font-size: 20px; }
-      .header h1 { font-size: 20px; }
+    @media (max-width: 650px) {
+      .grid,
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      header h1 {
+        font-size: 21px;
+      }
+
+      .product-image {
+        height: 220px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <main class="container">
-    <header class="header">
-      <div>
-        <h1>ماشین حساب قیمت</h1>
-        <div class="muted">محاسبه قیمت کالا با نرخ دلار</div>
-      </div>
-      <span id="ownerBadge" class="badge">حالت بازدیدکننده</span>
-    </header>
+  <header>
+    <div class="inner">
+      <h1>مدیریت محصولات و محاسبه قیمت</h1>
+      <p>ثبت محصولات، اسکن QR، مدیریت تصاویر و ثبت نرخ دلار</p>
+    </div>
+  </header>
 
-    <!-- نرخ دلار: برای همه کاربران قابل تغییر است -->
-    <section class="card rate-card">
-      <h2>نرخ دلار</h2>
+  <main>
+    <section class="card">
+      <h2>نرخ فعلی دلار</h2>
 
-      <div class="rate-grid">
-        <div>
-          <div class="muted">نرخ فعلی</div>
-          <div id="currentRateDisplay" class="rate-value">—</div>
-          <div class="muted">تومان</div>
-        </div>
-        <div>
-          <label for="newRate">ثبت یا تغییر نرخ دلار (تومان)</label>
-          <input id="newRate" type="number" min="0.000001" step="any"
-                 placeholder="مثلاً 85000" inputmode="decimal">
-          <div class="button-row">
-            <button id="rateBtn" type="button">ثبت نرخ جدید</button>
+      <div class="rate-row">
+        <div class="field">
+          <label for="usdRate">نرخ دلار به تومان</label>
+          <input
+            id="usdRate"
+            type="number"
+            min="0"
+            step="any"
+            placeholder="مثلاً 85000"
+          >
+          <div class="hint">
+            نرخ را وارد و ذخیره کنید. نرخ مرجع محصولات به‌صورت خودکار به‌روزرسانی می‌شود.
           </div>
         </div>
+
+        <button class="primary" id="saveRateBtn" type="button">
+          ذخیره نرخ
+        </button>
       </div>
 
-      <div id="rateStatus" class="status" aria-live="polite"></div>
-      <div class="muted small">برای تغییر نرخ دلار، رمز مالک لازم نیست.</div>
+      <div class="rate-current" id="currentRate">
+        نرخ فعلی هنوز ثبت نشده است.
+      </div>
     </section>
 
-    <!-- ورود مالک -->
-    <section class="card">
-      <div class="owner-bar">
-        <div>
-          <h2 style="margin-bottom:4px">مدیریت مالک</h2>
-          <div id="ownerDescription" class="muted">برای مدیریت کالاها وارد شوید.</div>
-        </div>
-        <div class="button-row" style="margin-top:0">
-          <button id="ownerLoginBtn" type="button">ورود مالک</button>
-          <button id="ownerLogoutBtn" class="secondary hidden" type="button">خروج مالک</button>
-        </div>
-      </div>
+    <section class="card" id="productFormCard">
+      <h2 id="formTitle">ثبت محصول جدید</h2>
 
-      <div id="ownerStatus" class="status" aria-live="polite"></div>
       <div class="notice">
-        تغییر نرخ دلار عمومی است؛ مدیریت کالاها و عملیات مالک نیاز به ورود دارد.
+        نرخ مرجع دلار در زمان ثبت محصول، به‌صورت خودکار از نرخ فعلی دریافت می‌شود.
+        برای تغییر نرخ مرجع، نرخ دلار را از بخش بالا ویرایش کنید.
       </div>
-    </section>
-
-    <!-- فرم افزودن کالا -->
-    <section id="productFormCard" class="card hidden">
-      <h2 id="productFormTitle">افزودن کالا</h2>
 
       <form id="productForm">
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="productName">نام کالا</label>
-            <input id="productName" maxlength="120" required placeholder="نام کالا">
+        <input type="hidden" id="productId">
+
+        <div class="grid">
+          <div class="field">
+            <label for="productName">نام محصول *</label>
+            <input
+              id="productName"
+              type="text"
+              required
+              maxlength="150"
+              placeholder="نام محصول"
+            >
           </div>
 
-          <div class="form-group">
-            <label for="productCode">کد کالا (اختیاری)</label>
-            <input id="productCode" maxlength="80" placeholder="کد یا بارکد">
+          <div class="field">
+            <label for="productCode">کد محصول / QR</label>
+
+            <div class="actions">
+              <div style="flex:1; min-width:160px">
+                <input
+                  id="productCode"
+                  type="text"
+                  maxlength="200"
+                  placeholder="کد محصول یا محتوای QR"
+                >
+              </div>
+
+              <button
+                class="secondary"
+                id="scanQrBtn"
+                type="button"
+              >
+                اسکن با دوربین
+              </button>
+            </div>
+
+            <div class="hint">
+              با اسکن QR، مقدار خوانده‌شده در فیلد کد محصول قرار می‌گیرد.
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="basePrice">قیمت پایه (تومان در نرخ مرجع)</label>
-            <input id="basePrice" type="number" min="0" step="any"
-                   inputmode="decimal" required placeholder="قیمت کالا">
+          <div class="field">
+            <label for="basePrice">قیمت پایه (تومان) *</label>
+            <input
+              id="basePrice"
+              type="number"
+              min="0"
+              step="any"
+              required
+              placeholder="قیمت پایه"
+            >
           </div>
 
-          <div class="form-group">
+          <div class="field">
             <label for="referenceRate">نرخ مرجع دلار</label>
-            <input id="referenceRate" type="number" min="0.000001" step="any"
-                   inputmode="decimal" required>
+            <input
+              id="referenceRate"
+              type="number"
+              readonly
+              placeholder="ابتدا نرخ دلار را ثبت کنید"
+            >
+            <div class="hint">
+              این مقدار به‌صورت خودکار تنظیم می‌شود و قابل ویرایش دستی نیست.
+            </div>
           </div>
 
-          <div class="form-group full">
-            <label for="productNote">توضیحات (اختیاری)</label>
-            <input id="productNote" maxlength="300" placeholder="توضیحات کالا">
+          <div class="field full">
+            <label for="productImage">تصویر محصول</label>
+            <input
+              id="productImage"
+              type="file"
+              accept="image/*"
+            >
+
+            <div class="hint">
+              فرمت‌های تصویری متداول قابل قبول هستند. بهتر است حجم تصویر کمتر از 2 مگابایت باشد.
+            </div>
+
+            <div class="preview-wrap" id="imagePreviewWrap">
+              <img id="imagePreview" alt="پیش‌نمایش تصویر محصول">
+              <div class="actions" style="margin-top:8px">
+                <button
+                  class="secondary"
+                  type="button"
+                  id="removeImageBtn"
+                >
+                  حذف تصویر انتخاب‌شده
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field full">
+            <label for="productNote">توضیحات</label>
+            <textarea
+              id="productNote"
+              maxlength="2000"
+              placeholder="توضیحات اختیاری محصول"
+            ></textarea>
           </div>
         </div>
 
-        <div class="button-row">
-          <button id="saveProductBtn" type="submit">ذخیره کالا</button>
-          <button id="cancelEditBtn" class="light hidden" type="button">لغو ویرایش</button>
+        <div class="actions" style="margin-top:18px">
+          <button class="primary" type="submit" id="submitProductBtn">
+            ثبت محصول
+          </button>
+
+          <button class="secondary" type="button" id="cancelEditBtn" hidden>
+            لغو ویرایش
+          </button>
         </div>
-        <div id="productFormStatus" class="status" aria-live="polite"></div>
+
+        <div id="formStatus" class="status" role="status"></div>
       </form>
     </section>
 
-    <!-- جستجو و فهرست کالاها -->
     <section class="card">
-      <h2>فهرست کالاها</h2>
-      <label for="searchInput">جستجو بر اساس نام، کد یا توضیحات</label>
-      <input id="searchInput" type="search" placeholder="نام کالا یا کد را وارد کنید">
+      <h2>فهرست محصولات</h2>
 
-      <div id="productCount" class="muted" style="margin:10px 0"></div>
-      <div id="productList" class="product-list"></div>
-    </section>
+      <input
+        class="search"
+        id="searchInput"
+        type="search"
+        placeholder="جست‌وجو بر اساس نام، کد یا توضیحات..."
+      >
 
-    <!-- ابزارهای مالک -->
-    <section id="adminTools" class="card hidden">
-      <h2>ابزارهای مالک</h2>
-
-      <div class="button-row">
-        <button id="exportBtn" type="button">دریافت نسخه پشتیبان</button>
-
-        <label class="file-label">
-          بازیابی نسخه پشتیبان
-          <input id="importFile" type="file" accept=".json,application/json">
-        </label>
-
-        <button id="changePasswordBtn" class="secondary" type="button">
-          تغییر رمز مالک
+      <div class="actions" style="margin-bottom:14px">
+        <button class="secondary" id="exportBtn" type="button">
+          خروجی پشتیبان JSON
         </button>
 
-        <button id="clearHistoryBtn" class="danger" type="button">
-          پاک کردن تاریخچه
+        <button class="secondary" id="importBtn" type="button">
+          بازیابی پشتیبان JSON
         </button>
+
+        <input
+          id="importFile"
+          type="file"
+          accept=".json,application/json"
+          hidden
+        >
       </div>
 
-      <div id="adminStatus" class="status" aria-live="polite"></div>
-      <div class="notice">
-        فایل پشتیبان شامل کالاها، نرخ فعلی و تاریخچه است. آن را در محل امن نگه دارید.
-      </div>
+      <div class="products" id="productsList"></div>
+      <div class="status" id="listStatus" role="status"></div>
     </section>
-
-    <!-- تاریخچه -->
-    <section class="card">
-      <div class="owner-bar">
-        <h2 style="margin:0">تاریخچه تغییر نرخ</h2>
-        <button id="toggleHistoryBtn" class="light" type="button">نمایش تاریخچه</button>
-      </div>
-
-      <div id="historySection" class="hidden" style="margin-top:12px">
-        <div id="historyList" class="history-list"></div>
-      </div>
-    </section>
-
-    <footer>ذخیره‌سازی محلی در مرورگر این دستگاه</footer>
   </main>
 
-  <!-- پنجره ورود یا ساخت رمز مالک -->
-  <div id="ownerModal" class="modal hidden" role="dialog" aria-modal="true"
-       aria-labelledby="ownerModalTitle">
-    <div class="modal-box">
-      <h2 id="ownerModalTitle">ورود مالک</h2>
-      <p id="ownerModalDescription" class="muted">رمز مالک را وارد کنید.</p>
+  <div class="modal" id="scannerModal" role="dialog" aria-modal="true">
+    <div class="modal-panel">
+      <h2>اسکن کد QR</h2>
 
-      <form id="ownerForm">
-        <div class="form-group">
-          <label for="ownerPassword">رمز مالک</label>
-          <input id="ownerPassword" type="password" autocomplete="current-password"
-                 required minlength="8" maxlength="128">
-        </div>
+      <video
+        id="scannerVideo"
+        autoplay
+        muted
+        playsinline
+      ></video>
 
-        <div id="confirmPasswordGroup" class="form-group hidden">
-          <label for="confirmPassword">تکرار رمز مالک</label>
-          <input id="confirmPassword" type="password" autocomplete="new-password"
-                 minlength="8" maxlength="128">
-        </div>
+      <div class="scan-message" id="scannerMessage">
+        در حال آماده‌سازی دوربین...
+      </div>
 
-        <div id="ownerModalStatus" class="status" aria-live="polite"></div>
-
-        <div class="button-row">
-          <button id="ownerSubmitBtn" type="submit">ورود</button>
-          <button id="ownerModalCancel" class="light" type="button">انصراف</button>
-        </div>
-      </form>
+      <div class="actions">
+        <button class="danger" id="closeScannerBtn" type="button">
+          بستن دوربین
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- پنجره تغییر رمز -->
-  <div id="passwordModal" class="modal hidden" role="dialog" aria-modal="true"
-       aria-labelledby="passwordModalTitle">
-    <div class="modal-box">
-      <h2 id="passwordModalTitle">تغییر رمز مالک</h2>
-
-      <form id="passwordForm">
-        <div class="form-group">
-          <label for="oldPassword">رمز فعلی</label>
-          <input id="oldPassword" type="password" required autocomplete="current-password">
-        </div>
-
-        <div class="form-group">
-          <label for="newPassword">رمز جدید (حداقل ۸ نویسه)</label>
-          <input id="newPassword" type="password" required minlength="8"
-                 maxlength="128" autocomplete="new-password">
-        </div>
-
-        <div class="form-group">
-          <label for="newPasswordConfirm">تکرار رمز جدید</label>
-          <input id="newPasswordConfirm" type="password" required minlength="8"
-                 maxlength="128" autocomplete="new-password">
-        </div>
-
-        <div id="passwordStatus" class="status" aria-live="polite"></div>
-
-        <div class="button-row">
-          <button type="submit">ذخیره رمز جدید</button>
-          <button id="passwordModalCancel" class="light" type="button">انصراف</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <!-- کتابخانه پشتیبان اسکن QR برای مرورگرهایی که BarcodeDetector ندارند -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
 
   <script>
-    "use strict";
+    (() => {
+      "use strict";
 
-    const STORAGE_KEY = "priceCalculatorState_v4";
+      const STORAGE_KEY = "priceCalculatorState_v4";
 
-    const defaultState = {
-      currentRate: 0,
-      products: [],
-      history: [],
-      passwordHash: null
-    };
+      const $ = id => document.getElementById(id);
 
-    let state = loadState();
-    let isOwner = false;
-    let editingProductId = null;
-    let ownerModalMode = "login";
+      const elements = {
+        usdRate: $("usdRate"),
+        saveRateBtn: $("saveRateBtn"),
+        currentRate: $("currentRate"),
 
-    const $ = id => document.getElementById(id);
+        productForm: $("productForm"),
+        productId: $("productId"),
+        productName: $("productName"),
+        productCode: $("productCode"),
+        basePrice: $("basePrice"),
+        referenceRate: $("referenceRate"),
+        productImage: $("productImage"),
+        productNote: $("productNote"),
+        formTitle: $("formTitle"),
+        submitProductBtn: $("submitProductBtn"),
+        cancelEditBtn: $("cancelEditBtn"),
+        formStatus: $("formStatus"),
 
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) return structuredCloneSafe(defaultState);
+        imagePreviewWrap: $("imagePreviewWrap"),
+        imagePreview: $("imagePreview"),
+        removeImageBtn: $("removeImageBtn"),
 
-        const parsed = JSON.parse(raw);
+        searchInput: $("searchInput"),
+        productsList: $("productsList"),
+        listStatus: $("listStatus"),
 
+        exportBtn: $("exportBtn"),
+        importBtn: $("importBtn"),
+        importFile: $("importFile"),
+
+        scanQrBtn: $("scanQrBtn"),
+        scannerModal: $("scannerModal"),
+        scannerVideo: $("scannerVideo"),
+        scannerMessage: $("scannerMessage"),
+        closeScannerBtn: $("closeScannerBtn")
+      };
+
+      let state = loadState();
+      let selectedImage = "";
+      let imageWasRemoved = false;
+      let cameraStream = null;
+      let scanAnimationFrame = null;
+      let barcodeDetector = null;
+      let scanBusy = false;
+
+      function defaultState() {
         return {
-          currentRate: validNumber(parsed.currentRate) ? parsed.currentRate : 0,
-          products: Array.isArray(parsed.products)
-            ? parsed.products.filter(isValidProduct).map(normalizeProduct)
-            : [],
-          history: Array.isArray(parsed.history)
-            ? parsed.history.filter(item =>
-                item && validNumber(item.rate) &&
-                typeof item.date === "string"
-              ).slice(0, 500)
-            : [],
-          passwordHash: typeof parsed.passwordHash === "string"
-            ? parsed.passwordHash
-            : null
+          usdRate: 0,
+          rateHistory: [],
+          products: []
         };
-      } catch (error) {
-        console.error("خطا در خواندن اطلاعات:", error);
-        return structuredCloneSafe(defaultState);
-      }
-    }
-
-    function structuredCloneSafe(value) {
-      return JSON.parse(JSON.stringify(value));
-    }
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        return true;
-      } catch (error) {
-        console.error("خطا در ذخیره اطلاعات:", error);
-        alert("ذخیره اطلاعات ناموفق بود. ممکن است فضای ذخیره‌سازی مرورگر پر شده باشد.");
-        return false;
-      }
-    }
-
-    function validNumber(value) {
-      return typeof value === "number" && Number.isFinite(value) && value >= 0;
-    }
-
-    function isValidProduct(p) {
-      return p && typeof p === "object" &&
-        typeof p.id === "string" &&
-        typeof p.name === "string" &&
-        validNumber(p.basePrice);
-    }
-
-    function normalizeProduct(p) {
-      return {
-        id: p.id,
-        name: String(p.name || "").slice(0, 120),
-        code: String(p.code || "").slice(0, 80),
-        basePrice: Number(p.basePrice),
-        referenceRate: validNumber(p.referenceRate) && p.referenceRate > 0
-          ? Number(p.referenceRate)
-          : (state.currentRate > 0 ? state.currentRate : 1),
-        note: String(p.note || "").slice(0, 300),
-        createdAt: p.createdAt || new Date().toISOString(),
-        updatedAt: p.updatedAt || new Date().toISOString()
-      };
-    }
-
-    function formatNumber(value, maximumFractionDigits = 2) {
-      if (!Number.isFinite(value)) return "—";
-      return new Intl.NumberFormat("fa-IR", {
-        maximumFractionDigits
-      }).format(value);
-    }
-
-    function formatMoney(value) {
-      if (!Number.isFinite(value)) return "—";
-      return formatNumber(value, 2) + " تومان";
-    }
-
-    function formatDate(value) {
-      try {
-        return new Date(value).toLocaleString("fa-IR");
-      } catch {
-        return String(value);
-      }
-    }
-
-    function makeId() {
-      if (crypto.randomUUID) return crypto.randomUUID();
-      return Date.now().toString(36) + Math.random().toString(36).slice(2);
-    }
-
-    function setStatus(id, message, type = "") {
-      const el = $(id);
-      el.textContent = message;
-      el.className = "status" + (type ? " " + type : "");
-    }
-
-    function escapeHtml(value) {
-      return String(value).replace(/[&<>"']/g, char => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      })[char]);
-    }
-
-    // رمز فقط برای کنترل رابط کاربری ذخیره می‌شود.
-    // این روش جایگزین احراز هویت امن سمت سرور نیست.
-    async function hashPassword(password) {
-      if (!crypto.subtle) {
-        throw new Error("برای ساخت یا بررسی رمز، سایت را از طریق HTTPS باز کنید.");
       }
 
-      const data = new TextEncoder().encode(password);
-      const digest = await crypto.subtle.digest("SHA-256", data);
+      function loadState() {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEY);
 
-      return Array.from(new Uint8Array(digest))
-        .map(byte => byte.toString(16).padStart(2, "0"))
-        .join("");
-    }
+          if (!saved) return defaultState();
 
-    function updateOwnerUI() {
-      $("ownerBadge").textContent = isOwner ? "مالک وارد شده" : "حالت بازدیدکننده";
-      $("ownerBadge").className = "badge" + (isOwner ? " owner" : "");
-      $("ownerLoginBtn").classList.toggle("hidden", isOwner);
-      $("ownerLogoutBtn").classList.toggle("hidden", !isOwner);
-      $("productFormCard").classList.toggle("hidden", !isOwner);
-      $("adminTools").classList.toggle("hidden", !isOwner);
+          const parsed = JSON.parse(saved);
 
-      $("ownerDescription").textContent = isOwner
-        ? "امکان مدیریت کالاها و اطلاعات فعال است."
-        : "برای افزودن یا حذف کالا و مدیریت اطلاعات وارد شوید.";
-
-      renderProducts();
-    }
-
-    function renderRate() {
-      $("currentRateDisplay").textContent = state.currentRate > 0
-        ? formatNumber(state.currentRate)
-        : "ثبت نشده";
-    }
-
-    function priceFor(product) {
-      const reference = product.referenceRate > 0
-        ? product.referenceRate
-        : (state.currentRate > 0 ? state.currentRate : 1);
-
-      if (state.currentRate <= 0) return product.basePrice;
-
-      return product.basePrice * state.currentRate / reference;
-    }
-
-    function renderProducts() {
-      const list = $("productList");
-      const query = $("searchInput").value.trim().toLocaleLowerCase();
-
-      const products = state.products.filter(product => {
-        const text = [
-          product.name,
-          product.code,
-          product.note
-        ].join(" ").toLocaleLowerCase();
-
-        return text.includes(query);
-      });
-
-      $("productCount").textContent =
-        `${formatNumber(products.length, 0)} کالا از ${formatNumber(state.products.length, 0)} کالا`;
-
-      if (products.length === 0) {
-        list.innerHTML = '<div class="empty">کالایی برای نمایش وجود ندارد.</div>';
-        return;
+          return {
+            usdRate: Number(parsed.usdRate) || 0,
+            rateHistory: Array.isArray(parsed.rateHistory)
+              ? parsed.rateHistory
+              : [],
+            products: Array.isArray(parsed.products)
+              ? parsed.products.map(normalizeProduct)
+              : []
+          };
+        } catch (error) {
+          console.error("خطا در خواندن اطلاعات:", error);
+          return defaultState();
+        }
       }
 
-      list.innerHTML = products.map(product => {
-        const currentPrice = priceFor(product);
-
-        return `
-          <article class="product">
-            <div>
-              <div class="product-name">${escapeHtml(product.name)}</div>
-              ${product.code
-                ? `<div class="product-meta">کد: ${escapeHtml(product.code)}</div>`
-                : ""}
-              ${product.note
-                ? `<div class="product-meta">${escapeHtml(product.note)}</div>`
-                : ""}
-              <div class="product-meta">
-                قیمت پایه: ${formatMoney(product.basePrice)}
-                <br>
-                نرخ مرجع: ${formatNumber(product.referenceRate)}
-              </div>
-              ${isOwner ? `
-                <div class="product-actions">
-                  <button type="button" class="secondary"
-                    data-edit="${escapeHtml(product.id)}">ویرایش</button>
-                  <button type="button" class="danger"
-                    data-delete="${escapeHtml(product.id)}">حذف</button>
-                </div>
-              ` : ""}
-            </div>
-            <div>
-              <div class="product-price">${formatMoney(currentPrice)}</div>
-              <div class="muted small">قیمت محاسبه‌شده</div>
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    function renderHistory() {
-      const list = $("historyList");
-
-      if (!state.history.length) {
-        list.innerHTML = '<div class="empty">تاریخچه‌ای ثبت نشده است.</div>';
-        return;
+      function normalizeProduct(product) {
+        return {
+          id: String(product.id || makeId()),
+          name: String(product.name || ""),
+          code: String(product.code || ""),
+          basePrice: Number(product.basePrice) || 0,
+          referenceRate: Number(product.referenceRate) || 0,
+          note: String(product.note || ""),
+          image: typeof product.image === "string" ? product.image : "",
+          createdAt: product.createdAt || new Date().toISOString(),
+          updatedAt: product.updatedAt || new Date().toISOString()
+        };
       }
 
-      list.innerHTML = state.history.map(item => `
-        <div class="history-item">
-          <strong>${formatNumber(item.rate)} تومان</strong>
-          <div class="muted">${escapeHtml(formatDate(item.date))}</div>
-        </div>
-      `).join("");
-    }
-
-    // تغییر نرخ دلار بدون نیاز به رمز مالک
-    function setRate() {
-      const raw = $("newRate").value.trim();
-      const rate = Number(raw);
-
-      if (!raw || !Number.isFinite(rate) || rate <= 0) {
-        setStatus("rateStatus", "یک نرخ معتبر بزرگ‌تر از صفر وارد کنید.", "error");
-        return;
+      function saveState() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          return true;
+        } catch (error) {
+          console.error(error);
+          alert(
+            "ذخیره اطلاعات انجام نشد. احتمالاً فضای ذخیره‌سازی مرورگر پر شده است. " +
+            "حجم تصاویر را کاهش دهید یا از اطلاعات خروجی پشتیبان تهیه کنید."
+          );
+          return false;
+        }
       }
 
-      const previousRate = state.currentRate;
+      function makeId() {
+        if (window.crypto && crypto.randomUUID) {
+          return crypto.randomUUID();
+        }
 
-      if (previousRate === rate) {
-        setStatus("rateStatus", "این نرخ از قبل ثبت شده است.", "");
-        return;
+        return Date.now().toString(36) +
+          Math.random().toString(36).slice(2);
       }
 
-      if (previousRate > 0) {
-        state.history.unshift({
-          rate: previousRate,
-          date: new Date().toISOString()
+      function formatNumber(value) {
+        return Number(value || 0).toLocaleString("fa-IR", {
+          maximumFractionDigits: 2
         });
       }
 
-      state.currentRate = rate;
-
-      if (!saveState()) return;
-
-      $("newRate").value = "";
-      renderRate();
-      renderProducts();
-      renderHistory();
-
-      setStatus(
-        "rateStatus",
-        "نرخ دلار با موفقیت برای این مرورگر تغییر کرد.",
-        "ok"
-      );
-    }
-
-    function showOwnerModal(mode) {
-      ownerModalMode = mode;
-
-      $("ownerForm").reset();
-      setStatus("ownerModalStatus", "");
-
-      const isSetup = mode === "setup";
-
-      $("ownerModalTitle").textContent = isSetup
-        ? "ساخت رمز مالک"
-        : "ورود مالک";
-
-      $("ownerModalDescription").textContent = isSetup
-        ? "یک رمز با حداقل ۸ نویسه انتخاب کنید."
-        : "رمز مالک را وارد کنید.";
-
-      $("confirmPasswordGroup").classList.toggle("hidden", !isSetup);
-      $("confirmPassword").required = isSetup;
-      $("ownerSubmitBtn").textContent = isSetup ? "ساخت رمز" : "ورود";
-
-      $("ownerModal").classList.remove("hidden");
-      $("ownerPassword").focus();
-    }
-
-    function hideOwnerModal() {
-      $("ownerModal").classList.add("hidden");
-    }
-
-    async function handleOwnerLogin(event) {
-      event.preventDefault();
-
-      const password = $("ownerPassword").value;
-
-      if (password.length < 8) {
-        setStatus("ownerModalStatus", "رمز باید حداقل ۸ نویسه داشته باشد.", "error");
-        return;
+      function escapeHtml(value) {
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        })[character]);
       }
 
-      try {
-        const hash = await hashPassword(password);
+      function showStatus(element, message, type = "") {
+        element.textContent = message;
+        element.className = "status" + (type ? " " + type : "");
+      }
 
-        if (ownerModalMode === "setup") {
-          if (password !== $("confirmPassword").value) {
-            setStatus("ownerModalStatus", "رمز و تکرار آن یکسان نیستند.", "error");
-            return;
-          }
+      function updateRateDisplay() {
+        elements.usdRate.value = state.usdRate || "";
 
-          if (state.passwordHash) {
-            setStatus("ownerModalStatus", "رمز قبلاً ساخته شده است. وارد شوید.", "error");
-            return;
-          }
+        if (state.usdRate > 0) {
+          elements.currentRate.textContent =
+            "نرخ فعلی دلار: " +
+            formatNumber(state.usdRate) +
+            " تومان";
 
-          state.passwordHash = hash;
-          if (!saveState()) return;
+          elements.referenceRate.value = state.usdRate;
+        } else {
+          elements.currentRate.textContent =
+            "نرخ فعلی هنوز ثبت نشده است.";
 
-          isOwner = true;
-          hideOwnerModal();
-          updateOwnerUI();
-          setStatus("ownerStatus", "رمز مالک ساخته شد.", "ok");
+          elements.referenceRate.value = "";
+        }
+      }
+
+      /*
+       * نرخ مرجع فقط از نرخ فعلی برنامه گرفته می‌شود.
+       * اگر نرخ ثبت نشده باشد، ثبت محصول متوقف خواهد شد.
+       */
+      function setReferenceRateFromCurrent() {
+        elements.referenceRate.value =
+          state.usdRate > 0 ? state.usdRate : "";
+      }
+
+      function saveRate() {
+        const value = Number(elements.usdRate.value);
+
+        if (!Number.isFinite(value) || value <= 0) {
+          alert("لطفاً نرخ دلار معتبر و بزرگ‌تر از صفر وارد کنید.");
+          elements.usdRate.focus();
           return;
         }
 
-        if (!state.passwordHash) {
-          setStatus("ownerModalStatus", "رمز مالک هنوز ساخته نشده است.", "error");
-          return;
+        const previousRate = state.usdRate;
+
+        state.usdRate = value;
+
+        if (previousRate !== value) {
+          state.rateHistory.unshift({
+            rate: value,
+            previousRate,
+            date: new Date().toISOString()
+          });
+
+          state.rateHistory = state.rateHistory.slice(0, 100);
         }
-
-        if (hash !== state.passwordHash) {
-          setStatus("ownerModalStatus", "رمز واردشده صحیح نیست.", "error");
-          return;
-        }
-
-        isOwner = true;
-        hideOwnerModal();
-        updateOwnerUI();
-        setStatus("ownerStatus", "ورود موفق بود.", "ok");
-      } catch (error) {
-        setStatus("ownerModalStatus", error.message || "خطا در بررسی رمز.", "error");
-      }
-    }
-
-    function resetProductForm() {
-      editingProductId = null;
-      $("productForm").reset();
-      $("productFormTitle").textContent = "افزودن کالا";
-      $("saveProductBtn").textContent = "ذخیره کالا";
-      $("cancelEditBtn").classList.add("hidden");
-      $("referenceRate").value = state.currentRate > 0 ? state.currentRate : "";
-      setStatus("productFormStatus", "");
-    }
-
-    function editProduct(id) {
-      if (!isOwner) return;
-
-      const product = state.products.find(item => item.id === id);
-      if (!product) return;
-
-      editingProductId = id;
-      $("productName").value = product.name;
-      $("productCode").value = product.code;
-      $("basePrice").value = product.basePrice;
-      $("referenceRate").value = state.currentRate > 0
-        ? state.currentRate
-        : product.referenceRate;
-      $("productNote").value = product.note;
-
-      $("productFormTitle").textContent = "ویرایش کالا";
-      $("saveProductBtn").textContent = "ذخیره تغییرات";
-      $("cancelEditBtn").classList.remove("hidden");
-      $("productFormCard").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-
-    function deleteProduct(id) {
-      if (!isOwner) return;
-
-      const product = state.products.find(item => item.id === id);
-      if (!product) return;
-
-      if (!confirm(`کالای «${product.name}» حذف شود؟`)) return;
-
-      state.products = state.products.filter(item => item.id !== id);
-
-      if (saveState()) {
-        renderProducts();
-        setStatus("adminStatus", "کالا حذف شد.", "ok");
-      }
-    }
-
-    function saveProduct(event) {
-      event.preventDefault();
-
-      if (!isOwner) {
-        setStatus("productFormStatus", "ابتدا وارد حساب مالک شوید.", "error");
-        return;
-      }
-
-      const name = $("productName").value.trim();
-      const code = $("productCode").value.trim();
-      const basePrice = Number($("basePrice").value);
-      const referenceRate = Number($("referenceRate").value);
-      const note = $("productNote").value.trim();
-
-      if (!name) {
-        setStatus("productFormStatus", "نام کالا را وارد کنید.", "error");
-        return;
-      }
-
-      if (!Number.isFinite(basePrice) || basePrice < 0) {
-        setStatus("productFormStatus", "قیمت پایه معتبر نیست.", "error");
-        return;
-      }
-
-      if (!Number.isFinite(referenceRate) || referenceRate <= 0) {
-        setStatus("productFormStatus", "نرخ مرجع باید بزرگ‌تر از صفر باشد.", "error");
-        return;
-      }
-
-      const duplicateCode = code && state.products.some(p =>
-        p.code.toLocaleLowerCase() === code.toLocaleLowerCase() &&
-        p.id !== editingProductId
-      );
-
-      if (duplicateCode) {
-        setStatus("productFormStatus", "این کد قبلاً برای کالای دیگری ثبت شده است.", "error");
-        return;
-      }
-
-      const now = new Date().toISOString();
-
-      if (editingProductId) {
-        const index = state.products.findIndex(p => p.id === editingProductId);
-        if (index < 0) return;
-
-        state.products[index] = {
-          ...state.products[index],
-          name,
-          code,
-          basePrice,
-          referenceRate,
-          note,
-          updatedAt: now
-        };
-      } else {
-        state.products.unshift({
-          id: makeId(),
-          name,
-          code,
-          basePrice,
-          referenceRate,
-          note,
-          createdAt: now,
-          updatedAt: now
-        });
-      }
-
-      if (!saveState()) return;
-
-      resetProductForm();
-      renderProducts();
-      setStatus("productFormStatus", "کالا با موفقیت ذخیره شد.", "ok");
-    }
-
-    function exportBackup() {
-      if (!isOwner) return;
-
-      const backup = {
-        app: "Price Calculator",
-        version: 4,
-        exportedAt: new Date().toISOString(),
-        currentRate: state.currentRate,
-        products: state.products,
-        history: state.history,
-        passwordHash: state.passwordHash
-      };
-
-      const blob = new Blob(
-        [JSON.stringify(backup, null, 2)],
-        { type: "application/json;charset=utf-8" }
-      );
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "price-calculator-backup.json";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-
-      setStatus("adminStatus", "نسخه پشتیبان دریافت شد.", "ok");
-    }
-
-    async function importBackup(event) {
-      if (!isOwner) {
-        event.target.value = "";
-        return;
-      }
-
-      const file = event.target.files && event.target.files[0];
-      event.target.value = "";
-
-      if (!file) return;
-
-      if (file.size > 5 * 1024 * 1024) {
-        setStatus("adminStatus", "حجم فایل باید کمتر از ۵ مگابایت باشد.", "error");
-        return;
-      }
-
-      try {
-        const text = await file.text();
-        const backup = JSON.parse(text);
-
-        if (!backup || !Array.isArray(backup.products) ||
-            !validNumber(backup.currentRate)) {
-          throw new Error("ساختار فایل پشتیبان معتبر نیست.");
-        }
-
-        if (!confirm("اطلاعات فعلی با اطلاعات فایل پشتیبان جایگزین شود؟")) {
-          return;
-        }
-
-        const validProducts = backup.products.filter(isValidProduct);
-
-        if (validProducts.length !== backup.products.length) {
-          throw new Error("برخی کالاهای فایل پشتیبان معتبر نیستند.");
-        }
-
-        state = {
-          currentRate: backup.currentRate,
-          products: backup.products.map(normalizeProduct),
-          history: Array.isArray(backup.history)
-            ? backup.history.filter(item =>
-                item && validNumber(item.rate) &&
-                typeof item.date === "string"
-              ).slice(0, 500)
-            : [],
-          // برای جلوگیری از قفل شدن تصادفی، رمز فعلی حفظ می‌شود.
-          passwordHash: state.passwordHash
-        };
 
         if (!saveState()) return;
 
-        renderRate();
+        updateRateDisplay();
         renderProducts();
-        renderHistory();
-        resetProductForm();
 
-        setStatus("adminStatus", "بازیابی اطلاعات انجام شد.", "ok");
-      } catch (error) {
-        setStatus(
-          "adminStatus",
-          error.message || "خواندن فایل پشتیبان ناموفق بود.",
-          "error"
+        showStatus(
+          elements.formStatus,
+          "نرخ دلار ذخیره شد. نرخ مرجع محصول جدید به‌روزرسانی شده است.",
+          "ok"
         );
       }
-    }
 
-    async function changePassword(event) {
-      event.preventDefault();
+      function readImage(file) {
+        return new Promise((resolve, reject) => {
+          if (!file) {
+            resolve("");
+            return;
+          }
 
-      if (!isOwner) return;
+          if (!file.type.startsWith("image/")) {
+            reject(new Error("فایل انتخاب‌شده تصویر نیست."));
+            return;
+          }
 
-      const oldPassword = $("oldPassword").value;
-      const newPassword = $("newPassword").value;
-      const confirmPassword = $("newPasswordConfirm").value;
+          const maxSize = 2 * 1024 * 1024;
 
-      if (newPassword.length < 8) {
-        setStatus("passwordStatus", "رمز جدید باید حداقل ۸ نویسه داشته باشد.", "error");
-        return;
+          if (file.size > maxSize) {
+            reject(new Error(
+              "حجم تصویر بیشتر از ۲ مگابایت است. لطفاً تصویر کوچک‌تری انتخاب کنید."
+            ));
+            return;
+          }
+
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const result = String(reader.result || "");
+
+            const image = new Image();
+
+            image.onload = () => {
+              const maxDimension = 1000;
+              const scale = Math.min(
+                1,
+                maxDimension / Math.max(image.width, image.height)
+              );
+
+              const canvas = document.createElement("canvas");
+
+              canvas.width = Math.max(1, Math.round(image.width * scale));
+              canvas.height = Math.max(1, Math.round(image.height * scale));
+
+              const context = canvas.getContext("2d");
+
+              context.drawImage(
+                image,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+              );
+
+              resolve(canvas.toDataURL("image/jpeg", 0.78));
+            };
+
+            image.onerror = () => {
+              reject(new Error("خواندن تصویر امکان‌پذیر نیست."));
+            };
+
+            image.src = result;
+          };
+
+          reader.onerror = () => {
+            reject(new Error("خطا در خواندن فایل تصویر."));
+          };
+
+          reader.readAsDataURL(file);
+        });
       }
 
-      if (newPassword !== confirmPassword) {
-        setStatus("passwordStatus", "رمز جدید و تکرار آن یکسان نیستند.", "error");
-        return;
-      }
-
-      try {
-        if (await hashPassword(oldPassword) !== state.passwordHash) {
-          setStatus("passwordStatus", "رمز فعلی صحیح نیست.", "error");
+      function showImagePreview(imageData) {
+        if (!imageData) {
+          elements.imagePreviewWrap.style.display = "none";
+          elements.imagePreview.removeAttribute("src");
           return;
         }
 
-        state.passwordHash = await hashPassword(newPassword);
-
-        if (!saveState()) return;
-
-        $("passwordForm").reset();
-        $("passwordModal").classList.add("hidden");
-        setStatus("adminStatus", "رمز مالک تغییر کرد.", "ok");
-      } catch (error) {
-        setStatus("passwordStatus", error.message || "تغییر رمز انجام نشد.", "error");
+        elements.imagePreview.src = imageData;
+        elements.imagePreviewWrap.style.display = "block";
       }
-    }
 
-    function clearHistory() {
-      if (!isOwner) return;
+      async function handleImageSelection() {
+        const file = elements.productImage.files[0];
 
-      if (!confirm("تمام تاریخچه تغییر نرخ حذف شود؟")) return;
+        if (!file) return;
 
-      state.history = [];
-
-      if (saveState()) {
-        renderHistory();
-        setStatus("adminStatus", "تاریخچه پاک شد.", "ok");
+        try {
+          selectedImage = await readImage(file);
+          imageWasRemoved = false;
+          showImagePreview(selectedImage);
+          showStatus(elements.formStatus, "تصویر انتخاب شد.", "ok");
+        } catch (error) {
+          elements.productImage.value = "";
+          showStatus(
+            elements.formStatus,
+            error.message || "خطا در انتخاب تصویر.",
+            "error"
+          );
+        }
       }
-    }
 
-    function initialize() {
-      renderRate();
-      renderProducts();
-      renderHistory();
-      updateOwnerUI();
+      function resetProductForm() {
+        elements.productForm.reset();
+        elements.productId.value = "";
+        elements.formTitle.textContent = "ثبت محصول جدید";
+        elements.submitProductBtn.textContent = "ثبت محصول";
+        elements.cancelEditBtn.hidden = true;
 
-      $("rateBtn").addEventListener("click", setRate);
-      $("newRate").addEventListener("keydown", event => {
-        if (event.key === "Enter") setRate();
-      });
+        selectedImage = "";
+        imageWasRemoved = false;
 
-      $("ownerLoginBtn").addEventListener("click", () => {
-        showOwnerModal(state.passwordHash ? "login" : "setup");
-      });
+        showImagePreview("");
+        elements.productImage.value = "";
 
-      $("ownerLogoutBtn").addEventListener("click", () => {
-        isOwner = false;
+        setReferenceRateFromCurrent();
+
+        showStatus(elements.formStatus, "");
+      }
+
+      function editProduct(id) {
+        const product = state.products.find(item => item.id === id);
+
+        if (!product) return;
+
+        elements.productId.value = product.id;
+        elements.productName.value = product.name;
+        elements.productCode.value = product.code;
+        elements.basePrice.value = product.basePrice;
+        elements.productNote.value = product.note;
+
+        /*
+         * نرخ مرجع در ویرایش هم از نرخ فعلی گرفته می‌شود،
+         * نه از ورودی دستی.
+         */
+        setReferenceRateFromCurrent();
+
+        selectedImage = product.image || "";
+        imageWasRemoved = false;
+
+        elements.productImage.value = "";
+        showImagePreview(selectedImage);
+
+        elements.formTitle.textContent = "ویرایش محصول";
+        elements.submitProductBtn.textContent = "ذخیره تغییرات";
+        elements.cancelEditBtn.hidden = false;
+
+        showStatus(elements.formStatus, "");
+
+        $("productFormCard").scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+      async function saveProduct(event) {
+        event.preventDefault();
+
+        const name = elements.productName.value.trim();
+        const code = elements.productCode.value.trim();
+        const basePrice = Number(elements.basePrice.value);
+        const note = elements.productNote.value.trim();
+        const id = elements.productId.value;
+
+        if (!name) {
+          showStatus(elements.formStatus, "نام محصول را وارد کنید.", "error");
+          return;
+        }
+
+        if (!Number.isFinite(basePrice) || basePrice < 0) {
+          showStatus(elements.formStatus, "قیمت پایه معتبر نیست.", "error");
+          return;
+        }
+
+        if (!Number.isFinite(state.usdRate) || state.usdRate <= 0) {
+          showStatus(
+            elements.formStatus,
+            "ابتدا نرخ فعلی دلار را در بخش بالای صفحه ثبت کنید.",
+            "error"
+          );
+
+          elements.usdRate.focus();
+          return;
+        }
+
+        const duplicate = state.products.find(product =>
+          product.code &&
+          code &&
+          product.code.toLowerCase() === code.toLowerCase() &&
+          product.id !== id
+        );
+
+        if (duplicate) {
+          const proceed = confirm(
+            "این کد قبلاً برای محصول دیگری ثبت شده است. ادامه می‌دهید؟"
+          );
+
+          if (!proceed) return;
+        }
+
+        const existing = id
+          ? state.products.find(product => product.id === id)
+          : null;
+
+        const image = imageWasRemoved
+          ? ""
+          : selectedImage || (existing ? existing.image : "");
+
+        const product = {
+          id: existing ? existing.id : makeId(),
+          name,
+          code,
+          basePrice,
+
+          // نرخ مرجع همیشه نرخ فعلی ثبت‌شده در برنامه است.
+          referenceRate: state.usdRate,
+
+          note,
+          image,
+          createdAt: existing
+            ? existing.createdAt
+            : new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        };
+
+        const oldProducts = state.products.slice();
+
+        if (existing) {
+          state.products = state.products.map(item =>
+            item.id === existing.id ? product : item
+          );
+        } else {
+          state.products.unshift(product);
+        }
+
+        if (!saveState()) {
+          state.products = oldProducts;
+          return;
+        }
+
         resetProductForm();
-        updateOwnerUI();
-        setStatus("ownerStatus", "از حساب مالک خارج شدید.");
-      });
+        renderProducts();
 
-      $("ownerForm").addEventListener("submit", handleOwnerLogin);
-      $("ownerModalCancel").addEventListener("click", hideOwnerModal);
+        showStatus(
+          elements.listStatus,
+          existing ? "تغییرات محصول ذخیره شد." : "محصول با موفقیت ثبت شد.",
+          "ok"
+        );
+      }
 
-      $("productForm").addEventListener("submit", saveProduct);
-      $("cancelEditBtn").addEventListener("click", resetProductForm);
-      $("searchInput").addEventListener("input", renderProducts);
+      function deleteProduct(id) {
+        const product = state.products.find(item => item.id === id);
 
-      $("productList").addEventListener("click", event => {
-        const editButton = event.target.closest("[data-edit]");
-        const deleteButton = event.target.closest("[data-delete]");
+        if (!product) return;
 
-        if (editButton) editProduct(editButton.dataset.edit);
-        if (deleteButton) deleteProduct(deleteButton.dataset.delete);
-      });
+        if (!confirm(
+          'آیا از حذف محصول «' + product.name + '» مطمئن هستید؟'
+        )) {
+          return;
+        }
 
-      $("referenceRate").value = state.currentRate > 0 ? state.currentRate : "";
+        const previous = state.products.slice();
 
-      $("toggleHistoryBtn").addEventListener("click", () => {
-        const section = $("historySection");
-        const opening = section.classList.contains("hidden");
+        state.products = state.products.filter(item => item.id !== id);
 
-        section.classList.toggle("hidden", !opening);
-        $("toggleHistoryBtn").textContent = opening
-          ? "پنهان کردن تاریخچه"
-          : "نمایش تاریخچه";
-      });
+        if (!saveState()) {
+          state.products = previous;
+          return;
+        }
 
-      $("exportBtn").addEventListener("click", exportBackup);
-      $("importFile").addEventListener("change", importBackup);
-      $("clearHistoryBtn").addEventListener("click", clearHistory);
+        renderProducts();
+        showStatus(elements.listStatus, "محصول حذف شد.", "ok");
+      }
 
-      $("changePasswordBtn").addEventListener("click", () => {
-        $("passwordForm").reset();
-        setStatus("passwordStatus", "");
-        $("passwordModal").classList.remove("hidden");
-      });
+      function renderProducts() {
+        const query = elements.searchInput.value.trim().toLowerCase();
 
-      $("passwordModalCancel").addEventListener("click", () => {
-        $("passwordModal").classList.add("hidden");
-      });
+        const products = state.products.filter(product => {
+          const text = [
+            product.name,
+            product.code,
+            product.note
+          ].join(" ").toLowerCase();
 
-      $("passwordForm").addEventListener("submit", changePassword);
+          return text.includes(query);
+        });
 
-      // بستن پنجره‌ها با کلیک روی فضای بیرون
-      $("ownerModal").addEventListener("click", event => {
-        if (event.target === $("ownerModal")) hideOwnerModal();
-      });
+        if (products.length === 0) {
+          elements.productsList.innerHTML =
+            '<div class="empty">محصولی برای نمایش وجود ندارد.</div>';
+          return;
+        }
 
-      $("passwordModal").addEventListener("click", event => {
-        if (event.target === $("passwordModal")) {
-          $("passwordModal").classList.add("hidden");
+        elements.productsList.innerHTML = products.map(product => {
+          const imageHtml = product.image
+            ? '<img src="' + escapeHtml(product.image) +
+              '" alt="' + escapeHtml(product.name) + '">'
+            : '<div class="placeholder">تصویری ثبت نشده است</div>';
+
+          const priceAtCurrentRate =
+            product.referenceRate > 0
+              ? product.basePrice * state.usdRate / product.referenceRate
+              : product.basePrice;
+
+          return `
+            <article class="product">
+              <div class="product-image">
+                ${imageHtml}
+              </div>
+
+              <div class="product-body">
+                <h3 class="product-title">
+                  ${escapeHtml(product.name)}
+                </h3>
+
+                <p class="product-info">
+                  <strong>کد محصول:</strong>
+                  ${escapeHtml(product.code || "ثبت نشده")}
+                </p>
+
+                <p class="product-info">
+                  <strong>قیمت پایه:</strong>
+                  ${formatNumber(product.basePrice)} تومان
+                </p>
+
+                <p class="product-info">
+                  <strong>نرخ مرجع ثبت‌شده:</strong>
+                  ${formatNumber(product.referenceRate)} تومان
+                </p>
+
+                <p class="product-info">
+                  <strong>قیمت محاسبه‌شده با نرخ فعلی:</strong>
+                  ${formatNumber(priceAtCurrentRate)} تومان
+                </p>
+
+                ${
+                  product.note
+                    ? `<p class="product-info"><strong>توضیحات:</strong>
+                       ${escapeHtml(product.note)}</p>`
+                    : ""
+                }
+
+                <div class="product-actions">
+                  <button
+                    class="primary"
+                    type="button"
+                    data-action="edit"
+                    data-id="${escapeHtml(product.id)}"
+                  >ویرایش</button>
+
+                  <button
+                    class="danger"
+                    type="button"
+                    data-action="delete"
+                    data-id="${escapeHtml(product.id)}"
+                  >حذف</button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      async function openScanner() {
+        if (!navigator.mediaDevices ||
+            !navigator.mediaDevices.getUserMedia) {
+          alert(
+            "دسترسی به دوربین در این مرورگر ممکن نیست. " +
+            "صفحه را با HTTPS یا localhost باز کنید."
+          );
+          return;
+        }
+
+        elements.scannerModal.classList.add("open");
+        elements.scannerMessage.textContent = "در حال درخواست دسترسی دوربین...";
+
+        try {
+          if ("BarcodeDetector" in window) {
+            try {
+              barcodeDetector = new BarcodeDetector({
+                formats: ["qr_code"]
+              });
+            } catch (error) {
+              barcodeDetector = null;
+            }
+          }
+
+          cameraStream = await navigator.mediaDevices.getUserMedia({
+            audio: false,
+            video: {
+              facingMode: { ideal: "environment" }
+            }
+          });
+
+          elements.scannerVideo.srcObject = cameraStream;
+          await elements.scannerVideo.play();
+
+          elements.scannerMessage.textContent =
+            "کد QR را مقابل دوربین قرار دهید.";
+
+          scanBusy = false;
+          scanFrame();
+        } catch (error) {
+          closeScanner();
+
+          let message = "باز کردن دوربین ناموفق بود.";
+
+          if (error.name === "NotAllowedError") {
+            message = "دسترسی دوربین رد شده است. مجوز دوربین را فعال کنید.";
+          } else if (error.name === "NotFoundError") {
+            message = "دوربینی در دستگاه پیدا نشد.";
+          } else if (error.name === "NotReadableError") {
+            message = "دوربین در حال استفاده توسط برنامه دیگری است.";
+          }
+
+          alert(message);
+        }
+      }
+
+      async function scanFrame() {
+        if (!cameraStream ||
+            !elements.scannerModal.classList.contains("open")) {
+          return;
+        }
+
+        if (!scanBusy &&
+            elements.scannerVideo.readyState >= 2) {
+          scanBusy = true;
+
+          try {
+            const video = elements.scannerVideo;
+            let result = null;
+
+            if (barcodeDetector) {
+              const codes = await barcodeDetector.detect(video);
+
+              if (codes.length > 0) {
+                result = codes[0].rawValue;
+              }
+            } else if (typeof window.jsQR === "function") {
+              const canvas = document.createElement("canvas");
+
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+
+              const context = canvas.getContext("2d", {
+                willReadFrequently: true
+              });
+
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+              const imageData = context.getImageData(
+                0, 0, canvas.width, canvas.height
+              );
+
+              const qr = window.jsQR(
+                imageData.data,
+                imageData.width,
+                imageData.height,
+                { inversionAttempts: "attemptBoth" }
+              );
+
+              if (qr) result = qr.data;
+            } else {
+              elements.scannerMessage.textContent =
+                "این مرورگر اسکن QR را پشتیبانی نمی‌کند. " +
+                "از مرورگر دیگری استفاده کنید.";
+            }
+
+            if (result) {
+              elements.productCode.value = result;
+              closeScanner();
+
+              showStatus(
+                elements.formStatus,
+                "کد QR با موفقیت خوانده شد.",
+                "ok"
+              );
+
+              elements.productCode.focus();
+              return;
+            }
+          } catch (error) {
+            console.error("خطا در اسکن:", error);
+          } finally {
+            scanBusy = false;
+          }
+        }
+
+        if (cameraStream) {
+          scanAnimationFrame = requestAnimationFrame(scanFrame);
+        }
+      }
+
+      function closeScanner() {
+        if (scanAnimationFrame !== null) {
+          cancelAnimationFrame(scanAnimationFrame);
+          scanAnimationFrame = null;
+        }
+
+        if (cameraStream) {
+          cameraStream.getTracks().forEach(track => track.stop());
+          cameraStream = null;
+        }
+
+        elements.scannerVideo.pause();
+        elements.scannerVideo.srcObject = null;
+        elements.scannerModal.classList.remove("open");
+        scanBusy = false;
+      }
+
+      function exportBackup() {
+        const data = {
+          version: 1,
+          exportedAt: new Date().toISOString(),
+          ...state
+        };
+
+        const blob = new Blob(
+          [JSON.stringify(data, null, 2)],
+          { type: "application/json;charset=utf-8" }
+        );
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "product-backup-" +
+          new Date().toISOString().slice(0, 10) +
+          ".json";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+      }
+
+      function importBackupFile(file) {
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          try {
+            const imported = JSON.parse(String(reader.result));
+
+            if (!Array.isArray(imported.products)) {
+              throw new Error("ساختار فایل پشتیبان معتبر نیست.");
+            }
+
+            const confirmed = confirm(
+              "بازیابی پشتیبان، اطلاعات فعلی محصولات و نرخ دلار را جایگزین می‌کند. ادامه می‌دهید؟"
+            );
+
+            if (!confirmed) return;
+
+            const previous = state;
+
+            state = {
+              usdRate: Number(imported.usdRate) || 0,
+              rateHistory: Array.isArray(imported.rateHistory)
+                ? imported.rateHistory
+                : [],
+              products: imported.products.map(normalizeProduct)
+            };
+
+            if (!saveState()) {
+              state = previous;
+              return;
+            }
+
+            updateRateDisplay();
+            renderProducts();
+            resetProductForm();
+
+            showStatus(
+              elements.listStatus,
+              "بازیابی پشتیبان با موفقیت انجام شد.",
+              "ok"
+            );
+          } catch (error) {
+            alert(error.message || "فایل پشتیبان قابل خواندن نیست.");
+          } finally {
+            elements.importFile.value = "";
+          }
+        };
+
+        reader.onerror = () => {
+          alert("خواندن فایل پشتیبان ناموفق بود.");
+          elements.importFile.value = "";
+        };
+
+        reader.readAsText(file);
+      }
+
+      elements.saveRateBtn.addEventListener("click", saveRate);
+
+      elements.usdRate.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          saveRate();
         }
       });
-    }
 
-    initialize();
+      elements.productForm.addEventListener("submit", saveProduct);
+
+      elements.cancelEditBtn.addEventListener("click", resetProductForm);
+
+      elements.productImage.addEventListener(
+        "change",
+        handleImageSelection
+      );
+
+      elements.removeImageBtn.addEventListener("click", () => {
+        selectedImage = "";
+        imageWasRemoved = true;
+        elements.productImage.value = "";
+        showImagePreview("");
+        showStatus(elements.formStatus, "تصویر برای حذف انتخاب شد.");
+      });
+
+      elements.searchInput.addEventListener("input", renderProducts);
+
+      elements.productsList.addEventListener("click", event => {
+        const button = event.target.closest("button[data-action]");
+
+        if (!button) return;
+
+        const { action, id } = button.dataset;
+
+        if (action === "edit") editProduct(id);
+        if (action === "delete") deleteProduct(id);
+      });
+
+      elements.scanQrBtn.addEventListener("click", openScanner);
+      elements.closeScannerBtn.addEventListener("click", closeScanner);
+
+      elements.scannerModal.addEventListener("click", event => {
+        if (event.target === elements.scannerModal) {
+          closeScanner();
+        }
+      });
+
+      document.addEventListener("keydown", event => {
+        if (event.key === "Escape") closeScanner();
+      });
+
+      elements.exportBtn.addEventListener("click", exportBackup);
+
+      elements.importBtn.addEventListener("click", () => {
+        elements.importFile.click();
+      });
+
+      elements.importFile.addEventListener("change", event => {
+        importBackupFile(event.target.files[0]);
+      });
+
+      // بارگذاری اولیه برنامه
+      updateRateDisplay();
+      setReferenceRateFromCurrent();
+      renderProducts();
+    })();
   </script>
 </body>
 </html>
