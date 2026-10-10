@@ -1,1478 +1,1460 @@
 
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مدیریت محصولات و محاسبه قیمت</title>
-
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --bg: #f3f6fb;
-      --card: #fff;
-      --text: #172033;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --danger: #dc2626;
-      --success: #15803d;
-      --radius: 14px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Tahoma, Arial, sans-serif;
-      line-height: 1.8;
-    }
-
-    header {
-      background: linear-gradient(135deg, #1d4ed8, #4338ca);
-      color: white;
-      padding: 24px 16px;
-    }
-
-    header .inner {
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    header h1 {
-      margin: 0 0 6px;
-      font-size: 24px;
-    }
-
-    header p {
-      margin: 0;
-      opacity: .9;
-      font-size: 14px;
-    }
-
-    main {
-      max-width: 1100px;
-      padding: 20px 14px 50px;
-      margin: auto;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 18px rgba(15, 23, 42, .04);
-    }
-
-    h2 {
-      font-size: 19px;
-      margin: 0 0 16px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .field {
-      min-width: 0;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    label {
-      display: block;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 6px;
-    }
-
-    input,
-    textarea,
-    button {
-      font: inherit;
-    }
-
-    input,
-    textarea {
-      width: 100%;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
-      padding: 10px 12px;
-      background: white;
-      color: var(--text);
-      outline: none;
-    }
-
-    input:focus,
-    textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
-    }
-
-    input[readonly] {
-      background: #f1f5f9;
-      color: #334155;
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 80px;
-    }
-
-    .hint {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    button,
-    .file-button {
-      border: 0;
-      border-radius: 9px;
-      padding: 9px 14px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: .15s;
-    }
-
-    button:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-
-    .primary {
-      background: var(--primary);
-      color: white;
-    }
-
-    .primary:hover {
-      background: var(--primary-dark);
-    }
-
-    .secondary {
-      background: #e2e8f0;
-      color: #1e293b;
-    }
-
-    .danger {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-
-    .success {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .rate-row {
-      display: flex;
-      align-items: end;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .rate-row .field {
-      flex: 1;
-      min-width: 190px;
-    }
-
-    .rate-current {
-      margin-top: 12px;
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      padding: 10px 12px;
-      border-radius: 9px;
-      font-size: 14px;
-    }
-
-    .notice {
-      padding: 10px 12px;
-      background: #fffbeb;
-      color: #92400e;
-      border: 1px solid #fde68a;
-      border-radius: 9px;
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    .search {
-      margin-bottom: 14px;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .product {
-      min-width: 0;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .product-image {
-      width: 100%;
-      height: 190px;
-      background: #f1f5f9;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .product-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .placeholder {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .product-body {
-      padding: 14px;
-    }
-
-    .product-title {
-      margin: 0 0 8px;
-      font-size: 17px;
-      overflow-wrap: anywhere;
-    }
-
-    .product-info {
-      font-size: 13px;
-      color: #475569;
-      margin: 5px 0;
-      overflow-wrap: anywhere;
-    }
-
-    .product-info strong {
-      color: #0f172a;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-      margin-top: 13px;
-    }
-
-    .product-actions button {
-      padding: 7px 10px;
-      font-size: 12px;
-    }
-
-    .empty {
-      padding: 28px 12px;
-      color: var(--muted);
-      text-align: center;
-      border: 1px dashed #cbd5e1;
-      border-radius: 10px;
-      grid-column: 1 / -1;
-    }
-
-    .status {
-      margin-top: 12px;
-      font-size: 13px;
-      min-height: 24px;
-    }
-
-    .status.error {
-      color: var(--danger);
-    }
-
-    .status.ok {
-      color: var(--success);
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(15, 23, 42, .78);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-panel {
-      width: 100%;
-      max-width: 540px;
-      background: white;
-      border-radius: 15px;
-      padding: 18px;
-    }
-
-    .modal-panel h2 {
-      margin-bottom: 10px;
-    }
-
-    #scannerVideo {
-      width: 100%;
-      max-height: 55vh;
-      background: #0f172a;
-      border-radius: 10px;
-      object-fit: cover;
-    }
-
-    .scan-message {
-      color: var(--muted);
-      font-size: 13px;
-      margin: 10px 0;
-    }
-
-    .preview-wrap {
-      display: none;
-      margin-top: 10px;
-    }
-
-    .preview-wrap img {
-      max-width: 100%;
-      max-height: 180px;
-      object-fit: contain;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: #f8fafc;
-    }
-
-    footer {
-      color: var(--muted);
-      text-align: center;
-      font-size: 12px;
-      padding: 10px 14px 25px;
-    }
-
-    @media (max-width: 650px) {
-      .grid,
-      .products {
-        grid-template-columns: 1fr;
-      }
-
-      .card {
-        padding: 15px;
-      }
-
-      header h1 {
-        font-size: 21px;
-      }
-
-      .product-image {
-        height: 220px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <header>
-    <div class="inner">
-      <h1>مدیریت محصولات و محاسبه قیمت</h1>
-      <p>ثبت محصولات، اسکن QR، مدیریت تصاویر و ثبت نرخ دلار</p>
-    </div>
-  </header>
-
-  <main>
-    <section class="card">
-      <h2>نرخ فعلی دلار</h2>
-
-      <div class="rate-row">
-        <div class="field">
-          <label for="usdRate">نرخ دلار به تومان</label>
-          <input
-            id="usdRate"
-            type="number"
-            min="0"
-            step="any"
-            placeholder="مثلاً 85000"
-          >
-          <div class="hint">
-            نرخ را وارد و ذخیره کنید. نرخ مرجع محصولات به‌صورت خودکار به‌روزرسانی می‌شود.
-          </div>
-        </div>
-
-        <button class="primary" id="saveRateBtn" type="button">
-          ذخیره نرخ
-        </button>
-      </div>
-
-      <div class="rate-current" id="currentRate">
-        نرخ فعلی هنوز ثبت نشده است.
-      </div>
-    </section>
-
-    <section class="card" id="productFormCard">
-      <h2 id="formTitle">ثبت محصول جدید</h2>
-
-      <div class="notice">
-        نرخ مرجع دلار در زمان ثبت محصول، به‌صورت خودکار از نرخ فعلی دریافت می‌شود.
-        برای تغییر نرخ مرجع، نرخ دلار را از بخش بالا ویرایش کنید.
-      </div>
-
-      <form id="productForm">
-        <input type="hidden" id="productId">
-
-        <div class="grid">
-          <div class="field">
-            <label for="productName">نام محصول *</label>
-            <input
-              id="productName"
-              type="text"
-              required
-              maxlength="150"
-              placeholder="نام محصول"
-            >
-          </div>
-
-          <div class="field">
-            <label for="productCode">کد محصول / QR</label>
-
-            <div class="actions">
-              <div style="flex:1; min-width:160px">
-                <input
-                  id="productCode"
-                  type="text"
-                  maxlength="200"
-                  placeholder="کد محصول یا محتوای QR"
-                >
-              </div>
-
-              <button
-                class="secondary"
-                id="scanQrBtn"
-                type="button"
-              >
-                اسکن با دوربین
-              </button>
-            </div>
-
-            <div class="hint">
-              با اسکن QR، مقدار خوانده‌شده در فیلد کد محصول قرار می‌گیرد.
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="basePrice">قیمت پایه (تومان) *</label>
-            <input
-              id="basePrice"
-              type="number"
-              min="0"
-              step="any"
-              required
-              placeholder="قیمت پایه"
-            >
-          </div>
-
-          <div class="field">
-            <label for="referenceRate">نرخ مرجع دلار</label>
-            <input
-              id="referenceRate"
-              type="number"
-              readonly
-              placeholder="ابتدا نرخ دلار را ثبت کنید"
-            >
-            <div class="hint">
-              این مقدار به‌صورت خودکار تنظیم می‌شود و قابل ویرایش دستی نیست.
-            </div>
-          </div>
-
-          <div class="field full">
-            <label for="productImage">تصویر محصول</label>
-            <input
-              id="productImage"
-              type="file"
-              accept="image/*"
-            >
-
-            <div class="hint">
-              فرمت‌های تصویری متداول قابل قبول هستند. بهتر است حجم تصویر کمتر از 2 مگابایت باشد.
-            </div>
-
-            <div class="preview-wrap" id="imagePreviewWrap">
-              <img id="imagePreview" alt="پیش‌نمایش تصویر محصول">
-              <div class="actions" style="margin-top:8px">
-                <button
-                  class="secondary"
-                  type="button"
-                  id="removeImageBtn"
-                >
-                  حذف تصویر انتخاب‌شده
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="field full">
-            <label for="productNote">توضیحات</label>
-            <textarea
-              id="productNote"
-              maxlength="2000"
-              placeholder="توضیحات اختیاری محصول"
-            ></textarea>
-          </div>
-        </div>
-
-        <div class="actions" style="margin-top:18px">
-          <button class="primary" type="submit" id="submitProductBtn">
-            ثبت محصول
-          </button>
-
-          <button class="secondary" type="button" id="cancelEditBtn" hidden>
-            لغو ویرایش
-          </button>
-        </div>
-
-        <div id="formStatus" class="status" role="status"></div>
-      </form>
-    </section>
-
-    <section class="card">
-      <h2>فهرست محصولات</h2>
-
-      <input
-        class="search"
-        id="searchInput"
-        type="search"
-        placeholder="جست‌وجو بر اساس نام، کد یا توضیحات..."
-      >
-
-      <div class="actions" style="margin-bottom:14px">
-        <button class="secondary" id="exportBtn" type="button">
-          خروجی پشتیبان JSON
-        </button>
-
-        <button class="secondary" id="importBtn" type="button">
-          بازیابی پشتیبان JSON
-        </button>
-
-        <input
-          id="importFile"
-          type="file"
-          accept=".json,application/json"
-          hidden
-        >
-      </div>
-
-      <div class="products" id="productsList"></div>
-      <div class="status" id="listStatus" role="status"></div>
-    </section>
-  </main>
-
-  <div class="modal" id="scannerModal" role="dialog" aria-modal="true">
-    <div class="modal-panel">
-      <h2>اسکن کد QR</h2>
-
-      <video
-        id="scannerVideo"
-        autoplay
-        muted
-        playsinline
-      ></video>
-
-      <div class="scan-message" id="scannerMessage">
-        در حال آماده‌سازی دوربین...
-      </div>
-
-      <div class="actions">
-        <button class="danger" id="closeScannerBtn" type="button">
-          بستن دوربین
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- کتابخانه پشتیبان اسکن QR برای مرورگرهایی که BarcodeDetector ندارند -->
-  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
-  <script>
-    (() => {
-      "use strict";
-
-      const STORAGE_KEY = "priceCalculatorState_v4";
-
-      const $ = id => document.getElementById(id);
-
-      const elements = {
-        usdRate: $("usdRate"),
-        saveRateBtn: $("saveRateBtn"),
-        currentRate: $("currentRate"),
-
-        productForm: $("productForm"),
-        productId: $("productId"),
-        productName: $("productName"),
-        productCode: $("productCode"),
-        basePrice: $("basePrice"),
-        referenceRate: $("referenceRate"),
-        productImage: $("productImage"),
-        productNote: $("productNote"),
-        formTitle: $("formTitle"),
-        submitProductBtn: $("submitProductBtn"),
-        cancelEditBtn: $("cancelEditBtn"),
-        formStatus: $("formStatus"),
-
-        imagePreviewWrap: $("imagePreviewWrap"),
-        imagePreview: $("imagePreview"),
-        removeImageBtn: $("removeImageBtn"),
-
-        searchInput: $("searchInput"),
-        productsList: $("productsList"),
-        listStatus: $("listStatus"),
-
-        exportBtn: $("exportBtn"),
-        importBtn: $("importBtn"),
-        importFile: $("importFile"),
-
-        scanQrBtn: $("scanQrBtn"),
-        scannerModal: $("scannerModal"),
-        scannerVideo: $("scannerVideo"),
-        scannerMessage: $("scannerMessage"),
-        closeScannerBtn: $("closeScannerBtn")
-      };
-
-      let state = loadState();
-      let selectedImage = "";
-      let imageWasRemoved = false;
-      let cameraStream = null;
-      let scanAnimationFrame = null;
-      let barcodeDetector = null;
-      let scanBusy = false;
-
-      function defaultState() {
-        return {
-          usdRate: 0,
-          rateHistory: [],
-          products: []
-        };
-      }
-
-      function loadState() {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-
-          if (!saved) return defaultState();
-
-          const parsed = JSON.parse(saved);
-
-          return {
-            usdRate: Number(parsed.usdRate) || 0,
-            rateHistory: Array.isArray(parsed.rateHistory)
-              ? parsed.rateHistory
-              : [],
-            products: Array.isArray(parsed.products)
-              ? parsed.products.map(normalizeProduct)
-              : []
-          };
-        } catch (error) {
-          console.error("خطا در خواندن اطلاعات:", error);
-          return defaultState();
-        }
-      }
-
-      function normalizeProduct(product) {
-        return {
-          id: String(product.id || makeId()),
-          name: String(product.name || ""),
-          code: String(product.code || ""),
-          basePrice: Number(product.basePrice) || 0,
-          referenceRate: Number(product.referenceRate) || 0,
-          note: String(product.note || ""),
-          image: typeof product.image === "string" ? product.image : "",
-          createdAt: product.createdAt || new Date().toISOString(),
-          updatedAt: product.updatedAt || new Date().toISOString()
-        };
-      }
-
-      function saveState() {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-          return true;
-        } catch (error) {
-          console.error(error);
-          alert(
-            "ذخیره اطلاعات انجام نشد. احتمالاً فضای ذخیره‌سازی مرورگر پر شده است. " +
-            "حجم تصاویر را کاهش دهید یا از اطلاعات خروجی پشتیبان تهیه کنید."
-          );
-          return false;
-        }
-      }
-
-      function makeId() {
-        if (window.crypto && crypto.randomUUID) {
-          return crypto.randomUUID();
-        }
-
-        return Date.now().toString(36) +
-          Math.random().toString(36).slice(2);
-      }
-
-      function formatNumber(value) {
-        return Number(value || 0).toLocaleString("fa-IR", {
-          maximumFractionDigits: 2
-        });
-      }
-
-      function escapeHtml(value) {
-        return String(value ?? "").replace(/[&<>"']/g, character => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        })[character]);
-      }
-
-      function showStatus(element, message, type = "") {
-        element.textContent = message;
-        element.className = "status" + (type ? " " + type : "");
-      }
-
-      function updateRateDisplay() {
-        elements.usdRate.value = state.usdRate || "";
-
-        if (state.usdRate > 0) {
-          elements.currentRate.textContent =
-            "نرخ فعلی دلار: " +
-            formatNumber(state.usdRate) +
-            " تومان";
-
-          elements.referenceRate.value = state.usdRate;
-        } else {
-          elements.currentRate.textContent =
-            "نرخ فعلی هنوز ثبت نشده است.";
-
-          elements.referenceRate.value = "";
-        }
-      }
-
-      /*
-       * نرخ مرجع فقط از نرخ فعلی برنامه گرفته می‌شود.
-       * اگر نرخ ثبت نشده باشد، ثبت محصول متوقف خواهد شد.
-       */
-      function setReferenceRateFromCurrent() {
-        elements.referenceRate.value =
-          state.usdRate > 0 ? state.usdRate : "";
-      }
-
-      function saveRate() {
-        const value = Number(elements.usdRate.value);
-
-        if (!Number.isFinite(value) || value <= 0) {
-          alert("لطفاً نرخ دلار معتبر و بزرگ‌تر از صفر وارد کنید.");
-          elements.usdRate.focus();
-          return;
-        }
-
-        const previousRate = state.usdRate;
-
-        state.usdRate = value;
-
-        if (previousRate !== value) {
-          state.rateHistory.unshift({
-            rate: value,
-            previousRate,
-            date: new Date().toISOString()
-          });
-
-          state.rateHistory = state.rateHistory.slice(0, 100);
-        }
-
-        if (!saveState()) return;
-
-        updateRateDisplay();
-        renderProducts();
-
-        showStatus(
-          elements.formStatus,
-          "نرخ دلار ذخیره شد. نرخ مرجع محصول جدید به‌روزرسانی شده است.",
-          "ok"
-        );
-      }
-
-      function readImage(file) {
-        return new Promise((resolve, reject) => {
-          if (!file) {
-            resolve("");
-            return;
-          }
-
-          if (!file.type.startsWith("image/")) {
-            reject(new Error("فایل انتخاب‌شده تصویر نیست."));
-            return;
-          }
-
-          const maxSize = 2 * 1024 * 1024;
-
-          if (file.size > maxSize) {
-            reject(new Error(
-              "حجم تصویر بیشتر از ۲ مگابایت است. لطفاً تصویر کوچک‌تری انتخاب کنید."
-            ));
-            return;
-          }
-
-          const reader = new FileReader();
-
-          reader.onload = () => {
-            const result = String(reader.result || "");
-
-            const image = new Image();
-
-            image.onload = () => {
-              const maxDimension = 1000;
-              const scale = Math.min(
-                1,
-                maxDimension / Math.max(image.width, image.height)
-              );
-
-              const canvas = document.createElement("canvas");
-
-              canvas.width = Math.max(1, Math.round(image.width * scale));
-              canvas.height = Math.max(1, Math.round(image.height * scale));
-
-              const context = canvas.getContext("2d");
-
-              context.drawImage(
-                image,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-              );
-
-              resolve(canvas.toDataURL("image/jpeg", 0.78));
-            };
-
-            image.onerror = () => {
-              reject(new Error("خواندن تصویر امکان‌پذیر نیست."));
-            };
-
-            image.src = result;
-          };
-
-          reader.onerror = () => {
-            reject(new Error("خطا در خواندن فایل تصویر."));
-          };
-
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function showImagePreview(imageData) {
-        if (!imageData) {
-          elements.imagePreviewWrap.style.display = "none";
-          elements.imagePreview.removeAttribute("src");
-          return;
-        }
-
-        elements.imagePreview.src = imageData;
-        elements.imagePreviewWrap.style.display = "block";
-      }
-
-      async function handleImageSelection() {
-        const file = elements.productImage.files[0];
-
-        if (!file) return;
-
-        try {
-          selectedImage = await readImage(file);
-          imageWasRemoved = false;
-          showImagePreview(selectedImage);
-          showStatus(elements.formStatus, "تصویر انتخاب شد.", "ok");
-        } catch (error) {
-          elements.productImage.value = "";
-          showStatus(
-            elements.formStatus,
-            error.message || "خطا در انتخاب تصویر.",
-            "error"
-          );
-        }
-      }
-
-      function resetProductForm() {
-        elements.productForm.reset();
-        elements.productId.value = "";
-        elements.formTitle.textContent = "ثبت محصول جدید";
-        elements.submitProductBtn.textContent = "ثبت محصول";
-        elements.cancelEditBtn.hidden = true;
-
-        selectedImage = "";
-        imageWasRemoved = false;
-
-        showImagePreview("");
-        elements.productImage.value = "";
-
-        setReferenceRateFromCurrent();
-
-        showStatus(elements.formStatus, "");
-      }
-
-      function editProduct(id) {
-        const product = state.products.find(item => item.id === id);
-
-        if (!product) return;
-
-        elements.productId.value = product.id;
-        elements.productName.value = product.name;
-        elements.productCode.value = product.code;
-        elements.basePrice.value = product.basePrice;
-        elements.productNote.value = product.note;
-
-        /*
-         * نرخ مرجع در ویرایش هم از نرخ فعلی گرفته می‌شود،
-         * نه از ورودی دستی.
-         */
-        setReferenceRateFromCurrent();
-
-        selectedImage = product.image || "";
-        imageWasRemoved = false;
-
-        elements.productImage.value = "";
-        showImagePreview(selectedImage);
-
-        elements.formTitle.textContent = "ویرایش محصول";
-        elements.submitProductBtn.textContent = "ذخیره تغییرات";
-        elements.cancelEditBtn.hidden = false;
-
-        showStatus(elements.formStatus, "");
-
-        $("productFormCard").scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-
-      async function saveProduct(event) {
-        event.preventDefault();
-
-        const name = elements.productName.value.trim();
-        const code = elements.productCode.value.trim();
-        const basePrice = Number(elements.basePrice.value);
-        const note = elements.productNote.value.trim();
-        const id = elements.productId.value;
-
-        if (!name) {
-          showStatus(elements.formStatus, "نام محصول را وارد کنید.", "error");
-          return;
-        }
-
-        if (!Number.isFinite(basePrice) || basePrice < 0) {
-          showStatus(elements.formStatus, "قیمت پایه معتبر نیست.", "error");
-          return;
-        }
-
-        if (!Number.isFinite(state.usdRate) || state.usdRate <= 0) {
-          showStatus(
-            elements.formStatus,
-            "ابتدا نرخ فعلی دلار را در بخش بالای صفحه ثبت کنید.",
-            "error"
-          );
-
-          elements.usdRate.focus();
-          return;
-        }
-
-        const duplicate = state.products.find(product =>
-          product.code &&
-          code &&
-          product.code.toLowerCase() === code.toLowerCase() &&
-          product.id !== id
-        );
-
-        if (duplicate) {
-          const proceed = confirm(
-            "این کد قبلاً برای محصول دیگری ثبت شده است. ادامه می‌دهید؟"
-          );
-
-          if (!proceed) return;
-        }
-
-        const existing = id
-          ? state.products.find(product => product.id === id)
-          : null;
-
-        const image = imageWasRemoved
-          ? ""
-          : selectedImage || (existing ? existing.image : "");
-
-        const product = {
-          id: existing ? existing.id : makeId(),
-          name,
-          code,
-          basePrice,
-
-          // نرخ مرجع همیشه نرخ فعلی ثبت‌شده در برنامه است.
-          referenceRate: state.usdRate,
-
-          note,
-          image,
-          createdAt: existing
-            ? existing.createdAt
-            : new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-
-        const oldProducts = state.products.slice();
-
-        if (existing) {
-          state.products = state.products.map(item =>
-            item.id === existing.id ? product : item
-          );
-        } else {
-          state.products.unshift(product);
-        }
-
-        if (!saveState()) {
-          state.products = oldProducts;
-          return;
-        }
-
-        resetProductForm();
-        renderProducts();
-
-        showStatus(
-          elements.listStatus,
-          existing ? "تغییرات محصول ذخیره شد." : "محصول با موفقیت ثبت شد.",
-          "ok"
-        );
-      }
-
-      function deleteProduct(id) {
-        const product = state.products.find(item => item.id === id);
-
-        if (!product) return;
-
-        if (!confirm(
-          'آیا از حذف محصول «' + product.name + '» مطمئن هستید؟'
-        )) {
-          return;
-        }
-
-        const previous = state.products.slice();
-
-        state.products = state.products.filter(item => item.id !== id);
-
-        if (!saveState()) {
-          state.products = previous;
-          return;
-        }
-
-        renderProducts();
-        showStatus(elements.listStatus, "محصول حذف شد.", "ok");
-      }
-
-      function renderProducts() {
-        const query = elements.searchInput.value.trim().toLowerCase();
-
-        const products = state.products.filter(product => {
-          const text = [
-            product.name,
-            product.code,
-            product.note
-          ].join(" ").toLowerCase();
-
-          return text.includes(query);
-        });
-
-        if (products.length === 0) {
-          elements.productsList.innerHTML =
-            '<div class="empty">محصولی برای نمایش وجود ندارد.</div>';
-          return;
-        }
-
-        elements.productsList.innerHTML = products.map(product => {
-          const imageHtml = product.image
-            ? '<img src="' + escapeHtml(product.image) +
-              '" alt="' + escapeHtml(product.name) + '">'
-            : '<div class="placeholder">تصویری ثبت نشده است</div>';
-
-          const priceAtCurrentRate =
-            product.referenceRate > 0
-              ? product.basePrice * state.usdRate / product.referenceRate
-              : product.basePrice;
-
-          return `
-            <article class="product">
-              <div class="product-image">
-                ${imageHtml}
-              </div>
-
-              <div class="product-body">
-                <h3 class="product-title">
-                  ${escapeHtml(product.name)}
-                </h3>
-
-                <p class="product-info">
-                  <strong>کد محصول:</strong>
-                  ${escapeHtml(product.code || "ثبت نشده")}
-                </p>
-
-                <p class="product-info">
-                  <strong>قیمت پایه:</strong>
-                  ${formatNumber(product.basePrice)} تومان
-                </p>
-
-                <p class="product-info">
-                  <strong>نرخ مرجع ثبت‌شده:</strong>
-                  ${formatNumber(product.referenceRate)} تومان
-                </p>
-
-                <p class="product-info">
-                  <strong>قیمت محاسبه‌شده با نرخ فعلی:</strong>
-                  ${formatNumber(priceAtCurrentRate)} تومان
-                </p>
-
-                ${
-                  product.note
-                    ? `<p class="product-info"><strong>توضیحات:</strong>
-                       ${escapeHtml(product.note)}</p>`
-                    : ""
-                }
-
-                <div class="product-actions">
-                  <button
-                    class="primary"
-                    type="button"
-                    data-action="edit"
-                    data-id="${escapeHtml(product.id)}"
-                  >ویرایش</button>
-
-                  <button
-                    class="danger"
-                    type="button"
-                    data-action="delete"
-                    data-id="${escapeHtml(product.id)}"
-                  >حذف</button>
-                </div>
-              </div>
-            </article>
-          `;
-        }).join("");
-      }
-
-      async function openScanner() {
-        if (!navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia) {
-          alert(
-            "دسترسی به دوربین در این مرورگر ممکن نیست. " +
-            "صفحه را با HTTPS یا localhost باز کنید."
-          );
-          return;
-        }
-
-        elements.scannerModal.classList.add("open");
-        elements.scannerMessage.textContent = "در حال درخواست دسترسی دوربین...";
-
-        try {
-          if ("BarcodeDetector" in window) {
-            try {
-              barcodeDetector = new BarcodeDetector({
-                formats: ["qr_code"]
-              });
-            } catch (error) {
-              barcodeDetector = null;
-            }
-          }
-
-          cameraStream = await navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: {
-              facingMode: { ideal: "environment" }
-            }
-          });
-
-          elements.scannerVideo.srcObject = cameraStream;
-          await elements.scannerVideo.play();
-
-          elements.scannerMessage.textContent =
-            "کد QR را مقابل دوربین قرار دهید.";
-
-          scanBusy = false;
-          scanFrame();
-        } catch (error) {
-          closeScanner();
-
-          let message = "باز کردن دوربین ناموفق بود.";
-
-          if (error.name === "NotAllowedError") {
-            message = "دسترسی دوربین رد شده است. مجوز دوربین را فعال کنید.";
-          } else if (error.name === "NotFoundError") {
-            message = "دوربینی در دستگاه پیدا نشد.";
-          } else if (error.name === "NotReadableError") {
-            message = "دوربین در حال استفاده توسط برنامه دیگری است.";
-          }
-
-          alert(message);
-        }
-      }
-
-      async function scanFrame() {
-        if (!cameraStream ||
-            !elements.scannerModal.classList.contains("open")) {
-          return;
-        }
-
-        if (!scanBusy &&
-            elements.scannerVideo.readyState >= 2) {
-          scanBusy = true;
-
-          try {
-            const video = elements.scannerVideo;
-            let result = null;
-
-            if (barcodeDetector) {
-              const codes = await barcodeDetector.detect(video);
-
-              if (codes.length > 0) {
-                result = codes[0].rawValue;
-              }
-            } else if (typeof window.jsQR === "function") {
-              const canvas = document.createElement("canvas");
-
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
-
-              const context = canvas.getContext("2d", {
-                willReadFrequently: true
-              });
-
-              context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-              const imageData = context.getImageData(
-                0, 0, canvas.width, canvas.height
-              );
-
-              const qr = window.jsQR(
-                imageData.data,
-                imageData.width,
-                imageData.height,
-                { inversionAttempts: "attemptBoth" }
-              );
-
-              if (qr) result = qr.data;
-            } else {
-              elements.scannerMessage.textContent =
-                "این مرورگر اسکن QR را پشتیبانی نمی‌کند. " +
-                "از مرورگر دیگری استفاده کنید.";
-            }
-
-            if (result) {
-              elements.productCode.value = result;
-              closeScanner();
-
-              showStatus(
-                elements.formStatus,
-                "کد QR با موفقیت خوانده شد.",
-                "ok"
-              );
-
-              elements.productCode.focus();
-              return;
-            }
-          } catch (error) {
-            console.error("خطا در اسکن:", error);
-          } finally {
-            scanBusy = false;
-          }
-        }
-
-        if (cameraStream) {
-          scanAnimationFrame = requestAnimationFrame(scanFrame);
-        }
-      }
-
-      function closeScanner() {
-        if (scanAnimationFrame !== null) {
-          cancelAnimationFrame(scanAnimationFrame);
-          scanAnimationFrame = null;
-        }
-
-        if (cameraStream) {
-          cameraStream.getTracks().forEach(track => track.stop());
-          cameraStream = null;
-        }
-
-        elements.scannerVideo.pause();
-        elements.scannerVideo.srcObject = null;
-        elements.scannerModal.classList.remove("open");
-        scanBusy = false;
-      }
-
-      function exportBackup() {
-        const data = {
-          version: 1,
-          exportedAt: new Date().toISOString(),
-          ...state
-        };
-
-        const blob = new Blob(
-          [JSON.stringify(data, null, 2)],
-          { type: "application/json;charset=utf-8" }
-        );
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-
-        link.href = url;
-        link.download = "product-backup-" +
-          new Date().toISOString().slice(0, 10) +
-          ".json";
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        URL.revokeObjectURL(url);
-      }
-
-      function importBackupFile(file) {
-        if (!file) return;
-
-        const reader = new FileReader();
-
-        reader.onload = () => {
-          try {
-            const imported = JSON.parse(String(reader.result));
-
-            if (!Array.isArray(imported.products)) {
-              throw new Error("ساختار فایل پشتیبان معتبر نیست.");
-            }
-
-            const confirmed = confirm(
-              "بازیابی پشتیبان، اطلاعات فعلی محصولات و نرخ دلار را جایگزین می‌کند. ادامه می‌دهید؟"
-            );
-
-            if (!confirmed) return;
-
-            const previous = state;
-
-            state = {
-              usdRate: Number(imported.usdRate) || 0,
-              rateHistory: Array.isArray(imported.rateHistory)
-                ? imported.rateHistory
-                : [],
-              products: imported.products.map(normalizeProduct)
-            };
-
-            if (!saveState()) {
-              state = previous;
-              return;
-            }
-
-            updateRateDisplay();
-            renderProducts();
-            resetProductForm();
-
-            showStatus(
-              elements.listStatus,
-              "بازیابی پشتیبان با موفقیت انجام شد.",
-              "ok"
-            );
-          } catch (error) {
-            alert(error.message || "فایل پشتیبان قابل خواندن نیست.");
-          } finally {
-            elements.importFile.value = "";
-          }
-        };
-
-        reader.onerror = () => {
-          alert("خواندن فایل پشتیبان ناموفق بود.");
-          elements.importFile.value = "";
-        };
-
-        reader.readAsText(file);
-      }
-
-      elements.saveRateBtn.addEventListener("click", saveRate);
-
-      elements.usdRate.addEventListener("keydown", event => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          saveRate();
-        }
-      });
-
-      elements.productForm.addEventListener("submit", saveProduct);
-
-      elements.cancelEditBtn.addEventListener("click", resetProductForm);
-
-      elements.productImage.addEventListener(
-        "change",
-        handleImageSelection
-      );
-
-      elements.removeImageBtn.addEventListener("click", () => {
-        selectedImage = "";
-        imageWasRemoved = true;
-        elements.productImage.value = "";
-        showImagePreview("");
-        showStatus(elements.formStatus, "تصویر برای حذف انتخاب شد.");
-      });
-
-      elements.searchInput.addEventListener("input", renderProducts);
-
-      elements.productsList.addEventListener("click", event => {
-        const button = event.target.closest("button[data-action]");
-
-        if (!button) return;
-
-        const { action, id } = button.dataset;
-
-        if (action === "edit") editProduct(id);
-        if (action === "delete") deleteProduct(id);
-      });
-
-      elements.scanQrBtn.addEventListener("click", openScanner);
-      elements.closeScannerBtn.addEventListener("click", closeScanner);
-
-      elements.scannerModal.addEventListener("click", event => {
-        if (event.target === elements.scannerModal) {
-          closeScanner();
-        }
-      });
-
-      document.addEventListener("keydown", event => {
-        if (event.key === "Escape") closeScanner();
-      });
-
-      elements.exportBtn.addEventListener("click", exportBackup);
-
-      elements.importBtn.addEventListener("click", () => {
-        elements.importFile.click();
-      });
-
-      elements.importFile.addEventListener("change", event => {
-        importBackupFile(event.target.files[0]);
-      });
-
-      // بارگذاری اولیه برنامه
-      updateRateDisplay();
-      setReferenceRateFromCurrent();
-      renderProducts();
-    })();
-  </script>
-</body>
-</html>
+<!DOCTYPE html>  <html lang="fa" dir="rtl">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+  <title>مدیریت محصولات و محاسبه قیمت</title>    <style>  
+    :root {  
+      --primary: #2563eb;  
+      --primary-dark: #1d4ed8;  
+      --bg: #f3f6fb;  
+      --card: #fff;  
+      --text: #172033;  
+      --muted: #64748b;  
+      --border: #e2e8f0;  
+      --danger: #dc2626;  
+      --success: #15803d;  
+      --radius: 14px;  
+    }  
+  
+    * {  
+      box-sizing: border-box;  
+    }  
+  
+    body {  
+      margin: 0;  
+      background: var(--bg);  
+      color: var(--text);  
+      font-family: Tahoma, Arial, sans-serif;  
+      line-height: 1.8;  
+    }  
+  
+    header {  
+      background: linear-gradient(135deg, #1d4ed8, #4338ca);  
+      color: white;  
+      padding: 24px 16px;  
+    }  
+  
+    header .inner {  
+      max-width: 1100px;  
+      margin: auto;  
+    }  
+  
+    header h1 {  
+      margin: 0 0 6px;  
+      font-size: 24px;  
+    }  
+  
+    header p {  
+      margin: 0;  
+      opacity: .9;  
+      font-size: 14px;  
+    }  
+  
+    main {  
+      max-width: 1100px;  
+      padding: 20px 14px 50px;  
+      margin: auto;  
+    }  
+  
+    .card {  
+      background: var(--card);  
+      border: 1px solid var(--border);  
+      border-radius: var(--radius);  
+      padding: 20px;  
+      margin-bottom: 18px;  
+      box-shadow: 0 4px 18px rgba(15, 23, 42, .04);  
+    }  
+  
+    h2 {  
+      font-size: 19px;  
+      margin: 0 0 16px;  
+    }  
+  
+    .grid {  
+      display: grid;  
+      grid-template-columns: repeat(2, minmax(0, 1fr));  
+      gap: 14px;  
+    }  
+  
+    .field {  
+      min-width: 0;  
+    }  
+  
+    .field.full {  
+      grid-column: 1 / -1;  
+    }  
+  
+    label {  
+      display: block;  
+      font-size: 14px;  
+      font-weight: bold;  
+      margin-bottom: 6px;  
+    }  
+  
+    input,  
+    textarea,  
+    button {  
+      font: inherit;  
+    }  
+  
+    input,  
+    textarea {  
+      width: 100%;  
+      border: 1px solid #cbd5e1;  
+      border-radius: 9px;  
+      padding: 10px 12px;  
+      background: white;  
+      color: var(--text);  
+      outline: none;  
+    }  
+  
+    input:focus,  
+    textarea:focus {  
+      border-color: var(--primary);  
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);  
+    }  
+  
+    input[readonly] {  
+      background: #f1f5f9;  
+      color: #334155;  
+    }  
+  
+    textarea {  
+      resize: vertical;  
+      min-height: 80px;  
+    }  
+  
+    .hint {  
+      color: var(--muted);  
+      font-size: 12px;  
+      margin-top: 5px;  
+    }  
+  
+    .actions {  
+      display: flex;  
+      gap: 8px;  
+      flex-wrap: wrap;  
+      align-items: center;  
+    }  
+  
+    button,  
+    .file-button {  
+      border: 0;  
+      border-radius: 9px;  
+      padding: 9px 14px;  
+      cursor: pointer;  
+      font-size: 14px;  
+      transition: .15s;  
+    }  
+  
+    button:disabled {  
+      opacity: .5;  
+      cursor: not-allowed;  
+    }  
+  
+    .primary {  
+      background: var(--primary);  
+      color: white;  
+    }  
+  
+    .primary:hover {  
+      background: var(--primary-dark);  
+    }  
+  
+    .secondary {  
+      background: #e2e8f0;  
+      color: #1e293b;  
+    }  
+  
+    .danger {  
+      background: #fee2e2;  
+      color: #b91c1c;  
+    }  
+  
+    .success {  
+      background: #dcfce7;  
+      color: #166534;  
+    }  
+  
+    .rate-row {  
+      display: flex;  
+      align-items: end;  
+      gap: 12px;  
+      flex-wrap: wrap;  
+    }  
+  
+    .rate-row .field {  
+      flex: 1;  
+      min-width: 190px;  
+    }  
+  
+    .rate-current {  
+      margin-top: 12px;  
+      background: #eff6ff;  
+      border: 1px solid #bfdbfe;  
+      padding: 10px 12px;  
+      border-radius: 9px;  
+      font-size: 14px;  
+    }  
+  
+    .notice {  
+      padding: 10px 12px;  
+      background: #fffbeb;  
+      color: #92400e;  
+      border: 1px solid #fde68a;  
+      border-radius: 9px;  
+      font-size: 13px;  
+      margin-bottom: 14px;  
+    }  
+  
+    .search {  
+      margin-bottom: 14px;  
+    }  
+  
+    .products {  
+      display: grid;  
+      grid-template-columns: repeat(2, minmax(0, 1fr));  
+      gap: 14px;  
+    }  
+  
+    .product {  
+      min-width: 0;  
+      border: 1px solid var(--border);  
+      border-radius: 12px;  
+      overflow: hidden;  
+      background: #fff;  
+    }  
+  
+    .product-image {  
+      width: 100%;  
+      height: 190px;  
+      background: #f1f5f9;  
+      display: flex;  
+      justify-content: center;  
+      align-items: center;  
+      overflow: hidden;  
+    }  
+  
+    .product-image img {  
+      width: 100%;  
+      height: 100%;  
+      object-fit: contain;  
+    }  
+  
+    .placeholder {  
+      color: #94a3b8;  
+      font-size: 13px;  
+    }  
+  
+    .product-body {  
+      padding: 14px;  
+    }  
+  
+    .product-title {  
+      margin: 0 0 8px;  
+      font-size: 17px;  
+      overflow-wrap: anywhere;  
+    }  
+  
+    .product-info {  
+      font-size: 13px;  
+      color: #475569;  
+      margin: 5px 0;  
+      overflow-wrap: anywhere;  
+    }  
+  
+    .product-info strong {  
+      color: #0f172a;  
+    }  
+  
+    .product-actions {  
+      display: flex;  
+      gap: 7px;  
+      flex-wrap: wrap;  
+      margin-top: 13px;  
+    }  
+  
+    .product-actions button {  
+      padding: 7px 10px;  
+      font-size: 12px;  
+    }  
+  
+    .empty {  
+      padding: 28px 12px;  
+      color: var(--muted);  
+      text-align: center;  
+      border: 1px dashed #cbd5e1;  
+      border-radius: 10px;  
+      grid-column: 1 / -1;  
+    }  
+  
+    .status {  
+      margin-top: 12px;  
+      font-size: 13px;  
+      min-height: 24px;  
+    }  
+  
+    .status.error {  
+      color: var(--danger);  
+    }  
+  
+    .status.ok {  
+      color: var(--success);  
+    }  
+  
+    .modal {  
+      position: fixed;  
+      inset: 0;  
+      z-index: 1000;  
+      background: rgba(15, 23, 42, .78);  
+      display: none;  
+      align-items: center;  
+      justify-content: center;  
+      padding: 16px;  
+    }  
+  
+    .modal.open {  
+      display: flex;  
+    }  
+  
+    .modal-panel {  
+      width: 100%;  
+      max-width: 540px;  
+      background: white;  
+      border-radius: 15px;  
+      padding: 18px;  
+    }  
+  
+    .modal-panel h2 {  
+      margin-bottom: 10px;  
+    }  
+  
+    #scannerVideo {  
+      width: 100%;  
+      max-height: 55vh;  
+      background: #0f172a;  
+      border-radius: 10px;  
+      object-fit: cover;  
+    }  
+  
+    .scan-message {  
+      color: var(--muted);  
+      font-size: 13px;  
+      margin: 10px 0;  
+    }  
+  
+    .preview-wrap {  
+      display: none;  
+      margin-top: 10px;  
+    }  
+  
+    .preview-wrap img {  
+      max-width: 100%;  
+      max-height: 180px;  
+      object-fit: contain;  
+      border: 1px solid var(--border);  
+      border-radius: 8px;  
+      background: #f8fafc;  
+    }  
+  
+    footer {  
+      color: var(--muted);  
+      text-align: center;  
+      font-size: 12px;  
+      padding: 10px 14px 25px;  
+    }  
+  
+    @media (max-width: 650px) {  
+      .grid,  
+      .products {  
+        grid-template-columns: 1fr;  
+      }  
+  
+      .card {  
+        padding: 15px;  
+      }  
+  
+      header h1 {  
+        font-size: 21px;  
+      }  
+  
+      .product-image {  
+        height: 220px;  
+      }  
+    }  
+  </style>  </head>  <body>  
+  <header>  
+    <div class="inner">  
+      <h1>مدیریت محصولات و محاسبه قیمت</h1>  
+      <p>ثبت محصولات، اسکن QR، مدیریت تصاویر و ثبت نرخ دلار</p>  
+    </div>  
+  </header>    <main>  
+    <section class="card">  
+      <h2>نرخ فعلی دلار</h2>  <div class="rate-row">  
+    <div class="field">  
+      <label for="usdRate">نرخ دلار به تومان</label>  
+      <input  
+        id="usdRate"  
+        type="number"  
+        min="0"  
+        step="any"  
+        placeholder="مثلاً 85000"  
+      >  
+      <div class="hint">  
+        نرخ را وارد و ذخیره کنید. نرخ مرجع محصولات به‌صورت خودکار به‌روزرسانی می‌شود.  
+      </div>  
+    </div>  
+
+    <button class="primary" id="saveRateBtn" type="button">  
+      ذخیره نرخ  
+    </button>  
+  </div>  
+
+  <div class="rate-current" id="currentRate">  
+    نرخ فعلی هنوز ثبت نشده است.  
+  </div>  
+</section>  
+
+<section class="card" id="productFormCard">  
+  <h2 id="formTitle">ثبت محصول جدید</h2>  
+
+  <div class="notice">  
+    نرخ مرجع دلار در زمان ثبت محصول، به‌صورت خودکار از نرخ فعلی دریافت می‌شود.  
+    برای تغییر نرخ مرجع، نرخ دلار را از بخش بالا ویرایش کنید.  
+  </div>  
+
+  <form id="productForm">  
+    <input type="hidden" id="productId">  
+
+    <div class="grid">  
+      <div class="field">  
+        <label for="productName">نام محصول *</label>  
+        <input  
+          id="productName"  
+          type="text"  
+          required  
+          maxlength="150"  
+          placeholder="نام محصول"  
+        >  
+      </div>  
+
+      <div class="field">  
+        <label for="productCode">کد محصول / QR</label>  
+
+        <div class="actions">  
+          <div style="flex:1; min-width:160px">  
+            <input  
+              id="productCode"  
+              type="text"  
+              maxlength="200"  
+              placeholder="کد محصول یا محتوای QR"  
+            >  
+          </div>  
+
+          <button  
+            class="secondary"  
+            id="scanQrBtn"  
+            type="button"  
+          >  
+            اسکن با دوربین  
+          </button>  
+        </div>  
+
+        <div class="hint">  
+          با اسکن QR، مقدار خوانده‌شده در فیلد کد محصول قرار می‌گیرد.  
+        </div>  
+      </div>  
+
+      <div class="field">  
+        <label for="basePrice">قیمت پایه (تومان) *</label>  
+        <input  
+          id="basePrice"  
+          type="number"  
+          min="0"  
+          step="any"  
+          required  
+          placeholder="قیمت پایه"  
+        >  
+      </div>  
+
+      <div class="field">  
+        <label for="referenceRate">نرخ مرجع دلار</label>  
+        <input  
+          id="referenceRate"  
+          type="number"  
+          readonly  
+          placeholder="ابتدا نرخ دلار را ثبت کنید"  
+        >  
+        <div class="hint">  
+          این مقدار به‌صورت خودکار تنظیم می‌شود و قابل ویرایش دستی نیست.  
+        </div>  
+      </div>  
+
+      <div class="field full">  
+        <label for="productImage">تصویر محصول</label>  
+        <input  
+          id="productImage"  
+          type="file"  
+          accept="image/*"  
+        >  
+
+        <div class="hint">  
+          فرمت‌های تصویری متداول قابل قبول هستند. بهتر است حجم تصویر کمتر از 2 مگابایت باشد.  
+        </div>  
+
+        <div class="preview-wrap" id="imagePreviewWrap">  
+          <img id="imagePreview" alt="پیش‌نمایش تصویر محصول">  
+          <div class="actions" style="margin-top:8px">  
+            <button  
+              class="secondary"  
+              type="button"  
+              id="removeImageBtn"  
+            >  
+              حذف تصویر انتخاب‌شده  
+            </button>  
+          </div>  
+        </div>  
+      </div>  
+
+      <div class="field full">  
+        <label for="productNote">توضیحات</label>  
+        <textarea  
+          id="productNote"  
+          maxlength="2000"  
+          placeholder="توضیحات اختیاری محصول"  
+        ></textarea>  
+      </div>  
+    </div>  
+
+    <div class="actions" style="margin-top:18px">  
+      <button class="primary" type="submit" id="submitProductBtn">  
+        ثبت محصول  
+      </button>  
+
+      <button class="secondary" type="button" id="cancelEditBtn" hidden>  
+        لغو ویرایش  
+      </button>  
+    </div>  
+
+    <div id="formStatus" class="status" role="status"></div>  
+  </form>  
+</section>  
+
+<section class="card">  
+  <h2>فهرست محصولات</h2>  
+
+  <input  
+    class="search"  
+    id="searchInput"  
+    type="search"  
+    placeholder="جست‌وجو بر اساس نام، کد یا توضیحات..."  
+  >  
+
+  <div class="actions" style="margin-bottom:14px">  
+    <button class="secondary" id="exportBtn" type="button">  
+      خروجی پشتیبان JSON  
+    </button>  
+
+    <button class="secondary" id="importBtn" type="button">  
+      بازیابی پشتیبان JSON  
+    </button>  
+
+    <input  
+      id="importFile"  
+      type="file"  
+      accept=".json,application/json"  
+      hidden  
+    >  
+  </div>  
+
+  <div class="products" id="productsList"></div>  
+  <div class="status" id="listStatus" role="status"></div>  
+</section>
+
+  </main>    <div class="modal" id="scannerModal" role="dialog" aria-modal="true">  
+    <div class="modal-panel">  
+      <h2>اسکن کد QR</h2>  <video  
+    id="scannerVideo"  
+    autoplay  
+    muted  
+    playsinline  
+  ></video>  
+
+  <div class="scan-message" id="scannerMessage">  
+    در حال آماده‌سازی دوربین...  
+  </div>  
+
+  <div class="actions">  
+    <button class="danger" id="closeScannerBtn" type="button">  
+      بستن دوربین  
+    </button>  
+  </div>  
+</div>
+
+  </div>    <!-- کتابخانه پشتیبان اسکن QR برای مرورگرهایی که BarcodeDetector ندارند -->    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>    <script>  
+    (() => {  
+      "use strict";  
+  
+      const STORAGE_KEY = "priceCalculatorState_v4";  
+  
+      const $ = id => document.getElementById(id);  
+  
+      const elements = {  
+        usdRate: $("usdRate"),  
+        saveRateBtn: $("saveRateBtn"),  
+        currentRate: $("currentRate"),  
+  
+        productForm: $("productForm"),  
+        productId: $("productId"),  
+        productName: $("productName"),  
+        productCode: $("productCode"),  
+        basePrice: $("basePrice"),  
+        referenceRate: $("referenceRate"),  
+        productImage: $("productImage"),  
+        productNote: $("productNote"),  
+        formTitle: $("formTitle"),  
+        submitProductBtn: $("submitProductBtn"),  
+        cancelEditBtn: $("cancelEditBtn"),  
+        formStatus: $("formStatus"),  
+  
+        imagePreviewWrap: $("imagePreviewWrap"),  
+        imagePreview: $("imagePreview"),  
+        removeImageBtn: $("removeImageBtn"),  
+  
+        searchInput: $("searchInput"),  
+        productsList: $("productsList"),  
+        listStatus: $("listStatus"),  
+  
+        exportBtn: $("exportBtn"),  
+        importBtn: $("importBtn"),  
+        importFile: $("importFile"),  
+  
+        scanQrBtn: $("scanQrBtn"),  
+        scannerModal: $("scannerModal"),  
+        scannerVideo: $("scannerVideo"),  
+        scannerMessage: $("scannerMessage"),  
+        closeScannerBtn: $("closeScannerBtn")  
+      };  
+  
+      let state = loadState();  
+      let selectedImage = "";  
+      let imageWasRemoved = false;  
+      let cameraStream = null;  
+      let scanAnimationFrame = null;  
+      let barcodeDetector = null;  
+      let scanBusy = false;  
+  
+      function defaultState() {  
+        return {  
+          usdRate: 0,  
+          rateHistory: [],  
+          products: []  
+        };  
+      }  
+  
+      function loadState() {  
+        try {  
+          const saved = localStorage.getItem(STORAGE_KEY);  
+  
+          if (!saved) return defaultState();  
+  
+          const parsed = JSON.parse(saved);  
+  
+          return {  
+            usdRate: Number(parsed.usdRate) || 0,  
+            rateHistory: Array.isArray(parsed.rateHistory)  
+              ? parsed.rateHistory  
+              : [],  
+            products: Array.isArray(parsed.products)  
+              ? parsed.products.map(normalizeProduct)  
+              : []  
+          };  
+        } catch (error) {  
+          console.error("خطا در خواندن اطلاعات:", error);  
+          return defaultState();  
+        }  
+      }  
+  
+      function normalizeProduct(product) {  
+        return {  
+          id: String(product.id || makeId()),  
+          name: String(product.name || ""),  
+          code: String(product.code || ""),  
+          basePrice: Number(product.basePrice) || 0,  
+          referenceRate: Number(product.referenceRate) || 0,  
+          note: String(product.note || ""),  
+          image: typeof product.image === "string" ? product.image : "",  
+          createdAt: product.createdAt || new Date().toISOString(),  
+          updatedAt: product.updatedAt || new Date().toISOString()  
+        };  
+      }  
+  
+      function saveState() {  
+        try {  
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));  
+          return true;  
+        } catch (error) {  
+          console.error(error);  
+          alert(  
+            "ذخیره اطلاعات انجام نشد. احتمالاً فضای ذخیره‌سازی مرورگر پر شده است. " +  
+            "حجم تصاویر را کاهش دهید یا از اطلاعات خروجی پشتیبان تهیه کنید."  
+          );  
+          return false;  
+        }  
+      }  
+  
+      function makeId() {  
+        if (window.crypto && crypto.randomUUID) {  
+          return crypto.randomUUID();  
+        }  
+  
+        return Date.now().toString(36) +  
+          Math.random().toString(36).slice(2);  
+      }  
+  
+      function formatNumber(value) {  
+        return Number(value || 0).toLocaleString("fa-IR", {  
+          maximumFractionDigits: 2  
+        });  
+      }  
+  
+      function escapeHtml(value) {  
+        return String(value ?? "").replace(/[&<>"']/g, character => ({  
+          "&": "&amp;",  
+          "<": "&lt;",  
+          ">": "&gt;",  
+          '"': "&quot;",  
+          "'": "&#039;"  
+        })[character]);  
+      }  
+  
+      function showStatus(element, message, type = "") {  
+        element.textContent = message;  
+        element.className = "status" + (type ? " " + type : "");  
+      }  
+  
+      function updateRateDisplay() {  
+        elements.usdRate.value = state.usdRate || "";  
+  
+        if (state.usdRate > 0) {  
+          elements.currentRate.textContent =  
+            "نرخ فعلی دلار: " +  
+            formatNumber(state.usdRate) +  
+            " تومان";  
+  
+          elements.referenceRate.value = state.usdRate;  
+        } else {  
+          elements.currentRate.textContent =  
+            "نرخ فعلی هنوز ثبت نشده است.";  
+  
+          elements.referenceRate.value = "";  
+        }  
+      }  
+  
+      /*  
+       * نرخ مرجع فقط از نرخ فعلی برنامه گرفته می‌شود.  
+       * اگر نرخ ثبت نشده باشد، ثبت محصول متوقف خواهد شد.  
+       */  
+      function setReferenceRateFromCurrent() {  
+        elements.referenceRate.value =  
+          state.usdRate > 0 ? state.usdRate : "";  
+      }  
+  
+      function saveRate() {  
+        const value = Number(elements.usdRate.value);  
+  
+        if (!Number.isFinite(value) || value <= 0) {  
+          alert("لطفاً نرخ دلار معتبر و بزرگ‌تر از صفر وارد کنید.");  
+          elements.usdRate.focus();  
+          return;  
+        }  
+  
+        const previousRate = state.usdRate;  
+  
+        state.usdRate = value;  
+  
+        if (previousRate !== value) {  
+          state.rateHistory.unshift({  
+            rate: value,  
+            previousRate,  
+            date: new Date().toISOString()  
+          });  
+  
+          state.rateHistory = state.rateHistory.slice(0, 100);  
+        }  
+  
+        if (!saveState()) return;  
+  
+        updateRateDisplay();  
+        renderProducts();  
+  
+        showStatus(  
+          elements.formStatus,  
+          "نرخ دلار ذخیره شد. نرخ مرجع محصول جدید به‌روزرسانی شده است.",  
+          "ok"  
+        );  
+      }  
+  
+      function readImage(file) {  
+        return new Promise((resolve, reject) => {  
+          if (!file) {  
+            resolve("");  
+            return;  
+          }  
+  
+          if (!file.type.startsWith("image/")) {  
+            reject(new Error("فایل انتخاب‌شده تصویر نیست."));  
+            return;  
+          }  
+  
+          const maxSize = 2 * 1024 * 1024;  
+  
+          if (file.size > maxSize) {  
+            reject(new Error(  
+              "حجم تصویر بیشتر از ۲ مگابایت است. لطفاً تصویر کوچک‌تری انتخاب کنید."  
+            ));  
+            return;  
+          }  
+  
+          const reader = new FileReader();  
+  
+          reader.onload = () => {  
+            const result = String(reader.result || "");  
+  
+            const image = new Image();  
+  
+            image.onload = () => {  
+              const maxDimension = 1000;  
+              const scale = Math.min(  
+                1,  
+                maxDimension / Math.max(image.width, image.height)  
+              );  
+  
+              const canvas = document.createElement("canvas");  
+  
+              canvas.width = Math.max(1, Math.round(image.width * scale));  
+              canvas.height = Math.max(1, Math.round(image.height * scale));  
+  
+              const context = canvas.getContext("2d");  
+  
+              context.drawImage(  
+                image,  
+                0,  
+                0,  
+                canvas.width,  
+                canvas.height  
+              );  
+  
+              resolve(canvas.toDataURL("image/jpeg", 0.78));  
+            };  
+  
+            image.onerror = () => {  
+              reject(new Error("خواندن تصویر امکان‌پذیر نیست."));  
+            };  
+  
+            image.src = result;  
+          };  
+  
+          reader.onerror = () => {  
+            reject(new Error("خطا در خواندن فایل تصویر."));  
+          };  
+  
+          reader.readAsDataURL(file);  
+        });  
+      }  
+  
+      function showImagePreview(imageData) {  
+        if (!imageData) {  
+          elements.imagePreviewWrap.style.display = "none";  
+          elements.imagePreview.removeAttribute("src");  
+          return;  
+        }  
+  
+        elements.imagePreview.src = imageData;  
+        elements.imagePreviewWrap.style.display = "block";  
+      }  
+  
+      async function handleImageSelection() {  
+        const file = elements.productImage.files[0];  
+  
+        if (!file) return;  
+  
+        try {  
+          selectedImage = await readImage(file);  
+          imageWasRemoved = false;  
+          showImagePreview(selectedImage);  
+          showStatus(elements.formStatus, "تصویر انتخاب شد.", "ok");  
+        } catch (error) {  
+          elements.productImage.value = "";  
+          showStatus(  
+            elements.formStatus,  
+            error.message || "خطا در انتخاب تصویر.",  
+            "error"  
+          );  
+        }  
+      }  
+  
+      function resetProductForm() {  
+        elements.productForm.reset();  
+        elements.productId.value = "";  
+        elements.formTitle.textContent = "ثبت محصول جدید";  
+        elements.submitProductBtn.textContent = "ثبت محصول";  
+        elements.cancelEditBtn.hidden = true;  
+  
+        selectedImage = "";  
+        imageWasRemoved = false;  
+  
+        showImagePreview("");  
+        elements.productImage.value = "";  
+  
+        setReferenceRateFromCurrent();  
+  
+        showStatus(elements.formStatus, "");  
+      }  
+  
+      function editProduct(id) {  
+        const product = state.products.find(item => item.id === id);  
+  
+        if (!product) return;  
+  
+        elements.productId.value = product.id;  
+        elements.productName.value = product.name;  
+        elements.productCode.value = product.code;  
+        elements.basePrice.value = product.basePrice;  
+        elements.productNote.value = product.note;  
+  
+        /*  
+         * نرخ مرجع در ویرایش هم از نرخ فعلی گرفته می‌شود،  
+         * نه از ورودی دستی.  
+         */  
+        setReferenceRateFromCurrent();  
+  
+        selectedImage = product.image || "";  
+        imageWasRemoved = false;  
+  
+        elements.productImage.value = "";  
+        showImagePreview(selectedImage);  
+  
+        elements.formTitle.textContent = "ویرایش محصول";  
+        elements.submitProductBtn.textContent = "ذخیره تغییرات";  
+        elements.cancelEditBtn.hidden = false;  
+  
+        showStatus(elements.formStatus, "");  
+  
+        $("productFormCard").scrollIntoView({  
+          behavior: "smooth",  
+          block: "start"  
+        });  
+      }  
+  
+      async function saveProduct(event) {  
+        event.preventDefault();  
+  
+        const name = elements.productName.value.trim();  
+        const code = elements.productCode.value.trim();  
+        const basePrice = Number(elements.basePrice.value);  
+        const note = elements.productNote.value.trim();  
+        const id = elements.productId.value;  
+  
+        if (!name) {  
+          showStatus(elements.formStatus, "نام محصول را وارد کنید.", "error");  
+          return;  
+        }  
+  
+        if (!Number.isFinite(basePrice) || basePrice < 0) {  
+          showStatus(elements.formStatus, "قیمت پایه معتبر نیست.", "error");  
+          return;  
+        }  
+  
+        if (!Number.isFinite(state.usdRate) || state.usdRate <= 0) {  
+          showStatus(  
+            elements.formStatus,  
+            "ابتدا نرخ فعلی دلار را در بخش بالای صفحه ثبت کنید.",  
+            "error"  
+          );  
+  
+          elements.usdRate.focus();  
+          return;  
+        }  
+  
+        const duplicate = state.products.find(product =>  
+          product.code &&  
+          code &&  
+          product.code.toLowerCase() === code.toLowerCase() &&  
+          product.id !== id  
+        );  
+  
+        if (duplicate) {  
+          const proceed = confirm(  
+            "این کد قبلاً برای محصول دیگری ثبت شده است. ادامه می‌دهید؟"  
+          );  
+  
+          if (!proceed) return;  
+        }  
+  
+        const existing = id  
+          ? state.products.find(product => product.id === id)  
+          : null;  
+  
+        const image = imageWasRemoved  
+          ? ""  
+          : selectedImage || (existing ? existing.image : "");  
+  
+        const product = {  
+          id: existing ? existing.id : makeId(),  
+          name,  
+          code,  
+          basePrice,  
+  
+          // نرخ مرجع همیشه نرخ فعلی ثبت‌شده در برنامه است.  
+          referenceRate: state.usdRate,  
+  
+          note,  
+          image,  
+          createdAt: existing  
+            ? existing.createdAt  
+            : new Date().toISOString(),  
+          updatedAt: new Date().toISOString()  
+        };  
+  
+        const oldProducts = state.products.slice();  
+  
+        if (existing) {  
+          state.products = state.products.map(item =>  
+            item.id === existing.id ? product : item  
+          );  
+        } else {  
+          state.products.unshift(product);  
+        }  
+  
+        if (!saveState()) {  
+          state.products = oldProducts;  
+          return;  
+        }  
+  
+        resetProductForm();  
+        renderProducts();  
+  
+        showStatus(  
+          elements.listStatus,  
+          existing ? "تغییرات محصول ذخیره شد." : "محصول با موفقیت ثبت شد.",  
+          "ok"  
+        );  
+      }  
+  
+      function deleteProduct(id) {  
+        const product = state.products.find(item => item.id === id);  
+  
+        if (!product) return;  
+  
+        if (!confirm(  
+          'آیا از حذف محصول «' + product.name + '» مطمئن هستید؟'  
+        )) {  
+          return;  
+        }  
+  
+        const previous = state.products.slice();  
+  
+        state.products = state.products.filter(item => item.id !== id);  
+  
+        if (!saveState()) {  
+          state.products = previous;  
+          return;  
+        }  
+  
+        renderProducts();  
+        showStatus(elements.listStatus, "محصول حذف شد.", "ok");  
+      }  
+  
+      function renderProducts() {  
+        const query = elements.searchInput.value.trim().toLowerCase();  
+  
+        const products = state.products.filter(product => {  
+          const text = [  
+            product.name,  
+            product.code,  
+            product.note  
+          ].join(" ").toLowerCase();  
+  
+          return text.includes(query);  
+        });  
+  
+        if (products.length === 0) {  
+          elements.productsList.innerHTML =  
+            '<div class="empty">محصولی برای نمایش وجود ندارد.</div>';  
+          return;  
+        }  
+  
+        elements.productsList.innerHTML = products.map(product => {  
+          const imageHtml = product.image  
+            ? '<img src="' + escapeHtml(product.image) +  
+              '" alt="' + escapeHtml(product.name) + '">'  
+            : '<div class="placeholder">تصویری ثبت نشده است</div>';  
+  
+          const priceAtCurrentRate =  
+            product.referenceRate > 0  
+              ? product.basePrice * state.usdRate / product.referenceRate  
+              : product.basePrice;  
+  
+          return `  
+            <article class="product">  
+              <div class="product-image">  
+                ${imageHtml}  
+              </div>  
+  
+              <div class="product-body">  
+                <h3 class="product-title">  
+                  ${escapeHtml(product.name)}  
+                </h3>  
+  
+                <p class="product-info">  
+                  <strong>کد محصول:</strong>  
+                  ${escapeHtml(product.code || "ثبت نشده")}  
+                </p>  
+  
+                <p class="product-info">  
+                  <strong>قیمت پایه:</strong>  
+                  ${formatNumber(product.basePrice)} تومان  
+                </p>  
+  
+                <p class="product-info">  
+                  <strong>نرخ مرجع ثبت‌شده:</strong>  
+                  ${formatNumber(product.referenceRate)} تومان  
+                </p>  
+  
+                <p class="product-info">  
+                  <strong>قیمت محاسبه‌شده با نرخ فعلی:</strong>  
+                  ${formatNumber(priceAtCurrentRate)} تومان  
+                </p>  
+  
+                ${  
+                  product.note  
+                    ? `<p class="product-info"><strong>توضیحات:</strong>  
+                       ${escapeHtml(product.note)}</p>`  
+                    : ""  
+                }  
+  
+                <div class="product-actions">  
+                  <button  
+                    class="primary"  
+                    type="button"  
+                    data-action="edit"  
+                    data-id="${escapeHtml(product.id)}"  
+                  >ویرایش</button>  
+  
+                  <button  
+                    class="danger"  
+                    type="button"  
+                    data-action="delete"  
+                    data-id="${escapeHtml(product.id)}"  
+                  >حذف</button>  
+                </div>  
+              </div>  
+            </article>  
+          `;  
+        }).join("");  
+      }  
+  
+      async function openScanner() {  
+        if (!navigator.mediaDevices ||  
+            !navigator.mediaDevices.getUserMedia) {  
+          alert(  
+            "دسترسی به دوربین در این مرورگر ممکن نیست. " +  
+            "صفحه را با HTTPS یا localhost باز کنید."  
+          );  
+          return;  
+        }  
+  
+        elements.scannerModal.classList.add("open");  
+        elements.scannerMessage.textContent = "در حال درخواست دسترسی دوربین...";  
+  
+        try {  
+          if ("BarcodeDetector" in window) {  
+            try {  
+              barcodeDetector = new BarcodeDetector({  
+                formats: ["qr_code"]  
+              });  
+            } catch (error) {  
+              barcodeDetector = null;  
+            }  
+          }  
+  
+          cameraStream = await navigator.mediaDevices.getUserMedia({  
+            audio: false,  
+            video: {  
+              facingMode: { ideal: "environment" }  
+            }  
+          });  
+  
+          elements.scannerVideo.srcObject = cameraStream;  
+          await elements.scannerVideo.play();  
+  
+          elements.scannerMessage.textContent =  
+            "کد QR را مقابل دوربین قرار دهید.";  
+  
+          scanBusy = false;  
+          scanFrame();  
+        } catch (error) {  
+          closeScanner();  
+  
+          let message = "باز کردن دوربین ناموفق بود.";  
+  
+          if (error.name === "NotAllowedError") {  
+            message = "دسترسی دوربین رد شده است. مجوز دوربین را فعال کنید.";  
+          } else if (error.name === "NotFoundError") {  
+            message = "دوربینی در دستگاه پیدا نشد.";  
+          } else if (error.name === "NotReadableError") {  
+            message = "دوربین در حال استفاده توسط برنامه دیگری است.";  
+          }  
+  
+          alert(message);  
+        }  
+      }  
+  
+      async function scanFrame() {  
+        if (!cameraStream ||  
+            !elements.scannerModal.classList.contains("open")) {  
+          return;  
+        }  
+  
+        if (!scanBusy &&  
+            elements.scannerVideo.readyState >= 2) {  
+          scanBusy = true;  
+  
+          try {  
+            const video = elements.scannerVideo;  
+            let result = null;  
+  
+            if (barcodeDetector) {  
+              const codes = await barcodeDetector.detect(video);  
+  
+              if (codes.length > 0) {  
+                result = codes[0].rawValue;  
+              }  
+            } else if (typeof window.jsQR === "function") {  
+              const canvas = document.createElement("canvas");  
+  
+              canvas.width = video.videoWidth;  
+              canvas.height = video.videoHeight;  
+  
+              const context = canvas.getContext("2d", {  
+                willReadFrequently: true  
+              });  
+  
+              context.drawImage(video, 0, 0, canvas.width, canvas.height);  
+  
+              const imageData = context.getImageData(  
+                0, 0, canvas.width, canvas.height  
+              );  
+  
+              const qr = window.jsQR(  
+                imageData.data,  
+                imageData.width,  
+                imageData.height,  
+                { inversionAttempts: "attemptBoth" }  
+              );  
+  
+              if (qr) result = qr.data;  
+            } else {  
+              elements.scannerMessage.textContent =  
+                "این مرورگر اسکن QR را پشتیبانی نمی‌کند. " +  
+                "از مرورگر دیگری استفاده کنید.";  
+            }  
+  
+            if (result) {  
+              elements.productCode.value = result;  
+              closeScanner();  
+  
+              showStatus(  
+                elements.formStatus,  
+                "کد QR با موفقیت خوانده شد.",  
+                "ok"  
+              );  
+  
+              elements.productCode.focus();  
+              return;  
+            }  
+          } catch (error) {  
+            console.error("خطا در اسکن:", error);  
+          } finally {  
+            scanBusy = false;  
+          }  
+        }  
+  
+        if (cameraStream) {  
+          scanAnimationFrame = requestAnimationFrame(scanFrame);  
+        }  
+      }  
+  
+      function closeScanner() {  
+        if (scanAnimationFrame !== null) {  
+          cancelAnimationFrame(scanAnimationFrame);  
+          scanAnimationFrame = null;  
+        }  
+  
+        if (cameraStream) {  
+          cameraStream.getTracks().forEach(track => track.stop());  
+          cameraStream = null;  
+        }  
+  
+        elements.scannerVideo.pause();  
+        elements.scannerVideo.srcObject = null;  
+        elements.scannerModal.classList.remove("open");  
+        scanBusy = false;  
+      }  
+  
+      function exportBackup() {  
+        const data = {  
+          version: 1,  
+          exportedAt: new Date().toISOString(),  
+          ...state  
+        };  
+  
+        const blob = new Blob(  
+          [JSON.stringify(data, null, 2)],  
+          { type: "application/json;charset=utf-8" }  
+        );  
+  
+        const url = URL.createObjectURL(blob);  
+        const link = document.createElement("a");  
+  
+        link.href = url;  
+        link.download = "product-backup-" +  
+          new Date().toISOString().slice(0, 10) +  
+          ".json";  
+  
+        document.body.appendChild(link);  
+        link.click();  
+        link.remove();  
+  
+        URL.revokeObjectURL(url);  
+      }  
+  
+      function importBackupFile(file) {  
+        if (!file) return;  
+  
+        const reader = new FileReader();  
+  
+        reader.onload = () => {  
+          try {  
+            const imported = JSON.parse(String(reader.result));  
+  
+            if (!Array.isArray(imported.products)) {  
+              throw new Error("ساختار فایل پشتیبان معتبر نیست.");  
+            }  
+  
+            const confirmed = confirm(  
+              "بازیابی پشتیبان، اطلاعات فعلی محصولات و نرخ دلار را جایگزین می‌کند. ادامه می‌دهید؟"  
+            );  
+  
+            if (!confirmed) return;  
+  
+            const previous = state;  
+  
+            state = {  
+              usdRate: Number(imported.usdRate) || 0,  
+              rateHistory: Array.isArray(imported.rateHistory)  
+                ? imported.rateHistory  
+                : [],  
+              products: imported.products.map(normalizeProduct)  
+            };  
+  
+            if (!saveState()) {  
+              state = previous;  
+              return;  
+            }  
+  
+            updateRateDisplay();  
+            renderProducts();  
+            resetProductForm();  
+  
+            showStatus(  
+              elements.listStatus,  
+              "بازیابی پشتیبان با موفقیت انجام شد.",  
+              "ok"  
+            );  
+          } catch (error) {  
+            alert(error.message || "فایل پشتیبان قابل خواندن نیست.");  
+          } finally {  
+            elements.importFile.value = "";  
+          }  
+        };  
+  
+        reader.onerror = () => {  
+          alert("خواندن فایل پشتیبان ناموفق بود.");  
+          elements.importFile.value = "";  
+        };  
+  
+        reader.readAsText(file);  
+      }  
+  
+      elements.saveRateBtn.addEventListener("click", saveRate);  
+  
+      elements.usdRate.addEventListener("keydown", event => {  
+        if (event.key === "Enter") {  
+          event.preventDefault();  
+          saveRate();  
+        }  
+      });  
+  
+      elements.productForm.addEventListener("submit", saveProduct);  
+  
+      elements.cancelEditBtn.addEventListener("click", resetProductForm);  
+  
+      elements.productImage.addEventListener(  
+        "change",  
+        handleImageSelection  
+      );  
+  
+      elements.removeImageBtn.addEventListener("click", () => {  
+        selectedImage = "";  
+        imageWasRemoved = true;  
+        elements.productImage.value = "";  
+        showImagePreview("");  
+        showStatus(elements.formStatus, "تصویر برای حذف انتخاب شد.");  
+      });  
+  
+      elements.searchInput.addEventListener("input", renderProducts);  
+  
+      elements.productsList.addEventListener("click", event => {  
+        const button = event.target.closest("button[data-action]");  
+  
+        if (!button) return;  
+  
+        const { action, id } = button.dataset;  
+  
+        if (action === "edit") editProduct(id);  
+        if (action === "delete") deleteProduct(id);  
+      });  
+  
+      elements.scanQrBtn.addEventListener("click", openScanner);  
+      elements.closeScannerBtn.addEventListener("click", closeScanner);  
+  
+      elements.scannerModal.addEventListener("click", event => {  
+        if (event.target === elements.scannerModal) {  
+          closeScanner();  
+        }  
+      });  
+  
+      document.addEventListener("keydown", event => {  
+        if (event.key === "Escape") closeScanner();  
+      });  
+  
+      elements.exportBtn.addEventListener("click", exportBackup);  
+  
+      elements.importBtn.addEventListener("click", () => {  
+        elements.importFile.click();  
+      });  
+  
+      elements.importFile.addEventListener("change", event => {  
+        importBackupFile(event.target.files[0]);  
+      });  
+  
+      // بارگذاری اولیه برنامه  
+      updateRateDisplay();  
+      setReferenceRateFromCurrent();  
+      renderProducts();  
+    })();  
+  </script>  </body>  
+</html>  
