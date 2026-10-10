@@ -1,354 +1,1236 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#d71920">
-<meta name="description" content="ماشین‌حساب دقیق قیمت‌گذاری کالا">
-<title>ماشین‌حساب دقیق قیمت‌گذاری</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>ماشین حساب قیمت</title>
 
-<script src="https://unpkg.com/html5-qrcode" defer></script>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+      --success: #15803d;
+      --radius: 16px;
+    }
 
-<style>
-*{box-sizing:border-box}
-:root{
-  --red:#d71920;
-  --red-dark:#b51218;
-  --bg:#f5f6f8;
-  --card:#fff;
-  --text:#171717;
-  --muted:#70757d;
-  --border:#e4e7eb;
-  --green:#087a35;
-  --danger:#b42318;
-}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font:14px Tahoma,Arial,sans-serif;
-}
-button,input{font:inherit}
-button{cursor:pointer}
-button:disabled,input:disabled{opacity:.55;cursor:not-allowed}
-.app{max-width:920px;margin:auto;padding-bottom:40px}
-header{
-  position:sticky;top:0;z-index:60;
-  background:white;border-bottom:1px solid var(--border);
-}
-.header-inner{
-  min-height:62px;display:flex;align-items:center;
-  gap:10px;padding:8px 12px;
-}
-.logo{
-  width:40px;height:40px;border-radius:11px;
-  background:var(--red);color:white;
-  display:grid;place-items:center;font-size:20px;font-weight:bold;
-}
-.header-title{flex:1;min-width:0}
-.header-title strong{display:block}
-.header-title span{font-size:11px;color:var(--muted)}
-.lock-btn{
-  width:43px;height:43px;border:1px solid var(--border);
-  border-radius:12px;background:white;font-size:20px;
-}
-main{padding:12px}
-.card{
-  background:var(--card);border:1px solid var(--border);
-  border-radius:15px;margin-bottom:12px;
-  box-shadow:0 2px 12px #0000000a;
-}
-.section-head{
-  display:flex;align-items:center;gap:8px;
-  padding:12px;border-bottom:1px solid var(--border);
-}
-.section-head strong{flex:1}
-.section-head button{border:0;background:none;font-size:19px}
-.muted,.lock-info{color:var(--muted);font-size:11px}
-.search-card{padding:10px;position:sticky;top:62px;z-index:40}
-.search-row{display:flex;gap:8px}
-.search-wrap{position:relative;flex:1}
-.search{
-  width:100%;height:47px;border:1px solid var(--border);
-  border-radius:12px;padding:0 42px 0 12px;background:#fafafa;
-}
-.search-icon{position:absolute;right:13px;top:12px;color:#888;font-size:19px}
-.scan-search{
-  width:47px;border:0;border-radius:12px;
-  background:#111;color:white;font-size:20px;
-}
-.quick-result{
-  display:none;margin-top:8px;border:1px solid var(--border);
-  border-radius:12px;padding:11px;background:white;
-}
-.quick-result.show{display:block}
-.quick-price{font-size:25px;color:var(--red);font-weight:bold}
-.quick-words{margin-top:4px;color:var(--muted);font-size:12px}
-.rate-body{padding:12px}
-.rate-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}
-.field label{
-  display:block;color:var(--muted);font-size:11px;margin-bottom:5px;
-}
-.field input{
-  width:100%;min-width:0;height:43px;
-  border:1px solid var(--border);border-radius:10px;
-  padding:0 10px;background:white;
-}
-.rate-words{margin-top:7px;color:var(--muted);font-size:12px}
-.rate-btn,.primary-btn,.wide-btn{
-  min-height:43px;padding:0 15px;border:0;border-radius:10px;
-  background:var(--red);color:white;font-weight:bold;
-}
-.toolbar{
-  display:flex;gap:8px;padding:10px 12px;flex-wrap:wrap;
-}
-.toolbar button{
-  min-height:41px;border:1px solid var(--border);
-  border-radius:10px;background:white;padding:0 12px;
-}
-.toolbar .primary{background:var(--red);color:white;border-color:var(--red)}
-.toolbar .danger{color:var(--danger);background:#fff1f1}
-.toolbar .settings{background:#f7f7f7}
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:8px;padding:10px 12px;
-}
-.stat{background:#f8f8f8;border-radius:10px;padding:10px;text-align:center}
-.stat strong{display:block;font-size:18px}
-.stat span{font-size:10px;color:var(--muted)}
-.products{padding:0 8px 8px}
-.product{
-  background:white;border:1px solid var(--border);
-  border-radius:13px;margin:7px 0;overflow:hidden;
-}
-.product-summary{
-  min-height:72px;display:flex;align-items:center;
-  gap:9px;padding:7px 8px;
-}
-.product-thumb{
-  width:54px;height:54px;border-radius:10px;
-  object-fit:cover;background:#f1f2f4;flex:none;
-}
-.product-main{flex:1;min-width:0}
-.product-name{
-  font-weight:bold;overflow:hidden;text-overflow:ellipsis;
-  white-space:nowrap;margin-bottom:4px;
-}
-.prices{display:flex;gap:9px;flex-wrap:wrap;font-size:12px}
-.new-price{color:var(--red);font-weight:bold}
-.change{margin-top:2px;font-size:11px}
-.up{color:var(--danger)}
-.down{color:var(--green)}
-.edit-product-btn{
-  width:40px;height:40px;border:1px solid var(--border);
-  border-radius:10px;background:white;
-}
-.product-details{
-  display:none;padding:9px;border-top:1px solid var(--border);
-  background:#fafafa;
-}
-.product.open .product-details{display:block}
-.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.full{grid-column:1/-1}
-.code-row{display:flex;gap:6px}
-.code-row input{flex:1}
-.code-row button{
-  border:0;border-radius:10px;background:#111;color:white;padding:0 12px;
-}
-.detail-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
-.detail-actions button{
-  min-height:38px;padding:0 11px;
-  border:1px solid var(--border);border-radius:9px;background:white;
-}
-.delete-btn{color:var(--danger);background:#fff1f1!important}
-.scan-product-btn{background:#111!important;color:white!important}
-.qr-box{
-  padding:8px;border:1px dashed #ccc;
-  border-radius:9px;background:white;font-size:11px;margin-top:8px;
-}
-.qr-code{direction:ltr;font-family:monospace;word-break:break-all}
-.history-list{padding:0 12px 12px}
-.history-item{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
-.history-top{display:flex;justify-content:space-between;gap:10px}
-.empty{padding:35px 10px;text-align:center;color:var(--muted)}
-.modal{
-  position:fixed;inset:0;z-index:100;display:none;
-  align-items:center;justify-content:center;padding:16px;
-  background:#000b;
-}
-.modal.show{display:flex}
-.modal-box{
-  width:min(440px,95vw);max-height:90vh;overflow:auto;
-  padding:18px;border-radius:16px;background:white;
-}
-.modal-box h3{margin:0 0 8px}
-.modal-box p{font-size:12px;line-height:1.8;color:var(--muted)}
-.modal-box input{
-  width:100%;height:44px;margin-bottom:8px;
-  padding:0 10px;border:1px solid var(--border);border-radius:10px;
-}
-.modal-actions{display:flex;gap:8px}
-.modal-actions button{
-  flex:1;min-height:42px;border:0;border-radius:10px;
-}
-.modal-image{max-width:90vw;max-height:75vh;display:block;margin:auto}
-#reader{width:100%;overflow:hidden;border-radius:10px}
-#reader video{width:100%!important}
-.toast{
-  position:fixed;left:50%;bottom:20px;z-index:200;
-  transform:translateX(-50%);display:none;max-width:90vw;
-  padding:10px 15px;border-radius:10px;
-  background:#111;color:white;font-size:12px;text-align:center;
-}
-.toast.show{display:block}
-@media(max-width:650px){
-  main{padding:8px}
-  .rate-grid{grid-template-columns:1fr 1fr}
-  .rate-btn{grid-column:1/-1}
-  .toolbar button{flex:1}
-  .toolbar .settings{flex-basis:100%}
-}
-@media(max-width:430px){
-  .edit-grid{grid-template-columns:1fr}
-  .full{grid-column:auto}
-}
-</style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: var(--primary);
+      color: #fff;
+    }
+
+    button:hover { background: var(--primary-dark); }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px #2563eb20;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: 23px; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 15px; }
+
+    .container {
+      width: min(100% - 28px, 900px);
+      margin: 22px auto 50px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .header h1 { margin: 0; }
+    .muted { color: var(--muted); font-size: 13px; }
+    .small { font-size: 12px; }
+    .hidden { display: none !important; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px #11182708;
+    }
+
+    .card h2 { margin-bottom: 12px; }
+
+    .rate-grid, .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .rate-card {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+
+    .rate-value {
+      font-size: 25px;
+      font-weight: bold;
+      color: #1d4ed8;
+      overflow-wrap: anywhere;
+    }
+
+    .form-group { min-width: 0; }
+    .full { grid-column: 1 / -1; }
+
+    .button-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .secondary { background: #4b5563; }
+    .secondary:hover { background: #374151; }
+    .danger { background: var(--danger); }
+    .danger:hover { background: #b91c1c; }
+    .success { background: var(--success); }
+    .success:hover { background: #166534; }
+    .light {
+      color: var(--text);
+      background: #e5e7eb;
+    }
+    .light:hover { background: #d1d5db; }
+
+    .status {
+      font-size: 13px;
+      margin-top: 9px;
+      min-height: 22px;
+      overflow-wrap: anywhere;
+    }
+
+    .status.error { color: var(--danger); }
+    .status.ok { color: var(--success); }
+
+    .owner-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      background: #e5e7eb;
+      padding: 3px 10px;
+      font-size: 12px;
+      color: #374151;
+    }
+
+    .badge.owner {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .product-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .product {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 13px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .product-name {
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+
+    .product-meta {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--success);
+      overflow-wrap: anywhere;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .product-actions button {
+      padding: 6px 9px;
+      font-size: 12px;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .history-item {
+      border-bottom: 1px solid var(--border);
+      padding: 8px 0;
+      font-size: 13px;
+    }
+
+    .history-item:last-child { border-bottom: 0; }
+
+    .empty {
+      text-align: center;
+      padding: 25px 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .notice {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #111827a8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 1000;
+    }
+
+    .modal-box {
+      background: #fff;
+      width: min(100%, 430px);
+      border-radius: 18px;
+      padding: 22px;
+      max-height: 90vh;
+      overflow: auto;
+    }
+
+    .modal-box h2 { margin-bottom: 6px; }
+    .modal-box .form-group { margin-top: 12px; }
+
+    .file-label {
+      display: inline-flex;
+      align-items: center;
+      background: #4b5563;
+      color: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .file-label input { display: none; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 10px 0;
+    }
+
+    @media (max-width: 560px) {
+      .container { width: min(100% - 18px, 900px); margin-top: 12px; }
+      .card { padding: 14px; }
+      .rate-grid, .form-grid { grid-template-columns: 1fr; }
+      .product { grid-template-columns: 1fr; }
+      .product-price { font-size: 20px; }
+      .header h1 { font-size: 20px; }
+    }
+  </style>
 </head>
+
 <body>
-<div class="app">
-<header>
-  <div class="header-inner">
-    <div class="logo">₿</div>
-    <div class="header-title">
-      <strong>ماشین‌حساب دقیق قیمت‌گذاری</strong>
-      <span id="lockStatus">در حال آماده‌سازی...</span>
-    </div>
-    <button id="lockBtn" class="lock-btn" type="button" aria-label="قفل مالک">🔒</button>
-  </div>
-</header>
-
-<main>
-<section class="card search-card">
-  <div class="search-row">
-    <div class="search-wrap">
-      <span class="search-icon">⌕</span>
-      <input id="searchInput" class="search" type="search"
-        autocomplete="off" placeholder="نام کالا یا کد QR را وارد کنید...">
-    </div>
-    <button id="searchScanBtn" class="scan-search" type="button" aria-label="اسکن کد">▣</button>
-  </div>
-  <div id="quickResult" class="quick-result">
-    <div id="quickResultTitle"></div>
-    <div id="quickResultPrice" class="quick-price"></div>
-    <div id="quickResultWords" class="quick-words"></div>
-  </div>
-</section>
-
-<section class="card">
-  <div class="section-head">
-    <strong>نرخ دلار</strong>
-    <span id="ratePermission" class="lock-info">فقط مالک</span>
-    <button id="rateToggle" type="button">⌄</button>
-  </div>
-  <div id="rateBody" class="rate-body" hidden>
-    <div class="rate-grid">
-      <div class="field">
-        <label>نرخ قبلی</label>
-        <input id="oldRate" disabled>
+  <main class="container">
+    <header class="header">
+      <div>
+        <h1>ماشین حساب قیمت</h1>
+        <div class="muted">محاسبه قیمت کالا با نرخ دلار</div>
       </div>
-      <div class="field">
-        <label>نرخ جدید</label>
-        <input id="newRate" class="editable" inputmode="decimal" placeholder="مثلاً 10,000">
-        <div id="rateWords" class="rate-words"></div>
+      <span id="ownerBadge" class="badge">حالت بازدیدکننده</span>
+    </header>
+
+    <!-- نرخ دلار: برای همه کاربران قابل تغییر است -->
+    <section class="card rate-card">
+      <h2>نرخ دلار</h2>
+
+      <div class="rate-grid">
+        <div>
+          <div class="muted">نرخ فعلی</div>
+          <div id="currentRateDisplay" class="rate-value">—</div>
+          <div class="muted">تومان</div>
+        </div>
+        <div>
+          <label for="newRate">ثبت یا تغییر نرخ دلار (تومان)</label>
+          <input id="newRate" type="number" min="0.000001" step="any"
+                 placeholder="مثلاً 85000" inputmode="decimal">
+          <div class="button-row">
+            <button id="rateBtn" type="button">ثبت نرخ جدید</button>
+          </div>
+        </div>
       </div>
-      <button id="rateBtn" class="rate-btn" type="button">ثبت نرخ</button>
+
+      <div id="rateStatus" class="status" aria-live="polite"></div>
+      <div class="muted small">برای تغییر نرخ دلار، رمز مالک لازم نیست.</div>
+    </section>
+
+    <!-- ورود مالک -->
+    <section class="card">
+      <div class="owner-bar">
+        <div>
+          <h2 style="margin-bottom:4px">مدیریت مالک</h2>
+          <div id="ownerDescription" class="muted">برای مدیریت کالاها وارد شوید.</div>
+        </div>
+        <div class="button-row" style="margin-top:0">
+          <button id="ownerLoginBtn" type="button">ورود مالک</button>
+          <button id="ownerLogoutBtn" class="secondary hidden" type="button">خروج مالک</button>
+        </div>
+      </div>
+
+      <div id="ownerStatus" class="status" aria-live="polite"></div>
+      <div class="notice">
+        تغییر نرخ دلار عمومی است؛ مدیریت کالاها و عملیات مالک نیاز به ورود دارد.
+      </div>
+    </section>
+
+    <!-- فرم افزودن کالا -->
+    <section id="productFormCard" class="card hidden">
+      <h2 id="productFormTitle">افزودن کالا</h2>
+
+      <form id="productForm">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="productName">نام کالا</label>
+            <input id="productName" maxlength="120" required placeholder="نام کالا">
+          </div>
+
+          <div class="form-group">
+            <label for="productCode">کد کالا (اختیاری)</label>
+            <input id="productCode" maxlength="80" placeholder="کد یا بارکد">
+          </div>
+
+          <div class="form-group">
+            <label for="basePrice">قیمت پایه (تومان در نرخ مرجع)</label>
+            <input id="basePrice" type="number" min="0" step="any"
+                   inputmode="decimal" required placeholder="قیمت کالا">
+          </div>
+
+          <div class="form-group">
+            <label for="referenceRate">نرخ مرجع دلار</label>
+            <input id="referenceRate" type="number" min="0.000001" step="any"
+                   inputmode="decimal" required>
+          </div>
+
+          <div class="form-group full">
+            <label for="productNote">توضیحات (اختیاری)</label>
+            <input id="productNote" maxlength="300" placeholder="توضیحات کالا">
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button id="saveProductBtn" type="submit">ذخیره کالا</button>
+          <button id="cancelEditBtn" class="light hidden" type="button">لغو ویرایش</button>
+        </div>
+        <div id="productFormStatus" class="status" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <!-- جستجو و فهرست کالاها -->
+    <section class="card">
+      <h2>فهرست کالاها</h2>
+      <label for="searchInput">جستجو بر اساس نام، کد یا توضیحات</label>
+      <input id="searchInput" type="search" placeholder="نام کالا یا کد را وارد کنید">
+
+      <div id="productCount" class="muted" style="margin:10px 0"></div>
+      <div id="productList" class="product-list"></div>
+    </section>
+
+    <!-- ابزارهای مالک -->
+    <section id="adminTools" class="card hidden">
+      <h2>ابزارهای مالک</h2>
+
+      <div class="button-row">
+        <button id="exportBtn" type="button">دریافت نسخه پشتیبان</button>
+
+        <label class="file-label">
+          بازیابی نسخه پشتیبان
+          <input id="importFile" type="file" accept=".json,application/json">
+        </label>
+
+        <button id="changePasswordBtn" class="secondary" type="button">
+          تغییر رمز مالک
+        </button>
+
+        <button id="clearHistoryBtn" class="danger" type="button">
+          پاک کردن تاریخچه
+        </button>
+      </div>
+
+      <div id="adminStatus" class="status" aria-live="polite"></div>
+      <div class="notice">
+        فایل پشتیبان شامل کالاها، نرخ فعلی و تاریخچه است. آن را در محل امن نگه دارید.
+      </div>
+    </section>
+
+    <!-- تاریخچه -->
+    <section class="card">
+      <div class="owner-bar">
+        <h2 style="margin:0">تاریخچه تغییر نرخ</h2>
+        <button id="toggleHistoryBtn" class="light" type="button">نمایش تاریخچه</button>
+      </div>
+
+      <div id="historySection" class="hidden" style="margin-top:12px">
+        <div id="historyList" class="history-list"></div>
+      </div>
+    </section>
+
+    <footer>ذخیره‌سازی محلی در مرورگر این دستگاه</footer>
+  </main>
+
+  <!-- پنجره ورود یا ساخت رمز مالک -->
+  <div id="ownerModal" class="modal hidden" role="dialog" aria-modal="true"
+       aria-labelledby="ownerModalTitle">
+    <div class="modal-box">
+      <h2 id="ownerModalTitle">ورود مالک</h2>
+      <p id="ownerModalDescription" class="muted">رمز مالک را وارد کنید.</p>
+
+      <form id="ownerForm">
+        <div class="form-group">
+          <label for="ownerPassword">رمز مالک</label>
+          <input id="ownerPassword" type="password" autocomplete="current-password"
+                 required minlength="8" maxlength="128">
+        </div>
+
+        <div id="confirmPasswordGroup" class="form-group hidden">
+          <label for="confirmPassword">تکرار رمز مالک</label>
+          <input id="confirmPassword" type="password" autocomplete="new-password"
+                 minlength="8" maxlength="128">
+        </div>
+
+        <div id="ownerModalStatus" class="status" aria-live="polite"></div>
+
+        <div class="button-row">
+          <button id="ownerSubmitBtn" type="submit">ورود</button>
+          <button id="ownerModalCancel" class="light" type="button">انصراف</button>
+        </div>
+      </form>
     </div>
   </div>
-</section>
 
-<section class="card">
-  <div class="toolbar">
-    <button id="addBtn" class="primary" type="button">＋ افزودن کالا</button>
-    <button id="exportBtn" type="button">پشتیبان‌گیری</button>
-    <button id="importBtn" type="button">بازیابی</button>
-    <button id="changePasswordBtn" class="settings" type="button">⚙ تغییر رمز عبور</button>
-    <button id="resetHistoryBtn" class="danger" type="button">↻ ریست تاریخچه</button>
-    <input id="importFile" type="file" accept="application/json" hidden>
-  </div>
-</section>
+  <!-- پنجره تغییر رمز -->
+  <div id="passwordModal" class="modal hidden" role="dialog" aria-modal="true"
+       aria-labelledby="passwordModalTitle">
+    <div class="modal-box">
+      <h2 id="passwordModalTitle">تغییر رمز مالک</h2>
 
-<section class="card">
-  <div class="stats">
-    <div class="stat"><strong id="productCount">0</strong><span>کالا</span></div>
-    <div class="stat"><strong id="rateDisplay">0</strong><span>نرخ دلار</span></div>
-    <div class="stat"><strong id="historyCount">0</strong><span>تغییر نرخ</span></div>
-  </div>
-</section>
+      <form id="passwordForm">
+        <div class="form-group">
+          <label for="oldPassword">رمز فعلی</label>
+          <input id="oldPassword" type="password" required autocomplete="current-password">
+        </div>
 
-<section class="card">
-  <div class="section-head">
-    <strong>کالاها</strong><span id="resultCount" class="lock-info"></span>
-  </div>
-  <div id="products" class="products"></div>
-</section>
+        <div class="form-group">
+          <label for="newPassword">رمز جدید (حداقل ۸ نویسه)</label>
+          <input id="newPassword" type="password" required minlength="8"
+                 maxlength="128" autocomplete="new-password">
+        </div>
 
-<section class="card">
-  <div class="section-head">
-    <strong>تاریخچه نرخ دلار</strong>
-    <button id="historyToggle" type="button">⌄</button>
-  </div>
-  <div id="historyList" class="history-list" hidden></div>
-</section>
-</main>
-</div>
+        <div class="form-group">
+          <label for="newPasswordConfirm">تکرار رمز جدید</label>
+          <input id="newPasswordConfirm" type="password" required minlength="8"
+                 maxlength="128" autocomplete="new-password">
+        </div>
 
-<div id="passwordModal" class="modal">
-  <div class="modal-box">
-    <h3 id="passwordTitle">ورود مالک</h3>
-    <p id="passwordDescription">رمز مالک را وارد کنید.</p>
-    <div id="passwordError" class="up"></div>
-    <input id="passwordInput" type="password" autocomplete="current-password" placeholder="رمز مالک">
-    <div id="changePasswordFields" hidden>
-      <input id="newPasswordInput" type="password" autocomplete="new-password" placeholder="رمز جدید (حداقل ۸ کاراکتر)">
-      <input id="confirmPasswordInput" type="password" autocomplete="new-password" placeholder="تکرار رمز جدید">
-    </div>
-    <div class="modal-actions">
-      <button id="passwordSubmit" class="primary-btn" type="button">ورود</button>
-      <button id="passwordCancel" type="button">انصراف</button>
+        <div id="passwordStatus" class="status" aria-live="polite"></div>
+
+        <div class="button-row">
+          <button type="submit">ذخیره رمز جدید</button>
+          <button id="passwordModalCancel" class="light" type="button">انصراف</button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<div id="setupModal" class="modal">
-  <div class="modal-box">
-    <h3>ساخت رمز مالک</h3>
-    <p>یک رمز حداقل ۸ کاراکتری بسازید و آن را در جای امن نگه دارید.</p>
-    <div id="setupError" class="up"></div>
-    <input id="setupPassword" type="password" autocomplete="new-password" placeholder="رمز مالک">
-    <input id="setupPasswordConfirm" type="password" autocomplete="new-password" placeholder="تکرار رمز مالک">
-    <button id="setupSubmit" class="wide-btn" type="button">ساخت رمز و ادامه</button>
-  </div>
-</div>
+  <script>
+    "use strict";
 
-<div id="scannerModal" class="modal">
-  <div class="modal-box">
-    <h3>اسکن QR یا بارکد</h3>
-    <div id="reader"></div>
-    <p id="scannerStatus">در حال آماده‌سازی دوربین...</p>
-    <button id="scannerClose" class="wide-btn" type="button">بستن</button>
-  </div>
-</div>
+    const STORAGE_KEY = "priceCalculatorState_v4";
 
-<div id="imageModal" class="modal">
-  <div class="modal-box">
-    <button id="closeImageModal" class="wide-btn" type="button">بستن تصویر</button>
-    <img id="largeImage" class="modal-image" alt="تصویر کالا">
-  </div>
-</div>
+    const defaultState = {
+      currentRate: 0,
+      products: [],
+      history: [],
+      passwordHash: null
+    };
 
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
+    let state = loadState();
+    let isOwner = false;
+    let editingProductId = null;
+    let ownerModalMode = "login";
 
-<!-- کد JavaScript بخش دوم را دقیقاً اینجا قرار بده -->
+    const $ = id => document.getElementById(id);
 
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredCloneSafe(defaultState);
+
+        const parsed = JSON.parse(raw);
+
+        return {
+          currentRate: validNumber(parsed.currentRate) ? parsed.currentRate : 0,
+          products: Array.isArray(parsed.products)
+            ? parsed.products.filter(isValidProduct).map(normalizeProduct)
+            : [],
+          history: Array.isArray(parsed.history)
+            ? parsed.history.filter(item =>
+                item && validNumber(item.rate) &&
+                typeof item.date === "string"
+              ).slice(0, 500)
+            : [],
+          passwordHash: typeof parsed.passwordHash === "string"
+            ? parsed.passwordHash
+            : null
+        };
+      } catch (error) {
+        console.error("خطا در خواندن اطلاعات:", error);
+        return structuredCloneSafe(defaultState);
+      }
+    }
+
+    function structuredCloneSafe(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        return true;
+      } catch (error) {
+        console.error("خطا در ذخیره اطلاعات:", error);
+        alert("ذخیره اطلاعات ناموفق بود. ممکن است فضای ذخیره‌سازی مرورگر پر شده باشد.");
+        return false;
+      }
+    }
+
+    function validNumber(value) {
+      return typeof value === "number" && Number.isFinite(value) && value >= 0;
+    }
+
+    function isValidProduct(p) {
+      return p && typeof p === "object" &&
+        typeof p.id === "string" &&
+        typeof p.name === "string" &&
+        validNumber(p.basePrice);
+    }
+
+    function normalizeProduct(p) {
+      return {
+        id: p.id,
+        name: String(p.name || "").slice(0, 120),
+        code: String(p.code || "").slice(0, 80),
+        basePrice: Number(p.basePrice),
+        referenceRate: validNumber(p.referenceRate) && p.referenceRate > 0
+          ? Number(p.referenceRate)
+          : (state.currentRate > 0 ? state.currentRate : 1),
+        note: String(p.note || "").slice(0, 300),
+        createdAt: p.createdAt || new Date().toISOString(),
+        updatedAt: p.updatedAt || new Date().toISOString()
+      };
+    }
+
+    function formatNumber(value, maximumFractionDigits = 2) {
+      if (!Number.isFinite(value)) return "—";
+      return new Intl.NumberFormat("fa-IR", {
+        maximumFractionDigits
+      }).format(value);
+    }
+
+    function formatMoney(value) {
+      if (!Number.isFinite(value)) return "—";
+      return formatNumber(value, 2) + " تومان";
+    }
+
+    function formatDate(value) {
+      try {
+        return new Date(value).toLocaleString("fa-IR");
+      } catch {
+        return String(value);
+      }
+    }
+
+    function makeId() {
+      if (crypto.randomUUID) return crypto.randomUUID();
+      return Date.now().toString(36) + Math.random().toString(36).slice(2);
+    }
+
+    function setStatus(id, message, type = "") {
+      const el = $(id);
+      el.textContent = message;
+      el.className = "status" + (type ? " " + type : "");
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[char]);
+    }
+
+    // رمز فقط برای کنترل رابط کاربری ذخیره می‌شود.
+    // این روش جایگزین احراز هویت امن سمت سرور نیست.
+    async function hashPassword(password) {
+      if (!crypto.subtle) {
+        throw new Error("برای ساخت یا بررسی رمز، سایت را از طریق HTTPS باز کنید.");
+      }
+
+      const data = new TextEncoder().encode(password);
+      const digest = await crypto.subtle.digest("SHA-256", data);
+
+      return Array.from(new Uint8Array(digest))
+        .map(byte => byte.toString(16).padStart(2, "0"))
+        .join("");
+    }
+
+    function updateOwnerUI() {
+      $("ownerBadge").textContent = isOwner ? "مالک وارد شده" : "حالت بازدیدکننده";
+      $("ownerBadge").className = "badge" + (isOwner ? " owner" : "");
+      $("ownerLoginBtn").classList.toggle("hidden", isOwner);
+      $("ownerLogoutBtn").classList.toggle("hidden", !isOwner);
+      $("productFormCard").classList.toggle("hidden", !isOwner);
+      $("adminTools").classList.toggle("hidden", !isOwner);
+
+      $("ownerDescription").textContent = isOwner
+        ? "امکان مدیریت کالاها و اطلاعات فعال است."
+        : "برای افزودن یا حذف کالا و مدیریت اطلاعات وارد شوید.";
+
+      renderProducts();
+    }
+
+    function renderRate() {
+      $("currentRateDisplay").textContent = state.currentRate > 0
+        ? formatNumber(state.currentRate)
+        : "ثبت نشده";
+    }
+
+    function priceFor(product) {
+      const reference = product.referenceRate > 0
+        ? product.referenceRate
+        : (state.currentRate > 0 ? state.currentRate : 1);
+
+      if (state.currentRate <= 0) return product.basePrice;
+
+      return product.basePrice * state.currentRate / reference;
+    }
+
+    function renderProducts() {
+      const list = $("productList");
+      const query = $("searchInput").value.trim().toLocaleLowerCase();
+
+      const products = state.products.filter(product => {
+        const text = [
+          product.name,
+          product.code,
+          product.note
+        ].join(" ").toLocaleLowerCase();
+
+        return text.includes(query);
+      });
+
+      $("productCount").textContent =
+        `${formatNumber(products.length, 0)} کالا از ${formatNumber(state.products.length, 0)} کالا`;
+
+      if (products.length === 0) {
+        list.innerHTML = '<div class="empty">کالایی برای نمایش وجود ندارد.</div>';
+        return;
+      }
+
+      list.innerHTML = products.map(product => {
+        const currentPrice = priceFor(product);
+
+        return `
+          <article class="product">
+            <div>
+              <div class="product-name">${escapeHtml(product.name)}</div>
+              ${product.code
+                ? `<div class="product-meta">کد: ${escapeHtml(product.code)}</div>`
+                : ""}
+              ${product.note
+                ? `<div class="product-meta">${escapeHtml(product.note)}</div>`
+                : ""}
+              <div class="product-meta">
+                قیمت پایه: ${formatMoney(product.basePrice)}
+                <br>
+                نرخ مرجع: ${formatNumber(product.referenceRate)}
+              </div>
+              ${isOwner ? `
+                <div class="product-actions">
+                  <button type="button" class="secondary"
+                    data-edit="${escapeHtml(product.id)}">ویرایش</button>
+                  <button type="button" class="danger"
+                    data-delete="${escapeHtml(product.id)}">حذف</button>
+                </div>
+              ` : ""}
+            </div>
+            <div>
+              <div class="product-price">${formatMoney(currentPrice)}</div>
+              <div class="muted small">قیمت محاسبه‌شده</div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderHistory() {
+      const list = $("historyList");
+
+      if (!state.history.length) {
+        list.innerHTML = '<div class="empty">تاریخچه‌ای ثبت نشده است.</div>';
+        return;
+      }
+
+      list.innerHTML = state.history.map(item => `
+        <div class="history-item">
+          <strong>${formatNumber(item.rate)} تومان</strong>
+          <div class="muted">${escapeHtml(formatDate(item.date))}</div>
+        </div>
+      `).join("");
+    }
+
+    // تغییر نرخ دلار بدون نیاز به رمز مالک
+    function setRate() {
+      const raw = $("newRate").value.trim();
+      const rate = Number(raw);
+
+      if (!raw || !Number.isFinite(rate) || rate <= 0) {
+        setStatus("rateStatus", "یک نرخ معتبر بزرگ‌تر از صفر وارد کنید.", "error");
+        return;
+      }
+
+      const previousRate = state.currentRate;
+
+      if (previousRate === rate) {
+        setStatus("rateStatus", "این نرخ از قبل ثبت شده است.", "");
+        return;
+      }
+
+      if (previousRate > 0) {
+        state.history.unshift({
+          rate: previousRate,
+          date: new Date().toISOString()
+        });
+      }
+
+      state.currentRate = rate;
+
+      if (!saveState()) return;
+
+      $("newRate").value = "";
+      renderRate();
+      renderProducts();
+      renderHistory();
+
+      setStatus(
+        "rateStatus",
+        "نرخ دلار با موفقیت برای این مرورگر تغییر کرد.",
+        "ok"
+      );
+    }
+
+    function showOwnerModal(mode) {
+      ownerModalMode = mode;
+
+      $("ownerForm").reset();
+      setStatus("ownerModalStatus", "");
+
+      const isSetup = mode === "setup";
+
+      $("ownerModalTitle").textContent = isSetup
+        ? "ساخت رمز مالک"
+        : "ورود مالک";
+
+      $("ownerModalDescription").textContent = isSetup
+        ? "یک رمز با حداقل ۸ نویسه انتخاب کنید."
+        : "رمز مالک را وارد کنید.";
+
+      $("confirmPasswordGroup").classList.toggle("hidden", !isSetup);
+      $("confirmPassword").required = isSetup;
+      $("ownerSubmitBtn").textContent = isSetup ? "ساخت رمز" : "ورود";
+
+      $("ownerModal").classList.remove("hidden");
+      $("ownerPassword").focus();
+    }
+
+    function hideOwnerModal() {
+      $("ownerModal").classList.add("hidden");
+    }
+
+    async function handleOwnerLogin(event) {
+      event.preventDefault();
+
+      const password = $("ownerPassword").value;
+
+      if (password.length < 8) {
+        setStatus("ownerModalStatus", "رمز باید حداقل ۸ نویسه داشته باشد.", "error");
+        return;
+      }
+
+      try {
+        const hash = await hashPassword(password);
+
+        if (ownerModalMode === "setup") {
+          if (password !== $("confirmPassword").value) {
+            setStatus("ownerModalStatus", "رمز و تکرار آن یکسان نیستند.", "error");
+            return;
+          }
+
+          if (state.passwordHash) {
+            setStatus("ownerModalStatus", "رمز قبلاً ساخته شده است. وارد شوید.", "error");
+            return;
+          }
+
+          state.passwordHash = hash;
+          if (!saveState()) return;
+
+          isOwner = true;
+          hideOwnerModal();
+          updateOwnerUI();
+          setStatus("ownerStatus", "رمز مالک ساخته شد.", "ok");
+          return;
+        }
+
+        if (!state.passwordHash) {
+          setStatus("ownerModalStatus", "رمز مالک هنوز ساخته نشده است.", "error");
+          return;
+        }
+
+        if (hash !== state.passwordHash) {
+          setStatus("ownerModalStatus", "رمز واردشده صحیح نیست.", "error");
+          return;
+        }
+
+        isOwner = true;
+        hideOwnerModal();
+        updateOwnerUI();
+        setStatus("ownerStatus", "ورود موفق بود.", "ok");
+      } catch (error) {
+        setStatus("ownerModalStatus", error.message || "خطا در بررسی رمز.", "error");
+      }
+    }
+
+    function resetProductForm() {
+      editingProductId = null;
+      $("productForm").reset();
+      $("productFormTitle").textContent = "افزودن کالا";
+      $("saveProductBtn").textContent = "ذخیره کالا";
+      $("cancelEditBtn").classList.add("hidden");
+      $("referenceRate").value = state.currentRate > 0 ? state.currentRate : "";
+      setStatus("productFormStatus", "");
+    }
+
+    function editProduct(id) {
+      if (!isOwner) return;
+
+      const product = state.products.find(item => item.id === id);
+      if (!product) return;
+
+      editingProductId = id;
+      $("productName").value = product.name;
+      $("productCode").value = product.code;
+      $("basePrice").value = product.basePrice;
+      $("referenceRate").value = state.currentRate > 0
+        ? state.currentRate
+        : product.referenceRate;
+      $("productNote").value = product.note;
+
+      $("productFormTitle").textContent = "ویرایش کالا";
+      $("saveProductBtn").textContent = "ذخیره تغییرات";
+      $("cancelEditBtn").classList.remove("hidden");
+      $("productFormCard").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function deleteProduct(id) {
+      if (!isOwner) return;
+
+      const product = state.products.find(item => item.id === id);
+      if (!product) return;
+
+      if (!confirm(`کالای «${product.name}» حذف شود؟`)) return;
+
+      state.products = state.products.filter(item => item.id !== id);
+
+      if (saveState()) {
+        renderProducts();
+        setStatus("adminStatus", "کالا حذف شد.", "ok");
+      }
+    }
+
+    function saveProduct(event) {
+      event.preventDefault();
+
+      if (!isOwner) {
+        setStatus("productFormStatus", "ابتدا وارد حساب مالک شوید.", "error");
+        return;
+      }
+
+      const name = $("productName").value.trim();
+      const code = $("productCode").value.trim();
+      const basePrice = Number($("basePrice").value);
+      const referenceRate = Number($("referenceRate").value);
+      const note = $("productNote").value.trim();
+
+      if (!name) {
+        setStatus("productFormStatus", "نام کالا را وارد کنید.", "error");
+        return;
+      }
+
+      if (!Number.isFinite(basePrice) || basePrice < 0) {
+        setStatus("productFormStatus", "قیمت پایه معتبر نیست.", "error");
+        return;
+      }
+
+      if (!Number.isFinite(referenceRate) || referenceRate <= 0) {
+        setStatus("productFormStatus", "نرخ مرجع باید بزرگ‌تر از صفر باشد.", "error");
+        return;
+      }
+
+      const duplicateCode = code && state.products.some(p =>
+        p.code.toLocaleLowerCase() === code.toLocaleLowerCase() &&
+        p.id !== editingProductId
+      );
+
+      if (duplicateCode) {
+        setStatus("productFormStatus", "این کد قبلاً برای کالای دیگری ثبت شده است.", "error");
+        return;
+      }
+
+      const now = new Date().toISOString();
+
+      if (editingProductId) {
+        const index = state.products.findIndex(p => p.id === editingProductId);
+        if (index < 0) return;
+
+        state.products[index] = {
+          ...state.products[index],
+          name,
+          code,
+          basePrice,
+          referenceRate,
+          note,
+          updatedAt: now
+        };
+      } else {
+        state.products.unshift({
+          id: makeId(),
+          name,
+          code,
+          basePrice,
+          referenceRate,
+          note,
+          createdAt: now,
+          updatedAt: now
+        });
+      }
+
+      if (!saveState()) return;
+
+      resetProductForm();
+      renderProducts();
+      setStatus("productFormStatus", "کالا با موفقیت ذخیره شد.", "ok");
+    }
+
+    function exportBackup() {
+      if (!isOwner) return;
+
+      const backup = {
+        app: "Price Calculator",
+        version: 4,
+        exportedAt: new Date().toISOString(),
+        currentRate: state.currentRate,
+        products: state.products,
+        history: state.history,
+        passwordHash: state.passwordHash
+      };
+
+      const blob = new Blob(
+        [JSON.stringify(backup, null, 2)],
+        { type: "application/json;charset=utf-8" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "price-calculator-backup.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      setStatus("adminStatus", "نسخه پشتیبان دریافت شد.", "ok");
+    }
+
+    async function importBackup(event) {
+      if (!isOwner) {
+        event.target.value = "";
+        return;
+      }
+
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        setStatus("adminStatus", "حجم فایل باید کمتر از ۵ مگابایت باشد.", "error");
+        return;
+      }
+
+      try {
+        const text = await file.text();
+        const backup = JSON.parse(text);
+
+        if (!backup || !Array.isArray(backup.products) ||
+            !validNumber(backup.currentRate)) {
+          throw new Error("ساختار فایل پشتیبان معتبر نیست.");
+        }
+
+        if (!confirm("اطلاعات فعلی با اطلاعات فایل پشتیبان جایگزین شود؟")) {
+          return;
+        }
+
+        const validProducts = backup.products.filter(isValidProduct);
+
+        if (validProducts.length !== backup.products.length) {
+          throw new Error("برخی کالاهای فایل پشتیبان معتبر نیستند.");
+        }
+
+        state = {
+          currentRate: backup.currentRate,
+          products: backup.products.map(normalizeProduct),
+          history: Array.isArray(backup.history)
+            ? backup.history.filter(item =>
+                item && validNumber(item.rate) &&
+                typeof item.date === "string"
+              ).slice(0, 500)
+            : [],
+          // برای جلوگیری از قفل شدن تصادفی، رمز فعلی حفظ می‌شود.
+          passwordHash: state.passwordHash
+        };
+
+        if (!saveState()) return;
+
+        renderRate();
+        renderProducts();
+        renderHistory();
+        resetProductForm();
+
+        setStatus("adminStatus", "بازیابی اطلاعات انجام شد.", "ok");
+      } catch (error) {
+        setStatus(
+          "adminStatus",
+          error.message || "خواندن فایل پشتیبان ناموفق بود.",
+          "error"
+        );
+      }
+    }
+
+    async function changePassword(event) {
+      event.preventDefault();
+
+      if (!isOwner) return;
+
+      const oldPassword = $("oldPassword").value;
+      const newPassword = $("newPassword").value;
+      const confirmPassword = $("newPasswordConfirm").value;
+
+      if (newPassword.length < 8) {
+        setStatus("passwordStatus", "رمز جدید باید حداقل ۸ نویسه داشته باشد.", "error");
+        return;
+      }
+
+      if (newPassword !== confirmPassword) {
+        setStatus("passwordStatus", "رمز جدید و تکرار آن یکسان نیستند.", "error");
+        return;
+      }
+
+      try {
+        if (await hashPassword(oldPassword) !== state.passwordHash) {
+          setStatus("passwordStatus", "رمز فعلی صحیح نیست.", "error");
+          return;
+        }
+
+        state.passwordHash = await hashPassword(newPassword);
+
+        if (!saveState()) return;
+
+        $("passwordForm").reset();
+        $("passwordModal").classList.add("hidden");
+        setStatus("adminStatus", "رمز مالک تغییر کرد.", "ok");
+      } catch (error) {
+        setStatus("passwordStatus", error.message || "تغییر رمز انجام نشد.", "error");
+      }
+    }
+
+    function clearHistory() {
+      if (!isOwner) return;
+
+      if (!confirm("تمام تاریخچه تغییر نرخ حذف شود؟")) return;
+
+      state.history = [];
+
+      if (saveState()) {
+        renderHistory();
+        setStatus("adminStatus", "تاریخچه پاک شد.", "ok");
+      }
+    }
+
+    function initialize() {
+      renderRate();
+      renderProducts();
+      renderHistory();
+      updateOwnerUI();
+
+      $("rateBtn").addEventListener("click", setRate);
+      $("newRate").addEventListener("keydown", event => {
+        if (event.key === "Enter") setRate();
+      });
+
+      $("ownerLoginBtn").addEventListener("click", () => {
+        showOwnerModal(state.passwordHash ? "login" : "setup");
+      });
+
+      $("ownerLogoutBtn").addEventListener("click", () => {
+        isOwner = false;
+        resetProductForm();
+        updateOwnerUI();
+        setStatus("ownerStatus", "از حساب مالک خارج شدید.");
+      });
+
+      $("ownerForm").addEventListener("submit", handleOwnerLogin);
+      $("ownerModalCancel").addEventListener("click", hideOwnerModal);
+
+      $("productForm").addEventListener("submit", saveProduct);
+      $("cancelEditBtn").addEventListener("click", resetProductForm);
+      $("searchInput").addEventListener("input", renderProducts);
+
+      $("productList").addEventListener("click", event => {
+        const editButton = event.target.closest("[data-edit]");
+        const deleteButton = event.target.closest("[data-delete]");
+
+        if (editButton) editProduct(editButton.dataset.edit);
+        if (deleteButton) deleteProduct(deleteButton.dataset.delete);
+      });
+
+      $("referenceRate").value = state.currentRate > 0 ? state.currentRate : "";
+
+      $("toggleHistoryBtn").addEventListener("click", () => {
+        const section = $("historySection");
+        const opening = section.classList.contains("hidden");
+
+        section.classList.toggle("hidden", !opening);
+        $("toggleHistoryBtn").textContent = opening
+          ? "پنهان کردن تاریخچه"
+          : "نمایش تاریخچه";
+      });
+
+      $("exportBtn").addEventListener("click", exportBackup);
+      $("importFile").addEventListener("change", importBackup);
+      $("clearHistoryBtn").addEventListener("click", clearHistory);
+
+      $("changePasswordBtn").addEventListener("click", () => {
+        $("passwordForm").reset();
+        setStatus("passwordStatus", "");
+        $("passwordModal").classList.remove("hidden");
+      });
+
+      $("passwordModalCancel").addEventListener("click", () => {
+        $("passwordModal").classList.add("hidden");
+      });
+
+      $("passwordForm").addEventListener("submit", changePassword);
+
+      // بستن پنجره‌ها با کلیک روی فضای بیرون
+      $("ownerModal").addEventListener("click", event => {
+        if (event.target === $("ownerModal")) hideOwnerModal();
+      });
+
+      $("passwordModal").addEventListener("click", event => {
+        if (event.target === $("passwordModal")) {
+          $("passwordModal").classList.add("hidden");
+        }
+      });
+    }
+
+    initialize();
+  </script>
 </body>
 </html>
