@@ -2,1725 +2,353 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#d71920">
-<meta name="description" content="ماشین‌حساب حرفه‌ای و دقیق قیمت‌گذاری کالا">
-<link rel="manifest" href="./manifest.webmanifest">
+<meta name="description" content="ماشین‌حساب دقیق قیمت‌گذاری کالا">
 <title>ماشین‌حساب دقیق قیمت‌گذاری</title>
+
 <script src="https://unpkg.com/html5-qrcode" defer></script>
 
 <style>
 *{box-sizing:border-box}
 :root{
---red:#d71920;--red-dark:#b51218;--bg:#f5f6f8;--card:#fff;
---text:#171717;--muted:#70757d;--border:#e4e7eb;--green:#087a35;
---danger:#b42318;--shadow:0 2px 12px rgba(0,0,0,.06)
+  --red:#d71920;
+  --red-dark:#b51218;
+  --bg:#f5f6f8;
+  --card:#fff;
+  --text:#171717;
+  --muted:#70757d;
+  --border:#e4e7eb;
+  --green:#087a35;
+  --danger:#b42318;
 }
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;font-size:14px}
-button,input{font:inherit}button{cursor:pointer}
-button:disabled,input:disabled{cursor:not-allowed;opacity:.55}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:14px Tahoma,Arial,sans-serif;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:disabled,input:disabled{opacity:.55;cursor:not-allowed}
 .app{max-width:920px;margin:auto;padding-bottom:40px}
-header{position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.header-inner{min-height:62px;display:flex;align-items:center;gap:10px;padding:8px 12px}
-.logo{width:40px;height:40px;border-radius:11px;background:var(--red);color:#fff;display:grid;place-items:center;font-size:20px;font-weight:bold;flex:none}
-.header-title{flex:1;min-width:0}.header-title strong{display:block;font-size:15px}.header-title span{color:var(--muted);font-size:11px}
-.lock-btn{width:43px;height:43px;border:1px solid var(--border);border-radius:12px;background:#fff;font-size:20px}
-main{padding:12px}.card{background:var(--card);border:1px solid var(--border);border-radius:15px;box-shadow:var(--shadow);margin-bottom:12px}
-.search-card{padding:10px;position:sticky;top:62px;z-index:40}.search-row{display:flex;gap:8px}.search-wrap{position:relative;flex:1}
-.search{width:100%;height:47px;border:1px solid var(--border);border-radius:12px;padding:0 42px 0 12px;outline:none;background:#fafafa}
-.search:focus{border-color:var(--red);background:#fff}.search-icon{position:absolute;right:13px;top:12px;color:#888;font-size:19px}
-.scan-search{width:47px;height:47px;border:0;border-radius:12px;background:#111;color:#fff;font-size:20px}
-.quick-result{display:none;margin-top:8px;border:1px solid #e0e0e0;border-radius:12px;padding:11px;background:#fff}
-.quick-result.show{display:block}.quick-result-title{font-weight:bold;margin-bottom:5px}.quick-price{color:var(--red);font-size:25px;font-weight:bold}
-.quick-words{color:var(--muted);margin-top:4px;font-size:12px}
-.section-head{display:flex;align-items:center;gap:8px;padding:12px;border-bottom:1px solid var(--border)}
-.section-head strong{flex:1}.section-head button{border:0;background:none;font-size:19px}.lock-info{color:var(--muted);font-size:11px}
-.rate-body{padding:12px}.rate-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}
-.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
-.field input{width:100%;height:43px;border:1px solid var(--border);border-radius:10px;padding:0 10px;outline:none;background:#fff}
-.field input:focus{border-color:var(--red)}
-.rate-btn,.add-btn{min-height:43px;align-self:end;padding:0 15px;border:0;border-radius:10px;background:var(--red);color:#fff;font-weight:bold}
+header{
+  position:sticky;top:0;z-index:60;
+  background:white;border-bottom:1px solid var(--border);
+}
+.header-inner{
+  min-height:62px;display:flex;align-items:center;
+  gap:10px;padding:8px 12px;
+}
+.logo{
+  width:40px;height:40px;border-radius:11px;
+  background:var(--red);color:white;
+  display:grid;place-items:center;font-size:20px;font-weight:bold;
+}
+.header-title{flex:1;min-width:0}
+.header-title strong{display:block}
+.header-title span{font-size:11px;color:var(--muted)}
+.lock-btn{
+  width:43px;height:43px;border:1px solid var(--border);
+  border-radius:12px;background:white;font-size:20px;
+}
+main{padding:12px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:15px;margin-bottom:12px;
+  box-shadow:0 2px 12px #0000000a;
+}
+.section-head{
+  display:flex;align-items:center;gap:8px;
+  padding:12px;border-bottom:1px solid var(--border);
+}
+.section-head strong{flex:1}
+.section-head button{border:0;background:none;font-size:19px}
+.muted,.lock-info{color:var(--muted);font-size:11px}
+.search-card{padding:10px;position:sticky;top:62px;z-index:40}
+.search-row{display:flex;gap:8px}
+.search-wrap{position:relative;flex:1}
+.search{
+  width:100%;height:47px;border:1px solid var(--border);
+  border-radius:12px;padding:0 42px 0 12px;background:#fafafa;
+}
+.search-icon{position:absolute;right:13px;top:12px;color:#888;font-size:19px}
+.scan-search{
+  width:47px;border:0;border-radius:12px;
+  background:#111;color:white;font-size:20px;
+}
+.quick-result{
+  display:none;margin-top:8px;border:1px solid var(--border);
+  border-radius:12px;padding:11px;background:white;
+}
+.quick-result.show{display:block}
+.quick-price{font-size:25px;color:var(--red);font-weight:bold}
+.quick-words{margin-top:4px;color:var(--muted);font-size:12px}
+.rate-body{padding:12px}
+.rate-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:8px}
+.field label{
+  display:block;color:var(--muted);font-size:11px;margin-bottom:5px;
+}
+.field input{
+  width:100%;min-width:0;height:43px;
+  border:1px solid var(--border);border-radius:10px;
+  padding:0 10px;background:white;
+}
 .rate-words{margin-top:7px;color:var(--muted);font-size:12px}
-.toolbar{display:flex;gap:8px;padding:10px 12px;flex-wrap:wrap}.toolbar button{min-height:41px;border:1px solid var(--border);border-radius:10px;background:#fff;padding:0 12px}
-.toolbar .primary{background:var(--red);color:#fff;border-color:var(--red)}.toolbar .danger{color:var(--danger);background:#fff1f1;border-color:#ffd1d1}
-.toolbar .settings{color:#333;background:#f7f7f7}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px}.stat{background:#f8f8f8;border-radius:10px;padding:10px;text-align:center}
-.stat strong{display:block;font-size:18px}.stat span{color:var(--muted);font-size:10px}
-.products{padding:0 8px 8px}.product{background:#fff;border:1px solid var(--border);border-radius:13px;margin:7px 0;overflow:hidden}
-.product-summary{min-height:72px;display:flex;align-items:center;gap:9px;padding:7px 8px}
-.product-thumb{width:54px;height:54px;border-radius:10px;object-fit:cover;background:#f1f2f4;flex:none}
-.product-main{flex:1;min-width:0}.product-name{font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
-.prices{display:flex;gap:9px;flex-wrap:wrap;font-size:12px}.current-price{color:#444}.new-price{color:var(--red);font-weight:bold}
-.change{margin-top:2px;font-size:11px}.change.up{color:var(--danger)}.change.down{color:var(--green)}
-.edit-product-btn{width:40px;height:40px;flex:none;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:17px}
-.product-details{display:none;padding:9px;border-top:1px solid var(--border);background:#fafafa}.product.open .product-details{display:block}
-.compact-edit-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:7px}.compact-edit-grid .full{grid-column:1/-1}
-.compact-price-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}.compact-code-row{display:flex;gap:6px}.compact-code-row input{flex:1;min-width:0}
-.compact-code-row button{width:43px;flex:none;border:0;border-radius:10px;background:#111;color:#fff}
-.edit-extra{display:none;margin-top:7px}.edit-extra.show{display:block}
-.edit-more-btn{width:100%;min-height:37px;margin-top:7px;border:1px dashed #ccc;border-radius:9px;background:#fff;color:#555;font-size:12px}
-.detail-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.detail-actions button{min-height:38px;padding:0 11px;border:1px solid var(--border);border-radius:9px;background:#fff;font-size:12px}
-.delete-btn{color:var(--danger);background:#fff1f1!important;border-color:#ffd1d1!important}
-.scan-product-btn{background:#111!important;color:#fff!important;border-color:#111!important}
-.words{color:var(--muted);font-size:10px;margin-top:3px}.qr-box{padding:8px;border:1px dashed #ccc;border-radius:9px;background:#fff;font-size:11px}
-.qr-code{direction:ltr;font-family:monospace;word-break:break-all;margin-top:3px}
-.history-list{padding:0 12px 12px}.history-item{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
-.history-item:last-child{border-bottom:0}.history-top{display:flex;justify-content:space-between;gap:10px}
-.history-percent.up{color:var(--danger)}.history-percent.down{color:var(--green)}.empty{padding:35px 10px;text-align:center;color:var(--muted)}
-.image-modal,.scanner-modal,.password-modal,.setup-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.72)}
-.image-modal.show,.scanner-modal.show,.password-modal.show,.setup-modal.show{display:flex}
-.image-modal-content{position:relative;max-width:95vw;max-height:90vh}.image-modal img{max-width:95vw;max-height:85vh;border-radius:12px;display:block}
-.close-image{position:absolute;top:-45px;left:0;width:38px;height:38px;border:0;border-radius:50%;background:#fff;font-size:25px}
-.scanner-box{width:min(500px,95vw);padding:12px;border-radius:15px;background:#fff}.scanner-title{font-weight:bold;margin-bottom:10px;text-align:center}
-.scanner-status{min-height:20px;margin-top:8px;color:var(--muted);font-size:11px;text-align:center}#reader{width:100%;overflow:hidden;border-radius:12px}
-#reader video{width:100%!important;border-radius:12px}.scanner-close{width:100%;min-height:43px;margin-top:10px;border:0;border-radius:10px;background:#111;color:#fff}
-.password-box,.setup-box{width:min(420px,94vw);padding:18px;border-radius:18px;background:#fff}
-.password-box h3,.setup-box h3{margin:0 0 7px}.password-box p,.setup-box p{color:var(--muted);font-size:12px;line-height:1.8}
-.password-box input,.setup-box input{width:100%;height:46px;margin-bottom:8px;padding:0 12px;border:1px solid var(--border);border-radius:11px;outline:none}
-.password-box input:focus,.setup-box input:focus{border-color:var(--red)}
-.password-error,.setup-error{min-height:18px;margin-bottom:5px;color:var(--danger);font-size:11px}
-.password-actions{display:flex;gap:8px}.password-actions button{flex:1;min-height:43px;border:0;border-radius:10px}
-.password-submit{color:#fff;background:var(--red)}.password-cancel{background:#eee}.setup-submit{width:100%;min-height:44px;border:0;border-radius:10px;background:var(--red);color:#fff;font-weight:bold}
-.change-password-fields{display:none}.change-password-fields.show{display:block}.password-toggle{position:relative}
-.password-toggle button{position:absolute;left:8px;top:5px;height:36px;border:0;background:none}.toast{position:fixed;left:50%;bottom:20px;z-index:200;transform:translateX(-50%);display:none;max-width:90vw;padding:10px 15px;border-radius:10px;background:#111;color:#fff;font-size:12px;text-align:center}
-.toast.show{display:block}body.locked .edit-product-btn{opacity:.45}
-@media(max-width:650px){main{padding:8px}.rate-grid{grid-template-columns:1fr 1fr}.rate-btn{grid-column:1/-1}.compact-edit-grid{grid-template-columns:1fr 1fr}.compact-edit-grid .name-field{grid-column:1/-1}.toolbar button{flex:1}.toolbar .settings{flex-basis:100%}}
-@media(max-width:430px){.compact-edit-grid{grid-template-columns:1fr}.compact-edit-grid .full,.compact-edit-grid .name-field{grid-column:auto}.compact-price-row{grid-template-columns:1fr 1fr}}
+.rate-btn,.primary-btn,.wide-btn{
+  min-height:43px;padding:0 15px;border:0;border-radius:10px;
+  background:var(--red);color:white;font-weight:bold;
+}
+.toolbar{
+  display:flex;gap:8px;padding:10px 12px;flex-wrap:wrap;
+}
+.toolbar button{
+  min-height:41px;border:1px solid var(--border);
+  border-radius:10px;background:white;padding:0 12px;
+}
+.toolbar .primary{background:var(--red);color:white;border-color:var(--red)}
+.toolbar .danger{color:var(--danger);background:#fff1f1}
+.toolbar .settings{background:#f7f7f7}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:8px;padding:10px 12px;
+}
+.stat{background:#f8f8f8;border-radius:10px;padding:10px;text-align:center}
+.stat strong{display:block;font-size:18px}
+.stat span{font-size:10px;color:var(--muted)}
+.products{padding:0 8px 8px}
+.product{
+  background:white;border:1px solid var(--border);
+  border-radius:13px;margin:7px 0;overflow:hidden;
+}
+.product-summary{
+  min-height:72px;display:flex;align-items:center;
+  gap:9px;padding:7px 8px;
+}
+.product-thumb{
+  width:54px;height:54px;border-radius:10px;
+  object-fit:cover;background:#f1f2f4;flex:none;
+}
+.product-main{flex:1;min-width:0}
+.product-name{
+  font-weight:bold;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;margin-bottom:4px;
+}
+.prices{display:flex;gap:9px;flex-wrap:wrap;font-size:12px}
+.new-price{color:var(--red);font-weight:bold}
+.change{margin-top:2px;font-size:11px}
+.up{color:var(--danger)}
+.down{color:var(--green)}
+.edit-product-btn{
+  width:40px;height:40px;border:1px solid var(--border);
+  border-radius:10px;background:white;
+}
+.product-details{
+  display:none;padding:9px;border-top:1px solid var(--border);
+  background:#fafafa;
+}
+.product.open .product-details{display:block}
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.full{grid-column:1/-1}
+.code-row{display:flex;gap:6px}
+.code-row input{flex:1}
+.code-row button{
+  border:0;border-radius:10px;background:#111;color:white;padding:0 12px;
+}
+.detail-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.detail-actions button{
+  min-height:38px;padding:0 11px;
+  border:1px solid var(--border);border-radius:9px;background:white;
+}
+.delete-btn{color:var(--danger);background:#fff1f1!important}
+.scan-product-btn{background:#111!important;color:white!important}
+.qr-box{
+  padding:8px;border:1px dashed #ccc;
+  border-radius:9px;background:white;font-size:11px;margin-top:8px;
+}
+.qr-code{direction:ltr;font-family:monospace;word-break:break-all}
+.history-list{padding:0 12px 12px}
+.history-item{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
+.history-top{display:flex;justify-content:space-between;gap:10px}
+.empty{padding:35px 10px;text-align:center;color:var(--muted)}
+.modal{
+  position:fixed;inset:0;z-index:100;display:none;
+  align-items:center;justify-content:center;padding:16px;
+  background:#000b;
+}
+.modal.show{display:flex}
+.modal-box{
+  width:min(440px,95vw);max-height:90vh;overflow:auto;
+  padding:18px;border-radius:16px;background:white;
+}
+.modal-box h3{margin:0 0 8px}
+.modal-box p{font-size:12px;line-height:1.8;color:var(--muted)}
+.modal-box input{
+  width:100%;height:44px;margin-bottom:8px;
+  padding:0 10px;border:1px solid var(--border);border-radius:10px;
+}
+.modal-actions{display:flex;gap:8px}
+.modal-actions button{
+  flex:1;min-height:42px;border:0;border-radius:10px;
+}
+.modal-image{max-width:90vw;max-height:75vh;display:block;margin:auto}
+#reader{width:100%;overflow:hidden;border-radius:10px}
+#reader video{width:100%!important}
+.toast{
+  position:fixed;left:50%;bottom:20px;z-index:200;
+  transform:translateX(-50%);display:none;max-width:90vw;
+  padding:10px 15px;border-radius:10px;
+  background:#111;color:white;font-size:12px;text-align:center;
+}
+.toast.show{display:block}
+@media(max-width:650px){
+  main{padding:8px}
+  .rate-grid{grid-template-columns:1fr 1fr}
+  .rate-btn{grid-column:1/-1}
+  .toolbar button{flex:1}
+  .toolbar .settings{flex-basis:100%}
+}
+@media(max-width:430px){
+  .edit-grid{grid-template-columns:1fr}
+  .full{grid-column:auto}
+}
 </style>
 </head>
-
 <body>
 <div class="app">
 <header>
-<div class="header-inner">
-<div class="logo">₿</div>
-<div class="header-title">
-<strong>ماشین‌حساب دقیق قیمت‌گذاری</strong>
-<span id="lockStatus">در حال آماده‌سازی...</span>
-</div>
-<button id="lockBtn" class="lock-btn" type="button" title="ورود مالک" aria-label="باز کردن قفل">🔒</button>
-</div>
+  <div class="header-inner">
+    <div class="logo">₿</div>
+    <div class="header-title">
+      <strong>ماشین‌حساب دقیق قیمت‌گذاری</strong>
+      <span id="lockStatus">در حال آماده‌سازی...</span>
+    </div>
+    <button id="lockBtn" class="lock-btn" type="button" aria-label="قفل مالک">🔒</button>
+  </div>
 </header>
 
 <main>
-
 <section class="card search-card">
-<div class="search-row">
-<div class="search-wrap">
-<span class="search-icon">⌕</span>
-<input id="searchInput" class="search" type="search" autocomplete="off" inputmode="search" placeholder="نام کالا یا کد QR را وارد کنید...">
-</div>
-<button id="searchScanBtn" class="scan-search" type="button" title="اسکن QR یا بارکد با دوربین" aria-label="اسکن QR یا بارکد">▣</button>
-</div>
-<div id="quickResult" class="quick-result">
-<div id="quickResultTitle" class="quick-result-title"></div>
-<div id="quickResultPrice" class="quick-price"></div>
-<div id="quickResultWords" class="quick-words"></div>
-</div>
+  <div class="search-row">
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="searchInput" class="search" type="search"
+        autocomplete="off" placeholder="نام کالا یا کد QR را وارد کنید...">
+    </div>
+    <button id="searchScanBtn" class="scan-search" type="button" aria-label="اسکن کد">▣</button>
+  </div>
+  <div id="quickResult" class="quick-result">
+    <div id="quickResultTitle"></div>
+    <div id="quickResultPrice" class="quick-price"></div>
+    <div id="quickResultWords" class="quick-words"></div>
+  </div>
 </section>
 
 <section class="card">
-<div class="section-head">
-<strong>نرخ دلار</strong>
-<span class="lock-info">فقط مالک</span>
-<button id="rateToggle" type="button">⌄</button>
-</div>
-<div id="rateBody" class="rate-body" style="display:none">
-<div class="rate-grid">
-
-<div class="field">
-<label>نرخ قبلی</label>
-<input id="oldRate" type="text" inputmode="decimal" disabled>
-</div>
-
-<div class="field">
-<label>نرخ جدید</label>
-<input id="newRate" class="editable rate-input" type="text" inputmode="decimal" autocomplete="off" placeholder="مثلاً 10,000">
-<div id="rateWords" class="rate-words"></div>
-</div>
-
-<button id="rateBtn" class="rate-btn" type="button">ثبت نرخ</button>
-</div>
-</div>
+  <div class="section-head">
+    <strong>نرخ دلار</strong>
+    <span id="ratePermission" class="lock-info">فقط مالک</span>
+    <button id="rateToggle" type="button">⌄</button>
+  </div>
+  <div id="rateBody" class="rate-body" hidden>
+    <div class="rate-grid">
+      <div class="field">
+        <label>نرخ قبلی</label>
+        <input id="oldRate" disabled>
+      </div>
+      <div class="field">
+        <label>نرخ جدید</label>
+        <input id="newRate" class="editable" inputmode="decimal" placeholder="مثلاً 10,000">
+        <div id="rateWords" class="rate-words"></div>
+      </div>
+      <button id="rateBtn" class="rate-btn" type="button">ثبت نرخ</button>
+    </div>
+  </div>
 </section>
 
 <section class="card">
-<div class="toolbar">
-<button id="addBtn" class="primary addBtn" type="button">＋ افزودن کالا</button>
-<button id="exportBtn" type="button">پشتیبان‌گیری</button>
-<button id="importBtn" class="importBtn" type="button">بازیابی</button>
-<button id="changePasswordBtn" class="settings" type="button">⚙ تغییر رمز عبور</button>
-<button id="resetHistoryBtn" class="danger" type="button">↻ ریست تاریخچه</button>
-<input id="importFile" type="file" accept="application/json" hidden>
-</div>
+  <div class="toolbar">
+    <button id="addBtn" class="primary" type="button">＋ افزودن کالا</button>
+    <button id="exportBtn" type="button">پشتیبان‌گیری</button>
+    <button id="importBtn" type="button">بازیابی</button>
+    <button id="changePasswordBtn" class="settings" type="button">⚙ تغییر رمز عبور</button>
+    <button id="resetHistoryBtn" class="danger" type="button">↻ ریست تاریخچه</button>
+    <input id="importFile" type="file" accept="application/json" hidden>
+  </div>
 </section>
 
 <section class="card">
-<div class="stats">
-<div class="stat"><strong id="productCount">0</strong><span>کالا</span></div>
-<div class="stat"><strong id="rateDisplay">0</strong><span>نرخ دلار</span></div>
-<div class="stat"><strong id="historyCount">0</strong><span>تغییر نرخ</span></div>
-</div>
+  <div class="stats">
+    <div class="stat"><strong id="productCount">0</strong><span>کالا</span></div>
+    <div class="stat"><strong id="rateDisplay">0</strong><span>نرخ دلار</span></div>
+    <div class="stat"><strong id="historyCount">0</strong><span>تغییر نرخ</span></div>
+  </div>
 </section>
 
 <section class="card">
-<div class="section-head">
-<strong>کالاها</strong>
-<span id="resultCount" class="lock-info"></span>
-</div>
-<div id="products" class="products"></div>
+  <div class="section-head">
+    <strong>کالاها</strong><span id="resultCount" class="lock-info"></span>
+  </div>
+  <div id="products" class="products"></div>
 </section>
 
 <section class="card">
-<div class="section-head">
-<strong>تاریخچه نرخ دلار</strong>
-<button id="historyToggle" type="button">⌄</button>
-</div>
-<div id="historyList" class="history-list" style="display:none"></div>
+  <div class="section-head">
+    <strong>تاریخچه نرخ دلار</strong>
+    <button id="historyToggle" type="button">⌄</button>
+  </div>
+  <div id="historyList" class="history-list" hidden></div>
 </section>
-
 </main>
 </div>
 
-<div id="imageModal" class="image-modal">
-<div class="image-modal-content">
-<button id="closeImageModal" class="close-image" type="button">×</button>
-<img id="largeImage" src="" alt="تصویر بزرگ کالا">
-</div>
-</div>
-
-<div id="scannerModal" class="scanner-modal">
-<div class="scanner-box">
-<div class="scanner-title">اسکن QR یا بارکد</div>
-<div id="reader"></div>
-<div id="scannerStatus" class="scanner-status">در حال آماده‌سازی دوربین...</div>
-<button id="scannerClose" class="scanner-close" type="button">بستن</button>
-</div>
-</div>
-
-<div id="passwordModal" class="password-modal">
-<div class="password-box">
-<h3 id="passwordTitle">ورود مالک</h3>
-<p id="passwordDescription">برای دسترسی به بخش مدیریت، رمز مالک را وارد کنید.</p>
-<div id="passwordError" class="password-error"></div>
-
-<div class="password-toggle">
-<input id="passwordInput" type="password" autocomplete="current-password" placeholder="رمز مالک">
-<button id="passwordVisibility" type="button">◉</button>
+<div id="passwordModal" class="modal">
+  <div class="modal-box">
+    <h3 id="passwordTitle">ورود مالک</h3>
+    <p id="passwordDescription">رمز مالک را وارد کنید.</p>
+    <div id="passwordError" class="up"></div>
+    <input id="passwordInput" type="password" autocomplete="current-password" placeholder="رمز مالک">
+    <div id="changePasswordFields" hidden>
+      <input id="newPasswordInput" type="password" autocomplete="new-password" placeholder="رمز جدید (حداقل ۸ کاراکتر)">
+      <input id="confirmPasswordInput" type="password" autocomplete="new-password" placeholder="تکرار رمز جدید">
+    </div>
+    <div class="modal-actions">
+      <button id="passwordSubmit" class="primary-btn" type="button">ورود</button>
+      <button id="passwordCancel" type="button">انصراف</button>
+    </div>
+  </div>
 </div>
 
-<div id="changePasswordFields" class="change-password-fields">
-<div class="password-toggle">
-<input id="newPasswordInput" type="password" autocomplete="new-password" placeholder="رمز جدید">
-<button id="newPasswordVisibility" type="button">◉</button>
-</div>
-<div class="password-toggle">
-<input id="confirmPasswordInput" type="password" autocomplete="new-password" placeholder="تکرار رمز جدید">
-<button id="confirmPasswordVisibility" type="button">◉</button>
-</div>
-</div>
-
-<div class="password-actions">
-<button id="passwordSubmit" class="password-submit" type="button">ورود</button>
-<button id="passwordCancel" class="password-cancel" type="button">انصراف</button>
-</div>
-</div>
+<div id="setupModal" class="modal">
+  <div class="modal-box">
+    <h3>ساخت رمز مالک</h3>
+    <p>یک رمز حداقل ۸ کاراکتری بسازید و آن را در جای امن نگه دارید.</p>
+    <div id="setupError" class="up"></div>
+    <input id="setupPassword" type="password" autocomplete="new-password" placeholder="رمز مالک">
+    <input id="setupPasswordConfirm" type="password" autocomplete="new-password" placeholder="تکرار رمز مالک">
+    <button id="setupSubmit" class="wide-btn" type="button">ساخت رمز و ادامه</button>
+  </div>
 </div>
 
-<div id="setupModal" class="setup-modal">
-<div class="setup-box">
-<h3>ساخت رمز مالک</h3>
-<p>برای محافظت از قیمت‌ها و تنظیمات، ابتدا یک رمز مالک بسازید. حداقل ۸ کاراکتر استفاده کنید.</p>
-<div id="setupError" class="setup-error"></div>
-<input id="setupPassword" type="password" autocomplete="new-password" placeholder="رمز مالک">
-<input id="setupPasswordConfirm" type="password" autocomplete="new-password" placeholder="تکرار رمز مالک">
-<button id="setupSubmit" class="setup-submit" type="button">ساخت رمز و ادامه</button>
-</div>
+<div id="scannerModal" class="modal">
+  <div class="modal-box">
+    <h3>اسکن QR یا بارکد</h3>
+    <div id="reader"></div>
+    <p id="scannerStatus">در حال آماده‌سازی دوربین...</p>
+    <button id="scannerClose" class="wide-btn" type="button">بستن</button>
+  </div>
 </div>
 
-<div id="toast" class="toast"></div>
-
-<script>
-"use strict";
-
-const DB_NAME="PriceCalculatorDB";
-const STORE_NAME="appData";
-const STATE_KEY="state";
-const DB_VERSION=2;
-
-let db=null;
-
-const DEFAULT_STATE={
-products:[],
-oldRate:0,
-currentRate:0,
-history:[],
-locked:true,
-passwordHash:null,
-autoLockMinutes:5,
-schemaVersion:2
-};
-
-let state=structuredClone(DEFAULT_STATE);
-let scanner=null;
-let scannerTarget=null;
-let passwordMode="unlock";
-let autoLockTimer=null;
-let hiddenTimer=null;
-let saveTimer=null;
-let scanBusy=false;
-
-/* ---------- HELPERS ---------- */
-
-function normalizeDigits(value){
-return String(value??"")
-.replace(/[۰-۹]/g,d=>String("۰۱۲۳۴۵۶۷۸۹".indexOf(d)))
-.replace(/[٠-٩]/g,d=>String("٠١٢٣٤٥٦٧٨٩".indexOf(d)));
-}
-
-function parseNumber(value){
-let s=normalizeDigits(value).trim()
-.replace(/,/g,"").replace(/٬/g,"").replace(/٫/g,".");
-if(!s)return 0;
-const n=Number(s);
-return Number.isFinite(n)&&n>=0?n:0;
-}
-
-function money(value){
-const n=Number(value);
-return Number.isFinite(n)?Math.round(n).toLocaleString("en-US"):"0";
-}
-
-function formatRateInput(input){
-if(!input)return;
-const value=parseNumber(input.value);
-input.value=value?money(value):"";
-}
-
-function uid(){
-return window.crypto?.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);
-}
-
-function escapeHtml(value){
-return String(value??"")
-.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-}
-
-function showToast(message){
-const toast=document.getElementById("toast");
-toast.textContent=message;
-toast.classList.add("show");
-clearTimeout(showToast.timer);
-showToast.timer=setTimeout(()=>toast.classList.remove("show"),2200);
-}
-
-function debounceSave(){
-clearTimeout(saveTimer);
-saveTimer=setTimeout(()=>saveState().catch(console.error),350);
-}
-
-/* ---------- WORDS ---------- */
-
-const ones=["صفر","یک","دو","سه","چهار","پنج","شش","هفت","هشت","نه","ده","یازده","دوازده","سیزده","چهارده","پانزده","شانزده","هفده","هجده","نوزده"];
-const tens=["","","بیست","سی","چهل","پنجاه","شصت","هفتاد","هشتاد","نود"];
-const hundreds=["","صد","دویست","سیصد","چهارصد","پانصد","ششصد","هفتصد","هشتصد","نهصد"];
-const scales=["","هزار","میلیون","میلیارد","تریلیون"];
-
-function threeDigitsToWords(n){
-const result=[];
-const h=Math.floor(n/100);
-const rest=n%100;
-if(h)result.push(hundreds[h]);
-if(rest<20&&rest)result.push(ones[rest]);
-else if(rest){
-const t=Math.floor(rest/10),o=rest%10;
-result.push(tens[t]);
-if(o)result.push(ones[o]);
-}
-return result.join(" و ");
-}
-
-function numberToWords(value){
-let n=Math.round(parseNumber(value));
-if(n===0)return "صفر تومان";
-if(n<0)return "منفی "+numberToWords(Math.abs(n));
-const result=[];
-let group=0;
-while(n>0){
-const chunk=n%1000;
-if(chunk){
-let text=threeDigitsToWords(chunk);
-if(scales[group])text+=" "+scales[group];
-result.unshift(text);
-}
-n=Math.floor(n/1000);
-group++;
-}
-return result.join(" و ")+" تومان";
-}
-
-/* ---------- CALCULATION ---------- */
-
-function decimalParts(value){
-let s=normalizeDigits(value).trim().replace(/,/g,"").replace(/٬/g,"").replace(/٫/g,".");
-if(!s)return{integer:0n,scale:0};
-let negative=false;
-if(s.startsWith("-")){negative=true;s=s.slice(1);}
-if(!s.includes(".")){
-return{integer:BigInt(s.replace(/\D/g,"")||"0")*(negative?-1n:1n),scale:0};
-}
-const parts=s.split(".");
-const a=(parts[0]||"").replace(/\D/g,"")||"0";
-const b=(parts[1]||"").replace(/\D/g,"");
-return{integer:BigInt(a+b)*(negative?-1n:1n),scale:b.length};
-}
-
-function roundDivide(numerator,denominator){
-if(denominator===0n)return 0n;
-const negative=(numerator<0n)!==(denominator<0n);
-let a=numerator<0n?-numerator:numerator;
-let b=denominator<0n?-denominator:denominator;
-let q=a/b,r=a%b;
-if(r*2n>=b)q++;
-return negative?-q:q;
-}
-
-function calculateProduct(product){
-const price=parseNumber(product.price);
-const oldRate=parseNumber(state.oldRate);
-const currentRate=parseNumber(state.currentRate);
-
-if(price===0||oldRate<=0||currentRate<=0)return{newPrice:price,diff:0,percent:0};
-
-const priceParts=decimalParts(product.price);
-const oldParts=decimalParts(state.oldRate);
-const currentParts=decimalParts(state.currentRate);
-
-const numerator=priceParts.integer*currentParts.integer*(10n**BigInt(oldParts.scale));
-const denominator=oldParts.integer*(10n**BigInt(priceParts.scale+currentParts.scale));
-const roundedInteger=roundDivide(numerator,denominator);
-const newPrice=Number(roundedInteger);
-const diff=newPrice-Math.round(price);
-const percent=price===0?0:(diff/price)*100;
-
-return{newPrice,diff,percent};
-}
-
-/* ---------- DATABASE ---------- */
-
-function openDB(){
-return new Promise((resolve,reject)=>{
-const request=indexedDB.open(DB_NAME,DB_VERSION);
-request.onupgradeneeded=()=>{
-const database=request.result;
-if(!database.objectStoreNames.contains(STORE_NAME))database.createObjectStore(STORE_NAME);
-};
-request.onsuccess=()=>{db=request.result;resolve();};
-request.onerror=()=>reject(request.error);
-});
-}
-
-function loadState(){
-return new Promise((resolve,reject)=>{
-const tx=db.transaction(STORE_NAME,"readonly");
-const request=tx.objectStore(STORE_NAME).get(STATE_KEY);
-request.onsuccess=()=>{
-if(request.result){
-state={...DEFAULT_STATE,...request.result};
-state.products=Array.isArray(state.products)?state.products:[];
-state.history=Array.isArray(state.history)?state.history:[];
-}
-resolve();
-};
-request.onerror=()=>reject(request.error);
-});
-}
-
-function saveState(){
-return new Promise((resolve,reject)=>{
-const tx=db.transaction(STORE_NAME,"readwrite");
-tx.objectStore(STORE_NAME).put(state,STATE_KEY);
-tx.oncomplete=resolve;
-tx.onerror=()=>reject(tx.error);
-});
-}
-
-/* ---------- PASSWORD ---------- */
-
-async function hashPassword(password){
-const data=new TextEncoder().encode(password);
-const hash=await crypto.subtle.digest("SHA-256",data);
-return Array.from(new Uint8Array(hash)).map(x=>x.toString(16).padStart(2,"0")).join("");
-}
-
-function openSetupModal(){
-document.getElementById("setupModal").classList.add("show");
-setTimeout(()=>document.getElementById("setupPassword").focus(),100);
-}
-
-function closeSetupModal(){
-document.getElementById("setupModal").classList.remove("show");
-}
-
-async function createInitialPassword(){
-const p=document.getElementById("setupPassword").value;
-const c=document.getElementById("setupPasswordConfirm").value;
-const error=document.getElementById("setupError");
-error.textContent="";
-
-if(p.length<8){error.textContent="رمز باید حداقل ۸ کاراکتر باشد.";return false;}
-if(p!==c){error.textContent="دو رمز یکسان نیستند.";return false;}
-
-state.passwordHash=await hashPassword(p);
-state.locked=true;
-await saveState();
-closeSetupModal();
-showToast("رمز مالک ساخته شد");
-updateLockUI();
-return true;
-}
-
-function openPasswordModal(mode="unlock"){
-passwordMode=mode;
-
-const modal=document.getElementById("passwordModal");
-const title=document.getElementById("passwordTitle");
-const description=document.getElementById("passwordDescription");
-const input=document.getElementById("passwordInput");
-const error=document.getElementById("passwordError");
-const fields=document.getElementById("changePasswordFields");
-
-error.textContent="";
-input.value="";
-document.getElementById("newPasswordInput").value="";
-document.getElementById("confirmPasswordInput").value="";
-
-if(mode==="unlock"){
-title.textContent="ورود مالک";
-description.textContent="برای ویرایش کالاها و تنظیمات، رمز مالک را وارد کنید.";
-fields.classList.remove("show");
-}else{
-title.textContent="تغییر رمز مالک";
-description.textContent="رمز فعلی و سپس رمز جدید را وارد کنید.";
-fields.classList.add("show");
-}
-
-modal.classList.add("show");
-setTimeout(()=>input.focus(),100);
-}
-
-function closePasswordModal(){
-document.getElementById("passwordModal").classList.remove("show");
-}
-
-async function handlePasswordSubmit(){
-
-const error=document.getElementById("passwordError");
-const current=document.getElementById("passwordInput").value;
-error.textContent="";
-
-if(!current){
-error.textContent="رمز را وارد کنید.";
-return;
-}
-
-const currentHash=await hashPassword(current);
-
-if(currentHash!==state.passwordHash){
-error.textContent="رمز مالک اشتباه است.";
-return;
-}
-
-/* باز کردن قفل:
-   بعد از این مرحله تا وقتی برنامه قفل نشده،
-   هیچ قابلیت دیگری دوباره رمز نمی‌خواهد. */
-if(passwordMode==="unlock"){
-
-state.locked=false;
-await saveState();
-closePasswordModal();
-updateLockUI();
-startAutoLockTimer();
-showToast("ویرایش فعال شد");
-return;
-}
-
-/* تغییر رمز:
-   بعد از تغییر، برنامه فوراً دوباره قفل می‌شود. */
-if(passwordMode==="change"){
-
-const newPassword=document.getElementById("newPasswordInput").value;
-const confirmPassword=document.getElementById("confirmPasswordInput").value;
-
-if(newPassword.length<8){
-error.textContent="رمز جدید باید حداقل ۸ کاراکتر باشد.";
-return;
-}
-
-if(newPassword!==confirmPassword){
-error.textContent="دو رمز جدید یکسان نیستند.";
-return;
-}
-
-if(newPassword===current){
-error.textContent="رمز جدید باید با رمز فعلی متفاوت باشد.";
-return;
-}
-
-state.passwordHash=await hashPassword(newPassword);
-state.locked=true;
-
-clearTimeout(autoLockTimer);
-
-await saveState();
-
-closePasswordModal();
-updateLockUI();
-
-showToast("رمز تغییر کرد و برنامه قفل شد");
-}
-}
-
-/* ---------- LOCK ---------- */
-
-function closeOpenProducts(){
-document.querySelectorAll(".product.open").forEach(el=>el.classList.remove("open"));
-}
-
-async function lockNow(showMessage=false){
-clearTimeout(autoLockTimer);
-state.locked=true;
-await saveState();
-closeOpenProducts();
-updateLockUI();
-if(showMessage)showToast("ویرایش قفل شد");
-}
-
-function startAutoLockTimer(){
-clearTimeout(autoLockTimer);
-if(state.locked)return;
-autoLockTimer=setTimeout(()=>lockNow(true),Math.max(1,Number(state.autoLockMinutes)||5)*60*1000);
-}
-
-function resetAutoLockTimer(){
-if(!state.locked)startAutoLockTimer();
-}
-
-function updateLockIcon(){
-const btn=document.getElementById("lockBtn");
-if(!btn)return;
-
-if(state.locked){
-btn.textContent="🔒";
-btn.title="ورود مالک";
-btn.setAttribute("aria-label","باز کردن قفل");
-}else{
-btn.textContent="🔓";
-btn.title="قفل کردن";
-btn.setAttribute("aria-label","قفل کردن");
-}
-}
-
-function updateLockUI(){
-const status=document.getElementById("lockStatus");
-updateLockIcon();
-
-if(state.locked){
-status.textContent="قفل ویرایش فعال است";
-document.body.classList.add("locked");
-}else{
-status.textContent="ویرایش فعال — قفل خودکار";
-document.body.classList.remove("locked");
-}
-
-applyLockState();
-}
-
-function applyLockState(){
-document.querySelectorAll(".editable").forEach(el=>{
-el.disabled=state.locked;
-});
-}
-
-/* ---------- RATE ---------- */
-
-function renderRates(){
-
-document.getElementById("oldRate").value=
-state.oldRate?money(state.oldRate):"";
-
-document.getElementById("newRate").value=
-state.currentRate?money(state.currentRate):"";
-
-document.getElementById("rateDisplay").textContent=
-money(state.currentRate);
-
-document.getElementById("rateWords").textContent=
-state.currentRate?numberToWords(state.currentRate):"";
-
-document.getElementById("historyCount").textContent=
-state.history.length;
-
-applyLockState();
-}
-
-/* ---------- PRODUCTS ---------- */
-
-function productMatches(product,query){
-if(!query)return true;
-const q=normalizeDigits(query).trim().toLocaleLowerCase("fa");
-return String(product.name||"").toLocaleLowerCase("fa").includes(q)||
-String(product.qr||"").toLocaleLowerCase("fa").includes(q);
-}
-
-function productImage(product){
-if(product.image){
-return `<img class="product-thumb" src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" data-image="${escapeHtml(product.image)}">`;
-}
-return `<div class="product-thumb" style="display:grid;place-items:center;font-size:22px">🛍️</div>`;
-}
-
-function renderProducts(){
-
-const container=document.getElementById("products");
-const query=document.getElementById("searchInput").value.trim();
-const products=state.products.filter(p=>productMatches(p,query));
-
-document.getElementById("productCount").textContent=state.products.length;
-document.getElementById("resultCount").textContent=query?`${products.length} نتیجه`:"";
-
-if(!products.length){
-container.innerHTML=`<div class="empty">${query?"کالایی با این مشخصات پیدا نشد.":"هنوز کالایی ثبت نشده است."}</div>`;
-return;
-}
-
-container.innerHTML=products.map(product=>{
-
-const result=calculateProduct(product);
-const roundedNewPrice=Math.round(result.newPrice);
-
-const changeText=result.diff===0?"بدون تغییر":
-"تغییر: "+money(Math.abs(result.diff))+" تومان ("+result.percent.toFixed(4)+"٪)";
-
-return `
-<article class="product" id="product-${escapeHtml(product.id)}">
-
-<div class="product-summary">
-
-${productImage(product)}
-
-<div class="product-main">
-<div class="product-name">${escapeHtml(product.name||"کالای بدون نام")}</div>
-
-<div class="prices">
-<span class="current-price">فعلی: ${money(product.price)} تومان</span>
-<span class="new-price">جدید: ${money(roundedNewPrice)} تومان</span>
+<div id="imageModal" class="modal">
+  <div class="modal-box">
+    <button id="closeImageModal" class="wide-btn" type="button">بستن تصویر</button>
+    <img id="largeImage" class="modal-image" alt="تصویر کالا">
+  </div>
 </div>
 
-<div class="change ${result.diff>0?"up":result.diff<0?"down":""}">
-${changeText}
-</div>
-</div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<button class="edit-product-btn" type="button" data-edit-product="${escapeHtml(product.id)}" title="ویرایش کالا">✏️</button>
-
-</div>
-
-<div class="product-details">
-
-<div class="compact-edit-grid">
-
-<div class="field name-field">
-<label>نام کالا</label>
-<input class="editable productName" data-id="${escapeHtml(product.id)}" value="${escapeHtml(product.name||"")}" autocomplete="off">
-</div>
-
-<div class="field">
-<label>قیمت فعلی</label>
-<input class="editable productPrice" data-id="${escapeHtml(product.id)}" type="text" inputmode="decimal" value="${escapeHtml(String(product.price??0))}">
-<div class="words" id="words-${escapeHtml(product.id)}">${numberToWords(product.price)}</div>
-</div>
-
-<div class="field">
-<label>قیمت جدید</label>
-<input type="text" disabled value="${money(roundedNewPrice)} تومان">
-</div>
-
-<div class="field full">
-<label>QR / کد کالا</label>
-<div class="compact-code-row">
-<input class="editable productQR" data-id="${escapeHtml(product.id)}" value="${escapeHtml(product.qr||"")}" placeholder="کد QR یا بارکد" dir="ltr" autocomplete="off">
-<button type="button" class="scan-product-btn" data-scan-product="${escapeHtml(product.id)}" title="اسکن با دوربین">📷</button>
-</div>
-</div>
-
-</div>
-
-<button type="button" class="edit-more-btn" data-more-product="${escapeHtml(product.id)}">＋ گزینه‌های بیشتر</button>
-
-<div class="edit-extra" id="extra-${escapeHtml(product.id)}">
-
-<div class="compact-price-row">
-
-<div class="field">
-<label>درصد تغییر</label>
-<input type="text" disabled value="${result.percent.toFixed(4)}٪">
-</div>
-
-<div class="field">
-<label>تصویر کالا</label>
-<input class="editable productImageInput" data-id="${escapeHtml(product.id)}" type="file" accept="image/*">
-</div>
-
-</div>
-
-<div class="qr-box" style="margin-top:7px">
-<div>کد ثبت‌شده:</div>
-<div class="qr-code">${escapeHtml(product.qr||"ثبت نشده")}</div>
-</div>
-
-</div>
-
-<div class="detail-actions">
-
-<button type="button" class="scan-product-btn" data-scan-product="${escapeHtml(product.id)}">📷 اسکن QR</button>
-
-<button type="button" class="delete-btn" data-delete-product="${escapeHtml(product.id)}">حذف</button>
-
-<button type="button" class="close-edit-btn" data-close-product="${escapeHtml(product.id)}">بستن</button>
-
-</div>
-
-</div>
-</article>`;
-}).join("");
-
-applyLockState();
-}
-
-/* ---------- SEARCH ---------- */
-
-function updateQuickResult(){
-
-const query=document.getElementById("searchInput").value.trim();
-const box=document.getElementById("quickResult");
-
-if(!query){
-box.classList.remove("show");
-return;
-}
-
-const matches=state.products.filter(p=>productMatches(p,query));
-
-if(matches.length!==1){
-box.classList.remove("show");
-return;
-}
-
-const product=matches[0];
-const result=calculateProduct(product);
-
-document.getElementById("quickResultTitle").textContent=product.name||"کالا";
-document.getElementById("quickResultPrice").textContent=money(Math.round(result.newPrice))+" تومان";
-document.getElementById("quickResultWords").textContent=numberToWords(Math.round(result.newPrice));
-
-box.classList.add("show");
-}
-
-/* ---------- HISTORY ---------- */
-
-function renderHistory(){
-
-const container=document.getElementById("historyList");
-
-if(!state.history.length){
-container.innerHTML=`<div class="empty">تاریخچه خالی است.</div>`;
-return;
-}
-
-container.innerHTML=state.history.map(item=>`
-<div class="history-item">
-<div class="history-top">
-<strong>${escapeHtml(item.date||"")}</strong>
-<span class="history-percent ${Number(item.percent||0)>0?"up":Number(item.percent||0)<0?"down":""}">
-${Number(item.percent||0)>0?"+":""}${Number(item.percent||0).toFixed(4)}٪
-</span>
-</div>
-<div>${money(item.oldRate)} ← ${money(item.newRate)}</div>
-</div>
-`).join("");
-}
-
-async function resetHistory(){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-if(!state.history.length){
-showToast("تاریخچه‌ای برای پاک‌کردن وجود ندارد");
-return;
-}
-
-if(!confirm("تمام تاریخچه تغییرات نرخ دلار پاک می‌شود. ادامه می‌دهید؟"))return;
-
-state.history=[];
-await saveState();
-renderHistory();
-renderRates();
-showToast("تمام تاریخچه پاک شد");
-resetAutoLockTimer();
-}
-
-/* ---------- ADD PRODUCT ---------- */
-
-async function addProduct(){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const product={
-id:uid(),
-name:"کالای جدید",
-price:0,
-qr:"",
-image:""
-};
-
-state.products.unshift(product);
-await saveState();
-renderProducts();
-
-const el=document.getElementById("product-"+product.id);
-
-if(el){
-el.classList.add("open");
-const input=el.querySelector(".productName");
-if(input){input.focus();input.select();}
-}
-
-resetAutoLockTimer();
-}
-
-/* ---------- IMAGE ---------- */
-
-function compressImage(file){
-return new Promise((resolve,reject)=>{
-if(!file.type.startsWith("image/")){
-reject(new Error("not-image"));
-return;
-}
-
-const reader=new FileReader();
-
-reader.onload=()=>{
-const img=new Image();
-
-img.onload=()=>{
-const max=900;
-const scale=Math.min(1,max/Math.max(img.width,img.height));
-const canvas=document.createElement("canvas");
-
-canvas.width=Math.max(1,Math.round(img.width*scale));
-canvas.height=Math.max(1,Math.round(img.height*scale));
-
-const ctx=canvas.getContext("2d");
-ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
-resolve(canvas.toDataURL("image/jpeg",.80));
-};
-
-img.onerror=reject;
-img.src=reader.result;
-};
-
-reader.onerror=reject;
-reader.readAsDataURL(file);
-});
-}
-
-/* ---------- SCANNER ---------- */
-
-function waitForQrLibrary(timeout=10000){
-return new Promise(resolve=>{
-if(window.Html5Qrcode){resolve(true);return;}
-
-const started=Date.now();
-
-const timer=setInterval(()=>{
-if(window.Html5Qrcode){
-clearInterval(timer);
-resolve(true);
-return;
-}
-
-if(Date.now()-started>=timeout){
-clearInterval(timer);
-resolve(false);
-}
-},100);
-});
-}
-
-async function stopScanner(){
-
-if(scanner){
-try{await scanner.stop()}catch(e){}
-try{scanner.clear()}catch(e){}
-scanner=null;
-}
-
-scanBusy=false;
-}
-
-async function openScanner(target){
-
-scannerTarget=target;
-scanBusy=false;
-
-const modal=document.getElementById("scannerModal");
-const status=document.getElementById("scannerStatus");
-const reader=document.getElementById("reader");
-
-modal.classList.add("show");
-reader.innerHTML="";
-status.textContent="در حال آماده‌سازی دوربین...";
-
-const ready=await waitForQrLibrary();
-
-if(!ready){
-status.textContent="اسکنر بارگذاری نشد. اینترنت را بررسی کنید.";
-showToast("کتابخانه اسکنر آماده نشد");
-return;
-}
-
-await stopScanner();
-reader.innerHTML="";
-
-try{
-
-scanner=new Html5Qrcode("reader");
-status.textContent="دوربین را روبه‌روی QR یا بارکد بگیرید.";
-
-const formats=[];
-
-if(window.Html5QrcodeSupportedFormats){
-
-const supported=window.Html5QrcodeSupportedFormats;
-
-["QR_CODE","CODE_128","CODE_39","EAN_13","EAN_8","UPC_A","UPC_E"].forEach(name=>{
-if(supported[name]!==undefined)formats.push(supported[name]);
-});
-}
-
-const config={
-fps:10,
-qrbox:{width:250,height:180},
-aspectRatio:1.777778
-};
-
-if(formats.length)config.formatsToSupport=formats;
-
-const success=async decodedText=>{
-if(scanBusy)return;
-scanBusy=true;
-await handleScannedCode(decodedText);
-};
-
-try{
-
-await scanner.start(
-{facingMode:"environment"},
-config,
-success,
-()=>{}
-);
-
-}catch(firstError){
-
-await stopScanner();
-scanner=new Html5Qrcode("reader");
-
-const cameras=await Html5Qrcode.getCameras();
-
-if(!cameras?.length)throw firstError;
-
-await scanner.start(
-cameras[0].id,
-config,
-success,
-()=>{}
-);
-}
-
-}catch(error){
-
-console.error("QR scanner error:",error);
-await stopScanner();
-
-status.textContent="دسترسی به دوربین ممکن نیست.";
-showToast("دسترسی به دوربین ممکن نیست؛ مجوز دوربین مرورگر را فعال کنید.");
-}
-}
-
-async function handleScannedCode(code){
-
-const target=scannerTarget;
-
-await stopScanner();
-document.getElementById("scannerModal").classList.remove("show");
-
-const cleanCode=String(code??"").trim();
-
-if(!cleanCode)return;
-
-if(target?.type==="search"){
-
-const input=document.getElementById("searchInput");
-input.value=cleanCode;
-renderProducts();
-updateQuickResult();
-showToast("کد پیدا شد");
-return;
-}
-
-if(target?.type==="product"){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const product=state.products.find(p=>p.id===target.id);
-
-if(!product)return;
-
-product.qr=cleanCode;
-
-await saveState();
-renderProducts();
-
-const el=document.getElementById("product-"+product.id);
-if(el)el.classList.add("open");
-
-showToast("کد کالا ثبت شد");
-resetAutoLockTimer();
-}
-}
-
-/* ---------- BACKUP ---------- */
-
-async function exportBackup(){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const backup={
-version:2,
-exportedAt:new Date().toISOString(),
-products:state.products,
-oldRate:state.oldRate,
-currentRate:state.currentRate,
-history:state.history,
-autoLockMinutes:state.autoLockMinutes
-};
-
-const blob=new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
-const url=URL.createObjectURL(blob);
-const a=document.createElement("a");
-
-a.href=url;
-a.download="price-calculator-backup-"+new Date().toISOString().slice(0,10)+".json";
-
-document.body.appendChild(a);
-a.click();
-a.remove();
-
-setTimeout(()=>URL.revokeObjectURL(url),1000);
-
-showToast("پشتیبان ذخیره شد");
-resetAutoLockTimer();
-}
-
-async function importBackup(file){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-try{
-
-if(!file)return;
-
-const text=await file.text();
-const imported=JSON.parse(text);
-
-if(!imported||!Array.isArray(imported.products)){
-throw new Error("invalid-data");
-}
-
-const passwordHash=state.passwordHash;
-
-const normalizedProducts=imported.products.map(p=>({
-id:String(p.id||uid()),
-name:String(p.name||"کالای بدون نام"),
-price:parseNumber(p.price),
-qr:String(p.qr||""),
-image:String(p.image||"")
-}));
-
-const normalizedHistory=Array.isArray(imported.history)?
-imported.history.filter(Boolean).map(item=>({
-date:String(item.date||""),
-oldRate:parseNumber(item.oldRate),
-newRate:parseNumber(item.newRate),
-percent:Number(item.percent||0)||0
-})):[ ];
-
-state={
-...DEFAULT_STATE,
-...state,
-products:normalizedProducts,
-oldRate:parseNumber(imported.oldRate),
-currentRate:parseNumber(imported.currentRate),
-history:normalizedHistory,
-autoLockMinutes:Math.max(1,Number(imported.autoLockMinutes)||5),
-passwordHash,
-locked:false
-};
-
-await saveState();
-renderAll();
-startAutoLockTimer();
-showToast("پشتیبان با موفقیت بازیابی شد");
-
-}catch(error){
-console.error(error);
-showToast("فایل پشتیبان معتبر نیست");
-}
-}
-
-/* ---------- RENDER ---------- */
-
-function renderAll(){
-renderRates();
-renderProducts();
-renderHistory();
-updateQuickResult();
-updateLockUI();
-}
-
-/* ---------- PASSWORD VISIBILITY ---------- */
-
-function togglePasswordVisibility(id){
-const input=document.getElementById(id);
-input.type=input.type==="password"?"text":"password";
-}
-
-/* ---------- EVENTS ---------- */
-
-document.getElementById("lockBtn").addEventListener("click",async()=>{
-if(state.locked){
-openPasswordModal("unlock");
-}else{
-await lockNow(true);
-}
-});
-
-document.getElementById("changePasswordBtn").addEventListener("click",()=>{
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-openPasswordModal("change");
-});
-
-document.getElementById("passwordSubmit").addEventListener("click",handlePasswordSubmit);
-document.getElementById("passwordCancel").addEventListener("click",closePasswordModal);
-
-document.getElementById("passwordInput").addEventListener("keydown",e=>{
-if(e.key==="Enter")handlePasswordSubmit();
-});
-
-document.getElementById("setupSubmit").addEventListener("click",createInitialPassword);
-
-document.getElementById("setupPasswordConfirm").addEventListener("keydown",e=>{
-if(e.key==="Enter")createInitialPassword();
-});
-
-document.getElementById("passwordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("passwordInput");
-});
-
-document.getElementById("newPasswordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("newPasswordInput");
-});
-
-document.getElementById("confirmPasswordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("confirmPasswordInput");
-});
-
-document.getElementById("searchInput").addEventListener("input",()=>{
-renderProducts();
-updateQuickResult();
-});
-
-document.getElementById("searchScanBtn").addEventListener("click",()=>{
-openScanner({type:"search"});
-});
-
-document.getElementById("rateToggle").addEventListener("click",()=>{
-const body=document.getElementById("rateBody");
-body.style.display=body.style.display==="none"?"block":"none";
-});
-
-document.getElementById("historyToggle").addEventListener("click",()=>{
-const list=document.getElementById("historyList");
-list.style.display=list.style.display==="none"?"block":"none";
-});
-
-/* نرخ جدید:
-   هنگام تایپ عدد ذخیره نمی‌شود؛ فقط نمایش کلمات به‌روز می‌شود.
-   با خروج از فیلد، مقدار به شکل 10,000 نمایش داده می‌شود. */
-
-document.getElementById("newRate").addEventListener("input",()=>{
-const value=parseNumber(document.getElementById("newRate").value);
-document.getElementById("rateWords").textContent=value?numberToWords(value):"";
-});
-
-document.getElementById("newRate").addEventListener("blur",()=>{
-formatRateInput(document.getElementById("newRate"));
-});
-
-document.getElementById("rateBtn").addEventListener("click",async()=>{
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const newRate=parseNumber(document.getElementById("newRate").value);
-
-if(newRate<=0){
-showToast("نرخ جدید را وارد کنید");
-return;
-}
-
-if(state.currentRate>0){
-
-const oldRate=state.currentRate;
-
-const percent=((newRate/oldRate)-1)*100;
-
-state.history.unshift({
-date:new Date().toLocaleString("fa-IR"),
-oldRate,
-newRate,
-percent
-});
-
-state.oldRate=oldRate;
-
-}else{
-state.oldRate=newRate;
-}
-
-state.currentRate=newRate;
-
-await saveState();
-renderAll();
-resetAutoLockTimer();
-showToast("نرخ جدید ثبت شد");
-});
-
-document.getElementById("addBtn").addEventListener("click",addProduct);
-document.getElementById("exportBtn").addEventListener("click",exportBackup);
-
-document.getElementById("importBtn").addEventListener("click",()=>{
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-document.getElementById("importFile").click();
-});
-
-document.getElementById("resetHistoryBtn").addEventListener("click",resetHistory);
-
-document.getElementById("importFile").addEventListener("change",async e=>{
-const file=e.target.files?.[0];
-if(file)await importBackup(file);
-e.target.value="";
-});
-
-/* ---------- PRODUCT CLICK ---------- */
-
-document.getElementById("products").addEventListener("click",async e=>{
-
-const editBtn=e.target.closest("[data-edit-product]");
-
-if(editBtn){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const id=editBtn.dataset.editProduct;
-const el=document.getElementById("product-"+id);
-
-if(!el)return;
-
-document.querySelectorAll(".product.open").forEach(other=>{
-if(other!==el)other.classList.remove("open");
-});
-
-el.classList.toggle("open");
-
-if(el.classList.contains("open")){
-const input=el.querySelector(".productName");
-if(input)setTimeout(()=>input.focus(),30);
-}
-
-resetAutoLockTimer();
-return;
-}
-
-const moreBtn=e.target.closest("[data-more-product]");
-
-if(moreBtn){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const id=moreBtn.dataset.moreProduct;
-const extra=document.getElementById("extra-"+id);
-
-if(!extra)return;
-
-extra.classList.toggle("show");
-
-moreBtn.textContent=extra.classList.contains("show")
-?"− بستن گزینه‌های بیشتر"
-:"＋ گزینه‌های بیشتر";
-
-resetAutoLockTimer();
-return;
-}
-
-const image=e.target.closest("[data-image]");
-
-if(image){
-
-document.getElementById("largeImage").src=image.dataset.image;
-document.getElementById("imageModal").classList.add("show");
-return;
-}
-
-const deleteBtn=e.target.closest("[data-delete-product]");
-
-if(deleteBtn){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const id=deleteBtn.dataset.deleteProduct;
-const product=state.products.find(p=>p.id===id);
-
-if(!product)return;
-
-if(!confirm(`آیا کالا «${product.name}» حذف شود؟`))return;
-
-state.products=state.products.filter(p=>p.id!==id);
-
-await saveState();
-renderProducts();
-showToast("کالا حذف شد");
-resetAutoLockTimer();
-return;
-}
-
-const closeBtn=e.target.closest("[data-close-product]");
-
-if(closeBtn){
-
-const id=closeBtn.dataset.closeProduct;
-const el=document.getElementById("product-"+id);
-
-if(el)el.classList.remove("open");
-return;
-}
-
-const scanBtn=e.target.closest("[data-scan-product]");
-
-if(scanBtn){
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-openScanner({
-type:"product",
-id:scanBtn.dataset.scanProduct
-});
-
-return;
-}
-});
-
-/* ---------- PRODUCT INPUT ---------- */
-
-document.getElementById("products").addEventListener("input",e=>{
-
-if(state.locked)return;
-
-const input=e.target;
-
-if(
-!input.classList.contains("productPrice")&&
-!input.classList.contains("productName")&&
-!input.classList.contains("productQR")
-)return;
-
-const id=input.dataset.id;
-const product=state.products.find(p=>p.id===id);
-
-if(!product)return;
-
-if(input.classList.contains("productPrice")){
-product.price=parseNumber(input.value);
-}
-
-if(input.classList.contains("productName")){
-product.name=input.value;
-}
-
-if(input.classList.contains("productQR")){
-product.qr=input.value;
-}
-
-if(input.classList.contains("productPrice")){
-
-const result=calculateProduct(product);
-
-const words=document.getElementById("words-"+id);
-if(words)words.textContent=numberToWords(product.price);
-
-const row=document.getElementById("product-"+id);
-
-if(row){
-
-const current=row.querySelector(".current-price");
-if(current)current.textContent="فعلی: "+money(product.price)+" تومان";
-
-const newPrice=row.querySelector(".new-price");
-if(newPrice)newPrice.textContent="جدید: "+money(Math.round(result.newPrice))+" تومان";
-
-const change=row.querySelector(".change");
-
-if(change){
-
-change.className="change "+(
-result.diff>0?"up":
-result.diff<0?"down":""
-);
-
-change.textContent=result.diff===0
-?"بدون تغییر"
-:"تغییر: "+money(Math.abs(result.diff))+" تومان ("+result.percent.toFixed(4)+"٪)";
-}
-
-const disabledInputs=row.querySelectorAll(".field input[disabled]");
-
-if(disabledInputs.length>=2){
-disabledInputs[0].value=money(Math.round(result.newPrice))+" تومان";
-disabledInputs[1].value=result.percent.toFixed(4)+"٪";
-}
-}
-}
-
-debounceSave();
-resetAutoLockTimer();
-
-if(input.classList.contains("productName")||input.classList.contains("productQR")){
-updateQuickResult();
-}
-});
-
-/* ---------- IMAGE CHANGE ---------- */
-
-document.getElementById("products").addEventListener("change",async e=>{
-
-if(state.locked)return;
-
-const input=e.target;
-
-if(!input.classList.contains("productImageInput"))return;
-
-const file=input.files?.[0];
-if(!file)return;
-
-const product=state.products.find(p=>p.id===input.dataset.id);
-if(!product)return;
-
-try{
-
-product.image=await compressImage(file);
-await saveState();
-
-const wasOpen=document.getElementById("product-"+product.id)?.classList.contains("open");
-
-renderProducts();
-
-const el=document.getElementById("product-"+product.id);
-if(wasOpen&&el)el.classList.add("open");
-
-showToast("تصویر کالا ذخیره شد");
-
-}catch(error){
-
-console.error(error);
-showToast("ذخیره تصویر ناموفق بود");
-}
-
-resetAutoLockTimer();
-});
-
-/* ---------- MODALS ---------- */
-
-document.getElementById("closeImageModal").addEventListener("click",()=>{
-document.getElementById("imageModal").classList.remove("show");
-});
-
-document.getElementById("imageModal").addEventListener("click",e=>{
-if(e.target.id==="imageModal")e.currentTarget.classList.remove("show");
-});
-
-document.getElementById("scannerClose").addEventListener("click",async()=>{
-await stopScanner();
-document.getElementById("scannerModal").classList.remove("show");
-});
-
-document.getElementById("passwordModal").addEventListener("click",e=>{
-if(e.target.id==="passwordModal")closePasswordModal();
-});
-
-document.getElementById("scannerModal").addEventListener("click",async e=>{
-if(e.target.id==="scannerModal"){
-await stopScanner();
-e.currentTarget.classList.remove("show");
-}
-});
-
-/* ---------- ESCAPE ---------- */
-
-document.addEventListener("keydown",async e=>{
-
-if(e.key!=="Escape")return;
-
-document.getElementById("imageModal").classList.remove("show");
-closePasswordModal();
-
-if(document.getElementById("scannerModal").classList.contains("show")){
-await stopScanner();
-document.getElementById("scannerModal").classList.remove("show");
-}
-});
-
-/* ---------- VISIBILITY ---------- */
-
-document.addEventListener("visibilitychange",()=>{
-
-if(document.hidden){
-
-clearTimeout(hiddenTimer);
-
-hiddenTimer=setTimeout(()=>{
-
-if(!document.hidden)return;
-
-if(!state.locked)lockNow(false);
-
-},45000);
-
-}else{
-
-clearTimeout(hiddenTimer);
-
-if(!state.locked)resetAutoLockTimer();
-}
-});
-
-/* ---------- KEYBOARD ---------- */
-
-document.addEventListener("keydown",e=>{
-
-const tag=document.activeElement?.tagName;
-
-if(e.key==="/"&&tag!=="INPUT"&&tag!=="TEXTAREA"){
-
-e.preventDefault();
-document.getElementById("searchInput").focus();
-}
-});
-
-/* ---------- INIT ---------- */
-
-async function init(){
-
-try{
-
-await openDB();
-await loadState();
-
-if(!state.passwordHash){
-
-renderAll();
-openSetupModal();
-return;
-}
-
-/* هر بار Reload برنامه ابتدا قفل می‌شود. */
-state.locked=true;
-
-await saveState();
-
-renderAll();
-updateLockUI();
-
-}catch(error){
-
-console.error(error);
-
-alert("خطا در راه‌اندازی برنامه. صفحه را دوباره باز کنید.");
-}
-}
-
-/* ---------- SERVICE WORKER ---------- */
-
-if("serviceWorker" in navigator){
-
-window.addEventListener("load",()=>{
-navigator.serviceWorker.register("./sw.js").catch(error=>{
-console.error("Service Worker:",error);
-});
-});
-}
-
-init();
-</script>
+<!-- کد JavaScript بخش دوم را دقیقاً اینجا قرار بده -->
 
 </body>
 </html>
