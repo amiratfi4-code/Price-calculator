@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -66,8 +67,7 @@ main{padding:12px}.card{background:var(--card);border:1px solid var(--border);bo
 .words{color:var(--muted);font-size:10px;margin-top:3px}.qr-box{padding:8px;border:1px dashed #ccc;border-radius:9px;background:#fff;font-size:11px}
 .qr-code{direction:ltr;font-family:monospace;word-break:break-all;margin-top:3px}
 .history-list{padding:0 12px 12px}.history-item{padding:9px 0;border-bottom:1px solid var(--border);font-size:12px}
-.history-item:last-child{border-bottom:0}.history-top{display:flex;justify-content:space-between;gap:10px}
-.history-percent.up{color:var(--danger)}.history-percent.down{color:var(--green)}.empty{padding:35px 10px;text-align:center;color:var(--muted)}
+.history-item:last-child{border-bottom:0}.empty{padding:35px 10px;text-align:center;color:var(--muted)}
 .image-modal,.scanner-modal,.password-modal,.setup-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.72)}
 .image-modal.show,.scanner-modal.show,.password-modal.show,.setup-modal.show{display:flex}
 .image-modal-content{position:relative;max-width:95vw;max-height:90vh}.image-modal img{max-width:95vw;max-height:85vh;border-radius:12px;display:block}
@@ -123,7 +123,6 @@ main{padding:12px}.card{background:var(--card);border:1px solid var(--border);bo
 <section class="card">
 <div class="section-head">
 <strong>نرخ دلار</strong>
-<span class="lock-info">فقط مالک</span>
 <button id="rateToggle" type="button">⌄</button>
 </div>
 <div id="rateBody" class="rate-body" style="display:none">
@@ -136,7 +135,7 @@ main{padding:12px}.card{background:var(--card);border:1px solid var(--border);bo
 
 <div class="field">
 <label>نرخ جدید</label>
-<input id="newRate" class="editable rate-input" type="text" inputmode="decimal" autocomplete="off" placeholder="مثلاً 10,000">
+<input id="newRate" class="rate-input" type="text" inputmode="decimal" autocomplete="off" placeholder="مثلاً 10,000">
 <div id="rateWords" class="rate-words"></div>
 </div>
 
@@ -533,11 +532,7 @@ error.textContent="رمز مالک اشتباه است.";
 return;
 }
 
-/* باز کردن قفل:
-   بعد از این مرحله تا وقتی برنامه قفل نشده،
-   هیچ قابلیت دیگری دوباره رمز نمی‌خواهد. */
 if(passwordMode==="unlock"){
-
 state.locked=false;
 await saveState();
 closePasswordModal();
@@ -547,10 +542,7 @@ showToast("ویرایش فعال شد");
 return;
 }
 
-/* تغییر رمز:
-   بعد از تغییر، برنامه فوراً دوباره قفل می‌شود. */
 if(passwordMode==="change"){
-
 const newPassword=document.getElementById("newPasswordInput").value;
 const confirmPassword=document.getElementById("confirmPasswordInput").value;
 
@@ -571,14 +563,10 @@ return;
 
 state.passwordHash=await hashPassword(newPassword);
 state.locked=true;
-
 clearTimeout(autoLockTimer);
-
 await saveState();
-
 closePasswordModal();
 updateLockUI();
-
 showToast("رمز تغییر کرد و برنامه قفل شد");
 }
 }
@@ -647,7 +635,6 @@ el.disabled=state.locked;
 /* ---------- RATE ---------- */
 
 function renderRates(){
-
 document.getElementById("oldRate").value=
 state.oldRate?money(state.oldRate):"";
 
@@ -683,7 +670,6 @@ return `<div class="product-thumb" style="display:grid;place-items:center;font-s
 }
 
 function renderProducts(){
-
 const container=document.getElementById("products");
 const query=document.getElementById("searchInput").value.trim();
 const products=state.products.filter(p=>productMatches(p,query));
@@ -697,57 +683,41 @@ return;
 }
 
 container.innerHTML=products.map(product=>{
-
 const result=calculateProduct(product);
 const roundedNewPrice=Math.round(result.newPrice);
-
 const changeText=result.diff===0?"بدون تغییر":
 "تغییر: "+money(Math.abs(result.diff))+" تومان ("+result.percent.toFixed(4)+"٪)";
 
 return `
 <article class="product" id="product-${escapeHtml(product.id)}">
-
 <div class="product-summary">
-
 ${productImage(product)}
-
 <div class="product-main">
 <div class="product-name">${escapeHtml(product.name||"کالای بدون نام")}</div>
-
 <div class="prices">
 <span class="current-price">فعلی: ${money(product.price)} تومان</span>
 <span class="new-price">جدید: ${money(roundedNewPrice)} تومان</span>
 </div>
-
-<div class="change ${result.diff>0?"up":result.diff<0?"down":""}">
-${changeText}
+<div class="change ${result.diff>0?"up":result.diff<0?"down":""}">${changeText}</div>
 </div>
-</div>
-
 <button class="edit-product-btn" type="button" data-edit-product="${escapeHtml(product.id)}" title="ویرایش کالا">✏️</button>
-
 </div>
 
 <div class="product-details">
-
 <div class="compact-edit-grid">
-
 <div class="field name-field">
 <label>نام کالا</label>
 <input class="editable productName" data-id="${escapeHtml(product.id)}" value="${escapeHtml(product.name||"")}" autocomplete="off">
 </div>
-
 <div class="field">
 <label>قیمت فعلی</label>
 <input class="editable productPrice" data-id="${escapeHtml(product.id)}" type="text" inputmode="decimal" value="${escapeHtml(String(product.price??0))}">
 <div class="words" id="words-${escapeHtml(product.id)}">${numberToWords(product.price)}</div>
 </div>
-
 <div class="field">
 <label>قیمت جدید</label>
 <input type="text" disabled value="${money(roundedNewPrice)} تومان">
 </div>
-
 <div class="field full">
 <label>QR / کد کالا</label>
 <div class="compact-code-row">
@@ -755,44 +725,31 @@ ${changeText}
 <button type="button" class="scan-product-btn" data-scan-product="${escapeHtml(product.id)}" title="اسکن با دوربین">📷</button>
 </div>
 </div>
-
 </div>
 
 <button type="button" class="edit-more-btn" data-more-product="${escapeHtml(product.id)}">＋ گزینه‌های بیشتر</button>
-
 <div class="edit-extra" id="extra-${escapeHtml(product.id)}">
-
 <div class="compact-price-row">
-
 <div class="field">
 <label>درصد تغییر</label>
 <input type="text" disabled value="${result.percent.toFixed(4)}٪">
 </div>
-
 <div class="field">
 <label>تصویر کالا</label>
 <input class="editable productImageInput" data-id="${escapeHtml(product.id)}" type="file" accept="image/*">
 </div>
-
 </div>
-
 <div class="qr-box" style="margin-top:7px">
 <div>کد ثبت‌شده:</div>
 <div class="qr-code">${escapeHtml(product.qr||"ثبت نشده")}</div>
 </div>
-
 </div>
 
 <div class="detail-actions">
-
 <button type="button" class="scan-product-btn" data-scan-product="${escapeHtml(product.id)}">📷 اسکن QR</button>
-
 <button type="button" class="delete-btn" data-delete-product="${escapeHtml(product.id)}">حذف</button>
-
 <button type="button" class="close-edit-btn" data-close-product="${escapeHtml(product.id)}">بستن</button>
-
 </div>
-
 </div>
 </article>`;
 }).join("");
@@ -803,7 +760,6 @@ applyLockState();
 /* ---------- SEARCH ---------- */
 
 function updateQuickResult(){
-
 const query=document.getElementById("searchInput").value.trim();
 const box=document.getElementById("quickResult");
 
@@ -813,7 +769,6 @@ return;
 }
 
 const matches=state.products.filter(p=>productMatches(p,query));
-
 if(matches.length!==1){
 box.classList.remove("show");
 return;
@@ -825,14 +780,12 @@ const result=calculateProduct(product);
 document.getElementById("quickResultTitle").textContent=product.name||"کالا";
 document.getElementById("quickResultPrice").textContent=money(Math.round(result.newPrice))+" تومان";
 document.getElementById("quickResultWords").textContent=numberToWords(Math.round(result.newPrice));
-
 box.classList.add("show");
 }
 
 /* ---------- HISTORY ---------- */
 
 function renderHistory(){
-
 const container=document.getElementById("historyList");
 
 if(!state.history.length){
@@ -854,7 +807,6 @@ ${Number(item.percent||0)>0?"+":""}${Number(item.percent||0).toFixed(4)}٪
 }
 
 async function resetHistory(){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
@@ -878,26 +830,17 @@ resetAutoLockTimer();
 /* ---------- ADD PRODUCT ---------- */
 
 async function addProduct(){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
 }
 
-const product={
-id:uid(),
-name:"کالای جدید",
-price:0,
-qr:"",
-image:""
-};
-
+const product={id:uid(),name:"کالای جدید",price:0,qr:"",image:""};
 state.products.unshift(product);
 await saveState();
 renderProducts();
 
 const el=document.getElementById("product-"+product.id);
-
 if(el){
 el.classList.add("open");
 const input=el.querySelector(".productName");
@@ -917,28 +860,21 @@ return;
 }
 
 const reader=new FileReader();
-
 reader.onload=()=>{
 const img=new Image();
-
 img.onload=()=>{
 const max=900;
 const scale=Math.min(1,max/Math.max(img.width,img.height));
 const canvas=document.createElement("canvas");
-
 canvas.width=Math.max(1,Math.round(img.width*scale));
 canvas.height=Math.max(1,Math.round(img.height*scale));
-
 const ctx=canvas.getContext("2d");
 ctx.drawImage(img,0,0,canvas.width,canvas.height);
-
 resolve(canvas.toDataURL("image/jpeg",.80));
 };
-
 img.onerror=reject;
 img.src=reader.result;
 };
-
 reader.onerror=reject;
 reader.readAsDataURL(file);
 });
@@ -949,16 +885,13 @@ reader.readAsDataURL(file);
 function waitForQrLibrary(timeout=10000){
 return new Promise(resolve=>{
 if(window.Html5Qrcode){resolve(true);return;}
-
 const started=Date.now();
-
 const timer=setInterval(()=>{
 if(window.Html5Qrcode){
 clearInterval(timer);
 resolve(true);
 return;
 }
-
 if(Date.now()-started>=timeout){
 clearInterval(timer);
 resolve(false);
@@ -968,18 +901,15 @@ resolve(false);
 }
 
 async function stopScanner(){
-
 if(scanner){
 try{await scanner.stop()}catch(e){}
 try{scanner.clear()}catch(e){}
 scanner=null;
 }
-
 scanBusy=false;
 }
 
 async function openScanner(target){
-
 scannerTarget=target;
 scanBusy=false;
 
@@ -992,7 +922,6 @@ reader.innerHTML="";
 status.textContent="در حال آماده‌سازی دوربین...";
 
 const ready=await waitForQrLibrary();
-
 if(!ready){
 status.textContent="اسکنر بارگذاری نشد. اینترنت را بررسی کنید.";
 showToast("کتابخانه اسکنر آماده نشد");
@@ -1003,27 +932,18 @@ await stopScanner();
 reader.innerHTML="";
 
 try{
-
 scanner=new Html5Qrcode("reader");
 status.textContent="دوربین را روبه‌روی QR یا بارکد بگیرید.";
 
 const formats=[];
-
 if(window.Html5QrcodeSupportedFormats){
-
 const supported=window.Html5QrcodeSupportedFormats;
-
 ["QR_CODE","CODE_128","CODE_39","EAN_13","EAN_8","UPC_A","UPC_E"].forEach(name=>{
 if(supported[name]!==undefined)formats.push(supported[name]);
 });
 }
 
-const config={
-fps:10,
-qrbox:{width:250,height:180},
-aspectRatio:1.777778
-};
-
+const config={fps:10,qrbox:{width:250,height:180},aspectRatio:1.777778};
 if(formats.length)config.formatsToSupport=formats;
 
 const success=async decodedText=>{
@@ -1033,54 +953,31 @@ await handleScannedCode(decodedText);
 };
 
 try{
-
-await scanner.start(
-{facingMode:"environment"},
-config,
-success,
-()=>{}
-);
-
+await scanner.start({facingMode:"environment"},config,success,()=>{});
 }catch(firstError){
-
 await stopScanner();
 scanner=new Html5Qrcode("reader");
-
 const cameras=await Html5Qrcode.getCameras();
-
 if(!cameras?.length)throw firstError;
-
-await scanner.start(
-cameras[0].id,
-config,
-success,
-()=>{}
-);
+await scanner.start(cameras[0].id,config,success,()=>{});
 }
-
 }catch(error){
-
 console.error("QR scanner error:",error);
 await stopScanner();
-
 status.textContent="دسترسی به دوربین ممکن نیست.";
 showToast("دسترسی به دوربین ممکن نیست؛ مجوز دوربین مرورگر را فعال کنید.");
 }
 }
 
 async function handleScannedCode(code){
-
 const target=scannerTarget;
-
 await stopScanner();
 document.getElementById("scannerModal").classList.remove("show");
 
 const cleanCode=String(code??"").trim();
-
 if(!cleanCode)return;
 
 if(target?.type==="search"){
-
 const input=document.getElementById("searchInput");
 input.value=cleanCode;
 renderProducts();
@@ -1090,18 +987,15 @@ return;
 }
 
 if(target?.type==="product"){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
 }
 
 const product=state.products.find(p=>p.id===target.id);
-
 if(!product)return;
 
 product.qr=cleanCode;
-
 await saveState();
 renderProducts();
 
@@ -1116,7 +1010,6 @@ resetAutoLockTimer();
 /* ---------- BACKUP ---------- */
 
 async function exportBackup(){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
@@ -1138,11 +1031,9 @@ const a=document.createElement("a");
 
 a.href=url;
 a.download="price-calculator-backup-"+new Date().toISOString().slice(0,10)+".json";
-
 document.body.appendChild(a);
 a.click();
 a.remove();
-
 setTimeout(()=>URL.revokeObjectURL(url),1000);
 
 showToast("پشتیبان ذخیره شد");
@@ -1150,25 +1041,19 @@ resetAutoLockTimer();
 }
 
 async function importBackup(file){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
 }
 
 try{
-
 if(!file)return;
 
 const text=await file.text();
 const imported=JSON.parse(text);
-
-if(!imported||!Array.isArray(imported.products)){
-throw new Error("invalid-data");
-}
+if(!imported||!Array.isArray(imported.products))throw new Error("invalid-data");
 
 const passwordHash=state.passwordHash;
-
 const normalizedProducts=imported.products.map(p=>({
 id:String(p.id||uid()),
 name:String(p.name||"کالای بدون نام"),
@@ -1201,7 +1086,6 @@ await saveState();
 renderAll();
 startAutoLockTimer();
 showToast("پشتیبان با موفقیت بازیابی شد");
-
 }catch(error){
 console.error(error);
 showToast("فایل پشتیبان معتبر نیست");
@@ -1251,22 +1135,13 @@ if(e.key==="Enter")handlePasswordSubmit();
 });
 
 document.getElementById("setupSubmit").addEventListener("click",createInitialPassword);
-
 document.getElementById("setupPasswordConfirm").addEventListener("keydown",e=>{
 if(e.key==="Enter")createInitialPassword();
 });
 
-document.getElementById("passwordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("passwordInput");
-});
-
-document.getElementById("newPasswordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("newPasswordInput");
-});
-
-document.getElementById("confirmPasswordVisibility").addEventListener("click",()=>{
-togglePasswordVisibility("confirmPasswordInput");
-});
+document.getElementById("passwordVisibility").addEventListener("click",()=>togglePasswordVisibility("passwordInput"));
+document.getElementById("newPasswordVisibility").addEventListener("click",()=>togglePasswordVisibility("newPasswordInput"));
+document.getElementById("confirmPasswordVisibility").addEventListener("click",()=>togglePasswordVisibility("confirmPasswordInput"));
 
 document.getElementById("searchInput").addEventListener("input",()=>{
 renderProducts();
@@ -1287,9 +1162,7 @@ const list=document.getElementById("historyList");
 list.style.display=list.style.display==="none"?"block":"none";
 });
 
-/* نرخ جدید:
-   هنگام تایپ عدد ذخیره نمی‌شود؛ فقط نمایش کلمات به‌روز می‌شود.
-   با خروج از فیلد، مقدار به شکل 10,000 نمایش داده می‌شود. */
+/* ---------- RATE INPUT ---------- */
 
 document.getElementById("newRate").addEventListener("input",()=>{
 const value=parseNumber(document.getElementById("newRate").value);
@@ -1300,24 +1173,23 @@ document.getElementById("newRate").addEventListener("blur",()=>{
 formatRateInput(document.getElementById("newRate"));
 });
 
+/* ثبت نرخ حتی در حالت قفل بودن برنامه، بدون درخواست رمز مالک */
 document.getElementById("rateBtn").addEventListener("click",async()=>{
-
-if(state.locked){
-openPasswordModal("unlock");
-return;
-}
-
-const newRate=parseNumber(document.getElementById("newRate").value);
+const input=document.getElementById("newRate");
+const newRate=parseNumber(input.value);
 
 if(newRate<=0){
 showToast("نرخ جدید را وارد کنید");
 return;
 }
 
+if(newRate===state.currentRate){
+showToast("این نرخ از قبل ثبت شده است");
+return;
+}
+
 if(state.currentRate>0){
-
 const oldRate=state.currentRate;
-
 const percent=((newRate/oldRate)-1)*100;
 
 state.history.unshift({
@@ -1328,17 +1200,20 @@ percent
 });
 
 state.oldRate=oldRate;
-
 }else{
 state.oldRate=newRate;
 }
 
 state.currentRate=newRate;
 
+try{
 await saveState();
 renderAll();
-resetAutoLockTimer();
 showToast("نرخ جدید ثبت شد");
+}catch(error){
+console.error(error);
+showToast("ذخیره نرخ ناموفق بود");
+}
 });
 
 document.getElementById("addBtn").addEventListener("click",addProduct);
@@ -1363,11 +1238,9 @@ e.target.value="";
 /* ---------- PRODUCT CLICK ---------- */
 
 document.getElementById("products").addEventListener("click",async e=>{
-
 const editBtn=e.target.closest("[data-edit-product]");
 
 if(editBtn){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
@@ -1375,7 +1248,6 @@ return;
 
 const id=editBtn.dataset.editProduct;
 const el=document.getElementById("product-"+id);
-
 if(!el)return;
 
 document.querySelectorAll(".product.open").forEach(other=>{
@@ -1394,9 +1266,7 @@ return;
 }
 
 const moreBtn=e.target.closest("[data-more-product]");
-
 if(moreBtn){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
@@ -1404,32 +1274,23 @@ return;
 
 const id=moreBtn.dataset.moreProduct;
 const extra=document.getElementById("extra-"+id);
-
 if(!extra)return;
 
 extra.classList.toggle("show");
-
-moreBtn.textContent=extra.classList.contains("show")
-?"− بستن گزینه‌های بیشتر"
-:"＋ گزینه‌های بیشتر";
-
+moreBtn.textContent=extra.classList.contains("show")?"− بستن گزینه‌های بیشتر":"＋ گزینه‌های بیشتر";
 resetAutoLockTimer();
 return;
 }
 
 const image=e.target.closest("[data-image]");
-
 if(image){
-
 document.getElementById("largeImage").src=image.dataset.image;
 document.getElementById("imageModal").classList.add("show");
 return;
 }
 
 const deleteBtn=e.target.closest("[data-delete-product]");
-
 if(deleteBtn){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
@@ -1437,13 +1298,11 @@ return;
 
 const id=deleteBtn.dataset.deleteProduct;
 const product=state.products.find(p=>p.id===id);
-
 if(!product)return;
 
 if(!confirm(`آیا کالا «${product.name}» حذف شود؟`))return;
 
 state.products=state.products.filter(p=>p.id!==id);
-
 await saveState();
 renderProducts();
 showToast("کالا حذف شد");
@@ -1452,30 +1311,21 @@ return;
 }
 
 const closeBtn=e.target.closest("[data-close-product]");
-
 if(closeBtn){
-
 const id=closeBtn.dataset.closeProduct;
 const el=document.getElementById("product-"+id);
-
 if(el)el.classList.remove("open");
 return;
 }
 
 const scanBtn=e.target.closest("[data-scan-product]");
-
 if(scanBtn){
-
 if(state.locked){
 openPasswordModal("unlock");
 return;
 }
 
-openScanner({
-type:"product",
-id:scanBtn.dataset.scanProduct
-});
-
+openScanner({type:"product",id:scanBtn.dataset.scanProduct});
 return;
 }
 });
@@ -1483,11 +1333,9 @@ return;
 /* ---------- PRODUCT INPUT ---------- */
 
 document.getElementById("products").addEventListener("input",e=>{
-
 if(state.locked)return;
 
 const input=e.target;
-
 if(
 !input.classList.contains("productPrice")&&
 !input.classList.contains("productName")&&
@@ -1496,32 +1344,19 @@ if(
 
 const id=input.dataset.id;
 const product=state.products.find(p=>p.id===id);
-
 if(!product)return;
 
-if(input.classList.contains("productPrice")){
-product.price=parseNumber(input.value);
-}
-
-if(input.classList.contains("productName")){
-product.name=input.value;
-}
-
-if(input.classList.contains("productQR")){
-product.qr=input.value;
-}
+if(input.classList.contains("productPrice"))product.price=parseNumber(input.value);
+if(input.classList.contains("productName"))product.name=input.value;
+if(input.classList.contains("productQR"))product.qr=input.value;
 
 if(input.classList.contains("productPrice")){
-
 const result=calculateProduct(product);
-
 const words=document.getElementById("words-"+id);
 if(words)words.textContent=numberToWords(product.price);
 
 const row=document.getElementById("product-"+id);
-
 if(row){
-
 const current=row.querySelector(".current-price");
 if(current)current.textContent="فعلی: "+money(product.price)+" تومان";
 
@@ -1529,21 +1364,12 @@ const newPrice=row.querySelector(".new-price");
 if(newPrice)newPrice.textContent="جدید: "+money(Math.round(result.newPrice))+" تومان";
 
 const change=row.querySelector(".change");
-
 if(change){
-
-change.className="change "+(
-result.diff>0?"up":
-result.diff<0?"down":""
-);
-
-change.textContent=result.diff===0
-?"بدون تغییر"
-:"تغییر: "+money(Math.abs(result.diff))+" تومان ("+result.percent.toFixed(4)+"٪)";
+change.className="change "+(result.diff>0?"up":result.diff<0?"down":"");
+change.textContent=result.diff===0?"بدون تغییر":"تغییر: "+money(Math.abs(result.diff))+" تومان ("+result.percent.toFixed(4)+"٪)";
 }
 
 const disabledInputs=row.querySelectorAll(".field input[disabled]");
-
 if(disabledInputs.length>=2){
 disabledInputs[0].value=money(Math.round(result.newPrice))+" تومان";
 disabledInputs[1].value=result.percent.toFixed(4)+"٪";
@@ -1554,19 +1380,15 @@ disabledInputs[1].value=result.percent.toFixed(4)+"٪";
 debounceSave();
 resetAutoLockTimer();
 
-if(input.classList.contains("productName")||input.classList.contains("productQR")){
-updateQuickResult();
-}
+if(input.classList.contains("productName")||input.classList.contains("productQR"))updateQuickResult();
 });
 
 /* ---------- IMAGE CHANGE ---------- */
 
 document.getElementById("products").addEventListener("change",async e=>{
-
 if(state.locked)return;
 
 const input=e.target;
-
 if(!input.classList.contains("productImageInput"))return;
 
 const file=input.files?.[0];
@@ -1576,21 +1398,17 @@ const product=state.products.find(p=>p.id===input.dataset.id);
 if(!product)return;
 
 try{
-
 product.image=await compressImage(file);
 await saveState();
 
 const wasOpen=document.getElementById("product-"+product.id)?.classList.contains("open");
-
 renderProducts();
 
 const el=document.getElementById("product-"+product.id);
 if(wasOpen&&el)el.classList.add("open");
 
 showToast("تصویر کالا ذخیره شد");
-
 }catch(error){
-
 console.error(error);
 showToast("ذخیره تصویر ناموفق بود");
 }
@@ -1627,7 +1445,6 @@ e.currentTarget.classList.remove("show");
 /* ---------- ESCAPE ---------- */
 
 document.addEventListener("keydown",async e=>{
-
 if(e.key!=="Escape")return;
 
 document.getElementById("imageModal").classList.remove("show");
@@ -1642,23 +1459,14 @@ document.getElementById("scannerModal").classList.remove("show");
 /* ---------- VISIBILITY ---------- */
 
 document.addEventListener("visibilitychange",()=>{
-
 if(document.hidden){
-
 clearTimeout(hiddenTimer);
-
 hiddenTimer=setTimeout(()=>{
-
 if(!document.hidden)return;
-
 if(!state.locked)lockNow(false);
-
 },45000);
-
 }else{
-
 clearTimeout(hiddenTimer);
-
 if(!state.locked)resetAutoLockTimer();
 }
 });
@@ -1666,11 +1474,8 @@ if(!state.locked)resetAutoLockTimer();
 /* ---------- KEYBOARD ---------- */
 
 document.addEventListener("keydown",e=>{
-
 const tag=document.activeElement?.tagName;
-
 if(e.key==="/"&&tag!=="INPUT"&&tag!=="TEXTAREA"){
-
 e.preventDefault();
 document.getElementById("searchInput").focus();
 }
@@ -1679,14 +1484,11 @@ document.getElementById("searchInput").focus();
 /* ---------- INIT ---------- */
 
 async function init(){
-
 try{
-
 await openDB();
 await loadState();
 
 if(!state.passwordHash){
-
 renderAll();
 openSetupModal();
 return;
@@ -1694,16 +1496,12 @@ return;
 
 /* هر بار Reload برنامه ابتدا قفل می‌شود. */
 state.locked=true;
-
 await saveState();
 
 renderAll();
 updateLockUI();
-
 }catch(error){
-
 console.error(error);
-
 alert("خطا در راه‌اندازی برنامه. صفحه را دوباره باز کنید.");
 }
 }
@@ -1711,7 +1509,6 @@ alert("خطا در راه‌اندازی برنامه. صفحه را دوبار�
 /* ---------- SERVICE WORKER ---------- */
 
 if("serviceWorker" in navigator){
-
 window.addEventListener("load",()=>{
 navigator.serviceWorker.register("./sw.js").catch(error=>{
 console.error("Service Worker:",error);
