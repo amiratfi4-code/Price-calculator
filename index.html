@@ -1517,5 +1517,20 @@ console.error("Service Worker:",error);
 init();
 </script>
 
+<!-- Supabase client library -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const SUPABASE_URL = "https://lzymausyyoatpoeqkrna.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_EpLrq0JsRAUzYpZmCF8q2A_RCXgtIQe";
+
+  const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  console.log("Supabase client initialized");
+</script>
+
 </body>
 </html>
