@@ -2,516 +2,547 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#171923">
-<title>قیمت‌یار | مدیریت کالا</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مدیریت کالا و محاسبه قیمت</title>
 <style>
-:root{--bg:#171923;--surface:#242735;--text:#f3f4f6;--muted:#a4aaba;--line:#383d4d;--accent:#16a34a;--soft:#303646;--danger:#dc3545}
+:root{
+ --bg:#0b1220;--panel:#111c2e;--panel2:#17243a;
+ --text:#e8eef8;--muted:#9caec7;--line:#293952;
+ --accent:#60a5fa;--good:#34d399;--danger:#fb7185
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:14px Tahoma,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.8}
 button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text)}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-header{background:var(--surface);border-bottom:1px solid var(--line);padding:12px;position:sticky;top:0;z-index:4}
-.top{max-width:1100px;margin:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-size:21px;font-weight:bold;white-space:nowrap}
-.logo{display:inline-grid;place-items:center;width:37px;height:37px;border-radius:10px;background:var(--accent);color:white;margin-left:7px}
-.search{display:flex;flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.search input{border:0;min-width:0}
-.search button{border:0;background:var(--accent);color:white;padding:0 15px}
-main{max-width:1100px;margin:auto;padding:17px 12px 40px}
-.panel,.stat,.product{background:var(--surface);border:1px solid var(--line);border-radius:12px}
-.panel{padding:15px;margin-bottom:14px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-h1{font-size:21px;margin:0 0 8px}
-h2{font-size:17px;margin:0 0 13px}
-h3{font-size:15px}
-.muted,.note{color:var(--muted);line-height:1.9}
-.note{font-size:12px}
-.actions{display:flex;gap:7px;flex-wrap:wrap}
-.btn{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--soft);color:var(--text)}
-.primary{background:var(--accent);border-color:var(--accent);color:white}
-.danger{color:#ff8c94}
-.small{padding:7px 9px;font-size:12px}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
-.stat{padding:13px;min-width:0}
-.stat-label{font-size:12px;color:var(--muted)}
-.stat-value{font-size:17px;font-weight:bold;margin-top:9px;overflow-wrap:anywhere}
-.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
-.tab{padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text)}
-.tab.active{background:var(--accent);color:white}
-.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
-.product{padding:13px;min-width:0}
-.product h3{overflow-wrap:anywhere;margin:12px 0 8px}
-.product-price{font-size:19px;font-weight:bold;color:var(--accent);margin:10px 0}
-.details{font-size:12px;line-height:2;color:var(--muted);overflow-wrap:anywhere}
-.product-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
-.tag{display:inline-block;border-radius:6px;padding:5px 7px;background:var(--soft);font-size:11px;color:var(--muted)}
-.filters{display:flex;gap:8px;margin-bottom:13px}
-.filters input{flex:1;min-width:0}
-.filters select{max-width:150px}
-.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.field{display:flex;flex-direction:column;gap:7px;min-width:0}
-.field label{font-size:12px;color:var(--muted)}
-.full{grid-column:1/-1}
-textarea{resize:vertical;min-height:70px}
+button{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:9px 12px;border-radius:10px;cursor:pointer}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.primary{background:var(--accent);color:#07111f;border:0;font-weight:bold}
+.danger{color:var(--danger)}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
 .hidden{display:none!important}
-.empty{text-align:center;padding:30px 10px;color:var(--muted);line-height:2}
-.themes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
-.theme{padding:0;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);color:var(--text);text-align:right}
-.theme.selected{border-color:var(--accent)}
-.swatches{display:flex;gap:5px;padding:10px}
-.swatch{height:24px;flex:1;border-radius:5px;border:1px solid #8885}
-.theme-name{padding:0 9px 10px;font-size:12px}
-hr{border:0;border-top:1px solid var(--line);margin:17px 0}
-.history-row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
-.modal{position:fixed;inset:0;z-index:10;background:#0009;display:flex;justify-content:center;align-items:center;padding:12px;overflow:auto}
-.modal-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;width:100%;max-width:570px;max-height:94vh;overflow:auto}
-footer{text-align:center;padding:15px;color:var(--muted);font-size:12px}
-@media(max-width:740px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}.themes{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:470px){.products{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}.stats{gap:5px}.stat{padding:9px}.stat-value{font-size:14px}header{position:relative}.brand{font-size:18px}}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar{max-width:1200px;margin:auto;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{font-weight:bold;font-size:1.05rem}
+.top-actions,.nav,.toolbar,.actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.wrap{max-width:1200px;margin:18px auto;padding:0 14px 40px}
+.notice,.panel,.product,.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:12px}
+.notice{color:var(--muted);font-size:.88rem}
+.nav{margin-bottom:14px}
+.nav button.active{background:var(--accent);color:#07111f}
+.section{display:none}
+.section.active{display:block}
+h2{font-size:1.2rem;margin:12px 0}
+h3{font-size:1.02rem;margin:6px 0 12px}
+label{display:block;font-size:.87rem;color:var(--muted);margin-bottom:4px}
+input,select,textarea{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:10px;color:var(--text)}
+textarea{min-height:80px;resize:vertical}
+.field{min-width:0}
+.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.formgrid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.searchbar{display:flex;gap:7px}
+.searchbar input{flex:1}
+.home-tools{display:grid;grid-template-columns:minmax(200px,1fr) auto auto;gap:8px;margin-bottom:12px}
+.searchbox{grid-column:1/-1}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:12px}
+.product{margin:0;min-width:0;box-shadow:0 8px 20px #0001}
+.producttop{display:flex;gap:10px}
+.prodimg{width:74px;height:74px;flex-shrink:0;object-fit:cover;border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+.prodname{font-weight:bold;overflow-wrap:anywhere}
+.meta{font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+.price{font-weight:bold;color:var(--good);margin:8px 0}
+.actions{margin-top:10px}
+.actions button{font-size:.8rem;padding:6px 9px}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:20px;padding:2px 8px;font-size:.78rem;color:var(--muted)}
+.toolbar{margin:12px 0}
+.toolbar select{width:auto;max-width:200px}
+.statgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{margin:0}
+.stat b{display:block;font-size:1.1rem}
+.tablewrap{overflow:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+td,th{padding:9px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+th{color:var(--muted)}
+.empty{text-align:center;padding:26px;color:var(--muted);border:1px dashed var(--line);border-radius:12px}
+.modalback{position:fixed;inset:0;background:#000a;z-index:50;display:grid;place-items:center;padding:12px}
+.modal{background:var(--bg);border:1px solid var(--line);border-radius:16px;padding:16px;width:min(760px,100%);max-height:94vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modalhead h3{margin:0}
+.qrdisplay{background:#fff;padding:8px;border-radius:8px;display:inline-block;max-width:100%}
+.qrdisplay img,.qrdisplay canvas{max-width:100%}
+.themes{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.themebtn{display:flex;align-items:center;gap:8px;text-align:right}
+.swatch{width:18px;height:18px;border-radius:50%;border:1px solid #888;display:inline-block}
+.footer{font-size:.8rem;color:var(--muted);margin-top:24px}
+@media(max-width:650px){
+ .home-tools{grid-template-columns:1fr 1fr}
+ .searchbox{grid-column:1/-1}
+ .formgrid,.formgrid.three{grid-template-columns:1fr}
+ .statgrid{grid-template-columns:1fr 1fr}
+ .cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:420px){.cards{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
+
 <header>
- <div class="top">
-  <div class="brand"><span class="logo">٪</span>قیمت‌یار</div>
-  <div class="search">
-   <input id="globalSearch" placeholder="جست‌وجوی نام، کد یا QR کالا" aria-label="جست‌وجوی کالا">
-   <button onclick="goProducts()">⌕</button>
+ <div class="topbar">
+  <div class="brand" id="brandName">مدیریت کالا و محاسبه قیمت</div>
+  <div class="top-actions">
+   <span id="roleBadge" class="badge">مهمان</span>
+   <button id="adminButton" class="primary" onclick="adminAction()">ورود مدیر</button>
+   <button onclick="go('settings')">تنظیمات</button>
   </div>
-  <button class="btn" onclick="openAdmin()">ورود مدیر</button>
  </div>
 </header>
 
-<main>
- <section class="panel">
-  <div class="row">
-   <div><h1>جست‌وجو و قیمت کالاها</h1><div class="muted">قیمت فروش با آخرین نرخ دلار محاسبه می‌شود.</div></div>
-   <span class="tag" id="roleLabel">حالت مهمان</span>
-  </div>
- </section>
+<main class="wrap">
+ <div id="notice" class="notice">جستجوی هوشمند، اطلاعات کالاها را در نام، کد، QR، دسته‌بندی، توضیحات و قیمت بررسی می‌کند.</div>
 
- <section class="stats">
-  <div class="stat"><div class="stat-label">تعداد کالاها</div><div class="stat-value" id="statCount">۰</div></div>
-  <div class="stat"><div class="stat-label">ارزش خرید موجودی</div><div class="stat-value" id="statCost">۰ تومان</div></div>
-  <div class="stat"><div class="stat-label">ارزش فروش موجودی</div><div class="stat-value" id="statSale">۰ تومان</div></div>
- </section>
-
- <nav class="tabs">
-  <button class="tab active" data-page="products" onclick="showPage('products')">▦ کالاها</button>
-  <button class="tab" data-page="rates" onclick="showPage('rates')">💱 نرخ دلار</button>
-  <button class="tab" data-page="themes" onclick="showPage('themes')">🎨 تم سایت</button>
-  <button class="tab admin-only hidden" data-page="settings" onclick="showPage('settings')">⚙ مدیریت</button>
+ <nav class="nav">
+  <button class="active" data-page="home" onclick="go('home')">کالاها</button>
+  <button data-page="rates" onclick="go('rates')">ثبت نرخ دلار</button>
+  <button data-page="settings" onclick="go('settings')">تنظیمات</button>
+  <button data-page="backup" onclick="go('backup')">پشتیبان‌گیری</button>
  </nav>
 
- <section id="productsPage">
-  <div class="panel">
-   <div class="row"><h2>فهرست کالاها</h2><button class="btn primary admin-only hidden" onclick="editProduct()">＋ ثبت کالا</button></div>
-   <div class="filters">
-    <input id="productSearch" placeholder="جست‌وجوی کالا، کد یا QR" oninput="renderProducts()">
-    <select id="sortOrder" onchange="renderProducts()">
-     <option value="new">جدیدترین</option><option value="name">نام</option><option value="price">قیمت فروش</option>
-    </select>
-   </div>
-   <div id="productList" class="products"></div>
-   <div id="emptyProducts" class="empty hidden">کالایی پیدا نشد.</div>
-  </div>
- </section>
-
- <section id="ratesPage" class="hidden">
-  <div class="panel">
-   <h2>آخرین نرخ دلار</h2>
-   <div class="stat-value" id="currentRate">ثبت نشده</div>
-   <div class="muted" id="currentRateDate"></div>
-   <hr>
-   <h2>ثبت نرخ جدید دلار</h2>
-   <form id="rateForm">
-    <div class="field"><label for="newRate">نرخ دلار به تومان</label><input id="newRate" type="number" min="1" step="any" required placeholder="مثلاً ۱۰۰۰۰۰"></div>
-    <div class="field" style="margin-top:12px"><label for="rateNote">توضیح (اختیاری)</label><input id="rateNote" maxlength="120" placeholder="مثلاً نرخ اعلام‌شده امروز"></div>
-    <button class="btn primary" style="margin-top:12px">ثبت نرخ جدید</button>
-   </form>
-   <p class="note">مهمان می‌تواند نرخ جدید ثبت کند، اما نمی‌تواند نرخ‌های قبلی را ویرایش یا حذف کند. با ثبت نرخ جدید، قیمت‌های فروش کالاها به‌روزرسانی می‌شوند.</p>
-  </div>
-  <div class="panel">
-   <h2>تاریخچه نرخ دلار</h2>
-   <div id="rateHistory"></div>
-  </div>
- </section>
-
- <section id="themesPage" class="hidden">
-  <div class="panel">
-   <h2>انتخاب تم رنگی</h2>
-   <p class="muted">تغییر تم برای مهمان و مدیر آزاد است و در همین مرورگر ذخیره می‌شود.</p>
-   <div id="themeList" class="themes"></div>
-  </div>
- </section>
-
- <section id="settingsPage" class="hidden">
-  <div class="panel">
-   <h2>تنظیمات قیمت‌گذاری</h2>
-   <form id="settingsForm">
-    <div class="fields">
-     <div class="field"><label for="defaultProfit">سود پیش‌فرض (درصد)</label><input id="defaultProfit" type="number" min="-100" step="any" required></div>
-     <div class="field"><label for="defaultExtra">هزینه اضافه پیش‌فرض (تومان)</label><input id="defaultExtra" type="number" min="0" step="any" required></div>
+ <!-- صفحه اصلی: جستجو و کالاها -->
+ <section id="page-home" class="section active">
+  <div class="home-tools">
+   <div class="field searchbox">
+    <label for="search">جستجوی هوشمند همه اطلاعات کالا</label>
+    <div class="searchbar">
+     <input id="search" placeholder="نام، کد، QR، دسته، توضیح، قیمت و..." oninput="renderProducts()">
+     <button onclick="clearSearch()">پاک کردن</button>
     </div>
-    <button class="btn primary" style="margin-top:12px">ذخیره تنظیمات</button>
+   </div>
+   <button onclick="scanQR()">▦ اسکن QR / بارکد</button>
+   <button onclick="document.getElementById('imageFile').click()">▧ جستجو با عکس</button>
+   <input id="imageFile" type="file" accept="image/*" capture="environment" class="hidden" onchange="searchImage(event)">
+   <button id="addButton" class="primary" onclick="productForm()">＋ ثبت کالای جدید</button>
+  </div>
+  <div class="toolbar">
+   <select id="categoryFilter" onchange="renderProducts()"><option value="">همه دسته‌ها</option></select>
+   <select id="sort" onchange="renderProducts()">
+    <option value="name">مرتب‌سازی نام</option>
+    <option value="new">جدیدترین</option>
+    <option value="cheap">ارزان‌ترین</option>
+    <option value="expensive">گران‌ترین</option>
+   </select>
+   <span id="productCount" class="badge">۰ کالا</span>
+  </div>
+  <div id="products" class="cards"></div>
+ </section>
+
+ <!-- نرخ دلار -->
+ <section id="page-rates" class="section">
+  <h2>ثبت و مشاهده نرخ دلار</h2>
+  <div class="panel">
+   <div class="statgrid">
+    <div class="stat"><span class="muted small">نرخ فعلی دلار</span><b id="currentRate">ثبت نشده</b><span class="muted small">تومان</span></div>
+    <div class="stat"><span class="muted small">آخرین ثبت</span><b id="rateDate">—</b></div>
+    <div class="stat"><span class="muted small">تعداد سوابق</span><b id="rateCount">۰</b></div>
+   </div>
+   <form id="rateForm" onsubmit="saveRate(event)" style="margin-top:16px">
+    <div class="formgrid">
+     <div class="field"><label>نرخ هر دلار به تومان</label><input id="rateValue" type="number" min="1" step="any" required placeholder="مثلاً ۶۰۰۰۰"></div>
+     <div class="field"><label>یادداشت اختیاری</label><input id="rateNote" placeholder="منبع یا توضیح نرخ"></div>
+    </div>
+    <div class="actions"><button class="primary">ثبت نرخ جدید</button></div>
+   </form>
+   <p class="muted small">مهمان می‌تواند نرخ جدید ثبت کند اما اجازه ویرایش یا حذف سوابق قبلی را ندارد.</p>
+  </div>
+  <div class="panel">
+   <h3>تاریخچه نرخ‌ها</h3>
+   <div class="tablewrap"><table><thead><tr><th>نرخ</th><th>تاریخ و ساعت</th><th>یادداشت</th><th>عملیات مدیر</th></tr></thead><tbody id="ratesTable"></tbody></table></div>
+  </div>
+ </section>
+
+ <!-- تنظیمات -->
+ <section id="page-settings" class="section">
+  <h2>تنظیمات ظاهری و مالی</h2>
+  <div class="panel">
+   <h3>انتخاب تم</h3>
+   <div id="themeGrid" class="themes"></div>
+  </div>
+  <div class="panel">
+   <h3>تنظیمات مالی مدیر</h3>
+   <form onsubmit="saveFinance(event)">
+    <div class="formgrid three">
+     <div class="field"><label>سود پیش‌فرض (درصد)</label><input id="profitDefault" type="number" min="0" step="any"></div>
+     <div class="field"><label>هزینه اضافی پیش‌فرض (تومان)</label><input id="extraDefault" type="number" min="0" step="any"></div>
+     <div class="field"><label>نام فروشگاه</label><input id="storeName" maxlength="80"></div>
+    </div>
+    <div class="actions"><button class="primary">ذخیره تنظیمات مالی</button></div>
    </form>
   </div>
   <div class="panel">
-   <h2>رمز مدیر</h2>
-   <p class="note" id="passwordStatus"></p>
-   <form id="passwordForm">
-    <div class="field"><label for="newPassword">رمز جدید (حداقل ۶ نویسه)</label><input id="newPassword" type="password" minlength="6" required autocomplete="new-password"></div>
-    <button class="btn primary" style="margin-top:12px">تنظیم یا تغییر رمز مدیر</button>
+   <h3>تغییر رمز مدیریت</h3>
+   <form onsubmit="changePassword(event)">
+    <div class="formgrid three">
+     <div class="field"><label>رمز فعلی</label><input id="oldPassword" type="password" required autocomplete="current-password"></div>
+     <div class="field"><label>رمز جدید (حداقل ۶ نویسه)</label><input id="newPassword" type="password" minlength="6" required autocomplete="new-password"></div>
+     <div class="field"><label>تکرار رمز جدید</label><input id="confirmPassword" type="password" minlength="6" required autocomplete="new-password"></div>
+    </div>
+    <div class="actions"><button class="primary">تغییر رمز</button></div>
    </form>
-   <button class="btn" style="margin-top:10px" onclick="logoutAdmin()">خروج از حساب مدیر</button>
   </div>
   <div class="panel">
-   <h2>پشتیبان‌گیری و بازیابی</h2>
+   <h3>سطح دسترسی</h3>
+   <p>مهمان: مشاهده و جستجوی کالاها، تغییر تم و ثبت نرخ جدید دلار.</p>
+   <p>مدیر: ثبت، ویرایش و حذف کالا؛ ویرایش و حذف نرخ‌های قبلی؛ تنظیمات مالی و پشتیبان‌گیری.</p>
+  </div>
+ </section>
+
+ <!-- پشتیبان -->
+ <section id="page-backup" class="section">
+  <h2>پشتیبان‌گیری و بازیابی</h2>
+  <div class="panel">
+   <p>این قسمت فقط برای مدیر فعال است.</p>
    <div class="actions">
-    <button class="btn primary" onclick="exportData()">دریافت فایل پشتیبان</button>
-    <button class="btn" onclick="document.getElementById('importFile').click()">بازیابی فایل پشتیبان</button>
-    <input class="hidden" id="importFile" type="file" accept=".json,application/json" onchange="importData(event)">
+    <button class="primary" onclick="backup()">دریافت فایل پشتیبان JSON</button>
+    <button onclick="document.getElementById('restoreFile').click()">بازیابی از فایل</button>
+    <input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restore(event)">
    </div>
   </div>
   <div class="panel">
-   <h2>حذف اطلاعات</h2>
-   <button class="btn danger" onclick="clearProducts()">حذف تمام کالاها</button>
-   <button class="btn danger" onclick="clearRateHistory()">حذف تاریخچه نرخ دلار</button>
-   <p class="note">عملیات حذف قابل بازگشت نیست؛ ابتدا پشتیبان بگیر.</p>
+   <p class="muted small">این نسخه اطلاعات را در مرورگر فعلی ذخیره می‌کند. رمز مدیر در نسخه تک‌فایلی، کنترل ساده رابط کاربری است و جایگزین احراز هویت امن سمت سرور نیست.</p>
   </div>
  </section>
+
+ <div class="footer">برای جلوگیری از ازدست‌رفتن اطلاعات، مرتب فایل پشتیبان تهیه کنید.</div>
 </main>
 
-<footer>قیمت‌یار · اطلاعات در همین مرورگر ذخیره می‌شود.</footer>
+<div id="modalRoot" class="hidden"></div>
 
-<div id="productModal" class="modal hidden">
- <div class="modal-card">
-  <div class="row"><h2 id="formTitle">ثبت کالا</h2><button class="btn" onclick="closeProduct()">✕</button></div>
-  <form id="productForm">
-   <input id="pId" type="hidden">
-   <div class="fields">
-    <div class="field full"><label for="pName">نام کالا *</label><input id="pName" required maxlength="150"></div>
-    <div class="field"><label for="pCode">کد کالا</label><input id="pCode" maxlength="200"></div>
-    <div class="field"><label for="pQty">تعداد موجودی</label><input id="pQty" type="number" min="0" step="1" value="1" required></div>
-    <div class="field"><label for="pCurrency">ارز خرید</label><select id="pCurrency"><option value="IRR">تومان</option><option value="USD">دلار</option></select></div>
-    <div class="field"><label for="pBuy">قیمت خرید *</label><input id="pBuy" type="number" min="0" step="any" value="0" required></div>
-    <div class="field"><label for="pExtra">هزینه اضافه (تومان)</label><input id="pExtra" type="number" min="0" step="any" value="0" required></div>
-    <div class="field"><label for="pProfit">سود (درصد)</label><input id="pProfit" type="number" min="-100" step="any" value="20" required></div>
-    <div class="field"><label for="pCategory">دسته‌بندی</label><input id="pCategory" maxlength="80"></div>
-    <div class="field full"><label for="pQR">کد QR / بارکد</label><input id="pQR" maxlength="500"></div>
-    <div class="field full"><label for="pDesc">توضیحات</label><textarea id="pDesc" maxlength="500"></textarea></div>
-   </div>
-   <hr>
-   <div class="muted">قیمت تمام‌شده هر واحد</div><div id="previewCost" class="product-price">۰ تومان</div>
-   <div class="muted">قیمت فروش هر واحد</div><div id="previewSale" class="product-price">۰ تومان</div>
-   <button class="btn primary" style="margin-top:10px">ذخیره کالا</button>
-   <button class="btn" type="button" onclick="closeProduct()">انصراف</button>
-  </form>
- </div>
-</div>
-
-<div id="adminModal" class="modal hidden">
- <div class="modal-card">
-  <h2 id="adminTitle">ورود مدیر</h2>
-  <p class="muted" id="adminHelp">برای دسترسی مدیریتی، رمز را وارد کن.</p>
-  <form id="adminForm">
-   <div class="field"><label for="adminPassword">رمز مدیر</label><input id="adminPassword" type="password" required autocomplete="current-password"></div>
-   <p id="adminError" class="note"></p>
-   <button class="btn primary" style="margin-top:10px">ادامه</button>
-   <button class="btn" type="button" onclick="closeAdmin()">انصراف</button>
-  </form>
- </div>
-</div>
+<!-- کتابخانه‌های QR و OCR برای امکانات دوربین و عکس -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <script>
-"use strict";
-const K={
- products:"priceyar_final_products_v1",
- settings:"priceyar_final_settings_v1",
- theme:"priceyar_final_theme_v1",
- password:"priceyar_final_password_v1",
- rates:"priceyar_final_rates_v1"
+const DBKEY='price_manager_complete_v1';
+const themes={
+ dark:{name:'تیره',v:['#0b1220','#111c2e','#17243a','#e8eef8','#293952','#60a5fa']},
+ gray:{name:'خاکستری',v:['#17191d','#24272d','#32363e','#f0f1f3','#464b55','#c4c9d2']},
+ blue:{name:'آبی',v:['#071a2d','#0d2945','#153858','#e8f5ff','#285174','#38bdf8']},
+ green:{name:'سبز',v:['#071d18','#0d2b23','#164033','#e7fff5','#285b4a','#34d399']},
+ light:{name:'روشن',v:['#f4f6fa','#ffffff','#e9eef5','#182230','#d4dce7','#2563eb']},
+ redwhite:{name:'قرمز و سفید',v:['#fff7f7','#ffffff','#ffe8e8','#391414','#f1caca','#dc2626']},
+ greenwhite:{name:'سبز و سفید',v:['#f3fbf6','#ffffff','#e1f4e8','#123b26','#c8e6d3','#16a34a']},
+ bluewhite:{name:'آبی و سفید',v:['#f3f8ff','#ffffff','#e2edff','#10294d','#c7d9f5','#2563eb']}
 };
-const THEMES={
- "تیره":{bg:"#171923",surface:"#242735",text:"#f3f4f6",muted:"#a4aaba",line:"#383d4d",accent:"#16a34a",soft:"#303646"},
- "خاکستری":{bg:"#e5e7eb",surface:"#fff",text:"#30343b",muted:"#6b7280",line:"#d1d5db",accent:"#6b7280",soft:"#f3f4f6"},
- "آبی":{bg:"#dbeafe",surface:"#fff",text:"#1e3a5f",muted:"#64748b",line:"#bfdbfe",accent:"#2563eb",soft:"#eff6ff"},
- "سبز":{bg:"#dcfce7",surface:"#fff",text:"#14532d",muted:"#647568",line:"#bbf7d0",accent:"#16a34a",soft:"#f0fdf4"},
- "روشن":{bg:"#fff",surface:"#fff",text:"#222",muted:"#777",line:"#e5e5e5",accent:"#777",soft:"#f5f5f5"},
- "قرمز و سفید":{bg:"#fff1f1",surface:"#fff",text:"#333",muted:"#777",line:"#f4d5d5",accent:"#e53935",soft:"#fff5f5"},
- "سبز و سفید":{bg:"#f0fff4",surface:"#fff",text:"#23432d",muted:"#738078",line:"#e0eae2",accent:"#198754",soft:"#e4f5e9"},
- "آبی و سفید":{bg:"#eff6ff",surface:"#fff",text:"#1e3a5f",muted:"#64748b",line:"#d7e7fa",accent:"#1976d2",soft:"#eaf3ff"}
-};
-function read(key,fallback){try{const x=localStorage.getItem(key);return x===null?fallback:JSON.parse(x)}catch{return fallback}}
-function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
-let products=read(K.products,[]);
-if(!Array.isArray(products))products=[];
-let settings=Object.assign({profit:20,extra:0},read(K.settings,{}));
-let rates=read(K.rates,[]);
-if(!Array.isArray(rates))rates=[];
-let isAdmin=false,adminAction="login";
+const initial={products:[],rates:[],settings:{profit:20,extra:0,storeName:'مدیریت کالا',theme:'dark'},passwordHash:null};
+let db=loadDB(),isAdmin=false,editingId=null,scannerStream=null,scannerTimer=null;
 
-function el(id){return document.getElementById(id)}
-function val(id){return el(id).value}
-function n(v){const x=Number(v);return Number.isFinite(x)?x:0}
-function safeNum(v){return Math.max(0,n(v))}
-function money(v){return Math.round(n(v)).toLocaleString("fa-IR")+" تومان"}
-function fmt(v){return n(v).toLocaleString("fa-IR")}
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,9)}
-function dateText(iso){const d=new Date(iso);return Number.isNaN(d.getTime())?"تاریخ نامشخص":d.toLocaleString("fa-IR")}
-function activeRate(){return rates.length?safeNum(rates[rates.length-1].value):0}
-function baseCost(p){const buy=p.currency==="USD"?safeNum(p.buy)*activeRate():safeNum(p.buy);return buy+safeNum(p.extra)}
-function sale(p){return baseCost(p)*(1+n(p.profit)/100)}
-function margin(p){return sale(p)-baseCost(p)}
-function admin(){return isAdmin}
-function requireAdmin(){if(!admin()){alert("برای این عملیات باید به‌عنوان مدیر وارد شوی.");return false}return true}
-function saveProducts(){write(K.products,products)}
-function saveRates(){write(K.rates,rates)}
-function showPage(name){
- ["products","rates","themes","settings"].forEach(p=>el(p+"Page").classList.toggle("hidden",p!==name));
- document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
- if(name==="settings"&&!isAdmin){alert("این بخش مخصوص مدیر است.");showPage("products");return}
- if(name==="rates"){renderRates()}
- if(name==="themes"){renderThemes()}
- if(name==="settings"){el("defaultProfit").value=settings.profit;el("defaultExtra").value=settings.extra;el("passwordStatus").textContent=localStorage.getItem(K.password)?"رمز مدیر تنظیم شده است.":"هنوز رمزی تعیین نشده؛ رمز مدیر را تنظیم کن."}
+function loadDB(){
+ try{
+  const x=JSON.parse(localStorage.getItem(DBKEY)||'null');
+  if(!x||!Array.isArray(x.products)||!Array.isArray(x.rates))return structuredClone(initial);
+  return {...structuredClone(initial),...x,settings:{...initial.settings,...(x.settings||{})}};
+ }catch{return structuredClone(initial)}
 }
-function goProducts(){el("productSearch").value=val("globalSearch");showPage("products");renderProducts()}
-function applyTheme(name){
- if(!THEMES[name])name="تیره";
- const t=THEMES[name];
- Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty("--"+k,v));
- localStorage.setItem(K.theme,name);
- renderThemes();
+function saveDB(){localStorage.setItem(DBKEY,JSON.stringify(db))}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function num(n){return Number(n||0).toLocaleString('fa-IR',{maximumFractionDigits:2})}
+function stamp(t){return new Date(t).toLocaleString('fa-IR')}
+function message(s){document.getElementById('notice').textContent=s}
+function currentRate(){return db.rates.length?Number([...db.rates].sort((a,b)=>b.createdAt-a.createdAt)[0].value):0}
+function salePrice(p){
+ let base=Number(p.purchasePrice)||0;
+ if(p.currency==='USD')base*=currentRate();
+ let profit=p.profit===''||p.profit==null?Number(db.settings.profit)||0:Number(p.profit);
+ return (base+(Number(p.extra)||0))*(1+profit/100)
 }
-function renderThemes(){
- const current=localStorage.getItem(K.theme)||"تیره";
- el("themeList").innerHTML=Object.entries(THEMES).map(([name,t])=>`
- <button class="theme ${name===current?"selected":""}" data-theme="${esc(name)}">
- <div class="swatches" style="background:${t.bg}">
- <span class="swatch" style="background:${t.bg}"></span>
- <span class="swatch" style="background:${t.surface}"></span>
- <span class="swatch" style="background:${t.accent}"></span>
- </div><div class="theme-name">${esc(name)}</div></button>`).join("");
+function go(page){
+ if(page==='backup'&&!isAdmin){message('پشتیبان‌گیری فقط برای مدیر فعال است.');return}
+ document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+ document.getElementById('page-'+page).classList.add('active');
+ document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+ if(page==='home')renderProducts();
+ if(page==='rates')renderRates();
+ if(page==='settings')fillSettings();
+ window.scrollTo({top:0,behavior:'smooth'});
 }
-el("themeList").addEventListener("click",e=>{
- const b=e.target.closest("[data-theme]");if(b)applyTheme(b.dataset.theme)
-});
-function refreshRole(){
- el("roleLabel").textContent=isAdmin?"مدیر وارد شده":"حالت مهمان";
- document.querySelectorAll(".admin-only").forEach(x=>x.classList.toggle("hidden",!isAdmin));
+function applyTheme(key){
+ const t=themes[key]||themes.dark,v=t.v,root=document.documentElement;
+ ['--bg','--panel','--panel2','--text','--line','--accent'].forEach((k,i)=>root.style.setProperty(k,v[i]));
+ root.style.setProperty('--muted',key==='light'||key.endsWith('white')?'#65748b':'#9caec7');
+ root.style.setProperty('--good',key==='light'||key.endsWith('white')?'#16834a':'#34d399');
+ db.settings.theme=key;saveDB();
 }
-function renderProducts(){
- const q=(val("productSearch")+" "+val("globalSearch")).trim().toLocaleLowerCase();
- let list=products.filter(p=>[p.name,p.code,p.qr,p.category,p.desc].some(v=>String(v||"").toLocaleLowerCase().includes(q)));
- const sort=val("sortOrder");
- if(sort==="name")list.sort((a,b)=>String(a.name).localeCompare(String(b.name),"fa"));
- if(sort==="price")list.sort((a,b)=>sale(b)-sale(a));
- if(sort==="new")list.reverse();
- el("productList").innerHTML=list.map(p=>`
- <article class="product">
- <div class="row"><span class="tag">${esc(p.category||"بدون دسته‌بندی")}</span><span class="tag">موجودی: ${fmt(p.qty)}</span></div>
- <h3>${esc(p.name)}</h3>
- <div class="product-price">${money(sale(p))}</div>
- <div class="details">
- قیمت تمام‌شده: ${money(baseCost(p))}<br>
- قیمت خرید: ${fmt(p.buy)} ${p.currency==="USD"?"دلار":"تومان"}<br>
- هزینه اضافه: ${money(p.extra)}<br>
- سود: ${fmt(p.profit)}٪
- ${p.code?"<br>کد: "+esc(p.code):""}
- ${p.qr?"<br>QR: "+esc(p.qr):""}
- ${p.desc?"<br>توضیحات: "+esc(p.desc):""}
- </div>
- ${isAdmin?`<div class="product-actions"><button class="btn small" data-edit="${esc(p.id)}">ویرایش</button><button class="btn small danger" data-delete="${esc(p.id)}">حذف</button></div>`:""}
- </article>`).join("");
- el("emptyProducts").classList.toggle("hidden",list.length!==0);
- el("statCount").textContent=fmt(products.length);
- el("statCost").textContent=money(products.reduce((s,p)=>s+baseCost(p)*safeNum(p.qty),0));
- el("statSale").textContent=money(products.reduce((s,p)=>s+sale(p)*safeNum(p.qty),0));
+function drawThemes(){
+ document.getElementById('themeGrid').innerHTML=Object.entries(themes).map(([key,t])=>
+ `<button class="themebtn" onclick="applyTheme('${key}')"><span class="swatch" style="background:${t.v[5]}"></span>${t.name}</button>`).join('');
 }
-el("productList").addEventListener("click",e=>{
- const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");
- if(edit)editProduct(edit.dataset.edit);
- if(del)deleteProduct(del.dataset.delete);
-});
-function openProduct(){el("productModal").classList.remove("hidden")}
-function closeProduct(){el("productModal").classList.add("hidden")}
-function editProduct(id){
- if(!requireAdmin())return;
- el("productForm").reset();
- el("pId").value=id||"";
- let p=products.find(x=>x.id===id);
- if(p){
-  el("formTitle").textContent="ویرایش کالا";
-  el("pName").value=p.name||"";el("pCode").value=p.code||"";
-  el("pQR").value=p.qr||"";el("pQty").value=p.qty??0;
-  el("pCurrency").value=p.currency==="USD"?"USD":"IRR";
-  el("pBuy").value=p.buy??0;el("pExtra").value=p.extra??0;
-  el("pProfit").value=p.profit??settings.profit;
-  el("pCategory").value=p.category||"";el("pDesc").value=p.desc||"";
+function fillSettings(){
+ document.getElementById('profitDefault').value=db.settings.profit;
+ document.getElementById('extraDefault').value=db.settings.extra;
+ document.getElementById('storeName').value=db.settings.storeName;
+}
+function updateRole(){
+ document.getElementById('roleBadge').textContent=isAdmin?'مدیر':'مهمان';
+ document.getElementById('adminButton').textContent=isAdmin?'خروج مدیر':'ورود مدیر';
+ document.getElementById('addButton').classList.toggle('hidden',!isAdmin);
+ document.querySelector('[data-page="backup"]').classList.toggle('hidden',!isAdmin);
+ renderProducts();renderRates();
+}
+function modal(content){
+ const root=document.getElementById('modalRoot');
+ root.className='modalback';
+ root.innerHTML=`<div class="modal">${content}</div>`;
+ root.onclick=e=>{if(e.target===root)closeModal()};
+}
+function closeModal(){
+ document.getElementById('modalRoot').className='hidden';
+ document.getElementById('modalRoot').innerHTML='';
+ stopScanner();
+}
+async function digest(s){
+ const bytes=new TextEncoder().encode(s);
+ const hash=await crypto.subtle.digest('SHA-256',bytes);
+ return [...new Uint8Array(hash)].map(x=>x.toString(16).padStart(2,'0')).join('');
+}
+function adminAction(){
+ if(isAdmin){isAdmin=false;updateRole();message('از حساب مدیر خارج شدید.');return}
+ if(!db.passwordHash){
+  modal(`<div class="modalhead"><h3>ساخت رمز مدیر</h3><button onclick="closeModal()">بستن</button></div>
+  <p class="muted small">یک رمز حداقل ۶ نویسه‌ای بسازید.</p>
+  <form onsubmit="setupPassword(event)"><div class="field"><label>رمز جدید</label><input id="setupPass" type="password" minlength="6" required></div>
+  <div class="field"><label>تکرار رمز</label><input id="setupPass2" type="password" minlength="6" required></div>
+  <div class="actions"><button class="primary">ساخت رمز و ورود</button></div></form>`);
  }else{
-  el("formTitle").textContent="ثبت کالای جدید";
-  el("pExtra").value=settings.extra;el("pProfit").value=settings.profit;
-  el("pQty").value=1;el("pBuy").value=0;
+  modal(`<div class="modalhead"><h3>ورود مدیر</h3><button onclick="closeModal()">بستن</button></div>
+  <form onsubmit="login(event)"><div class="field"><label>رمز مدیریت</label><input id="loginPass" type="password" required></div><div class="actions"><button class="primary">ورود</button></div></form>`);
  }
- preview();openProduct();
+}
+async function setupPassword(e){
+ e.preventDefault();let a=document.getElementById('setupPass').value,b=document.getElementById('setupPass2').value;
+ if(a.length<6||a!==b){alert('رمزها یکسان نیستند یا کوتاه‌اند.');return}
+ db.passwordHash=await digest(a);saveDB();isAdmin=true;closeModal();updateRole();message('رمز مدیر تنظیم شد.');
+}
+async function login(e){
+ e.preventDefault();
+ if(await digest(document.getElementById('loginPass').value)===db.passwordHash){
+  isAdmin=true;closeModal();updateRole();message('ورود مدیر موفق بود.');
+ }else alert('رمز نادرست است.');
+}
+async function changePassword(e){
+ e.preventDefault();
+ if(!isAdmin){alert('ابتدا وارد مدیر شوید.');return}
+ const old=document.getElementById('oldPassword').value;
+ const a=document.getElementById('newPassword').value,b=document.getElementById('confirmPassword').value;
+ if(await digest(old)!==db.passwordHash){alert('رمز فعلی نادرست است.');return}
+ if(a.length<6||a!==b){alert('رمز جدید باید حداقل ۶ نویسه و با تکرار آن یکسان باشد.');return}
+ db.passwordHash=await digest(a);saveDB();e.target.reset();alert('رمز تغییر کرد.');
+}
+function saveFinance(e){
+ e.preventDefault();if(!isAdmin){alert('فقط مدیر مجاز است.');return}
+ db.settings.profit=Math.max(0,Number(document.getElementById('profitDefault').value)||0);
+ db.settings.extra=Math.max(0,Number(document.getElementById('extraDefault').value)||0);
+ db.settings.storeName=document.getElementById('storeName').value.trim()||'مدیریت کالا';
+ document.getElementById('brandName').textContent=db.settings.storeName;
+ saveDB();renderProducts();message('تنظیمات مالی ذخیره شد.');
+}
+
+function productForm(id=null){
+ if(!isAdmin){message('ثبت، ویرایش و حذف کالا فقط برای مدیر است.');return}
+ editingId=id;
+ const p=id?db.products.find(x=>x.id===id):null;
+ const val=k=>esc(p?.[k]??'');
+ modal(`<div class="modalhead"><h3>${p?'ویرایش کالا':'ثبت کالای جدید'}</h3><button onclick="closeModal()">بستن</button></div>
+ <form onsubmit="saveProduct(event)">
+  <div class="formgrid" style="margin-top:14px">
+   <div class="field"><label>نام کالا *</label><input id="pName" required value="${val('name')}" placeholder="نام کالا"></div>
+   <div class="field"><label>کد کالا / SKU</label><input id="pCode" value="${val('code')}" placeholder="کد یکتا یا شناسه"></div>
+   <div class="field"><label>کد QR یا بارکد</label><input id="pQr" value="${val('qr')}" placeholder="کد را وارد کنید یا تولید خودکار"></div>
+   <div class="field"><label>دسته‌بندی</label><input id="pCategory" list="categoryOptions" value="${val('category')}" placeholder="مثلاً لوازم جانبی"><datalist id="categoryOptions">${[...new Set(db.products.map(x=>x.category).filter(Boolean))].map(x=>`<option value="${esc(x)}">`).join('')}</datalist></div>
+   <div class="field"><label>قیمت خرید *</label><input id="pPurchase" type="number" min="0" step="any" required value="${val('purchasePrice')}" placeholder="قیمت خرید"></div>
+   <div class="field"><label>واحد ارز خرید</label><select id="pCurrency"><option value="TOMAN">تومان</option><option value="USD">دلار</option></select></div>
+   <div class="field"><label>هزینه اضافی (تومان)</label><input id="pExtra" type="number" min="0" step="any" value="${val('extra')||db.settings.extra}"></div>
+   <div class="field"><label>سود (درصد؛ خالی = پیش‌فرض)</label><input id="pProfit" type="number" min="0" step="any" value="${val('profit')}" placeholder="${db.settings.profit}%"></div>
+   <div class="field"><label>تعداد موجودی</label><input id="pQty" type="number" min="0" step="1" value="${val('quantity')||0}"></div>
+   <div class="field"><label>قیمت فروش دستی (اختیاری)</label><input id="pManual" type="number" min="0" step="any" value="${val('manualPrice')}" placeholder="اگر وارد شود، جایگزین قیمت محاسباتی است"></div>
+   <div class="field" style="grid-column:1/-1"><label>توضیحات و مشخصات کامل</label><textarea id="pDesc" placeholder="برند، مدل، رنگ، سایز، ویژگی‌ها و هر اطلاعات قابل جستجو">${val('description')}</textarea></div>
+   <div class="field" style="grid-column:1/-1"><label>عکس کالا</label><input id="pImage" type="file" accept="image/*"><div class="muted small">در صورت عدم انتخاب عکس جدید، عکس قبلی حفظ می‌شود.</div></div>
+  </div>
+  <div class="actions"><button class="primary">ذخیره کالا</button><button type="button" onclick="makeProductQR()">تولید QR</button></div>
+  <div id="productQR" style="margin-top:12px"></div>
+ </form>`);
+ document.getElementById('pCurrency').value=p?.currency||'TOMAN';
+}
+async function saveProduct(e){
+ e.preventDefault();if(!isAdmin)return;
+ const id=editingId||('p_'+Date.now()+'_'+Math.random().toString(36).slice(2,7));
+ const old=db.products.find(x=>x.id===id);
+ const file=document.getElementById('pImage').files[0];
+ let image=old?.image||'';
+ if(file)image=await resizeImage(file);
+ let code=document.getElementById('pCode').value.trim();
+ let qr=document.getElementById('pQr').value.trim();
+ if(!code)code=id;
+ if(!qr)qr=code;
+ const p={
+  id,name:document.getElementById('pName').value.trim(),code,qr,
+  category:document.getElementById('pCategory').value.trim(),
+  purchasePrice:Number(document.getElementById('pPurchase').value),
+  currency:document.getElementById('pCurrency').value,
+  extra:Number(document.getElementById('pExtra').value)||0,
+  profit:document.getElementById('pProfit').value===''?null:Number(document.getElementById('pProfit').value),
+  quantity:Number(document.getElementById('pQty').value)||0,
+  manualPrice:document.getElementById('pManual').value===''?null:Number(document.getElementById('pManual').value),
+  description:document.getElementById('pDesc').value.trim(),image,
+  createdAt:old?.createdAt||Date.now(),updatedAt:Date.now()
+ };
+ if(db.products.some(x=>x.id!==id&&x.code===code)){alert('این کد کالا قبلاً ثبت شده است.');return}
+ if(old)db.products=db.products.map(x=>x.id===id?p:x);else db.products.unshift(p);
+ saveDB();closeModal();renderProducts();message(old?'کالا ویرایش شد.':'کالای جدید ثبت شد.');
+}
+function makeProductQR(){
+ const code=document.getElementById('pQr').value.trim()||document.getElementById('pCode').value.trim()||document.getElementById('pName').value.trim();
+ if(!code){alert('ابتدا نام یا کد کالا را وارد کنید.');return}
+ document.getElementById('pQr').value=code;
+ const box=document.getElementById('productQR');box.innerHTML='<p class="small">پیش‌نمایش QR</p><div id="qrCanvas" class="qrdisplay"></div>';
+ if(window.QRCode)new QRCode(document.getElementById('qrCanvas'),{text:code,width:150,height:150});
+ else box.innerHTML+='<p class="muted small">کتابخانه تولید QR بارگذاری نشد؛ کد QR را دستی ثبت کنید.</p>';
+}
+function resizeImage(file){
+ return new Promise(resolve=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>{
+    const c=document.createElement('canvas'),max=700,scale=Math.min(1,max/Math.max(img.width,img.height));
+    c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    resolve(c.toDataURL('image/jpeg',.78));
+   };
+   img.onerror=()=>resolve('');img.src=reader.result;
+  };
+  reader.onerror=()=>resolve('');reader.readAsDataURL(file);
+ });
 }
 function deleteProduct(id){
- if(!requireAdmin())return;
- const p=products.find(x=>x.id===id);
- if(!p||!confirm("کالای «"+p.name+"» حذف شود؟"))return;
- products=products.filter(x=>x.id!==id);saveProducts();renderProducts();
+ if(!isAdmin){alert('فقط مدیر می‌تواند کالا حذف کند.');return}
+ const p=db.products.find(x=>x.id===id);
+ if(p&&confirm('کالای «'+p.name+'» حذف شود؟')){db.products=db.products.filter(x=>x.id!==id);saveDB();renderProducts();message('کالا حذف شد.')}
 }
-function preview(){
- const p={currency:val("pCurrency"),buy:n(val("pBuy")),extra:n(val("pExtra")),profit:n(val("pProfit"))};
- el("previewCost").textContent=money(baseCost(p));
- el("previewSale").textContent=money(sale(p));
+function renderProducts(){
+ const query=document.getElementById('search').value.trim().toLocaleLowerCase('fa');
+ const category=document.getElementById('categoryFilter').value;
+ const sort=document.getElementById('sort').value;
+ const cats=[...new Set(db.products.map(p=>p.category).filter(Boolean))].sort();
+ const cf=document.getElementById('categoryFilter'),old=cf.value;
+ cf.innerHTML='<option value="">همه دسته‌ها</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+ if(cats.includes(old))cf.value=old;
+ const actualCat=cf.value;
+ let items=db.products.filter(p=>{
+  const hay=[p.name,p.code,p.qr,p.category,p.description,p.purchasePrice,p.currency,p.extra,p.profit,p.quantity,p.manualPrice,salePrice(p),p.id].join(' ').toLocaleLowerCase('fa');
+  return (!query||hay.includes(query))&&(!actualCat||p.category===actualCat);
+ });
+ items.sort((a,b)=>sort==='new'?b.createdAt-a.createdAt:sort==='cheap'?(a.manualPrice??salePrice(a))-(b.manualPrice??salePrice(b)):sort==='expensive'?(b.manualPrice??salePrice(b))-(a.manualPrice??salePrice(a)):a.name.localeCompare(b.name,'fa'));
+ document.getElementById('productCount').textContent=num(items.length)+' کالا';
+ const root=document.getElementById('products');
+ if(!items.length){root.innerHTML='<div class="empty" style="grid-column:1/-1">کالایی پیدا نشد. عبارت جستجو را تغییر دهید یا کالای جدید ثبت کنید.</div>';return}
+ root.innerHTML=items.map(p=>{
+  const price=p.manualPrice!==null&&p.manualPrice!==undefined?p.manualPrice:salePrice(p);
+  const img=p.image?`<img class="prodimg" src="${p.image}" alt="">`:'<div class="prodimg" style="display:grid;place-items:center">📦</div>';
+  return `<article class="product"><div class="producttop">${img}<div style="min-width:0"><div class="prodname">${esc(p.name)}</div><div class="meta">کد: ${esc(p.code)}</div><div class="meta">دسته: ${esc(p.category||'بدون دسته')}</div></div></div>
+  <div class="price">قیمت فروش: ${num(price)} تومان</div>
+  <div class="meta">قیمت خرید: ${num(p.purchasePrice)} ${p.currency==='USD'?'دلار':'تومان'}</div>
+  ${p.currency==='USD'&&!currentRate()?'<div class="meta danger">برای محاسبه قیمت دلار، نرخ ثبت کنید.</div>':''}
+  <div class="meta">موجودی: ${num(p.quantity)} | QR: ${esc(p.qr||'—')}</div>
+  ${p.description?`<div class="meta" style="margin-top:6px">${esc(p.description)}</div>`:''}
+  <div class="actions"><button onclick="showQR('${p.id}')">نمایش QR</button>${isAdmin?`<button onclick="productForm('${p.id}')">ویرایش</button><button class="danger" onclick="deleteProduct('${p.id}')">حذف</button>`:''}</div></article>`;
+ }).join('');
 }
-["pCurrency","pBuy","pExtra","pProfit"].forEach(id=>el(id).addEventListener("input",preview));
-el("productForm").addEventListener("submit",e=>{
- e.preventDefault();if(!requireAdmin())return;
- const name=val("pName").trim(),buy=n(val("pBuy")),extra=n(val("pExtra")),profit=n(val("pProfit")),qty=n(val("pQty"));
- if(!name||buy<0||extra<0||qty<0||profit< -100){alert("لطفاً اطلاعات کالا را بررسی کن.");return}
- const id=val("pId")||makeId();
- const p={id,name,code:val("pCode").trim(),qr:val("pQR").trim(),qty,buy,currency:val("pCurrency"),extra,profit,category:val("pCategory").trim(),desc:val("pDesc").trim(),updatedAt:new Date().toISOString()};
- const i=products.findIndex(x=>x.id===id);
- if(i>=0)products[i]=p;else products.push(p);
- saveProducts();closeProduct();renderProducts();
-});
-function editProductNew(){editProduct("")}
+function clearSearch(){document.getElementById('search').value='';renderProducts()}
+function showQR(id){
+ const p=db.products.find(x=>x.id===id);if(!p)return;
+ modal(`<div class="modalhead"><h3>QR کالا: ${esc(p.name)}</h3><button onclick="closeModal()">بستن</button></div><p>کد: ${esc(p.qr||p.code)}</p><div id="showQRBox" class="qrdisplay"></div><p class="muted small">اسکن این QR در این سایت، کالا را بر اساس کد جستجو می‌کند.</p>`);
+ if(window.QRCode)new QRCode(document.getElementById('showQRBox'),{text:p.qr||p.code,width:190,height:190});
+}
+async function searchImage(e){
+ const file=e.target.files?.[0];e.target.value='';if(!file)return;
+ if(!window.Tesseract){message('کتابخانه OCR در دسترس نیست؛ کد کالا را دستی جستجو کنید.');return}
+ message('در حال خواندن نوشته‌های عکس برای جستجو...');
+ try{
+  const result=await Tesseract.recognize(file,'eng+fas');
+  const text=(result.data.text||'').trim();
+  if(text){document.getElementById('search').value=text.split(/\s+/).filter(x=>x.length>1).slice(0,8).join(' ');renderProducts();message('متن استخراج‌شده از عکس در جستجو قرار گرفت. اگر نتیجه‌ای نبود، کد یا نام را دستی وارد کنید.')}
+  else message('متنی از عکس شناسایی نشد؛ نام یا کد کالا را وارد کنید.');
+ }catch(err){message('خواندن عکس انجام نشد. می‌توانید نام، کد یا QR را دستی جستجو کنید.')}
+}
+async function scanQR(){
+ if(!('BarcodeDetector' in window)){manualQR();return}
+ if(!navigator.mediaDevices?.getUserMedia){manualQR();return}
+ modal(`<div class="modalhead"><h3>اسکن QR یا بارکد</h3><button onclick="closeModal()">بستن</button></div><video id="scanVideo" autoplay playsinline style="width:100%;max-height:55vh;background:#000;border-radius:12px"></video><p class="muted small">برای دوربین، سایت باید از HTTPS باز شده باشد و اجازه دوربین داده شود.</p><button onclick="manualQR()">ورود دستی کد</button>`);
+ try{
+  scannerStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+  const video=document.getElementById('scanVideo');if(!video)return;
+  video.srcObject=scannerStream;await video.play();
+  const detector=new BarcodeDetector({formats:['qr_code','ean_13','ean_8','code_128','upc_a','upc_e']});
+  const loop=async()=>{
+   if(!document.getElementById('scanVideo'))return;
+   try{
+    const codes=await detector.detect(video);
+    if(codes.length){const value=codes[0].rawValue;stopScanner();closeModal();document.getElementById('search').value=value;renderProducts();message('جستجو با کد اسکن‌شده انجام شد: '+value);return}
+   }catch{}
+   scannerTimer=setTimeout(loop,350);
+  };loop();
+ }catch(err){stopScanner();manualQR()}
+}
+function stopScanner(){if(scannerTimer)clearTimeout(scannerTimer);scannerTimer=null;if(scannerStream){scannerStream.getTracks().forEach(t=>t.stop());scannerStream=null}}
+function manualQR(){
+ modal(`<div class="modalhead"><h3>جستجو با کد QR / بارکد</h3><button onclick="closeModal()">بستن</button></div><form onsubmit="submitManualQR(event)"><div class="field"><label>کد اسکن‌شده</label><input id="manualCode" required autofocus></div><div class="actions"><button class="primary">جستجو</button></div></form>`);
+}
+function submitManualQR(e){e.preventDefault();const x=document.getElementById('manualCode').value.trim();closeModal();document.getElementById('search').value=x;renderProducts()}
+function saveRate(e){
+ e.preventDefault();const value=Number(document.getElementById('rateValue').value);
+ if(!Number.isFinite(value)||value<=0){alert('نرخ باید بیشتر از صفر باشد.');return}
+ db.rates.push({id:'r_'+Date.now()+'_'+Math.random().toString(36).slice(2,5),value,note:document.getElementById('rateNote').value.trim(),createdAt:Date.now()});
+ saveDB();e.target.reset();renderRates();renderProducts();message('نرخ جدید دلار ثبت شد.');
+}
+function editRate(id){
+ if(!isAdmin){alert('فقط مدیر می‌تواند نرخ قبلی را ویرایش کند.');return}
+ const r=db.rates.find(x=>x.id===id);if(!r)return;
+ const value=prompt('نرخ جدید دلار به تومان:',r.value);if(value===null)return;
+ const n=Number(value);if(!Number.isFinite(n)||n<=0){alert('نرخ نامعتبر است.');return}
+ r.value=n;saveDB();renderRates();renderProducts();
+}
+function deleteRate(id){
+ if(!isAdmin){alert('فقط مدیر می‌تواند نرخ قبلی را حذف کند.');return}
+ if(confirm('این سابقه نرخ حذف شود؟')){db.rates=db.rates.filter(x=>x.id!==id);saveDB();renderRates();renderProducts()}
+}
 function renderRates(){
- const r=activeRate();
- el("currentRate").textContent=r?money(r):"نرخ دلار ثبت نشده";
- el("currentRateDate").textContent=r?("زمان ثبت: "+dateText(rates[rates.length-1].date)):"";
- el("rateHistory").innerHTML=rates.length?rates.slice().reverse().map((x,i)=>`
- <div class="history-row"><div><strong>${money(x.value)}</strong><div class="note">${dateText(x.date)}</div>${x.note?`<div class="note">${esc(x.note)}</div>`:""}</div>
- ${isAdmin?`<button class="btn small danger" data-rate-delete="${esc(x.id)}">حذف نرخ</button>`:""}</div>`).join(""):'<div class="empty">تاریخچه‌ای وجود ندارد.</div>';
+ const sorted=[...db.rates].sort((a,b)=>b.createdAt-a.createdAt),r=sorted[0];
+ document.getElementById('currentRate').textContent=r?num(r.value):'ثبت نشده';
+ document.getElementById('rateDate').textContent=r?stamp(r.createdAt):'—';
+ document.getElementById('rateCount').textContent=num(sorted.length);
+ document.getElementById('ratesTable').innerHTML=sorted.length?sorted.map(x=>`<tr><td>${num(x.value)}</td><td>${esc(stamp(x.createdAt))}</td><td>${esc(x.note||'—')}</td><td>${isAdmin?`<button onclick="editRate('${x.id}')">ویرایش</button> <button class="danger" onclick="deleteRate('${x.id}')">حذف</button>`:'<span class="muted">فقط مدیر</span>'}</td></tr>`).join(''):'<tr><td colspan="4">هنوز نرخی ثبت نشده است.</td></tr>';
 }
-el("rateHistory").addEventListener("click",e=>{
- const b=e.target.closest("[data-rate-delete]");if(!b)return;
- if(!requireAdmin())return;
- if(!confirm("این نرخ از تاریخچه حذف شود؟"))return;
- rates=rates.filter(r=>r.id!==b.dataset.rateDelete);saveRates();renderRates();renderProducts();
-});
-el("rateForm").addEventListener("submit",e=>{
- e.preventDefault();
- const value=n(val("newRate"));
- if(!Number.isFinite(value)||value<=0){alert("نرخ دلار باید عددی بیشتر از صفر باشد.");return}
- rates.push({id:makeId(),value,date:new Date().toISOString(),note:val("rateNote").trim()});
- saveRates();el("rateForm").reset();renderRates();renderProducts();
- alert("نرخ جدید ثبت شد. قیمت کالاها بر اساس آخرین نرخ محاسبه می‌شود.");
-});
-el("settingsForm").addEventListener("submit",e=>{
- e.preventDefault();if(!requireAdmin())return;
- const profit=n(val("defaultProfit")),extra=n(val("defaultExtra"));
- if(profit< -100||extra<0){alert("مقادیر واردشده معتبر نیستند.");return}
- settings={profit,extra};write(K.settings,settings);alert("تنظیمات ذخیره شد.");
-});
-function openAdmin(){
- adminAction=localStorage.getItem(K.password)?"login":"setup";
- el("adminTitle").textContent=adminAction==="setup"?"تنظیم رمز اولیه مدیر":"ورود مدیر";
- el("adminHelp").textContent=adminAction==="setup"?"برای اولین بار یک رمز مدیر تعیین کن.":"رمز مدیر را وارد کن.";
- el("adminError").textContent="";el("adminPassword").value="";
- el("adminModal").classList.remove("hidden");
+function backup(){
+ if(!isAdmin){alert('فقط مدیر مجاز است.');return}
+ const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='backup-price-manager-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);
 }
-function closeAdmin(){el("adminModal").classList.add("hidden")}
-async function hash(text){
- if(!crypto.subtle)throw new Error("برای تنظیم رمز، سایت را در اتصال امن HTTPS باز کن.");
- const bytes=new TextEncoder().encode(text);
- const digest=await crypto.subtle.digest("SHA-256",bytes);
- return Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,"0")).join("");
+function restore(e){
+ if(!isAdmin){alert('فقط مدیر مجاز است.');e.target.value='';return}
+ const file=e.target.files?.[0];e.target.value='';if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const x=JSON.parse(reader.result);
+   if(!x||!Array.isArray(x.products)||!Array.isArray(x.rates)||!x.settings)throw Error();
+   if(!confirm('اطلاعات فعلی با اطلاعات فایل جایگزین شود؟'))return;
+   db={...structuredClone(initial),...x,settings:{...initial.settings,...x.settings}};
+   saveDB();applyTheme(db.settings.theme);document.getElementById('brandName').textContent=db.settings.storeName||'مدیریت کالا';renderProducts();renderRates();fillSettings();message('بازیابی انجام شد.');
+  }catch{alert('فایل پشتیبان معتبر نیست.')}
+ };reader.readAsText(file);
 }
-el("adminForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const password=val("adminPassword");
- if(password.length<6){el("adminError").textContent="رمز باید حداقل ۶ نویسه داشته باشد.";return}
- try{
-  if(adminAction==="setup"){
-   if(localStorage.getItem(K.password)){el("adminError").textContent="رمز قبلاً تنظیم شده؛ وارد شو.";return}
-   localStorage.setItem(K.password,await hash(password));
-  }else{
-   if(await hash(password)!==localStorage.getItem(K.password)){el("adminError").textContent="رمز نادرست است.";return}
-  }
-  isAdmin=true;closeAdmin();refreshRole();renderProducts();showPage("products");
- }catch(err){el("adminError").textContent=err.message||"خطا در بررسی رمز."}
-});
-function logoutAdmin(){isAdmin=false;refreshRole();showPage("products");renderProducts()}
-el("globalSearch").addEventListener("input",()=>{el("productSearch").value=val("globalSearch");renderProducts()});
-function exportData(){
- if(!requireAdmin())return;
- const data={version:1,products,rates,settings,exportedAt:new Date().toISOString()};
- const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download="priceyar-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-async function importData(event){
- if(!requireAdmin()){event.target.value="";return}
- const file=event.target.files&&event.target.files[0];if(!file)return;
- try{
-  const data=JSON.parse(await file.text());
-  if(!data||!Array.isArray(data.products)||!Array.isArray(data.rates)||!data.settings||typeof data.settings!=="object")throw new Error("ساختار فایل پشتیبان معتبر نیست.");
-  const validProducts=data.products.every(p=>p&&typeof p.id==="string"&&typeof p.name==="string"&&Number.isFinite(Number(p.buy))&&Number(p.buy)>=0&&["USD","IRR"].includes(p.currency));
-  const validRates=data.rates.every(r=>r&&typeof r.id==="string"&&Number.isFinite(Number(r.value))&&Number(r.value)>0&&typeof r.date==="string");
-  if(!validProducts||!validRates)throw new Error("اطلاعات فایل پشتیبان نامعتبر است.");
-  if(!confirm("اطلاعات فعلی با داده‌های فایل جایگزین شوند؟ ابتدا از داده‌های فعلی پشتیبان بگیر."))return;
-  products=data.products;rates=data.rates;
-  settings={profit:n(data.settings.profit),extra:safeNum(data.settings.extra)};
-  saveProducts();saveRates();write(K.settings,settings);
-  renderProducts();renderRates();alert("بازیابی انجام شد.");
- }catch(err){alert("بازیابی ناموفق: "+err.message)}
- finally{event.target.value=""}
-}
-function clearProducts(){
- if(!requireAdmin())return;
- if(confirm("تمام کالاها حذف شوند؟ این کار برگشت‌پذیر نیست.")){products=[];saveProducts();renderProducts()}
-}
-function clearRateHistory(){
- if(!requireAdmin())return;
- if(confirm("تمام تاریخچه نرخ دلار حذف شود؟ قیمت کالاهای دلاری تا ثبت نرخ جدید قابل محاسبه نخواهد بود.")){rates=[];saveRates();renderRates();renderProducts()}
-}
-el("newPassword").addEventListener("input",()=>{});
-el("passwordForm").addEventListener("submit",async e=>{
- e.preventDefault();if(!requireAdmin())return;
- const password=val("newPassword");
- if(password.length<6){alert("رمز باید حداقل ۶ نویسه باشد.");return}
- try{
-  localStorage.setItem(K.password,await hash(password));
-  el("newPassword").value="";el("passwordStatus").textContent="رمز مدیر ذخیره شد.";
-  alert("رمز مدیر تغییر کرد.");
- }catch(err){alert(err.message)}
-});
-/* مهمان اجازه ویرایش کالاها را ندارد. */
-function editProduct(id){if(!requireAdmin())return;openProductEditor(id)}
-function openProductEditor(id){
- el("productForm").reset();el("pId").value=id||"";
- const p=products.find(x=>x.id===id);
- if(p){
-  el("formTitle").textContent="ویرایش کالا";
-  el("pName").value=p.name||"";el("pCode").value=p.code||"";
-  el("pQR").value=p.qr||"";el("pQty").value=p.qty??0;
-  el("pCurrency").value=p.currency==="USD"?"USD":"IRR";
-  el("pBuy").value=p.buy??0;el("pExtra").value=p.extra??0;
-  el("pProfit").value=p.profit??settings.profit;
-  el("pCategory").value=p.category||"";el("pDesc").value=p.desc||"";
- }else{
-  el("formTitle").textContent="ثبت کالای جدید";
-  el("pQty").value=1;el("pBuy").value=0;
-  el("pExtra").value=settings.extra;el("pProfit").value=settings.profit;
- }
- preview();openProduct();
-}
-function editProduct(){if(!requireAdmin())return;openProductEditor("")}
-function closeProduct(){el("productModal").classList.add("hidden")}
-function openProduct(){el("productModal").classList.remove("hidden")}
-function refreshAll(){refreshRole();renderProducts();renderRates();renderThemes()}
-const initialTheme=localStorage.getItem(K.theme)||"تیره";
-applyTheme(initialTheme);
-refreshAll();
-showPage("products");
+
+document.getElementById('brandName').textContent=db.settings.storeName||'مدیریت کالا';
+applyTheme(db.settings.theme||'dark');drawThemes();fillSettings();updateRole();
 </script>
 </body>
 </html>
