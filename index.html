@@ -1531,6 +1531,24 @@ init();
 
   console.log("Supabase client initialized");
 </script>
+async function callBrightApi() {
+  const { data, error } = await supabaseClient.functions.invoke(
+    "bright-api",
+    {
+      body: {
+        name: "Functions"
+      }
+    }
+  );
 
+  if (error) {
+    console.error("Bright API Error:", error);
+    showToast("خطا در اتصال به Bright API");
+    return;
+  }
+
+  console.log("Bright API Response:", data);
+  showToast("اتصال به Bright API موفق بود");
+}
 </body>
 </html>
