@@ -324,6 +324,7 @@ body[data-role="owner"] .owner-only{display:block}
           </div>
           <button class="search-action-btn" onclick="openSearchScanner()" title="اسکن بارکد/QR برای جستجو">📷</button>
           <button class="search-action-btn" onclick="openImageSearch()" title="جستجو با تصویر">🖼️</button>
+          <button class="search-action-btn" onclick="openAllPricesInvoice()" title="فاکتور همه کالاها">🧾</button>
         </div>
         <div class="search-hint" id="searchHint">جستجو در نام، کد، بارکد، دسته، یادداشت · یا با دوربین/تصویر</div>
         <div class="recent-searches" id="recentSearches"></div>
@@ -453,7 +454,7 @@ body[data-role="owner"] .owner-only{display:block}
         <div class="card">
           <div class="card-title">ℹ️ درباره</div>
           <div class="text-sm" style="line-height:2">
-            <div><strong>نسخه:</strong> ۴.۴.۰</div>
+            <div><strong>نسخه:</strong> ۴.۶.۰</div>
             <div><strong>ذخیره:</strong> localStorage</div>
           </div>
           <button class="btn btn-danger btn-block mt-12" onclick="confirmClearAll()">🗑️ پاک کردن همه</button>
@@ -498,6 +499,23 @@ body[data-role="owner"] .owner-only{display:block}
   </div>
 </div>
 
+<!-- Camera Modal -->
+<div class="modal" id="cameraModal">
+  <div class="modal-sheet">
+    <div class="modal-head"><h3>📷 گرفتن عکس</h3><button class="modal-close" onclick="closeCameraModal()">×</button></div>
+    <div class="modal-body">
+      <video id="cameraVideo" style="width:100%;border-radius:12px;background:#000;display:none" autoplay playsinline muted></video>
+      <div id="cameraMsg" class="text-sm muted mt-12" style="text-align:center">برای شروع، دکمه را بزنید</div>
+      <div id="cameraPreviewBox" class="mt-12"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" id="cameraStartBtn" onclick="startProductCamera()">شروع دوربین</button>
+      <button class="btn btn-success" id="cameraCaptureBtn" onclick="captureProductPhoto()" style="display:none">📸 گرفتن عکس</button>
+      <button class="btn btn-secondary" id="cameraCancelBtn" onclick="closeCameraModal()" style="display:none">انصراف</button>
+    </div>
+  </div>
+</div>
+
 <div id="invoiceArea"></div>
 <div class="toast-container" id="toastContainer"></div>
 
@@ -524,6 +542,7 @@ let tempImageData = '';
 let deferredPrompt = null;
 let recentSearches = [];
 let singleInvoiceData = null;
+let productCameraStream = null;
 
 /* ============================================================
    UTILS
@@ -1535,7 +1554,17 @@ function openProductModal(id){
       ${p && p.barcode ? `<button class="btn btn-secondary btn-sm mt-8" onclick="showProductQRCode('${escapeHtml(p.barcode).replace(/'/g,'&#39;')}')">🔲 نمایش QR</button>` : ''}
     </div>
     <div class="field"><label>دسته‌بندی</label><select id="pCategory"><option value="">— بدون دسته —</option>${state.categories.map(c=>`<option value="${c.id}" ${p&&p.categoryId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
-    <div class="field"><label>تصویر</label><input type="file" id="pImage" accept="image/*" onchange="handleImageUpload(this)"><div class="hint" id="pImageHint">حداکثر ${state.settings.imgMaxW}px</div></div>
+    <div class="field">
+      <label>تصویر محصول</label>
+      <div style="display:flex;gap:6px">
+        <label class="btn btn-secondary btn-sm" style="flex:1;cursor:pointer;margin:0;position:relative;overflow:hidden">
+          📁 انتخاب فایل
+          <input type="file" id="pImage" accept="image/*" onchange="handleImageUpload(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+        </label>
+        <button type="button" class="btn btn-primary btn-sm" style="flex:1" onclick="openCameraForProduct()">📷 گرفتن عکس</button>
+      </div>
+      <div class="hint" id="pImageHint">حداکثر ${state.settings.imgMaxW}px</div>
+    </div>
     <div id="pImagePreview" class="mt-8">${p&&p.image?`<img src="${p.image}" style="max-width:100px;border-radius:10px">`:''}</div>
     <div class="form-row mt-12">
       <div class="field"><label>قیمت خرید *</label><input type="number" id="pBuy" value="${p?p.buyPrice:''}" min="0" step="any"></div>
@@ -1666,6 +1695,98 @@ function confirmDeleteProduct(id){
 }
 
 /* ============================================================
+   PRODUCT CAMERA
+   ============================================================ */
+function openCameraForProduct(){
+  if (!isOwner()){ toast('فقط مالک','error'); return; }
+  $('cameraModal').classList.add('open');
+  $('cameraMsg').textContent = 'برای شروع، دکمه را بزنید';
+  $('cameraPreviewBox').innerHTML = '';
+  $('cameraVideo').style.display = 'none';
+  $('cameraStartBtn').style.display = 'inline-flex';
+  $('cameraCaptureBtn').style.display = 'none';
+  $('cameraCancelBtn').style.display = 'none';
+}
+
+async function startProductCamera(){
+  if (!navigator.mediaDevices?.getUserMedia){
+    $('cameraMsg').textContent = 'دسترسی به دوربین ممکن نیست (HTTPS لازم است)';
+    return;
+  }
+  try{
+    try{
+      productCameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 1280 } }
+      });
+    }catch(_){
+      productCameraStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    }
+    $('cameraVideo').srcObject = productCameraStream;
+    $('cameraVideo').style.display = 'block';
+    $('cameraMsg').textContent = 'دوربین را روی کالا بگیرید و دکمهٔ «گرفتن عکس» را بزنید';
+    $('cameraStartBtn').style.display = 'none';
+    $('cameraCaptureBtn').style.display = 'inline-flex';
+    $('cameraCancelBtn').style.display = 'inline-flex';
+  }catch(e){
+    $('cameraMsg').textContent = 'خطا در دسترسی به دوربین: ' + e.message;
+    toast('دسترسی به دوربین ممکن نشد','error');
+  }
+}
+
+async function captureProductPhoto(){
+  const video = $('cameraVideo');
+  if (!video.videoWidth || !video.videoHeight){
+    toast('دوربین آماده نیست','error');
+    return;
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+  $('cameraPreviewBox').innerHTML = `<img src="${dataUrl}" style="max-width:100%;border-radius:12px">`;
+
+  try{
+    const compressed = await compressImageDataUrl(dataUrl, state.settings.imgMaxW, state.settings.imgQuality);
+    tempImageData = compressed;
+    $('pImagePreview').innerHTML = `<img src="${compressed}" style="max-width:100px;border-radius:10px">`;
+    $('pImageHint').textContent = `${toFa(Math.round(compressed.length*0.75/1024))} کیلوبایت`;
+    toast('عکس گرفته شد و در فرم قرار گرفت','success');
+    setTimeout(()=>closeCameraModal(), 800);
+  }catch(e){
+    toast('خطا در پردازش عکس','error');
+  }
+}
+
+function compressImageDataUrl(dataUrl, maxW, q){
+  return new Promise((res, rej)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const c = document.createElement('canvas');
+      let w = img.width, h = img.height;
+      if (w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
+      c.width = w; c.height = h;
+      c.getContext('2d').drawImage(img, 0, 0, w, h);
+      try{ res(c.toDataURL('image/jpeg', q)); }catch(e){ rej(e); }
+    };
+    img.onerror = ()=>rej(new Error('bad image'));
+    img.src = dataUrl;
+  });
+}
+
+function closeCameraModal(){
+  if (productCameraStream){
+    productCameraStream.getTracks().forEach(t=>t.stop());
+    productCameraStream = null;
+  }
+  const v = $('cameraVideo');
+  if (v) v.srcObject = null;
+  $('cameraModal').classList.remove('open');
+  $('cameraPreviewBox').innerHTML = '';
+}
+
+/* ============================================================
    QR
    ============================================================ */
 function showProductQRCode(text){
@@ -1778,7 +1899,6 @@ function openSingleInvoice(id){
   const suggestedSell = final ?? s.suggested;
   const buyUnit = Math.round(c.total || 0);
   const sellUnit = Math.round(suggestedSell || 0);
-  const profitUnit = sellUnit - buyUnit;
 
   singleInvoiceData = { id, buyUnit, sellUnit, p, cat };
 
@@ -1912,31 +2032,40 @@ function printSingleInvoice(id){
 }
 
 /* ============================================================
-   INVOICE — لیست همه محصولات
+   INVOICE — همهٔ کالاها
    ============================================================ */
 function openAllPricesInvoice(){
-  if (!requireAuth()) return;
-  $('modalTitle').textContent = '📋 لیست قیمت همه محصولات';
+  if (!requireAuth()){ toast('ابتدا وارد شوید','error'); return; }
+  if (!state.products.length){ toast('هیچ محصولی ثبت نشده','warning'); return; }
+  $('modalTitle').textContent = '📋 فاکتور همهٔ کالاها';
   $('modalBody').innerHTML = `
-    <div class="field"><label>عنوان لیست</label><input type="text" id="listTitle" value="لیست قیمت محصولات"></div>
-    <div class="field"><label>نام مشتری / فروشگاه (اختیاری)</label><input type="text" id="listCustomer"></div>
-    <div class="hint">همه محصولات با نام کامل، کد کالا، تاریخ، قیمت خرید و قیمت فروش — به عدد و به حروف — چاپ می‌شوند.</div>
+    <div class="field"><label>عنوان فاکتور</label><input type="text" id="listTitle" value="فاکتور فروش محصولات"></div>
+    <div class="field"><label>نام مشتری / فروشگاه</label><input type="text" id="listCustomer" placeholder="اختیاری"></div>
+    <div class="field"><label>شماره فاکتور</label><input type="text" id="listInvoiceNo" value="${toFa(state.invoiceCounter+1)}"></div>
+    <div class="hint">همهٔ محصولات با نام، کد، تاریخ، قیمت خرید و فروش — به عدد و به حروف — چاپ می‌شوند.</div>
+    <div class="preview-box mt-12">
+      <div class="preview-row"><span class="label">تعداد محصولات</span><span class="val">${toFa(state.products.length)}</span></div>
+    </div>
   `;
   $('modalFoot').innerHTML = `
     <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
-    <button class="btn btn-primary" onclick="printAllPrices()">🖨️ چاپ لیست</button>
+    <button class="btn btn-primary" onclick="printAllPrices()">🖨️ چاپ فاکتور</button>
   `;
   openModal();
 }
 
 function printAllPrices(){
   if (!requireAuth()) return;
-  const listTitle = ($('listTitle')?.value||'').trim() || 'لیست قیمت محصولات';
+  const listTitle = ($('listTitle')?.value||'').trim() || 'فاکتور فروش محصولات';
   const customer = ($('listCustomer')?.value||'').trim();
+  const invoiceNo = ($('listInvoiceNo')?.value||'').trim() || toFa(state.invoiceCounter+1);
   const dateStr = jalaliStr(new Date());
   const storeName = state.settings.storeName || 'فروشگاه';
   const storeAddr = state.settings.storeAddr || '';
   const storePhone = state.settings.storePhone || '';
+
+  state.invoiceCounter = (state.invoiceCounter||1000) + 1;
+  saveState();
 
   const rows = [];
   let totalBuy = 0;
@@ -1995,6 +2124,7 @@ function printAllPrices(){
         </div>
         <div class="meta">
           <div><strong>${escapeHtml(listTitle)}</strong></div>
+          <div>شماره: ${toFa(invoiceNo)}</div>
           <div>تاریخ: ${dateStr}</div>
           ${customer?`<div>مشتری: ${escapeHtml(customer)}</div>`:''}
           <div>تعداد اقلام: ${toFa(rows.length)}</div>
@@ -2159,9 +2289,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
   ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, ()=>{ if(isOwner()) resetInactivity(); }, {passive:true}));
   $('genericModal').addEventListener('click', e=>{ if(e.target.id==='genericModal') closeModal(); });
   $('scannerModal').addEventListener('click', e=>{ if(e.target.id==='scannerModal') stopScanner(); });
+  $('cameraModal').addEventListener('click', e=>{ if(e.target.id==='cameraModal') closeCameraModal(); });
 });
 window.addEventListener('beforeunload', ()=>{
   if (scanStream) scanStream.getTracks().forEach(t=>t.stop());
+  if (productCameraStream) productCameraStream.getTracks().forEach(t=>t.stop());
   if (scanInterval) clearInterval(scanInterval);
   clearTimeout(session.inactivityTimer);
 });
