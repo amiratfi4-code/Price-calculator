@@ -1,176 +1,208 @@
-```html
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>مدیریت قیمت و محصولات | پنل حرفه‌ای</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0ea5e9" />
+<title>مدیریت قیمت | موبایل</title>
 <style>
 :root{
   --bg:#f5f7fb; --panel:#ffffff; --panel-2:#f0f3f9; --border:#e2e8f0;
   --text:#0f172a; --muted:#64748b; --primary:#0ea5e9; --primary-2:#0284c7;
   --success:#10b981; --danger:#ef4444; --warning:#f59e0b; --info:#6366f1;
-  --radius:12px; --shadow:0 1px 3px rgba(15,23,42,.06),0 4px 16px rgba(15,23,42,.04);
+  --radius:14px; --shadow:0 2px 8px rgba(15,23,42,.06);
   --font:"Vazirmatn","Segoe UI",Tahoma,system-ui,sans-serif;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 html[data-theme="dark"]{
   --bg:#0b1220; --panel:#111a2e; --panel-2:#182238; --border:#233049;
   --text:#e2e8f0; --muted:#94a3b8; --primary:#22d3ee; --primary-2:#06b6d4;
-  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.2);
+  --shadow:0 2px 8px rgba(0,0,0,.3);
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font)}
-html,body{background:var(--bg);color:var(--text);min-height:100vh}
-body{display:flex;font-size:14px;line-height:1.6;transition:background .2s,color .2s}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font);-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);min-height:100vh;overscroll-behavior-y:contain}
+body{font-size:15px;line-height:1.6;padding-bottom:calc(72px + var(--safe-bottom))}
 a{color:var(--primary);text-decoration:none}
-a:hover{text-decoration:underline}
-button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-input,select,textarea{font-family:inherit;font-size:14px}
-.sidebar{width:250px;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:20px 14px;position:fixed;right:0;top:0;bottom:0;z-index:100;overflow-y:auto;transition:transform .3s}
-.brand{display:flex;align-items:center;gap:10px;padding:0 6px;margin-bottom:26px}
-.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--primary),var(--info));display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;flex-shrink:0}
-.brand-text{display:flex;flex-direction:column;line-height:1.2}
-.brand-text strong{font-size:15px}
-.brand-text small{font-size:11px;color:var(--muted)}
-.nav-section{font-size:11px;color:var(--muted);margin:14px 8px 6px;font-weight:600;letter-spacing:.5px}
-.nav-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--muted);width:100%;text-align:right;font-size:14px;transition:all .15s;margin-bottom:2px}
-.nav-btn:hover{background:var(--panel-2);color:var(--text)}
-.nav-btn.active{background:color-mix(in srgb,var(--primary) 14%,transparent);color:var(--primary);font-weight:600}
-.nav-btn .ico{font-size:17px;width:22px;text-align:center}
-.sidebar-footer{margin-top:auto;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);text-align:center}
-.main{flex:1;margin-right:250px;padding:20px 24px 40px;min-height:100vh}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;flex-wrap:wrap}
-.page-title{font-size:22px;font-weight:700}
-.page-sub{font-size:12px;color:var(--muted);margin-top:2px}
-.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--panel);border:1px solid var(--border);display:inline-flex;align-items:center;justify-content:center;font-size:16px;transition:all .15s}
-.icon-btn:hover{border-color:var(--primary);color:var(--primary)}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-size:13px;font-weight:600;transition:all .15s;border:1px solid transparent;white-space:nowrap}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
+input,select,textarea{font-family:inherit;font-size:16px}
+
+/* ===== Top Header ===== */
+.app-header{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.app-header .title{font-size:17px;font-weight:800}
+.app-header .subtitle{font-size:11px;color:var(--muted);margin-top:1px}
+.header-actions{display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;border-radius:12px;background:var(--panel-2);display:inline-flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s}
+.icon-btn:active{transform:scale(.94)}
+
+/* ===== Content ===== */
+.content{padding:16px}
+.view{display:none;animation:fadeIn .2s}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== Stats ===== */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;position:relative;overflow:hidden}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
+.stat-card .val{font-size:18px;font-weight:800;line-height:1.3;letter-spacing:-.3px}
+.stat-card .ftr{font-size:10px;color:var(--muted);margin-top:4px}
+.stat-card .val.small{font-size:14px;font-weight:700}
+.stat-card.primary{background:linear-gradient(135deg,var(--primary),var(--info));color:#fff;border:none}
+.stat-card.primary .lbl,.stat-card.primary .ftr{color:rgba(255,255,255,.85)}
+.stat-card.green{border-color:color-mix(in srgb,var(--success) 30%,var(--border))}
+.stat-card.green .val{color:var(--success)}
+.stat-card.red .val{color:var(--danger)}
+.stat-card.amber .val{color:var(--warning)}
+
+/* ===== Cards ===== */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card-title{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+
+/* ===== Buttons ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:700;transition:all .15s;border:1px solid transparent;white-space:nowrap;min-height:44px}
+.btn:active{transform:scale(.97)}
 .btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-2)}
-.btn-secondary{background:var(--panel);border-color:var(--border);color:var(--text)}
-.btn-secondary:hover{border-color:var(--primary);color:var(--primary)}
-.btn-danger{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
-.btn-danger:hover{background:color-mix(in srgb,var(--danger) 20%,transparent)}
-.btn-success{background:var(--success);color:#fff}
-.btn-sm{padding:6px 10px;font-size:12px}
+.btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--border)}
+.btn-danger{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}
+.btn-block{width:100%}
+.btn-sm{padding:8px 12px;font-size:12px;min-height:36px}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
-.card-pad{padding:18px}
-.card-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
-.stat{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;position:relative;overflow:hidden}
-.stat-label{font-size:12px;color:var(--muted);margin-bottom:6px}
-.stat-value{font-size:20px;font-weight:800;letter-spacing:-.5px}
-.stat-foot{font-size:11px;color:var(--muted);margin-top:6px}
-.empty{padding:50px 20px;text-align:center;color:var(--muted)}
-.empty .big{font-size:44px;margin-bottom:10px;display:block;opacity:.7}
-.empty h3{font-size:16px;color:var(--text);margin-bottom:6px}
-.empty p{font-size:13px;margin-bottom:16px}
-.form-grid{display:grid;gap:14px}
-.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.field{display:flex;flex-direction:column;gap:6px}
+
+/* ===== Forms ===== */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .field label{font-size:12px;color:var(--muted);font-weight:600}
-.field input,.field select,.field textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text);outline:none;transition:border .15s,box-shadow .15s}
+.field input,.field select,.field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);outline:none;transition:border .15s,box-shadow .15s;font-size:16px}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent)}
 .field .hint{font-size:11px;color:var(--muted)}
 .field.error input,.field.error select{border-color:var(--danger)}
 .field .err-msg{font-size:11px;color:var(--danger);display:none}
 .field.error .err-msg{display:block}
 textarea{resize:vertical;min-height:70px}
-.table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--panel)}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:11px 12px;text-align:right;border-bottom:1px solid var(--border);vertical-align:middle}
-th{background:var(--panel-2);font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
-tbody tr:hover{background:color-mix(in srgb,var(--primary) 5%,transparent)}
-tbody tr:last-child td{border-bottom:none}
-.thumb{width:38px;height:38px;border-radius:8px;object-fit:cover;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:17px;overflow:hidden;flex-shrink:0}
-.thumb img{width:100%;height:100%;object-fit:cover}
-td .row-actions{display:flex;gap:4px;justify-content:flex-end}
-.row-actions .icon-btn{width:30px;height:30px;font-size:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:380px){.form-row{grid-template-columns:1fr}}
+
+/* ===== Product cards (mobile) ===== */
+.product-list{display:flex;flex-direction:column;gap:10px}
+.product-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);position:relative}
+.product-card .head{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.product-card .pthumb{width:48px;height:48px;border-radius:12px;object-fit:cover;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0}
+.product-card .pthumb img{width:100%;height:100%;object-fit:cover}
+.product-card .pname{font-weight:700;font-size:15px;line-height:1.4}
+.product-card .pmeta{font-size:11px;color:var(--muted);margin-top:2px}
+.product-card .rows{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:10px 0}
+.product-card .row-item{background:var(--panel-2);border-radius:10px;padding:8px 10px}
+.product-card .row-item .l{font-size:10px;color:var(--muted);margin-bottom:2px}
+.product-card .row-item .v{font-weight:700;font-size:12px;line-height:1.3}
+.product-card .actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+.product-card .actions .icon-btn{width:36px;height:36px;font-size:15px}
+.product-card .badge-sell{position:absolute;top:12px;left:12px;font-size:10px;padding:3px 8px}
 .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-green{background:color-mix(in srgb,var(--success) 15%,transparent);color:var(--success)}
 .badge-red{background:color-mix(in srgb,var(--danger) 15%,transparent);color:var(--danger)}
 .badge-amber{background:color-mix(in srgb,var(--warning) 18%,transparent);color:var(--warning)}
 .badge-blue{background:color-mix(in srgb,var(--primary) 15%,transparent);color:var(--primary)}
 .badge-gray{background:var(--panel-2);color:var(--muted)}
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
-.search{flex:1;min-width:200px;position:relative}
-.search input{width:100%;padding:10px 40px 10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text);outline:none}
-.search input:focus{border-color:var(--primary)}
-.search::before{content:"🔍";position:absolute;right:14px;top:50%;transform:translateY(-50%);opacity:.55;font-size:14px}
-.modal{position:fixed;inset:0;background:rgba(3,7,18,.65);display:none;align-items:center;justify-content:center;z-index:2000;padding:20px;overflow-y:auto;backdrop-filter:blur(4px)}
+
+/* ===== Empty ===== */
+.empty{padding:40px 20px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--border);border-radius:var(--radius);margin:14px 0}
+.empty .big{font-size:48px;margin-bottom:10px;display:block;opacity:.7}
+.empty h3{font-size:15px;color:var(--text);margin-bottom:6px}
+.empty p{font-size:13px;margin-bottom:16px}
+
+/* ===== Search & Filters ===== */
+.search-bar{position:relative;margin-bottom:10px}
+.search-bar input{width:100%;padding:13px 42px 13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);outline:none;font-size:15px}
+.search-bar input:focus{border-color:var(--primary)}
+.search-bar::before{content:"🔍";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;opacity:.6}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+.chips::-webkit-scrollbar{display:none}
+.chip{padding:7px 14px;border-radius:999px;background:var(--panel);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ===== Floating Action Button ===== */
+.fab{position:fixed;bottom:calc(84px + var(--safe-bottom));left:16px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--info));color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px color-mix(in srgb,var(--primary) 40%,transparent);z-index:60;transition:all .2s}
+.fab:active{transform:scale(.92)}
+
+/* ===== Bottom Navigation ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 4px calc(8px + var(--safe-bottom));z-index:55;box-shadow:0 -2px 10px rgba(0,0,0,.04)}
+.nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;color:var(--muted);font-size:10px;font-weight:600;transition:all .15s;max-width:90px}
+.nav-tab .nav-ico{font-size:20px;line-height:1}
+.nav-tab.active{color:var(--primary)}
+.nav-tab.active .nav-ico{transform:scale(1.1)}
+
+/* ===== Modal (full-screen on mobile) ===== */
+.modal{position:fixed;inset:0;background:rgba(3,7,18,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal.open{display:flex}
-.modal-box{background:var(--panel);border-radius:16px;max-width:660px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4);border:1px solid var(--border)}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--panel);z-index:2}
+.modal-sheet{background:var(--panel);border-radius:20px 20px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;animation:slideUp .25s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
 .modal-head h3{font-size:16px}
-.modal-close{width:32px;height:32px;border-radius:8px;background:var(--panel-2);font-size:16px;display:flex;align-items:center;justify-content:center}
-.modal-close:hover{background:color-mix(in srgb,var(--danger) 15%,transparent);color:var(--danger)}
-.modal-body{padding:20px}
-.modal-foot{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-start;flex-wrap:wrap;position:sticky;bottom:0;background:var(--panel)}
-.toast-container{position:fixed;bottom:20px;left:20px;z-index:3000;display:flex;flex-direction:column;gap:8px;max-width:340px}
-.toast{padding:11px 16px;border-radius:10px;background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow);font-size:13px;display:flex;align-items:center;gap:8px;animation:toastIn .25s ease}
+.modal-close{width:36px;height:36px;border-radius:10px;background:var(--panel-2);font-size:18px;display:flex;align-items:center;justify-content:center}
+.modal-body{padding:18px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.modal-foot{padding:14px 18px calc(14px + var(--safe-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;background:var(--panel)}
+.modal-foot .btn{flex:1}
+
+/* ===== Toast ===== */
+.toast-container{position:fixed;bottom:calc(90px + var(--safe-bottom));left:14px;right:14px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast{padding:12px 16px;border-radius:12px;background:var(--panel);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.15);font-size:13px;font-weight:600;animation:toastIn .25s;pointer-events:auto}
 .toast.success{border-color:var(--success);color:var(--success)}
 .toast.error{border-color:var(--danger);color:var(--danger)}
 .toast.warning{border-color:var(--warning);color:var(--warning)}
 @keyframes toastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-.preview-box{background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:14px;margin-top:10px}
-.preview-row{display:flex;justify-content:space-between;padding:6px 0;font-size:13px;border-bottom:1px dashed var(--border);gap:8px}
-.preview-row:last-child{border:none}
-.preview-row .label{color:var(--muted)}
-.preview-row .val{font-weight:600;text-align:left}
-.words{font-size:11px;color:var(--primary);font-weight:500;margin-top:2px}
-.preview-total{border-top:2px solid var(--border);margin-top:6px;padding-top:8px;font-size:14px}
-.auth-screen{position:fixed;inset:0;background:linear-gradient(135deg,var(--bg),var(--panel-2));display:flex;align-items:center;justify-content:center;z-index:5000;padding:20px}
-.auth-box{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:30px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+
+/* ===== Auth ===== */
+.auth-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),var(--panel-2));display:flex;align-items:center;justify-content:center;z-index:400;padding:24px;overflow-y:auto}
+.auth-box{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px 22px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+.auth-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--info));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff}
 .auth-box h1{font-size:20px;text-align:center;margin-bottom:6px}
 .auth-box p{font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px}
-.auth-icon{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--primary),var(--info));margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff}
 .pw-wrap{position:relative}
-.pw-wrap input{padding-left:42px}
-.pw-toggle{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:8px;background:transparent;color:var(--muted);font-size:15px}
-.pw-toggle:hover{background:var(--panel-2)}
-.strength-bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden;margin-top:6px}
+.pw-wrap input{padding-left:48px}
+.pw-toggle{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:10px;background:transparent;color:var(--muted);font-size:16px}
+.pw-toggle:active{background:var(--panel-2)}
+.strength-bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden;margin-top:8px}
 .strength-bar span{display:block;height:100%;width:0;transition:width .3s,background .3s}
-.auth-error{font-size:12px;color:var(--danger);text-align:center;margin-top:8px;min-height:18px}
+.auth-error{font-size:12px;color:var(--danger);text-align:center;margin-top:10px;min-height:18px}
+
+/* ===== Preview ===== */
+.preview-box{background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-top:12px}
+.preview-row{display:flex;justify-content:space-between;padding:6px 0;font-size:12px;border-bottom:1px dashed var(--border);gap:8px}
+.preview-row:last-child{border:none}
+.preview-row .label{color:var(--muted)}
+.preview-row .val{font-weight:700;text-align:left}
+.preview-row .words{font-size:10px;color:var(--primary);font-weight:500;margin-top:2px}
+.preview-total{border-top:2px solid var(--border);margin-top:6px;padding-top:10px;font-size:13px}
+
+/* ===== Misc ===== */
 .hidden{display:none !important}
 .muted{color:var(--muted)}
 .text-sm{font-size:12px}
-.mt-10{margin-top:10px}
+.mt-8{margin-top:8px}
+.mt-12{margin-top:12px}
 .mt-16{margin-top:16px}
 .mb-10{margin-bottom:10px}
 .flex-between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:640px){.grid-2{grid-template-columns:1fr}}
-.mobile-top{display:none}
-@media(max-width:1024px){
-  .sidebar{transform:translateX(100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-right:0;padding:16px 14px 40px}
-  .mobile-top{display:flex;align-items:center;justify-content:space-between;padding:8px 0 14px;gap:8px}
-  .stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
-  .page-title{font-size:18px}
-  th,td{padding:8px;font-size:12px}
-}
 .loader{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .progress{height:8px;border-radius:4px;background:var(--panel-2);overflow:hidden}
 .progress>div{height:100%;background:var(--primary);transition:width .3s;width:0}
-.tabs{display:flex;gap:6px;background:var(--panel-2);padding:4px;border-radius:10px;margin-bottom:16px;flex-wrap:wrap}
-.tab{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted)}
+.tabs{display:flex;gap:6px;background:var(--panel-2);padding:4px;border-radius:12px;margin-bottom:14px}
+.tab{flex:1;padding:10px;border-radius:9px;font-size:13px;font-weight:700;color:var(--muted);text-align:center}
 .tab.active{background:var(--panel);color:var(--primary);box-shadow:var(--shadow)}
+.rate-link{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:var(--panel-2);border-radius:12px;font-size:13px;font-weight:600;margin-top:10px}
+.divider{height:1px;background:var(--border);margin:14px 0}
 </style>
 </head>
 <body>
 
-<!-- ============ AUTH SCREEN (setup / login) ============ -->
+<!-- ===== AUTH ===== -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-box">
     <div class="auth-icon">🔐</div>
     <h1 id="authTitle">راه‌اندازی اولیه</h1>
-    <p id="authSub">برای شروع، یک رمز عبور برای پنل مدیریت تعیین کنید.</p>
-
+    <p id="authSub">برای شروع، یک رمز عبور تعیین کنید</p>
     <div id="setupFields">
-      <div class="field mb-10">
+      <div class="field">
         <label>رمز عبور جدید</label>
         <div class="pw-wrap">
           <input type="password" id="setupPw" placeholder="حداقل ۶ کاراکتر" autocomplete="new-password" />
@@ -178,17 +210,16 @@ td .row-actions{display:flex;gap:4px;justify-content:flex-end}
         </div>
         <div class="strength-bar"><span id="setupStrength"></span></div>
       </div>
-      <div class="field mb-10">
-        <label>تکرار رمز عبور</label>
+      <div class="field">
+        <label>تکرار رمز</label>
         <div class="pw-wrap">
           <input type="password" id="setupPw2" placeholder="تکرار رمز" autocomplete="new-password" />
           <button class="pw-toggle" type="button" onclick="togglePw('setupPw2',this)">👁️</button>
         </div>
       </div>
     </div>
-
     <div id="loginFields" class="hidden">
-      <div class="field mb-10">
+      <div class="field">
         <label>رمز عبور</label>
         <div class="pw-wrap">
           <input type="password" id="loginPw" placeholder="رمز عبور خود را وارد کنید" autocomplete="current-password" />
@@ -196,282 +227,175 @@ td .row-actions{display:flex;gap:4px;justify-content:flex-end}
         </div>
       </div>
     </div>
-
     <div class="auth-error" id="authError"></div>
-    <button class="btn btn-primary" id="authBtn" style="width:100%;justify-content:center;margin-top:10px">ایجاد رمز و ورود</button>
-    <div class="text-sm muted mt-16" style="text-align:center;line-height:1.8">
-      ⚠️ توجه: این برنامه فقط در مرورگر اجرا می‌شود و امنیت آن برای جلوگیری از دسترسی معمولی است، نه جایگزین احراز هویت سروری. اطلاعات در localStorage ذخیره می‌شود.
-    </div>
+    <button class="btn btn-primary btn-block" id="authBtn" style="margin-top:14px">ایجاد رمز و ورود</button>
+    <div class="text-sm muted mt-16" style="text-align:center;line-height:1.8">⚠️ این برنامه محلی است و امنیت آن برای جلوگیری از دسترسی عادی است، نه جایگزین سرور.</div>
   </div>
 </div>
 
-<!-- ============ MAIN APP ============ -->
-<div id="appScreen" class="hidden" style="display:flex;width:100%">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-icon">📊</div>
-      <div class="brand-text"><strong>مدیریت قیمت</strong><small>پنل حرفه‌ای</small></div>
+<!-- ===== APP ===== -->
+<div id="appScreen" class="hidden">
+  <header class="app-header">
+    <div>
+      <div class="title" id="pageTitle">داشبورد</div>
+      <div class="subtitle" id="pageSubtitle">نمای کلی</div>
     </div>
-    <div class="nav-section">اصلی</div>
-    <button class="nav-btn active" data-view="dashboard" onclick="navigate('dashboard',this)"><span class="ico">🏠</span>داشبورد</button>
-    <button class="nav-btn" data-view="products" onclick="navigate('products',this)"><span class="ico">📦</span>محصولات</button>
-    <button class="nav-btn" data-view="categories" onclick="navigate('categories',this)"><span class="ico">🗂️</span>دسته‌بندی‌ها</button>
-    <div class="nav-section">مدیریت</div>
-    <button class="nav-btn" data-view="rates" onclick="navigate('rates',this)"><span class="ico">💵</span>نرخ ارز</button>
-    <button class="nav-btn" data-view="profit" onclick="navigate('profit',this)"><span class="ico">📈</span>سود عمومی</button>
-    <button class="nav-btn" data-view="backup" onclick="navigate('backup',this)"><span class="ico">💾</span>پشتیبان‌گیری</button>
-    <button class="nav-btn" data-view="settings" onclick="navigate('settings',this)"><span class="ico">⚙️</span>تنظیمات</button>
-    <div class="sidebar-footer">
-      نسخه ۱.۰.۰<br>
-      <button class="btn btn-secondary btn-sm mt-10" onclick="lockPanel()" style="width:100%;justify-content:center">🔒 قفل پنل</button>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleTheme()" title="تم">🌓</button>
+      <button class="icon-btn" onclick="lockPanel()" title="قفل">🔒</button>
     </div>
-  </aside>
+  </header>
 
-  <main class="main">
-    <div class="mobile-top">
-      <button class="icon-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-      <strong id="mobileTitle">داشبورد</strong>
-      <button class="icon-btn" onclick="toggleTheme()">🌓</button>
-    </div>
-
-    <!-- ===== DASHBOARD ===== -->
-    <div id="view-dashboard" class="view">
-      <div class="topbar">
-        <div><div class="page-title">داشبورد</div><div class="page-sub" id="dashSub">نمای کلی وضعیت انبار</div></div>
-        <div class="topbar-actions">
-          <button class="icon-btn" onclick="toggleTheme()" title="تغییر تم">🌓</button>
-          <button class="btn btn-primary" onclick="openProductModal()">+ محصول جدید</button>
-        </div>
+  <main class="content">
+    <!-- DASHBOARD -->
+    <div id="view-dashboard" class="view active">
+      <div class="stats-grid" id="statsGrid"></div>
+      <div class="card">
+        <div class="card-title">💵 نرخ دلار</div>
+        <div id="dashRateBox"></div>
       </div>
-      <div class="stats" id="statsGrid"></div>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <div class="card-title"><span>💵 وضعیت نرخ دلار</span></div>
-          <div id="dashRateBox"></div>
-        </div>
-        <div class="card card-pad">
-          <div class="card-title"><span>🕒 آخرین محصولات</span><button class="btn btn-secondary btn-sm" onclick="navigate('products')">همه</button></div>
-          <div id="dashRecent"></div>
-        </div>
-      </div>
-      <div class="card card-pad mt-16">
-        <div class="card-title"><span>⚡ میانبرها</span></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn btn-primary" onclick="openProductModal()">➕ افزودن محصول</button>
-          <button class="btn btn-secondary" onclick="navigate('rates')">💵 مدیریت نرخ ارز</button>
-          <button class="btn btn-secondary" onclick="navigate('backup')">💾 پشتیبان‌گیری</button>
-          <button class="btn btn-secondary" onclick="navigate('settings')">⚙️ تنظیمات</button>
-        </div>
+      <div class="card">
+        <div class="card-title">🕒 آخرین محصولات</div>
+        <div id="dashRecent"></div>
       </div>
     </div>
 
-    <!-- ===== PRODUCTS ===== -->
-    <div id="view-products" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">محصولات</div><div class="page-sub" id="prodSub">—</div></div>
-        <div class="topbar-actions">
-          <button class="btn btn-secondary" onclick="openScanner()">📷 اسکن بارکد</button>
-          <button class="btn btn-primary" onclick="openProductModal()">+ محصول جدید</button>
-        </div>
+    <!-- PRODUCTS -->
+    <div id="view-products" class="view">
+      <div class="search-bar"><input type="text" id="searchInput" placeholder="جستجو..." oninput="renderProducts()"></div>
+      <div class="chips" id="catChips"></div>
+      <div class="chips" id="sortChips">
+        <button class="chip active" data-sort="date-desc" onclick="setSort('date-desc',this)">جدیدترین</button>
+        <button class="chip" data-sort="name-asc" onclick="setSort('name-asc',this)">نام</button>
+        <button class="chip" data-sort="buy-desc" onclick="setSort('buy-desc',this)">گران‌ترین</button>
+        <button class="chip" data-sort="sell-desc" onclick="setSort('sell-desc',this)">فروش</button>
       </div>
-      <div class="toolbar">
-        <div class="search"><input type="text" id="searchInput" placeholder="جستجو در نام یا شناسه..." oninput="renderProducts()"></div>
-        <select id="filterCat" onchange="renderProducts()" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text)">
-          <option value="">همه دسته‌ها</option>
-        </select>
-        <select id="filterCurrency" onchange="renderProducts()" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text)">
-          <option value="">همه واحدها</option>
-          <option value="toman">تومان</option>
-          <option value="usd">دلار</option>
-        </select>
-        <select id="sortBy" onchange="renderProducts()" style="padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text)">
-          <option value="date-desc">جدیدترین</option>
-          <option value="date-asc">قدیمی‌ترین</option>
-          <option value="name-asc">نام (الف-ی)</option>
-          <option value="name-desc">نام (ی-الف)</option>
-          <option value="buy-desc">قیمت خرید (بیشترین)</option>
-          <option value="buy-asc">قیمت خرید (کمترین)</option>
-          <option value="sell-desc">قیمت فروش (بیشترین)</option>
-          <option value="sell-asc">قیمت فروش (کمترین)</option>
-        </select>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>تصویر</th><th>نام / شناسه</th><th>دسته</th><th>خرید</th><th>هزینه جانبی</th><th>بهای تمام‌شده</th><th>فروش پیشنهادی</th><th>فروش ثبت‌شده</th><th>سود</th><th>عملیات</th>
-            </tr>
-          </thead>
-          <tbody id="productsBody"></tbody>
-        </table>
-      </div>
-      <div class="flex-between mt-10" id="paginationBar"></div>
+      <div id="productsList" class="product-list"></div>
+      <div class="flex-between mt-12" id="paginationBar"></div>
     </div>
 
-    <!-- ===== CATEGORIES ===== -->
-    <div id="view-categories" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">دسته‌بندی‌ها</div><div class="page-sub">مدیریت دسته‌بندی محصولات</div></div>
-        <div class="topbar-actions"><button class="btn btn-primary" onclick="openCategoryModal()">+ دسته جدید</button></div>
+    <!-- CATEGORIES -->
+    <div id="view-categories" class="view">
+      <button class="btn btn-primary btn-block mb-10" onclick="openCategoryModal()">+ دسته جدید</button>
+      <div id="categoriesList" class="product-list"></div>
+    </div>
+
+    <!-- RATES -->
+    <div id="view-rates" class="view">
+      <div class="card">
+        <div class="card-title">ثبت نرخ جدید</div>
+        <div class="field">
+          <label>نرخ دلار (تومان)</label>
+          <input type="number" id="newRateInput" placeholder="مثلاً 60500" min="1">
+          <div class="hint" id="newRateHint">—</div>
+        </div>
+        <div class="field">
+          <label>توضیح (اختیاری)</label>
+          <input type="text" id="newRateNote" placeholder="نرخ بازار آزاد">
+        </div>
+        <button class="btn btn-primary btn-block" onclick="addRate()">ثبت نرخ</button>
+        <a class="rate-link" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">🔗 مشاهده نرخ در نرخ‌آرا</a>
       </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>نام دسته</th><th>تعداد محصولات</th><th>تاریخ ثبت</th><th>عملیات</th></tr></thead>
-          <tbody id="categoriesBody"></tbody>
-        </table>
+      <div class="card">
+        <div class="card-title">وضعیت فعلی</div>
+        <div id="rateStatusBox"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">تاریخچه</div>
+        <div id="ratesHistoryList"></div>
       </div>
     </div>
 
-    <!-- ===== RATES ===== -->
-    <div id="view-rates" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">نرخ ارز</div><div class="page-sub">مدیریت نرخ دلار به تومان</div></div>
-        <div class="topbar-actions">
-          <a class="btn btn-secondary" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">🔗 نرخ‌آرا</a>
-        </div>
+    <!-- PROFIT -->
+    <div id="view-profit" class="view">
+      <div class="tabs">
+        <button class="tab" id="tabAuto" onclick="setProfitMode('auto')">خودکار</button>
+        <button class="tab" id="tabFixed" onclick="setProfitMode('fixed')">ثابت</button>
       </div>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <div class="card-title">ثبت نرخ جدید</div>
-          <div class="field mb-10">
-            <label>نرخ دلار (تومان)</label>
-            <input type="number" id="newRateInput" placeholder="مثلاً 60500" min="1" />
-            <div class="hint" id="newRateHint">—</div>
-          </div>
-          <div class="field mb-10">
-            <label>توضیح (اختیاری)</label>
-            <input type="text" id="newRateNote" placeholder="مثلاً نرخ بازار آزاد" />
-          </div>
-          <button class="btn btn-primary" onclick="addRate()">ثبت نرخ</button>
-          <button class="btn btn-secondary" onclick="restorePrevRate()">↩️ بازگرداندن نرخ قبلی</button>
+      <div class="card">
+        <div class="field">
+          <label>درصد سود پایه</label>
+          <input type="number" id="baseProfitInput" min="0" max="500" step="0.1">
         </div>
-        <div class="card card-pad">
-          <div class="card-title">وضعیت فعلی</div>
-          <div id="rateStatusBox"></div>
+        <div class="field">
+          <label>نرخ مرجع دلار (تومان)</label>
+          <input type="number" id="refRateInput" min="1">
+          <div class="hint">برای محاسبه افزایش خودکار سود</div>
         </div>
+        <button class="btn btn-primary btn-block" onclick="saveProfitSettings()">ذخیره</button>
+        <div class="hint mt-12" id="profitCalcHint"></div>
       </div>
-      <div class="card card-pad mt-16">
-        <div class="card-title">تاریخچه نرخ‌ها</div>
-        <div class="table-wrap" style="max-height:400px;overflow-y:auto">
-          <table>
-            <thead><tr><th>نرخ</th><th>توضیح</th><th>تاریخ</th><th>عملیات</th></tr></thead>
-            <tbody id="ratesHistoryBody"></tbody>
-          </table>
-        </div>
+      <div class="card">
+        <div class="card-title">محاسبه فعلی</div>
+        <div id="profitStatusBox"></div>
       </div>
     </div>
 
-    <!-- ===== PROFIT ===== -->
-    <div id="view-profit" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">سود عمومی</div><div class="page-sub">تنظیمات سود برای همه محصولات</div></div>
+    <!-- SETTINGS -->
+    <div id="view-settings" class="view">
+      <div class="card">
+        <div class="card-title">🏪 کسب‌وکار</div>
+        <div class="field"><label>نام فروشگاه</label><input type="text" id="setStoreName"></div>
+        <button class="btn btn-primary btn-block" onclick="saveGeneralSettings()">ذخیره</button>
       </div>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <div class="card-title">تنظیمات سود</div>
-          <div class="tabs">
-            <button class="tab" id="tabAuto" onclick="setProfitMode('auto')">خودکار</button>
-            <button class="tab" id="tabFixed" onclick="setProfitMode('fixed')">ثابت</button>
-          </div>
-          <div class="field mb-10">
-            <label>درصد سود پایه</label>
-            <input type="number" id="baseProfitInput" min="0" max="500" step="0.1" />
-          </div>
-          <div class="field mb-10">
-            <label>نرخ مرجع دلار (تومان)</label>
-            <input type="number" id="refRateInput" min="1" />
-            <div class="hint">نرخ مرجع برای محاسبه افزایش خودکار سود استفاده می‌شود.</div>
-          </div>
-          <button class="btn btn-primary" onclick="saveProfitSettings()">ذخیره تنظیمات</button>
-          <div class="hint mt-10" id="profitCalcHint"></div>
-        </div>
-        <div class="card card-pad">
-          <div class="card-title">محاسبه فعلی</div>
-          <div id="profitStatusBox"></div>
+      <div class="card">
+        <div class="card-title">🎨 ظاهر</div>
+        <div class="field">
+          <label>تم</label>
+          <select id="setTheme" onchange="applyTheme(this.value)"><option value="light">روشن</option><option value="dark">تاریک</option></select>
         </div>
       </div>
-    </div>
-
-    <!-- ===== BACKUP ===== -->
-    <div id="view-backup" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">پشتیبان‌گیری</div><div class="page-sub">خروجی و بازیابی داده‌ها</div></div>
+      <div class="card">
+        <div class="card-title">🖼️ فشرده‌سازی تصویر</div>
+        <div class="field"><label>حداکثر عرض (px)</label><input type="number" id="setImgMaxW" min="100" max="2000"></div>
+        <div class="field"><label>کیفیت (0.1-1)</label><input type="number" id="setImgQuality" min="0.1" max="1" step="0.05"></div>
+        <button class="btn btn-primary btn-block" onclick="saveImageSettings()">ذخیره</button>
       </div>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <div class="card-title">📤 خروجی</div>
-          <p class="text-sm muted mb-10">تمام داده‌های برنامه (محصولات، دسته‌ها، نرخ‌ها، تنظیمات) را در یک فایل JSON ذخیره کنید.</p>
-          <button class="btn btn-primary" onclick="exportBackup()">💾 دانلود پشتیبان JSON</button>
-          <button class="btn btn-secondary mt-10" onclick="exportCSV()">📊 خروجی CSV محصولات</button>
-          <div class="hint mt-10" id="lastBackupHint">آخرین پشتیبان‌گیری: —</div>
-        </div>
-        <div class="card card-pad">
-          <div class="card-title">📥 بازیابی</div>
-          <p class="text-sm muted mb-10">فایل JSON پشتیبان را انتخاب کنید. داده‌های فعلی جایگزین می‌شوند.</p>
-          <input type="file" id="restoreInput" accept="application/json" onchange="restoreBackup(this)" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:var(--panel);color:var(--text)">
-          <div class="hint mt-10">پیش از بازیابی، از داده‌های فعلی نسخه پشتیبان تهیه کنید.</div>
-        </div>
+      <div class="card">
+        <div class="card-title">🔑 تغییر رمز</div>
+        <div class="field"><label>رمز فعلی</label><input type="password" id="oldPw"></div>
+        <div class="field"><label>رمز جدید</label><input type="password" id="newPw"></div>
+        <div class="field"><label>تکرار رمز جدید</label><input type="password" id="newPw2"></div>
+        <button class="btn btn-primary btn-block" onclick="changePassword()">تغییر رمز</button>
       </div>
-      <div class="card card-pad mt-16">
-        <div class="card-title">⚠️ منطقه خطر</div>
-        <p class="text-sm muted mb-10">پاک‌سازی کامل داده‌ها. این عملیات قابل بازگشت نیست.</p>
-        <button class="btn btn-danger" onclick="confirmClearAll()">🗑️ پاک کردن همه داده‌ها</button>
+      <div class="card">
+        <div class="card-title">💾 پشتیبان</div>
+        <button class="btn btn-primary btn-block mb-10" onclick="exportBackup()">دانلود پشتیبان JSON</button>
+        <button class="btn btn-secondary btn-block mb-10" onclick="exportCSV()">خروجی CSV</button>
+        <label class="btn btn-secondary btn-block" style="position:relative;overflow:hidden">
+          بازیابی از فایل
+          <input type="file" accept="application/json" onchange="restoreBackup(this)" style="position:absolute;inset:0;opacity:0;cursor:pointer">
+        </label>
+        <div class="hint mt-12" id="lastBackupHint">آخرین پشتیبان: —</div>
       </div>
-    </div>
-
-    <!-- ===== SETTINGS ===== -->
-    <div id="view-settings" class="view hidden">
-      <div class="topbar">
-        <div><div class="page-title">تنظیمات</div><div class="page-sub">پیکربندی برنامه</div></div>
-      </div>
-      <div class="grid-2">
-        <div class="card card-pad">
-          <div class="card-title">🏪 اطلاعات کسب‌وکار</div>
-          <div class="field mb-10"><label>نام فروشگاه / کسب‌وکار</label><input type="text" id="setStoreName" /></div>
-          <div class="field mb-10">
-            <label>واحد پول اصلی نمایش</label>
-            <select id="setMainCurrency"><option value="toman">تومان</option><option value="usd">دلار</option></select>
-          </div>
-          <button class="btn btn-primary" onclick="saveGeneralSettings()">ذخیره</button>
+      <div class="card">
+        <div class="card-title">ℹ️ درباره</div>
+        <div class="text-sm" style="line-height:2">
+          <div><strong>نسخه:</strong> ۱.۰.۰</div>
+          <div><strong>ذخیره:</strong> localStorage</div>
+          <div class="muted mt-8">داده‌ها به سروری ارسال نمی‌شوند.</div>
         </div>
-        <div class="card card-pad">
-          <div class="card-title">🎨 ظاهر</div>
-          <div class="field mb-10">
-            <label>تم</label>
-            <select id="setTheme" onchange="applyTheme(this.value)"><option value="light">روشن</option><option value="dark">تاریک</option></select>
-          </div>
-          <div class="card-title mt-16">🖼️ فشرده‌سازی تصویر</div>
-          <div class="field mb-10"><label>حداکثر عرض (پیکسل)</label><input type="number" id="setImgMaxW" min="100" max="2000" /></div>
-          <div class="field mb-10"><label>کیفیت (۰.۱ تا ۱)</label><input type="number" id="setImgQuality" min="0.1" max="1" step="0.05" /></div>
-          <button class="btn btn-primary" onclick="saveImageSettings()">ذخیره</button>
-        </div>
-      </div>
-      <div class="grid-2 mt-16">
-        <div class="card card-pad">
-          <div class="card-title">🔑 تغییر رمز عبور</div>
-          <div class="field mb-10"><label>رمز فعلی</label><input type="password" id="oldPw" /></div>
-          <div class="field mb-10"><label>رمز جدید</label><input type="password" id="newPw" /></div>
-          <div class="field mb-10"><label>تکرار رمز جدید</label><input type="password" id="newPw2" /></div>
-          <button class="btn btn-primary" onclick="changePassword()">تغییر رمز</button>
-        </div>
-        <div class="card card-pad">
-          <div class="card-title">ℹ️ درباره</div>
-          <div class="text-sm" style="line-height:2">
-            <div><strong>نسخه:</strong> ۱.۰.۰</div>
-            <div><strong>ذخیره‌سازی:</strong> localStorage</div>
-            <div><strong>کلید:</strong> price_manager_complete_v1</div>
-            <div class="mt-10 muted">این برنامه به‌صورت کاملاً محلی در مرورگر شما اجرا می‌شود. داده‌ها به هیچ سروری ارسال نمی‌شوند (مگر هنگام استفاده از اسکنر/OCR که کتابخانه از CDN بارگذاری می‌شود).</div>
-          </div>
-          <button class="btn btn-danger mt-16" onclick="resetAppSettings()">↩️ بازگرداندن تنظیمات پیش‌فرض</button>
-        </div>
+        <button class="btn btn-danger btn-block mt-12" onclick="confirmClearAll()">🗑️ پاک کردن همه داده‌ها</button>
       </div>
     </div>
   </main>
+
+  <!-- FAB -->
+  <button class="fab" id="fab" onclick="openProductModal()">+</button>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-tab active" data-view="dashboard" onclick="navigate('dashboard')"><span class="nav-ico">🏠</span>داشبورد</button>
+    <button class="nav-tab" data-view="products" onclick="navigate('products')"><span class="nav-ico">📦</span>محصولات</button>
+    <button class="nav-tab" data-view="categories" onclick="navigate('categories')"><span class="nav-ico">🗂️</span>دسته‌ها</button>
+    <button class="nav-tab" data-view="rates" onclick="navigate('rates')"><span class="nav-ico">💵</span>نرخ</button>
+    <button class="nav-tab" data-view="settings" onclick="navigate('settings')"><span class="nav-ico">⚙️</span>تنظیمات</button>
+  </nav>
 </div>
 
-<!-- ============ MODALS ============ -->
+<!-- ===== MODAL ===== -->
 <div class="modal" id="genericModal">
-  <div class="modal-box">
+  <div class="modal-sheet">
     <div class="modal-head">
       <h3 id="modalTitle">—</h3>
       <button class="modal-close" onclick="closeModal()">×</button>
@@ -481,14 +405,14 @@ td .row-actions{display:flex;gap:4px;justify-content:flex-end}
   </div>
 </div>
 
+<!-- ===== SCANNER ===== -->
 <div class="modal" id="scannerModal">
-  <div class="modal-box">
-    <div class="modal-head"><h3>📷 اسکن بارکد / QR</h3><button class="modal-close" onclick="stopScanner()">×</button></div>
+  <div class="modal-sheet">
+    <div class="modal-head"><h3>📷 اسکن بارکد</h3><button class="modal-close" onclick="stopScanner()">×</button></div>
     <div class="modal-body">
-      <video id="scannerVideo" style="width:100%;border-radius:10px;background:#000;display:none" autoplay playsinline muted></video>
-      <canvas id="scannerCanvas" class="hidden"></canvas>
-      <div id="scannerMsg" class="text-sm muted mt-10" style="text-align:center">برای شروع اسکن، دکمه زیر را بزنید.</div>
-      <div id="scannerResult" class="mt-10"></div>
+      <video id="scannerVideo" style="width:100%;border-radius:12px;background:#000;display:none" autoplay playsinline muted></video>
+      <div id="scannerMsg" class="text-sm muted mt-12" style="text-align:center">برای شروع، دکمه زیر را بزنید.</div>
+      <div id="scannerResult" class="mt-12"></div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-primary" id="scanStartBtn" onclick="startScanner()">شروع اسکن</button>
@@ -499,130 +423,85 @@ td .row-actions{display:flex;gap:4px;justify-content:flex-end}
 
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- ============ LIBRARIES (with error handling) ============ -->
 <script>
-  // بارگذاری تنبل Tesseract فقط هنگام نیاز، با خطای مدیریت‌شده
-  window.__tesseractReady = false;
-  window.__tesseractLoading = null;
-  function loadTesseract(){
-    if (window.Tesseract) return Promise.resolve(window.Tesseract);
-    if (window.__tesseractLoading) return window.__tesseractLoading;
-    window.__tesseractLoading = new Promise((resolve,reject)=>{
-      const s = document.createElement('script');
-      s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-      s.onload = ()=>{ window.__tesseractReady = true; resolve(window.Tesseract); };
-      s.onerror = ()=>{ window.__tesseractLoading = null; reject(new Error('خطا در بارگذاری کتابخانه OCR')); };
-      document.head.appendChild(s);
-      setTimeout(()=>{ if (!window.Tesseract){ window.__tesseractLoading = null; reject(new Error('زمان بارگذاری OCR به پایان رسید')); } }, 15000);
-    });
-    return window.__tesseractLoading;
-  }
-</script>
-
-<script>
-/* ============================================================
-   PRICE MANAGER — منطق اصلی
-   ============================================================ */
+/* ============ Constants ============ */
 const STORAGE_KEY = 'price_manager_complete_v1';
 const SCHEMA_VERSION = 1;
-const INACTIVITY_MS = 5 * 60 * 1000; // 5 دقیقه
-
-/* ---------- وضعیت برنامه ---------- */
-let state = null;
-let session = { unlocked:false, lastActive:Date.now(), inactivityTimer:null };
-let scanStream = null, scanInterval = null;
-let currentPage = 1;
+const INACTIVITY_MS = 5 * 60 * 1000;
 const PAGE_SIZE = 10;
 
-/* ---------- توابع کمکی عمومی ---------- */
-const $ = (id)=>document.getElementById(id);
+let state = null;
+let session = { unlocked:false, inactivityTimer:null };
+let scanStream = null, scanInterval = null;
+let currentPage = 1;
+let currentSort = 'date-desc';
+let currentView = 'dashboard';
+let editingId = null;
+let tempImageData = '';
+
+/* ============ Utils ============ */
+const $ = id => document.getElementById(id);
 const faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
-function toFa(str){ return String(str).replace(/\d/g, d=>faDigits[+d]); }
+const toFa = s => String(s).replace(/\d/g, d => faDigits[+d]);
 function fmt(n, dec=0){
-  if (n===null || n===undefined || n==='' || isNaN(n)) return '—';
-  const num = Number(n);
-  const s = num.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
-  return toFa(s);
+  if (n===null||n===undefined||n===''||isNaN(n)) return '—';
+  return toFa(Number(n).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec}));
 }
-function fmtMoney(n, currency='toman', dec=0){
-  if (n===null || n===undefined || isNaN(n)) return '—';
-  const unit = currency==='usd' ? ' دلار' : ' تومان';
-  return fmt(n,dec) + unit;
+function fmtMoney(n, cur='toman', dec=0){
+  if (n===null||n===undefined||isNaN(n)) return '—';
+  return fmt(n,dec) + (cur==='usd'?' دلار':' تومان');
 }
 function stripDigits(s){ return String(s||'').replace(/[۰-۹]/g,d=>faDigits.indexOf(d)).replace(/[^\d.-]/g,''); }
 function parseNum(s){
   if (typeof s==='number') return isFinite(s)?s:0;
-  const c = stripDigits(s);
-  const v = parseFloat(c);
-  return isFinite(v) ? v : 0;
+  const v = parseFloat(stripDigits(s));
+  return isFinite(v)?v:0;
 }
-function nowISO(){ return new Date().toISOString(); }
-function uid(){ return 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8); }
-function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+const nowISO = () => new Date().toISOString();
+const uid = () => 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
+const escapeHtml = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* ---------- عدد به حروف فارسی ---------- */
+/* ============ Number to Persian Words ============ */
 function numToPersianWords(input){
   const n = Math.floor(Math.abs(Number(input)));
   if (!isFinite(n)) return '';
   if (n===0) return 'صفر';
-  const yekan  = ['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
-  const dahgan = ['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
-  const dahyek = ['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
-  const sadgan = ['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
-  const scales = ['','هزار','میلیون','میلیارد','تریلیون','بیلیارد'];
-  function threeDigit(num){
-    const parts=[];
-    if (num>=100){ parts.push(sadgan[Math.floor(num/100)]); num%=100; }
-    if (num>=20){ parts.push(dahgan[Math.floor(num/10)]); num%=10; if (num>0) parts.push(yekan[num]); }
-    else if (num>=10){ parts.push(dahyek[num-10]); }
-    else if (num>0){ parts.push(yekan[num]); }
-    return parts.join(' و ');
+  const yekan=['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
+  const dahgan=['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+  const dahyek=['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
+  const sadgan=['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+  const scales=['','هزار','میلیون','میلیارد','تریلیون','بیلیارد'];
+  function td(num){
+    const p=[];
+    if (num>=100){p.push(sadgan[Math.floor(num/100)]);num%=100;}
+    if (num>=20){p.push(dahgan[Math.floor(num/10)]);num%=10;if(num>0)p.push(yekan[num]);}
+    else if(num>=10){p.push(dahyek[num-10]);}
+    else if(num>0){p.push(yekan[num]);}
+    return p.join(' و ');
   }
-  const result=[]; let rest=n, idx=0;
-  while (rest>0){
-    const chunk = rest%1000;
-    if (chunk>0){
-      let w = threeDigit(chunk);
-      if (scales[idx]) w += ' ' + scales[idx];
-      result.unshift(w);
-    }
-    rest = Math.floor(rest/1000); idx++;
-  }
-  return result.join(' و ');
+  const r=[]; let rest=n, i=0;
+  while(rest>0){ const c=rest%1000; if(c>0){ let w=td(c); if(scales[i])w+=' '+scales[i]; r.unshift(w); } rest=Math.floor(rest/1000); i++; }
+  return r.join(' و ');
 }
-function moneyWords(n, currency='toman'){
-  if (n===null || n===undefined || n==='' || isNaN(n)) return '—';
-  const num = Math.abs(Number(n));
-  const intPart = Math.floor(num);
-  const frac = Math.round((num - intPart) * 100);
-  let words = numToPersianWords(intPart);
-  if (frac > 0) words += ' و ' + numToPersianWords(frac) + ' صدم';
-  return words + (currency==='usd' ? ' دلار' : ' تومان');
+function moneyWords(n, cur='toman'){
+  if (n===null||n===undefined||n===''||isNaN(n)) return '—';
+  const num=Math.abs(Number(n));
+  const intP=Math.floor(num);
+  const frac=Math.round((num-intP)*100);
+  let w=numToPersianWords(intP);
+  if (frac>0) w += ' و ' + numToPersianWords(frac) + ' صدم';
+  return w + (cur==='usd'?' دلار':' تومان');
 }
 
-/* ---------- ذخیره‌سازی ---------- */
+/* ============ Storage ============ */
 function defaultState(){
   return {
     schemaVersion: SCHEMA_VERSION,
-    products: [],
-    categories: [],
-    rates: [],
-    currentRate: null,
-    refRate: null,
-    profitMode: 'auto',
-    baseProfit: 20,
-    settings: {
-      storeName: 'فروشگاه من',
-      mainCurrency: 'toman',
-      theme: 'light',
-      imgMaxW: 600,
-      imgQuality: 0.7,
-    },
-    auth: {
-      salt: null,
-      hash: null,
-      iterations: 200000,
-    },
+    products: [], categories: [], rates: [],
+    currentRate: null, refRate: null,
+    profitMode: 'auto', baseProfit: 20,
+    settings: { storeName:'فروشگاه من', mainCurrency:'toman', theme:'light', imgMaxW:600, imgQuality:0.7 },
+    auth: { salt:null, hash:null, iterations:200000 },
     loginAttempts: { count:0, lockUntil:0 },
     lastBackup: null,
   };
@@ -632,39 +511,26 @@ function loadState(){
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw){ state = defaultState(); return; }
     const d = JSON.parse(raw);
-    if (!d || typeof d!=='object') throw new Error('bad');
     state = Object.assign(defaultState(), d);
     if (!Array.isArray(state.products)) state.products = [];
     if (!Array.isArray(state.categories)) state.categories = [];
     if (!Array.isArray(state.rates)) state.rates = [];
-    if (!state.settings) state.settings = defaultState().settings;
     if (!state.auth) state.auth = defaultState().auth;
     if (!state.loginAttempts) state.loginAttempts = defaultState().loginAttempts;
-  }catch(e){
-    console.error('Load error:', e);
-    state = defaultState();
-  }
+  }catch(e){ console.error(e); state = defaultState(); }
 }
 function saveState(){
-  try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    return true;
-  }catch(e){
-    console.error('Save error:', e);
-    toast('خطا در ذخیره‌سازی. ممکن است حجم localStorage پر شده باشد.', 'error');
-    return false;
-  }
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; }
+  catch(e){ toast('خطا در ذخیره‌سازی','error'); return false; }
 }
 
-/* ---------- رمز عبور (Web Crypto PBKDF2) ---------- */
-async function hashPassword(password, saltB64, iterations){
-  if (!window.crypto || !window.crypto.subtle){
-    throw new Error('Web Crypto API در دسترس نیست. برنامه نمی‌تواند رمز را به‌صورت امن ذخیره کند.');
-  }
+/* ============ Crypto ============ */
+async function hashPassword(pw, saltB64, iter){
+  if (!crypto?.subtle) throw new Error('Web Crypto در دسترس نیست');
   const enc = new TextEncoder();
   const salt = Uint8Array.from(atob(saltB64), c=>c.charCodeAt(0));
-  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), {name:'PBKDF2'}, false, ['deriveBits']);
-  const bits = await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations, hash:'SHA-256'}, keyMaterial, 256);
+  const km = await crypto.subtle.importKey('raw', enc.encode(pw), {name:'PBKDF2'}, false, ['deriveBits']);
+  const bits = await crypto.subtle.deriveBits({name:'PBKDF2', salt, iterations:iter, hash:'SHA-256'}, km, 256);
   return btoa(String.fromCharCode(...new Uint8Array(bits)));
 }
 function randomSaltB64(){
@@ -672,540 +538,479 @@ function randomSaltB64(){
   crypto.getRandomValues(arr);
   return btoa(String.fromCharCode(...arr));
 }
-
-/* ---------- احراز هویت ---------- */
-function isAuthConfigured(){ return !!(state.auth && state.auth.salt && state.auth.hash); }
-function isUnlocked(){ return session.unlocked === true; }
+const isAuthConfigured = () => !!(state.auth?.salt && state.auth?.hash);
+const isUnlocked = () => session.unlocked === true;
 function requireAuth(){
-  if (!isUnlocked()){
-    toast('برای انجام این عملیات ابتدا وارد شوید.', 'error');
-    return false;
-  }
+  if (!isUnlocked()){ toast('ابتدا وارد شوید','error'); return false; }
   return true;
 }
+
+/* ============ Auth UI ============ */
 function lockPanel(){
   session.unlocked = false;
-  clearInterval(session.inactivityTimer);
+  clearTimeout(session.inactivityTimer);
   $('appScreen').classList.add('hidden');
   $('authScreen').classList.remove('hidden');
-  $('sidebar').classList.remove('open');
   showLogin();
-  toast('پنل قفل شد.', 'warning');
+  toast('قفل شد','warning');
 }
 function unlockPanel(){
   session.unlocked = true;
-  session.lastActive = Date.now();
   $('authScreen').classList.add('hidden');
   $('appScreen').classList.remove('hidden');
-  $('appScreen').style.display = 'flex';
-  resetInactivityTimer();
+  resetInactivity();
   renderAll();
 }
-function resetInactivityTimer(){
-  session.lastActive = Date.now();
+function resetInactivity(){
   clearTimeout(session.inactivityTimer);
   session.inactivityTimer = setTimeout(()=>{
-    if (isUnlocked()){
-      toast('به دلیل عدم فعالیت، پنل قفل شد.', 'warning');
-      lockPanel();
-    }
+    if (isUnlocked()){ toast('قفل خودکار','warning'); lockPanel(); }
   }, INACTIVITY_MS);
 }
-function registerActivity(){
-  if (isUnlocked()) session.lastActive = Date.now();
-}
-
-/* ---------- ثبت‌نام اولیه / ورود ---------- */
 function showSetup(){
-  $('authTitle').textContent = 'راه‌اندازی اولیه';
-  $('authSub').textContent = 'یک رمز عبور امن برای پنل تعیین کنید.';
+  $('authTitle').textContent='راه‌اندازی اولیه';
+  $('authSub').textContent='یک رمز عبور تعیین کنید';
   $('setupFields').classList.remove('hidden');
   $('loginFields').classList.add('hidden');
-  $('authBtn').textContent = 'ایجاد رمز و ورود';
-  $('authError').textContent = '';
+  $('authBtn').textContent='ایجاد و ورود';
+  $('authError').textContent='';
 }
 function showLogin(){
-  $('authTitle').textContent = 'ورود به پنل';
-  $('authSub').textContent = 'رمز عبور خود را وارد کنید.';
+  $('authTitle').textContent='ورود';
+  $('authSub').textContent='رمز عبور را وارد کنید';
   $('setupFields').classList.add('hidden');
   $('loginFields').classList.remove('hidden');
-  $('authBtn').textContent = 'ورود';
-  $('authError').textContent = '';
-  const locked = state.loginAttempts.lockUntil > Date.now();
-  if (locked){
-    const remain = Math.ceil((state.loginAttempts.lockUntil - Date.now())/1000);
-    $('authError').textContent = `ورود موقتاً قفل است. ${remain} ثانیه دیگر تلاش کنید.`;
+  $('authBtn').textContent='ورود';
+  $('authError').textContent='';
+  if (state.loginAttempts.lockUntil > Date.now()){
+    const r = Math.ceil((state.loginAttempts.lockUntil-Date.now())/1000);
+    $('authError').textContent = `قفل موقت: ${r} ثانیه`;
     $('authBtn').disabled = true;
-    setTimeout(()=>{ $('authBtn').disabled = false; showLogin(); }, 1000);
+    setTimeout(()=>{ $('authBtn').disabled=false; showLogin(); }, 1000);
   }
 }
 async function handleAuth(){
   const err = $('authError');
-  err.textContent = '';
+  err.textContent='';
   if (!isAuthConfigured()){
-    // setup
-    const p1 = $('setupPw').value;
-    const p2 = $('setupPw2').value;
-    if (p1.length < 6){ err.textContent = 'رمز باید حداقل ۶ کاراکتر باشد.'; return; }
-    if (p1 !== p2){ err.textContent = 'رمزها یکسان نیستند.'; return; }
+    const p1 = $('setupPw').value, p2 = $('setupPw2').value;
+    if (p1.length < 6){ err.textContent='حداقل ۶ کاراکتر'; return; }
+    if (p1 !== p2){ err.textContent='رمزها یکسان نیستند'; return; }
     try{
       const salt = randomSaltB64();
-      const iterations = 200000;
-      const hash = await hashPassword(p1, salt, iterations);
-      state.auth = { salt, hash, iterations };
-      saveState();
-      unlockPanel();
-      toast('رمز با موفقیت تنظیم شد.', 'success');
-    }catch(e){ err.textContent = e.message; }
+      const hash = await hashPassword(p1, salt, 200000);
+      state.auth = { salt, hash, iterations:200000 };
+      saveState(); unlockPanel();
+      toast('رمز تنظیم شد','success');
+    }catch(e){ err.textContent=e.message; }
     return;
   }
-  // login
   if (state.loginAttempts.lockUntil > Date.now()){
-    const remain = Math.ceil((state.loginAttempts.lockUntil - Date.now())/1000);
-    err.textContent = `ورود موقتاً قفل است. ${remain} ثانیه دیگر تلاش کنید.`;
+    const r = Math.ceil((state.loginAttempts.lockUntil-Date.now())/1000);
+    err.textContent = `قفل موقت: ${r} ثانیه`;
     return;
   }
   const pw = $('loginPw').value;
-  if (!pw){ err.textContent = 'رمز عبور را وارد کنید.'; return; }
+  if (!pw){ err.textContent='رمز را وارد کنید'; return; }
   try{
     const hash = await hashPassword(pw, state.auth.salt, state.auth.iterations);
     if (hash === state.auth.hash){
       state.loginAttempts = { count:0, lockUntil:0 };
-      saveState();
-      unlockPanel();
-      toast('خوش آمدید!', 'success');
+      saveState(); unlockPanel();
+      toast('خوش آمدید','success');
     }else{
-      state.loginAttempts.count = (state.loginAttempts.count||0)+1;
+      state.loginAttempts.count++;
       if (state.loginAttempts.count >= 5){
-        state.loginAttempts.lockUntil = Date.now() + 60000;
+        state.loginAttempts.lockUntil = Date.now()+60000;
         state.loginAttempts.count = 0;
-        err.textContent = 'تعداد تلاش‌ها زیاد بود. ۶۰ ثانیه صبر کنید.';
+        err.textContent = '۶۰ ثانیه صبر کنید';
       }else{
-        err.textContent = `رمز نادرست است. (${state.loginAttempts.count}/5)`;
+        err.textContent = `رمز نادرست (${state.loginAttempts.count}/5)`;
       }
       saveState();
     }
-  }catch(e){ err.textContent = e.message; }
+  }catch(e){ err.textContent=e.message; }
 }
 function togglePw(id, btn){
   const el = $(id);
-  el.type = el.type === 'password' ? 'text' : 'password';
-  btn.textContent = el.type === 'password' ? '👁️' : '🙈';
+  el.type = el.type==='password'?'text':'password';
+  btn.textContent = el.type==='password'?'👁️':'🙈';
 }
 function updateStrength(){
   const v = $('setupPw').value;
-  let score = 0;
-  if (v.length >= 6) score += 25;
-  if (v.length >= 10) score += 25;
-  if (/[A-Z]/.test(v) || /[a-z]/.test(v)) score += 25;
-  if (/\d/.test(v)) score += 25;
-  const bar = $('setupStrength');
-  bar.style.width = score + '%';
-  bar.style.background = score < 40 ? 'var(--danger)' : score < 75 ? 'var(--warning)' : 'var(--success)';
+  let s=0;
+  if(v.length>=6)s+=25; if(v.length>=10)s+=25;
+  if(/[A-Za-z]/.test(v))s+=25; if(/\d/.test(v))s+=25;
+  const b = $('setupStrength');
+  b.style.width = s+'%';
+  b.style.background = s<40?'var(--danger)':s<75?'var(--warning)':'var(--success)';
 }
 
-/* ---------- تم ---------- */
-function applyTheme(theme){
-  document.documentElement.setAttribute('data-theme', theme);
-  state.settings.theme = theme;
+/* ============ Theme ============ */
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  state.settings.theme = t;
   saveState();
 }
 function toggleTheme(){
   const cur = document.documentElement.getAttribute('data-theme') || 'light';
-  applyTheme(cur === 'dark' ? 'light' : 'dark');
+  applyTheme(cur==='dark'?'light':'dark');
 }
 
-/* ---------- Toast ---------- */
+/* ============ Toast ============ */
 function toast(msg, type='success'){
   const c = $('toastContainer');
   const el = document.createElement('div');
   el.className = 'toast ' + type;
   el.textContent = msg;
   c.appendChild(el);
-  setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(10px)'; setTimeout(()=>el.remove(),300); }, 3000);
+  setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 2800);
 }
 
-/* ---------- محاسبات ---------- */
+/* ============ Calculation ============ */
 function getCurrentRate(){
   const r = Number(state.currentRate);
-  return (isFinite(r) && r > 0) ? r : null;
+  return (isFinite(r) && r>0) ? r : null;
 }
 function getRefRate(){
   const r = Number(state.refRate);
-  return (isFinite(r) && r > 0) ? r : null;
+  return (isFinite(r) && r>0) ? r : null;
 }
 function getEffectiveProfit(){
   const base = Number(state.baseProfit) || 0;
   if (state.profitMode === 'fixed') return base;
-  // auto
-  const cur = getCurrentRate();
-  const ref = getRefRate();
+  const cur = getCurrentRate(), ref = getRefRate();
   if (!cur || !ref) return base;
-  const changePct = ((cur - ref) / ref) * 100;
-  const increase = Math.max(0, changePct);
-  return base + increase;
+  const change = ((cur-ref)/ref)*100;
+  return base + Math.max(0, change);
 }
-function computeCost(product){
+function computeCost(p){
   const rate = getCurrentRate();
-  const buy = Number(product.buyPrice) || 0;
-  const buyCur = product.buyCurrency || 'toman';
-  let buyInToman = null;
-  if (buyCur === 'toman') buyInToman = buy;
-  else if (buyCur === 'usd' && rate) buyInToman = buy * rate;
-  const extra = Number(product.extraCost) || 0;
-  const extraCur = product.extraCurrency || 'toman';
-  let extraInToman = null;
-  if (extraCur === 'toman') extraInToman = extra;
-  else if (extraCur === 'usd' && rate) extraInToman = extra * rate;
-  let total = null;
-  if (buyInToman !== null && extraInToman !== null) total = buyInToman + extraInToman;
-  return { buyInToman, extraInToman, total, rate };
+  const buy = Number(p.buyPrice)||0, buyCur = p.buyCurrency||'toman';
+  let buyT = null;
+  if (buyCur==='toman') buyT = buy;
+  else if (buyCur==='usd' && rate) buyT = buy*rate;
+  const ex = Number(p.extraCost)||0, exCur = p.extraCurrency||'toman';
+  let exT = null;
+  if (exCur==='toman') exT = ex;
+  else if (exCur==='usd' && rate) exT = ex*rate;
+  return { buyT, exT, total: (buyT!==null && exT!==null) ? buyT+exT : null };
 }
-function computeSuggestedSell(product){
-  const cost = computeCost(product);
-  if (cost.total === null) return { suggested:null, profitPct:getEffectiveProfit(), cost };
+function computeSuggested(p){
+  const c = computeCost(p);
+  if (c.total===null) return { suggested:null, pct:getEffectiveProfit(), cost:c };
   const pct = getEffectiveProfit();
-  const suggested = cost.total * (1 + pct/100);
-  return { suggested, profitPct:pct, cost };
+  return { suggested: c.total*(1+pct/100), pct, cost:c };
 }
-function getFinalSell(product){
-  return (product.sellPrice !== null && product.sellPrice !== undefined && product.sellPrice !== '')
-    ? Number(product.sellPrice) : null;
+function getFinalSell(p){
+  return (p.sellPrice!==null && p.sellPrice!==undefined && p.sellPrice!=='') ? Number(p.sellPrice) : null;
 }
 
-/* ---------- ناوبری ---------- */
-function navigate(view, btn){
+/* ============ Navigation ============ */
+function navigate(view){
   if (!isUnlocked()) return;
-  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
-  const el = $('view-' + view);
-  if (el) el.classList.remove('hidden');
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  else{
-    const target = document.querySelector(`.nav-btn[data-view="${view}"]`);
-    if (target) target.classList.add('active');
-  }
-  const titles = { dashboard:'داشبورد', products:'محصولات', categories:'دسته‌بندی‌ها', rates:'نرخ ارز', profit:'سود عمومی', backup:'پشتیبان‌گیری', settings:'تنظیمات' };
-  const mt = $('mobileTitle'); if (mt) mt.textContent = titles[view] || '';
-  $('sidebar').classList.remove('open');
-  registerActivity();
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  $(`view-${view}`)?.classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.view===view));
+  const titles = { dashboard:['داشبورد','نمای کلی'], products:['محصولات','مدیریت کالاها'], categories:['دسته‌ها','گروه‌بندی'], rates:['نرخ ارز','دلار به تومان'], profit:['سود','تنظیمات'], settings:['تنظیمات','پیکربندی'] };
+  const t = titles[view] || ['',''];
+  $('pageTitle').textContent = t[0];
+  $('pageSubtitle').textContent = t[1];
+  $('fab').style.display = (view==='products'||view==='dashboard') ? 'flex' : 'none';
+  window.scrollTo({top:0,behavior:'smooth'});
   if (view==='dashboard') renderDashboard();
   if (view==='products') renderProducts();
   if (view==='categories') renderCategories();
   if (view==='rates') renderRates();
   if (view==='profit') renderProfit();
   if (view==='settings') loadSettingsUI();
-  if (view==='backup') renderBackupInfo();
 }
 
-/* ---------- داشبورد ---------- */
+/* ============ Dashboard ============ */
 function renderDashboard(){
-  const products = state.products;
-  const categories = state.categories;
-  const rate = getCurrentRate();
-  const ref = getRefRate();
-  // آمار
-  let totalBuy=0, totalSell=0, totalProfit=0, incomplete=0, anyConversionMissing=false;
-  products.forEach(p=>{
-    const cost = computeCost(p);
-    const sugg = computeSuggestedSell(p);
-    const sell = getFinalSell(p) ?? sugg.suggested;
-    if (cost.total === null || sell === null){ incomplete++; anyConversionMissing = true; return; }
-    totalBuy += cost.total;
+  const ps = state.products;
+  const rate = getCurrentRate(), ref = getRefRate();
+  let totalBuy=0, totalSell=0, totalProfit=0, incomplete=0;
+  ps.forEach(p=>{
+    const c = computeCost(p);
+    const s = computeSuggested(p);
+    const sell = getFinalSell(p) ?? s.suggested;
+    if (c.total===null || sell===null){ incomplete++; return; }
+    totalBuy += c.total;
     totalSell += sell;
-    totalProfit += (sell - cost.total);
+    totalProfit += sell - c.total;
   });
-  const changePct = (rate && ref) ? ((rate - ref) / ref) * 100 : null;
-  const changeClass = changePct === null ? 'badge-gray' : changePct > 0 ? 'badge-green' : changePct < 0 ? 'badge-red' : 'badge-gray';
-  const changeArrow = changePct === null ? '—' : changePct > 0 ? '↑' : changePct < 0 ? '↓' : '—';
+  const change = (rate && ref) ? ((rate-ref)/ref)*100 : null;
+  const cls = change===null?'badge-gray':change>0?'badge-green':change<0?'badge-red':'badge-gray';
+  const arr = change===null?'—':change>0?'↑':change<0?'↓':'—';
 
-  const statsHtml = `
-    <div class="stat"><div class="stat-label">تعداد محصولات</div><div class="stat-value">${toFa(products.length)}</div><div class="stat-foot">کالای ثبت‌شده</div></div>
-    <div class="stat"><div class="stat-label">دسته‌بندی‌ها</div><div class="stat-value">${toFa(categories.length)}</div><div class="stat-foot">گروه فعال</div></div>
-    <div class="stat"><div class="stat-label">ارزش خرید کل</div><div class="stat-value">${anyConversionMissing && totalBuy===0 ? 'نرخ تبدیل موجود نیست' : fmtMoney(totalBuy,'toman')}</div><div class="stat-foot">بهای تمام‌شده</div></div>
-    <div class="stat green"><div class="stat-label">ارزش فروش کل</div><div class="stat-value">${anyConversionMissing && totalSell===0 ? 'نرخ تبدیل موجود نیست' : fmtMoney(totalSell,'toman')}</div><div class="stat-foot">قیمت فروش</div></div>
-    <div class="stat green"><div class="stat-label">سود پیش‌بینی‌شده</div><div class="stat-value">${anyConversionMissing && totalProfit===0 ? '—' : fmtMoney(totalProfit,'toman')}</div><div class="stat-foot">جمع سود</div></div>
-    <div class="stat"><div class="stat-label">نرخ فعلی دلار</div><div class="stat-value">${rate ? fmtMoney(rate,'toman') : 'ثبت نشده'}</div><div class="stat-foot">${ref ? 'مرجع: '+fmtMoney(ref,'toman') : 'نرخ مرجع تنظیم نشده'}</div></div>
-    <div class="stat ${changePct>0?'green':changePct<0?'red':'amber'}"><div class="stat-label">تغییر نرخ دلار</div><div class="stat-value"><span class="badge ${changeClass}">${changeArrow} ${changePct!==null?fmt(Math.abs(changePct),1)+'٪':'—'}</span></div><div class="stat-foot">نسبت به نرخ مرجع</div></div>
-    <div class="stat ${incomplete>0?'amber':''}"><div class="stat-label">اطلاعات ناقص</div><div class="stat-value">${toFa(incomplete)}</div><div class="stat-foot">نیاز به تکمیل/تبدیل</div></div>
+  $('statsGrid').innerHTML = `
+    <div class="stat-card primary">
+      <div class="lbl">محصولات</div>
+      <div class="val">${toFa(ps.length)}</div>
+      <div class="ftr">کالای ثبت‌شده</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">دسته‌ها</div>
+      <div class="val">${toFa(state.categories.length)}</div>
+      <div class="ftr">گروه فعال</div>
+    </div>
+    <div class="stat-card">
+      <div class="lbl">ارزش خرید</div>
+      <div class="val small">${totalBuy>0?fmtMoney(totalBuy):'نرخ موجود نیست'}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="lbl">ارزش فروش</div>
+      <div class="val small">${totalSell>0?fmtMoney(totalSell):'—'}</div>
+    </div>
+    <div class="stat-card green">
+      <div class="lbl">سود پیش‌بینی</div>
+      <div class="val small">${totalProfit>0?fmtMoney(totalProfit):'—'}</div>
+    </div>
+    <div class="stat-card ${incomplete>0?'amber':''}">
+      <div class="lbl">اطلاعات ناقص</div>
+      <div class="val">${toFa(incomplete)}</div>
+      <div class="ftr">نیاز به تکمیل</div>
+    </div>
   `;
-  $('statsGrid').innerHTML = statsHtml;
 
-  // جعبه نرخ
   const rb = $('dashRateBox');
   if (!state.rates.length){
-    rb.innerHTML = `<div class="empty" style="padding:20px"><p>هنوز نرخی ثبت نشده است.</p><button class="btn btn-primary btn-sm" onclick="navigate('rates')">ثبت نرخ</button></div>`;
+    rb.innerHTML = `<div class="text-sm muted">هنوز نرخی ثبت نشده</div><button class="btn btn-primary btn-block mt-12" onclick="navigate('rates')">ثبت نرخ</button>`;
   }else{
     const last = state.rates[0];
     rb.innerHTML = `
-      <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(last.value,'toman')}</span></div>
-      <div class="preview-row"><span class="label">تاریخ ثبت</span><span class="val">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
-      <div class="preview-row"><span class="label">تغییر</span><span class="val"><span class="badge ${changeClass}">${changeArrow} ${changePct!==null?fmt(Math.abs(changePct),1)+'٪':'—'}</span></span></div>
-      <a class="btn btn-secondary btn-sm mt-10" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">مشاهده نرخ در نرخ‌آرا</a>
+      <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(last.value)}</span></div>
+      <div class="preview-row"><span class="label">مرجع</span><span class="val">${ref?fmtMoney(ref):'—'}</span></div>
+      <div class="preview-row"><span class="label">تغییر</span><span class="val"><span class="badge ${cls}">${arr} ${change!==null?fmt(Math.abs(change),1)+'٪':'—'}</span></span></div>
+      <div class="preview-row"><span class="label">آخرین ثبت</span><span class="val text-sm">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
     `;
   }
 
-  // آخرین محصولات
-  const rec = products.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,5);
+  const rec = ps.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,4);
   const rc = $('dashRecent');
   if (!rec.length){
-    rc.innerHTML = `<div class="empty" style="padding:20px"><p>هنوز محصولی ثبت نشده است.</p><button class="btn btn-primary btn-sm" onclick="openProductModal()">+ افزودن محصول</button></div>`;
+    rc.innerHTML = `<div class="empty" style="padding:20px"><h3>هنوز محصولی نیست</h3><button class="btn btn-primary btn-sm" onclick="openProductModal()">افزودن</button></div>`;
   }else{
     rc.innerHTML = rec.map(p=>{
       const cat = state.categories.find(c=>c.id===p.categoryId);
-      return `<div class="flex-between" style="padding:8px 0;border-bottom:1px dashed var(--border)">
-        <div>
-          <div style="font-weight:600">${escapeHtml(p.name)}</div>
-          <div class="text-sm muted">${cat?escapeHtml(cat.name):'بدون دسته'} · ${new Date(p.createdAt).toLocaleDateString('fa-IR')}</div>
-        </div>
+      return `<div class="flex-between" style="padding:10px 0;border-bottom:1px dashed var(--border)">
+        <div><div style="font-weight:700;font-size:13px">${escapeHtml(p.name)}</div>
+        <div class="text-sm muted">${cat?escapeHtml(cat.name):'بدون دسته'}</div></div>
         <button class="icon-btn" onclick="openProductModal('${p.id}')">✏️</button>
       </div>`;
     }).join('');
   }
-  $('dashSub').textContent = `آخرین بروزرسانی: ${new Date().toLocaleString('fa-IR')}`;
 }
 
-/* ---------- محصولات ---------- */
+/* ============ Products ============ */
+function setSort(sort, btn){
+  currentSort = sort;
+  document.querySelectorAll('#sortChips .chip').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts();
+}
 function renderProducts(){
-  const body = $('productsBody');
-  if (!body) return;
-  const q = ($('searchInput')?.value || '').trim().toLowerCase();
-  const fCat = $('filterCat')?.value || '';
-  const fCur = $('filterCurrency')?.value || '';
-  const sort = $('sortBy')?.value || 'date-desc';
+  // chips دسته‌ها
+  const catChips = $('catChips');
+  const curCat = catChips.dataset.active || '';
+  catChips.innerHTML = `<button class="chip ${!curCat?'active':''}" onclick="filterCat('',this)">همه</button>` +
+    state.categories.map(c=>`<button class="chip ${curCat===c.id?'active':''}" onclick="filterCat('${c.id}',this)">${escapeHtml(c.name)}</button>`).join('');
+  catChips.dataset.active = curCat;
 
-  // پر کردن فیلتر دسته‌ها
-  const catSel = $('filterCat');
-  if (catSel){
-    const curVal = catSel.value;
-    catSel.innerHTML = '<option value="">همه دسته‌ها</option>' + state.categories.map(c=>`<option value="${c.id}">${escapeHtml(c.name)}</option>`).join('');
-    catSel.value = curVal;
-  }
-
+  const q = ($('searchInput')?.value||'').trim().toLowerCase();
   let items = state.products.slice();
-  if (q){
-    items = items.filter(p=>
-      (p.name||'').toLowerCase().includes(q) ||
-      (p.code||'').toLowerCase().includes(q)
-    );
-  }
-  if (fCat) items = items.filter(p=>p.categoryId===fCat);
-  if (fCur) items = items.filter(p=>p.buyCurrency===fCur);
-  // مرتب‌سازی
+  if (q) items = items.filter(p=>(p.name||'').toLowerCase().includes(q) || (p.code||'').toLowerCase().includes(q));
+  if (curCat) items = items.filter(p=>p.categoryId===curCat);
+
   items.sort((a,b)=>{
-    const getBuy = (p)=>{ const c = computeCost(p); return c.total ?? -1; };
-    const getSell = (p)=>{ const s = getFinalSell(p); if (s!==null) return s; const sug = computeSuggestedSell(p).suggested; return sug ?? -1; };
-    switch(sort){
-      case 'date-asc': return new Date(a.createdAt)-new Date(b.createdAt);
+    const gb = p=>{ const c=computeCost(p); return c.total??-1; };
+    const gs = p=>{ const s=getFinalSell(p); if(s!==null) return s; return computeSuggested(p).suggested??-1; };
+    switch(currentSort){
       case 'name-asc': return (a.name||'').localeCompare(b.name||'','fa');
-      case 'name-desc': return (b.name||'').localeCompare(a.name||'','fa');
-      case 'buy-desc': return getBuy(b)-getBuy(a);
-      case 'buy-asc': return getBuy(a)-getBuy(b);
-      case 'sell-desc': return getSell(b)-getSell(a);
-      case 'sell-asc': return getSell(a)-getSell(b);
+      case 'buy-desc': return gb(b)-gb(a);
+      case 'sell-desc': return gs(b)-gs(a);
       default: return new Date(b.createdAt)-new Date(a.createdAt);
     }
   });
 
   const total = items.length;
-  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  if (currentPage > pages) currentPage = pages;
+  const pages = Math.max(1, Math.ceil(total/PAGE_SIZE));
+  if (currentPage>pages) currentPage = pages;
   const start = (currentPage-1)*PAGE_SIZE;
   const pageItems = items.slice(start, start+PAGE_SIZE);
-
-  const prodSub = $('prodSub');
-  if (prodSub) prodSub.textContent = `${toFa(total)} محصول`;
+  const list = $('productsList');
 
   if (!pageItems.length){
-    body.innerHTML = `<tr><td colspan="10"><div class="empty"><span class="big">📦</span><h3>هنوز محصولی ثبت نشده</h3><p>اولین محصول خود را اضافه کنید.</p><button class="btn btn-primary" onclick="openProductModal()">+ افزودن محصول</button></div></td></tr>`;
+    list.innerHTML = `<div class="empty"><span class="big">📦</span><h3>محصولی نیست</h3><p>اولین محصول را اضافه کنید</p><button class="btn btn-primary" onclick="openProductModal()">+ افزودن</button></div>`;
   }else{
-    body.innerHTML = pageItems.map(p=>{
+    list.innerHTML = pageItems.map(p=>{
       const cat = state.categories.find(c=>c.id===p.categoryId);
-      const cost = computeCost(p);
-      const sugg = computeSuggestedSell(p);
+      const c = computeCost(p);
+      const s = computeSuggested(p);
       const final = getFinalSell(p);
-      const profit = (cost.total!==null && (final!==null || sugg.suggested!==null))
-        ? ((final ?? sugg.suggested) - cost.total) : null;
-      const profitPct = (profit!==null && cost.total) ? (profit / cost.total * 100) : null;
-      const sellVal = final!==null ? final : sugg.suggested;
-      const sellBadge = final!==null ? '<span class="badge badge-amber">دستی</span>' : (sugg.suggested!==null ? '<span class="badge badge-blue">محاسبه</span>' : '<span class="badge badge-gray">ناموجود</span>');
-      return `<tr>
-        <td><div class="thumb">${p.image ? `<img src="${p.image}" alt="">` : '📦'}</div></td>
-        <td><div style="font-weight:600">${escapeHtml(p.name)}</div><div class="text-sm muted">${escapeHtml(p.code||'—')}</div></td>
-        <td>${cat?escapeHtml(cat.name):'<span class="muted">—</span>'}</td>
-        <td>${p.buyCurrency==='usd' ? fmt(p.buyPrice,2)+' دلار' : fmtMoney(p.buyPrice,'toman')}</td>
-        <td>${Number(p.extraCost)>0 ? (p.extraCurrency==='usd'? fmt(p.extraCost,2)+' دلار' : fmtMoney(p.extraCost,'toman')) : '—'}</td>
-        <td>${cost.total!==null ? fmtMoney(cost.total,'toman') : '<span class="badge badge-red">نرخ موجود نیست</span>'}</td>
-        <td>${sugg.suggested!==null ? fmtMoney(sugg.suggested,'toman') + `<div class="text-sm muted">سود ${fmt(sugg.profitPct,1)}٪</div>` : '—'}</td>
-        <td>${sellVal!==null ? fmtMoney(sellVal,'toman') + '<div>'+sellBadge+'</div>' : '—'}</td>
-        <td>${profit!==null ? `<span class="badge ${profit>=0?'badge-green':'badge-red'}">${fmt(profitPct,1)}٪</span>` : '—'}</td>
-        <td><div class="row-actions">
-          <button class="icon-btn" title="ویرایش" onclick="openProductModal('${p.id}')">✏️</button>
-          <button class="icon-btn" title="حذف" onclick="confirmDeleteProduct('${p.id}')">🗑️</button>
-        </div></td>
-      </tr>`;
+      const sell = final ?? s.suggested;
+      const profit = (c.total!==null && sell!==null) ? sell-c.total : null;
+      const pct = (profit!==null && c.total) ? profit/c.total*100 : null;
+      const sellBadge = final!==null ? '<span class="badge badge-amber badge-sell">دستی</span>' : (s.suggested!==null ? '<span class="badge badge-blue badge-sell">محاسبه</span>' : '');
+      return `<div class="product-card">
+        ${sellBadge}
+        <div class="head">
+          <div class="pthumb">${p.image?`<img src="${p.image}" alt="">`:'📦'}</div>
+          <div style="flex:1;min-width:0">
+            <div class="pname">${escapeHtml(p.name)}</div>
+            <div class="pmeta">${cat?escapeHtml(cat.name):'بدون دسته'} · ${escapeHtml(p.code||'—')}</div>
+          </div>
+        </div>
+        <div class="rows">
+          <div class="row-item"><div class="l">خرید</div><div class="v">${p.buyCurrency==='usd'?fmt(p.buyPrice,2)+'$':fmtMoney(p.buyPrice)}</div></div>
+          <div class="row-item"><div class="l">تمام‌شده</div><div class="v">${c.total!==null?fmtMoney(c.total):'—'}</div></div>
+          <div class="row-item"><div class="l">فروش</div><div class="v">${sell!==null?fmtMoney(sell):'—'}</div></div>
+          <div class="row-item"><div class="l">سود</div><div class="v" style="color:${profit>=0?'var(--success)':'var(--danger)'}">${profit!==null?fmt(pct,1)+'٪':'—'}</div></div>
+        </div>
+        <div class="actions">
+          <button class="icon-btn" onclick="openProductModal('${p.id}')" title="ویرایش">✏️</button>
+          <button class="icon-btn" onclick="confirmDeleteProduct('${p.id}')" title="حذف">🗑️</button>
+        </div>
+      </div>`;
     }).join('');
   }
 
-  // صفحه‌بندی
-  const pb = $('paginationBar');
-  if (pb){
-    pb.innerHTML = `
-      <div class="text-sm muted">نمایش ${toFa(total?start+1:0)} تا ${toFa(Math.min(start+PAGE_SIZE,total))} از ${toFa(total)}</div>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-secondary btn-sm" ${currentPage<=1?'disabled':''} onclick="changePage(-1)">‹ قبلی</button>
-        <span class="btn btn-secondary btn-sm">${toFa(currentPage)} / ${toFa(pages)}</span>
-        <button class="btn btn-secondary btn-sm" ${currentPage>=pages?'disabled':''} onclick="changePage(1)">بعدی ›</button>
-      </div>
-    `;
-  }
+  $('paginationBar').innerHTML = total>PAGE_SIZE ? `
+    <div class="text-sm muted">${toFa(start+1)}-${toFa(Math.min(start+PAGE_SIZE,total))} از ${toFa(total)}</div>
+    <div style="display:flex;gap:6px">
+      <button class="btn btn-secondary btn-sm" ${currentPage<=1?'disabled':''} onclick="changePage(-1)">‹</button>
+      <span class="btn btn-secondary btn-sm">${toFa(currentPage)}/${toFa(pages)}</span>
+      <button class="btn btn-secondary btn-sm" ${currentPage>=pages?'disabled':''} onclick="changePage(1)">›</button>
+    </div>` : '';
 }
-function changePage(delta){
-  currentPage += delta;
+function filterCat(id, btn){
+  $('catChips').dataset.active = id;
+  currentPage = 1;
   renderProducts();
 }
+function changePage(d){ currentPage += d; renderProducts(); }
 
-/* ---------- مودال محصول ---------- */
-let editingId = null;
-let tempImageData = '';
+/* ============ Product Modal ============ */
 function openProductModal(id){
   if (!requireAuth()) return;
   editingId = id || null;
   tempImageData = '';
   const isEdit = !!id;
   const p = isEdit ? state.products.find(x=>x.id===id) : null;
-  $('modalTitle').textContent = isEdit ? '✏️ ویرایش محصول' : '➕ افزودن محصول';
+  $('modalTitle').textContent = isEdit?'✏️ ویرایش محصول':'➕ محصول جدید';
   $('modalBody').innerHTML = `
-    <div class="form-row">
-      <div class="field"><label>نام محصول *</label><input type="text" id="pName" value="${p?escapeHtml(p.name):''}" placeholder="مثلاً گوشی سامسونگ A54"><div class="err-msg">نام الزامی است.</div></div>
-      <div class="field"><label>شناسه / کد محصول</label><input type="text" id="pCode" value="${p?escapeHtml(p.code||''):''}" placeholder="مثلاً SM-A546E"></div>
-    </div>
-    <div class="form-row">
-      <div class="field"><label>دسته‌بندی</label><select id="pCategory"><option value="">— بدون دسته —</option>${state.categories.map(c=>`<option value="${c.id}" ${p&&p.categoryId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
-      <div class="field"><label>تصویر</label><input type="file" id="pImage" accept="image/*" onchange="handleImageUpload(this)"><div class="hint" id="pImageHint">حداکثر ${state.settings.imgMaxW}px، کیفیت ${state.settings.imgQuality}</div></div>
-    </div>
-    <div id="pImagePreview" class="mt-10">${p&&p.image?`<img src="${p.image}" style="max-width:120px;border-radius:8px">`:''}</div>
-    <div class="form-row mt-10">
+    <div class="field"><label>نام محصول *</label><input type="text" id="pName" value="${p?escapeHtml(p.name):''}" placeholder="گوشی سامسونگ A54"><div class="err-msg">الزامی</div></div>
+    <div class="field"><label>کد محصول</label><input type="text" id="pCode" value="${p?escapeHtml(p.code||''):''}" placeholder="SM-A546E"></div>
+    <div class="field"><label>دسته‌بندی</label><select id="pCategory"><option value="">— بدون دسته —</option>${state.categories.map(c=>`<option value="${c.id}" ${p&&p.categoryId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
+    <div class="field"><label>تصویر</label><input type="file" id="pImage" accept="image/*" onchange="handleImageUpload(this)"><div class="hint" id="pImageHint">حداکثر ${state.settings.imgMaxW}px</div></div>
+    <div id="pImagePreview" class="mt-8">${p&&p.image?`<img src="${p.image}" style="max-width:100px;border-radius:10px">`:''}</div>
+    <div class="form-row mt-12">
       <div class="field"><label>قیمت خرید *</label><input type="number" id="pBuy" value="${p?p.buyPrice:''}" min="0" step="any"></div>
-      <div class="field"><label>واحد خرید</label><select id="pBuyCur"><option value="toman" ${p&&p.buyCurrency==='toman'?'selected':''}>تومان</option><option value="usd" ${p&&p.buyCurrency==='usd'?'selected':''}>دلار</option></select></div>
+      <div class="field"><label>واحد</label><select id="pBuyCur"><option value="toman" ${p&&p.buyCurrency==='toman'?'selected':''}>تومان</option><option value="usd" ${p&&p.buyCurrency==='usd'?'selected':''}>دلار</option></select></div>
     </div>
-    <div class="form-row mt-10">
+    <div class="form-row">
       <div class="field"><label>هزینه جانبی</label><input type="number" id="pExtra" value="${p?p.extraCost||0:0}" min="0" step="any"></div>
-      <div class="field"><label>واحد هزینه جانبی</label><select id="pExtraCur"><option value="toman" ${p&&p.extraCurrency==='toman'?'selected':''}>تومان</option><option value="usd" ${p&&p.extraCurrency==='usd'?'selected':''}>دلار</option></select></div>
+      <div class="field"><label>واحد</label><select id="pExtraCur"><option value="toman" ${p&&p.extraCurrency==='toman'?'selected':''}>تومان</option><option value="usd" ${p&&p.extraCurrency==='usd'?'selected':''}>دلار</option></select></div>
     </div>
-    <div class="field mt-10"><label>قیمت فروش نهایی (اختیاری — اگر خالی بماند از محاسبه خودکار استفاده می‌شود)</label><input type="number" id="pSell" value="${p&&p.sellPrice!==null&&p.sellPrice!==undefined?p.sellPrice:''}" min="0" step="any"></div>
-    <div class="field mt-10"><label>توضیحات</label><textarea id="pNote" rows="2">${p?escapeHtml(p.note||''):''}</textarea></div>
+    <div class="field"><label>قیمت فروش نهایی (اختیاری)</label><input type="number" id="pSell" value="${p&&p.sellPrice!==null&&p.sellPrice!==undefined?p.sellPrice:''}" min="0" step="any"><div class="hint">اگر خالی باشد، محاسبه خودکار</div></div>
+    <div class="field"><label>توضیحات</label><textarea id="pNote" rows="2">${p?escapeHtml(p.note||''):''}</textarea></div>
     <div class="preview-box" id="productPreview"></div>
   `;
   $('modalFoot').innerHTML = `
-    <button class="btn btn-primary" onclick="saveProduct()">${isEdit?'ذخیره تغییرات':'ثبت محصول'}</button>
     <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
-    <button class="btn btn-secondary" onclick="openOCR()" style="margin-right:auto">📄 OCR تصویر</button>
+    <button class="btn btn-primary" onclick="saveProduct()">${isEdit?'ذخیره':'ثبت'}</button>
   `;
   openModal();
-  // رویدادهای پیش‌نمایش
   ['pBuy','pBuyCur','pExtra','pExtraCur','pSell'].forEach(id=>{
-    const el = $(id); if (el) el.addEventListener('input', updateProductPreview);
-    if (el) el.addEventListener('change', updateProductPreview);
+    const el = $(id); if (el){ el.addEventListener('input', updateProductPreview); el.addEventListener('change', updateProductPreview); }
   });
   updateProductPreview();
 }
 function updateProductPreview(){
   const buy = parseNum($('pBuy')?.value);
-  const buyCur = $('pBuyCur')?.value || 'toman';
-  const extra = parseNum($('pExtra')?.value);
-  const extraCur = $('pExtraCur')?.value || 'toman';
-  const finalSell = $('pSell')?.value !== '' ? parseNum($('pSell')?.value) : null;
+  const buyCur = $('pBuyCur')?.value||'toman';
+  const ex = parseNum($('pExtra')?.value);
+  const exCur = $('pExtraCur')?.value||'toman';
+  const final = $('pSell')?.value!==''?parseNum($('pSell')?.value):null;
   const rate = getCurrentRate();
-  let buyToman = null, extraToman = null, total = null;
-  if (buyCur==='toman') buyToman = buy;
-  else if (buyCur==='usd' && rate) buyToman = buy * rate;
-  if (extraCur==='toman') extraToman = extra;
-  else if (extraCur==='usd' && rate) extraToman = extra * rate;
-  if (buyToman!==null && extraToman!==null) total = buyToman + extraToman;
+  let buyT = buyCur==='usd'?(rate?buy*rate:null):buy;
+  let exT = exCur==='usd'?(rate?ex*rate:null):ex;
+  const total = (buyT!==null&&exT!==null)?buyT+exT:null;
   const pct = getEffectiveProfit();
-  const suggested = total!==null ? total * (1 + pct/100) : null;
-  const finalVal = finalSell!==null ? finalSell : suggested;
-  const profit = (total!==null && finalVal!==null) ? finalVal - total : null;
-
+  const sug = total!==null?total*(1+pct/100):null;
+  const fv = final!==null?final:sug;
+  const profit = (total!==null&&fv!==null)?fv-total:null;
   const el = $('productPreview');
   if (!el) return;
   el.innerHTML = `
-    <div class="preview-row"><span class="label">قیمت خرید اصلی</span><span class="val">${buyCur==='usd'?fmt(buy,2)+' دلار':fmtMoney(buy,'toman')}<div class="words">${moneyWords(buy, buyCur==='usd'?'usd':'toman')}</div></span></div>
-    <div class="preview-row"><span class="label">معادل تومانی خرید</span><span class="val">${buyToman!==null?fmtMoney(buyToman,'toman'):'<span class="badge badge-red">نرخ تبدیل موجود نیست</span>'}</span></div>
-    <div class="preview-row"><span class="label">مجموع هزینه جانبی</span><span class="val">${extraToman!==null?fmtMoney(extraToman,'toman'):'—'}</span></div>
-    <div class="preview-row"><span class="label">بهای تمام‌شده نهایی</span><span class="val">${total!==null?fmtMoney(total,'toman'):'—'}<div class="words">${total!==null?moneyWords(total,'toman'):''}</div></span></div>
-    <div class="preview-row"><span class="label">درصد سود مؤثر</span><span class="val">${fmt(pct,1)}٪</span></div>
-    <div class="preview-row"><span class="label">فروش پیشنهادی</span><span class="val">${suggested!==null?fmtMoney(suggested,'toman'):'—'}<div class="words">${suggested!==null?moneyWords(suggested,'toman'):''}</div></span></div>
-    <div class="preview-row preview-total"><span class="label">فروش نهایی (${finalSell!==null?'دستی':'محاسبه‌شده'})</span><span class="val">${finalVal!==null?fmtMoney(finalVal,'toman'):'—'}</span></div>
-    <div class="preview-row"><span class="label">سود تقریبی</span><span class="val">${profit!==null?fmtMoney(profit,'toman'):'—'} ${profit!==null&&total?`(${fmt(profit/total*100,1)}٪)`:''}</span></div>
+    <div class="preview-row"><span class="label">خرید</span><span class="val">${buyCur==='usd'?fmt(buy,2)+'$':fmtMoney(buy)}<div class="words">${moneyWords(buy,buyCur==='usd'?'usd':'toman')}</div></span></div>
+    <div class="preview-row"><span class="label">معادل تومان</span><span class="val">${buyT!==null?fmtMoney(buyT):'<span class="badge badge-red">نرخ نیست</span>'}</span></div>
+    <div class="preview-row"><span class="label">هزینه جانبی</span><span class="val">${exT!==null?fmtMoney(exT):'—'}</span></div>
+    <div class="preview-row"><span class="label">تمام‌شده</span><span class="val">${total!==null?fmtMoney(total):'—'}<div class="words">${total!==null?moneyWords(total):''}</div></span></div>
+    <div class="preview-row"><span class="label">سود مؤثر</span><span class="val">${fmt(pct,1)}٪</span></div>
+    <div class="preview-row"><span class="label">پیشنهادی</span><span class="val">${sug!==null?fmtMoney(sug):'—'}</span></div>
+    <div class="preview-row preview-total"><span class="label">فروش نهایی (${final!==null?'دستی':'محاسبه'})</span><span class="val">${fv!==null?fmtMoney(fv):'—'}</span></div>
+    <div class="preview-row"><span class="label">سود</span><span class="val" style="color:${profit>=0?'var(--success)':'var(--danger)'}">${profit!==null?fmtMoney(profit)+' ('+fmt(profit/total*100,1)+'٪)':'—'}</span></div>
   `;
 }
 async function handleImageUpload(input){
-  const file = input.files && input.files[0];
-  if (!file) return;
-  if (!file.type.startsWith('image/')){ toast('فایل باید تصویر باشد.','error'); input.value=''; return; }
-  if (file.size > 8 * 1024 * 1024){ toast('حجم تصویر بیش از ۸ مگابایت است.','error'); input.value=''; return; }
+  const f = input.files?.[0];
+  if (!f) return;
+  if (!f.type.startsWith('image/')){ toast('فایل تصویر نیست','error'); input.value=''; return; }
+  if (f.size > 8*1024*1024){ toast('حداکثر ۸ مگابایت','error'); input.value=''; return; }
   try{
-    const dataUrl = await compressImage(file, state.settings.imgMaxW, state.settings.imgQuality);
-    tempImageData = dataUrl;
-    $('pImagePreview').innerHTML = `<img src="${dataUrl}" style="max-width:120px;border-radius:8px">`;
-    const sizeKB = Math.round(dataUrl.length * 0.75 / 1024);
-    $('pImageHint').textContent = `حجم فشرده: ${toFa(sizeKB)} کیلوبایت`;
-  }catch(e){ toast('خطا در پردازش تصویر: '+e.message,'error'); }
+    const d = await compressImage(f, state.settings.imgMaxW, state.settings.imgQuality);
+    tempImageData = d;
+    $('pImagePreview').innerHTML = `<img src="${d}" style="max-width:100px;border-radius:10px">`;
+    $('pImageHint').textContent = `${toFa(Math.round(d.length*0.75/1024))} کیلوبایت`;
+  }catch(e){ toast('خطا در پردازش تصویر','error'); }
   input.value = '';
 }
-function compressImage(file, maxW, quality){
-  return new Promise((resolve,reject)=>{
-    const reader = new FileReader();
-    reader.onload = ()=>{
+function compressImage(file, maxW, q){
+  return new Promise((res,rej)=>{
+    const r = new FileReader();
+    r.onload = ()=>{
       const img = new Image();
       img.onload = ()=>{
-        const canvas = document.createElement('canvas');
+        const c = document.createElement('canvas');
         let w = img.width, h = img.height;
-        if (w > maxW){ h = Math.round(h * maxW / w); w = maxW; }
-        canvas.width = w; canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img,0,0,w,h);
-        try{
-          const dataUrl = canvas.toDataURL('image/jpeg', quality);
-          resolve(dataUrl);
-        }catch(e){ reject(e); }
+        if (w>maxW){ h = Math.round(h*maxW/w); w = maxW; }
+        c.width = w; c.height = h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        try{ res(c.toDataURL('image/jpeg',q)); }catch(e){ rej(e); }
       };
-      img.onerror = ()=>reject(new Error('خواندن تصویر ناموفق'));
-      img.src = reader.result;
+      img.onerror = ()=>rej(new Error('bad'));
+      img.src = r.result;
     };
-    reader.onerror = ()=>reject(new Error('خواندن فایل ناموفق'));
-    reader.readAsDataURL(file);
+    r.onerror = ()=>rej(new Error('read fail'));
+    r.readAsDataURL(file);
   });
 }
 function saveProduct(){
   if (!requireAuth()) return;
-  const name = ($('pName')?.value || '').trim();
-  const field = $('pName')?.closest('.field');
-  if (!name){ field?.classList.add('error'); toast('نام محصول الزامی است.','error'); return; }
-  field?.classList.remove('error');
-  const buy = parseNum($('pBuy')?.value);
-  if (buy < 0){ toast('قیمت خرید نمی‌تواند منفی باشد.','error'); return; }
+  const name = ($('pName')?.value||'').trim();
+  if (!name){ $('pName')?.closest('.field')?.classList.add('error'); toast('نام الزامی','error'); return; }
   const data = {
     id: editingId || uid(),
     name,
-    code: ($('pCode')?.value || '').trim(),
-    categoryId: $('pCategory')?.value || '',
-    buyPrice: buy,
-    buyCurrency: $('pBuyCur')?.value || 'toman',
+    code: ($('pCode')?.value||'').trim(),
+    categoryId: $('pCategory')?.value||'',
+    buyPrice: parseNum($('pBuy')?.value),
+    buyCurrency: $('pBuyCur')?.value||'toman',
     extraCost: parseNum($('pExtra')?.value),
-    extraCurrency: $('pExtraCur')?.value || 'toman',
-    sellPrice: $('pSell')?.value !== '' ? parseNum($('pSell')?.value) : null,
-    note: ($('pNote')?.value || '').trim(),
-    image: tempImageData || '',
+    extraCurrency: $('pExtraCur')?.value||'toman',
+    sellPrice: $('pSell')?.value!==''?parseNum($('pSell')?.value):null,
+    note: ($('pNote')?.value||'').trim(),
+    image: tempImageData||'',
     updatedAt: nowISO(),
   };
   if (editingId){
-    const idx = state.products.findIndex(p=>p.id===editingId);
-    if (idx>=0){
-      if (!data.image) data.image = state.products[idx].image || '';
-      state.products[idx] = Object.assign({}, state.products[idx], data);
+    const i = state.products.findIndex(p=>p.id===editingId);
+    if (i>=0){
+      if (!data.image) data.image = state.products[i].image||'';
+      state.products[i] = Object.assign({}, state.products[i], data);
     }
   }else{
     data.createdAt = nowISO();
@@ -1213,502 +1018,324 @@ function saveProduct(){
   }
   if (!saveState()) return;
   closeModal();
-  toast(editingId?'محصول ویرایش شد.':'محصول ثبت شد.','success');
-  editingId = null;
-  tempImageData = '';
-  renderProducts();
-  renderDashboard();
+  toast(editingId?'ویرایش شد':'ثبت شد','success');
+  editingId=null; tempImageData='';
+  renderProducts(); renderDashboard();
 }
 function confirmDeleteProduct(id){
   if (!requireAuth()) return;
   const p = state.products.find(x=>x.id===id);
   if (!p) return;
-  if (!confirm(`حذف محصول «${p.name}»؟ این عملیات قابل بازگشت نیست.`)) return;
+  if (!confirm(`حذف «${p.name}»؟`)) return;
   state.products = state.products.filter(x=>x.id!==id);
   if (!saveState()) return;
-  toast('محصول حذف شد.','success');
-  renderProducts();
-  renderDashboard();
+  toast('حذف شد','success');
+  renderProducts(); renderDashboard();
 }
 
-/* ---------- دسته‌بندی‌ها ---------- */
+/* ============ Categories ============ */
 function renderCategories(){
-  const body = $('categoriesBody');
-  if (!body) return;
+  const list = $('categoriesList');
   if (!state.categories.length){
-    body.innerHTML = `<tr><td colspan="4"><div class="empty"><span class="big">🗂️</span><h3>هنوز دسته‌بندی‌ای نیست</h3><p>اولین دسته را اضافه کنید.</p><button class="btn btn-primary" onclick="openCategoryModal()">+ دسته جدید</button></div></td></tr>`;
+    list.innerHTML = `<div class="empty"><span class="big">🗂️</span><h3>دسته‌بندی‌ای نیست</h3><p>اولین دسته را اضافه کنید</p></div>`;
     return;
   }
-  body.innerHTML = state.categories.map(c=>{
-    const count = state.products.filter(p=>p.categoryId===c.id).length;
-    return `<tr>
-      <td>${escapeHtml(c.name)}</td>
-      <td><span class="badge badge-blue">${toFa(count)}</span></td>
-      <td class="text-sm muted">${new Date(c.createdAt).toLocaleDateString('fa-IR')}</td>
-      <td><div class="row-actions">
+  list.innerHTML = state.categories.map(c=>{
+    const cnt = state.products.filter(p=>p.categoryId===c.id).length;
+    return `<div class="product-card">
+      <div class="head">
+        <div class="pthumb">🗂️</div>
+        <div style="flex:1"><div class="pname">${escapeHtml(c.name)}</div>
+        <div class="pmeta">${toFa(cnt)} محصول</div></div>
+      </div>
+      <div class="actions">
         <button class="icon-btn" onclick="openCategoryModal('${c.id}')">✏️</button>
         <button class="icon-btn" onclick="confirmDeleteCategory('${c.id}')">🗑️</button>
-      </div></td>
-    </tr>`;
+      </div>
+    </div>`;
   }).join('');
 }
 function openCategoryModal(id){
   if (!requireAuth()) return;
-  const c = id ? state.categories.find(x=>x.id===id) : null;
-  $('modalTitle').textContent = c ? '✏️ ویرایش دسته' : '➕ دسته جدید';
-  $('modalBody').innerHTML = `<div class="field"><label>نام دسته *</label><input type="text" id="catName" value="${c?escapeHtml(c.name):''}" placeholder="مثلاً موبایل"></div>`;
-  $('modalFoot').innerHTML = `<button class="btn btn-primary" onclick="saveCategory('${id||''}')">ذخیره</button><button class="btn btn-secondary" onclick="closeModal()">لغو</button>`;
+  const c = id?state.categories.find(x=>x.id===id):null;
+  $('modalTitle').textContent = c?'✏️ ویرایش دسته':'➕ دسته جدید';
+  $('modalBody').innerHTML = `<div class="field"><label>نام دسته *</label><input type="text" id="catName" value="${c?escapeHtml(c.name):''}" placeholder="موبایل"></div>`;
+  $('modalFoot').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">لغو</button><button class="btn btn-primary" onclick="saveCategory('${id||''}')">ذخیره</button>`;
   openModal();
 }
 function saveCategory(id){
   if (!requireAuth()) return;
-  const name = ($('catName')?.value || '').trim();
-  if (!name){ toast('نام دسته الزامی است.','error'); return; }
-  const dup = state.categories.find(c=>c.name===name && c.id!==id);
-  if (dup){ toast('دسته‌ای با این نام وجود دارد.','error'); return; }
+  const name = ($('catName')?.value||'').trim();
+  if (!name){ toast('نام الزامی','error'); return; }
+  if (state.categories.find(c=>c.name===name && c.id!==id)){ toast('نام تکراری','error'); return; }
   if (id){
     const c = state.categories.find(x=>x.id===id);
     if (c) c.name = name;
   }else{
-    state.categories.push({ id: uid(), name, createdAt: nowISO() });
+    state.categories.push({ id:uid(), name, createdAt:nowISO() });
   }
   if (!saveState()) return;
   closeModal();
-  toast('دسته ذخیره شد.','success');
-  renderCategories();
-  renderDashboard();
+  toast('ذخیره شد','success');
+  renderCategories(); renderDashboard();
 }
 function confirmDeleteCategory(id){
   if (!requireAuth()) return;
   const c = state.categories.find(x=>x.id===id);
-  if (!c) return;
-  const count = state.products.filter(p=>p.categoryId===id).length;
-  if (count > 0){
-    // انتقال محصولات به دسته دیگر
-    const otherCats = state.categories.filter(x=>x.id!==id);
+  const cnt = state.products.filter(p=>p.categoryId===id).length;
+  if (cnt>0){
+    const others = state.categories.filter(x=>x.id!==id);
     $('modalTitle').textContent = '⚠️ دسته دارای محصول';
     $('modalBody').innerHTML = `
-      <p class="mb-10">دسته «${escapeHtml(c.name)}» دارای ${toFa(count)} محصول است. برای حذف، محصولات را به دسته دیگری منتقل کنید:</p>
-      <div class="field">
-        <label>انتقال به دسته</label>
-        <select id="transferTo"><option value="">— بدون دسته —</option>${otherCats.map(o=>`<option value="${o.id}">${escapeHtml(o.name)}</option>`).join('')}</select>
-      </div>
+      <p class="text-sm mb-10">${toFa(cnt)} محصول در این دسته است. به کدام دسته منتقل شوند؟</p>
+      <div class="field"><label>انتقال به</label><select id="transferTo"><option value="">بدون دسته</option>${others.map(o=>`<option value="${o.id}">${escapeHtml(o.name)}</option>`).join('')}</select></div>
     `;
-    $('modalFoot').innerHTML = `<button class="btn btn-danger" onclick="transferAndDelete('${id}')">انتقال و حذف دسته</button><button class="btn btn-secondary" onclick="closeModal()">لغو</button>`;
+    $('modalFoot').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">لغو</button><button class="btn btn-danger" onclick="transferAndDelete('${id}')">انتقال و حذف</button>`;
     openModal();
     return;
   }
-  if (!confirm(`حذف دسته «${c.name}»؟`)) return;
+  if (!confirm(`حذف «${c.name}»؟`)) return;
   state.categories = state.categories.filter(x=>x.id!==id);
   if (!saveState()) return;
-  toast('دسته حذف شد.','success');
-  renderCategories();
-  renderDashboard();
+  toast('حذف شد','success');
+  renderCategories(); renderDashboard();
 }
 function transferAndDelete(id){
   if (!requireAuth()) return;
-  const target = $('transferTo')?.value || '';
+  const target = $('transferTo')?.value||'';
   state.products.forEach(p=>{ if (p.categoryId===id) p.categoryId = target; });
   state.categories = state.categories.filter(x=>x.id!==id);
   if (!saveState()) return;
   closeModal();
-  toast('محصولات منتقل و دسته حذف شد.','success');
-  renderCategories();
-  renderDashboard();
-  renderProducts();
+  toast('منتقل و حذف شد','success');
+  renderCategories(); renderDashboard(); renderProducts();
 }
 
-/* ---------- نرخ ارز ---------- */
+/* ============ Rates ============ */
 function renderRates(){
+  const cur = getCurrentRate(), ref = getRefRate();
   const box = $('rateStatusBox');
-  const cur = getCurrentRate();
-  const ref = getRefRate();
   if (box){
-    if (!state.rates.length){
-      box.innerHTML = `<div class="empty" style="padding:20px"><p>هیچ نرخی ثبت نشده است.</p></div>`;
-    }else{
+    if (!state.rates.length){ box.innerHTML = '<div class="text-sm muted">نرخی ثبت نشده</div>'; }
+    else{
       const last = state.rates[0];
-      const change = (state.rates[1]) ? ((last.value - state.rates[1].value)/state.rates[1].value*100) : null;
+      const change = state.rates[1]?((last.value-state.rates[1].value)/state.rates[1].value*100):null;
       box.innerHTML = `
-        <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(cur,'toman')}</span></div>
-        <div class="preview-row"><span class="label">نرخ مرجع (سود خودکار)</span><span class="val">${ref?fmtMoney(ref,'toman'):'<span class="badge badge-red">تنظیم نشده</span>'}</span></div>
-        <div class="preview-row"><span class="label">تغییر نسبت به قبلی</span><span class="val">${change!==null?`<span class="badge ${change>=0?'badge-green':'badge-red'}">${fmt(change,1)}٪</span>`:'—'}</span></div>
-        <div class="preview-row"><span class="label">آخرین ثبت</span><span class="val">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
-        <a class="btn btn-secondary btn-sm mt-10" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">🔗 مشاهده نرخ در نرخ‌آرا</a>
+        <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(cur)}</span></div>
+        <div class="preview-row"><span class="label">مرجع</span><span class="val">${ref?fmtMoney(ref):'—'}</span></div>
+        <div class="preview-row"><span class="label">تغییر</span><span class="val">${change!==null?`<span class="badge ${change>=0?'badge-green':'badge-red'}">${fmt(change,1)}٪</span>`:'—'}</span></div>
+        <div class="preview-row"><span class="label">آخرین</span><span class="val text-sm">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
       `;
     }
   }
-  const hist = $('ratesHistoryBody');
-  if (hist){
-    if (!state.rates.length){
-      hist.innerHTML = `<tr><td colspan="4" class="muted" style="text-align:center">تاریخچه‌ای موجود نیست</td></tr>`;
-    }else{
-      hist.innerHTML = state.rates.map((r,i)=>`
-        <tr>
-          <td>${fmtMoney(r.value,'toman')}</td>
-          <td class="text-sm muted">${escapeHtml(r.note||'')}</td>
-          <td class="text-sm muted">${new Date(r.date).toLocaleString('fa-IR')}</td>
-          <td><div class="row-actions">
-            ${i===0?'<span class="badge badge-blue">فعال</span>':''}
-            <button class="icon-btn" title="ویرایش" onclick="editRate(${i})">✏️</button>
-            <button class="icon-btn" title="حذف" onclick="deleteRate(${i})">🗑️</button>
-          </div></td>
-        </tr>
-      `).join('');
-    }
-  }
-  const newRateHint = $('newRateHint');
-  if (newRateHint && cur){
-    newRateHint.textContent = `نرخ فعلی: ${fmtMoney(cur,'toman')}`;
+  const hint = $('newRateHint');
+  if (hint) hint.textContent = cur?`نرخ فعلی: ${fmtMoney(cur)}`:'—';
+  const hist = $('ratesHistoryList');
+  if (!state.rates.length){ hist.innerHTML = '<div class="text-sm muted">تاریخچه‌ای نیست</div>'; }
+  else{
+    hist.innerHTML = state.rates.slice(0,10).map((r,i)=>`
+      <div class="flex-between" style="padding:8px 0;border-bottom:1px dashed var(--border)">
+        <div><div style="font-weight:700">${fmtMoney(r.value)}</div>
+        <div class="text-sm muted">${new Date(r.date).toLocaleString('fa-IR')} ${r.note?'· '+escapeHtml(r.note):''}</div></div>
+        <div style="display:flex;gap:4px">
+          ${i===0?'<span class="badge badge-blue">فعال</span>':''}
+          <button class="icon-btn" onclick="editRate(${i})">✏️</button>
+          <button class="icon-btn" onclick="deleteRate(${i})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
   }
 }
 function addRate(){
   if (!requireAuth()) return;
   const v = parseNum($('newRateInput')?.value);
-  if (!v || v <= 0){ toast('نرخ باید مثبت باشد.','error'); return; }
-  const note = ($('newRateNote')?.value || '').trim();
-  state.rates.unshift({ value: v, note, date: nowISO() });
+  if (!v || v<=0){ toast('نرخ نامعتبر','error'); return; }
+  const note = ($('newRateNote')?.value||'').trim();
+  state.rates.unshift({ value:v, note, date:nowISO() });
   state.currentRate = v;
   if (!state.refRate) state.refRate = v;
-  // اگر حالت خودکار است و نرخ مرجع تنظیم شده، نرخ مرجع را ثابت نگه می‌داریم
   if (!saveState()) return;
-  $('newRateInput').value = '';
-  $('newRateNote').value = '';
-  toast('نرخ ثبت شد.','success');
-  renderRates();
-  renderDashboard();
-  renderProducts();
-  renderProfit();
+  $('newRateInput').value=''; $('newRateNote').value='';
+  toast('ثبت شد','success');
+  renderRates(); renderDashboard(); renderProducts(); renderProfit();
 }
-function editRate(idx){
+function editRate(i){
   if (!requireAuth()) return;
-  const r = state.rates[idx];
-  if (!r) return;
+  const r = state.rates[i];
   const v = parseNum(prompt('نرخ جدید:', r.value));
-  if (!v || v<=0) return;
-  r.value = v;
-  r.date = nowISO();
-  if (idx===0) state.currentRate = v;
-  if (!saveState()) return;
-  renderRates();
-  renderDashboard();
-  renderProducts();
-  toast('نرخ ویرایش شد.','success');
+  if (!v||v<=0) return;
+  r.value=v; r.date=nowISO();
+  if (i===0) state.currentRate = v;
+  saveState(); renderRates(); renderDashboard(); renderProducts();
 }
-function deleteRate(idx){
+function deleteRate(i){
   if (!requireAuth()) return;
-  if (!confirm('این نرخ حذف شود؟')) return;
-  state.rates.splice(idx,1);
-  if (state.rates.length) state.currentRate = state.rates[0].value;
-  else state.currentRate = null;
-  if (!saveState()) return;
-  renderRates();
-  renderDashboard();
-  renderProducts();
-  toast('نرخ حذف شد.','success');
-}
-function restorePrevRate(){
-  if (!requireAuth()) return;
-  if (state.rates.length < 2){ toast('نرخ قبلی موجود نیست.','error'); return; }
-  const prev = state.rates[1];
-  state.currentRate = prev.value;
-  state.rates.unshift({ value: prev.value, note: 'بازگردانی', date: nowISO() });
-  if (!saveState()) return;
-  toast('نرخ قبلی بازگردانده شد.','success');
-  renderRates();
-  renderDashboard();
-  renderProducts();
+  if (!confirm('حذف این نرخ؟')) return;
+  state.rates.splice(i,1);
+  state.currentRate = state.rates.length?state.rates[0].value:null;
+  saveState(); renderRates(); renderDashboard(); renderProducts();
 }
 
-/* ---------- سود ---------- */
+/* ============ Profit ============ */
 function renderProfit(){
-  const autoTab = $('tabAuto'); const fixedTab = $('tabFixed');
-  if (autoTab && fixedTab){
-    autoTab.classList.toggle('active', state.profitMode==='auto');
-    fixedTab.classList.toggle('active', state.profitMode==='fixed');
-  }
-  const bp = $('baseProfitInput'); if (bp) bp.value = state.baseProfit;
-  const rr = $('refRateInput'); if (rr) rr.value = state.refRate || '';
-  const effective = getEffectiveProfit();
-  const box = $('profitStatusBox');
-  if (box){
-    const cur = getCurrentRate(); const ref = getRefRate();
-    let changePct = null;
-    if (cur && ref) changePct = ((cur-ref)/ref)*100;
-    const increase = changePct!==null ? Math.max(0, changePct) : null;
-    box.innerHTML = `
-      <div class="preview-row"><span class="label">حالت</span><span class="val">${state.profitMode==='auto'?'خودکار':'ثابت'}</span></div>
-      <div class="preview-row"><span class="label">سود پایه</span><span class="val">${fmt(state.baseProfit,1)}٪</span></div>
-      <div class="preview-row"><span class="label">نرخ مرجع</span><span class="val">${ref?fmtMoney(ref,'toman'):'—'}</span></div>
-      <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${cur?fmtMoney(cur,'toman'):'—'}</span></div>
-      <div class="preview-row"><span class="label">تغییر نرخ</span><span class="val">${changePct!==null?fmt(changePct,1)+'٪':'—'}</span></div>
-      <div class="preview-row"><span class="label">افزایش اعمال‌شده</span><span class="val">${increase!==null?fmt(increase,1)+'٪':'—'}</span></div>
-      <div class="preview-row preview-total"><span class="label">سود نهایی مؤثر</span><span class="val" style="color:var(--success)">${fmt(effective,1)}٪</span></div>
-    `;
-  }
+  $('tabAuto').classList.toggle('active', state.profitMode==='auto');
+  $('tabFixed').classList.toggle('active', state.profitMode==='fixed');
+  if ($('baseProfitInput')) $('baseProfitInput').value = state.baseProfit;
+  if ($('refRateInput')) $('refRateInput').value = state.refRate||'';
+  const eff = getEffectiveProfit();
+  const cur = getCurrentRate(), ref = getRefRate();
+  let change=null;
+  if (cur&&ref) change = ((cur-ref)/ref)*100;
+  const increase = change!==null?Math.max(0,change):null;
+  $('profitStatusBox').innerHTML = `
+    <div class="preview-row"><span class="label">حالت</span><span class="val">${state.profitMode==='auto'?'خودکار':'ثابت'}</span></div>
+    <div class="preview-row"><span class="label">سود پایه</span><span class="val">${fmt(state.baseProfit,1)}٪</span></div>
+    <div class="preview-row"><span class="label">نرخ مرجع</span><span class="val">${ref?fmtMoney(ref):'—'}</span></div>
+    <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${cur?fmtMoney(cur):'—'}</span></div>
+    <div class="preview-row"><span class="label">تغییر</span><span class="val">${change!==null?fmt(change,1)+'٪':'—'}</span></div>
+    <div class="preview-row"><span class="label">افزایش</span><span class="val">${increase!==null?fmt(increase,1)+'٪':'—'}</span></div>
+    <div class="preview-row preview-total"><span class="label">سود مؤثر</span><span class="val" style="color:var(--success)">${fmt(eff,1)}٪</span></div>
+  `;
   const hint = $('profitCalcHint');
-  if (hint){
-    if (state.profitMode==='auto'){
-      const cur = getCurrentRate(); const ref = getRefRate();
-      if (!cur || !ref) hint.textContent = '⚠️ برای محاسبه خودکار، نرخ فعلی و نرخ مرجع باید معتبر باشند.';
-      else {
-        const change = ((cur-ref)/ref)*100;
-        hint.textContent = change > 0
-          ? `افزایش ${fmt(change,1)}٪ نرخ دلار به سود پایه اضافه می‌شود.`
-          : `نرخ دلار افزایش نداشته؛ سود پایه بدون تغییر اعمال می‌شود.`;
-      }
-    }else{
-      hint.textContent = 'در حالت ثابت، سود همیشه برابر سود پایه است.';
-    }
+  if (state.profitMode==='auto'){
+    if (!cur||!ref) hint.textContent = '⚠️ نرخ فعلی و مرجع باید معتبر باشند';
+    else if (change>0) hint.textContent = `افزایش ${fmt(change,1)}٪ به سود اضافه می‌شود`;
+    else hint.textContent = 'کاهش نرخ، سود را کم نمی‌کند';
+  }else{
+    hint.textContent = 'سود ثابت = سود پایه';
   }
 }
-function setProfitMode(mode){
+function setProfitMode(m){
   if (!requireAuth()) return;
-  state.profitMode = mode;
-  // نرخ مرجع را مجدداً تنظیم کن تا افزایش قبلی دوباره اعمال نشود
+  state.profitMode = m;
   const cur = getCurrentRate();
   if (cur) state.refRate = cur;
   if (!saveState()) return;
-  renderProfit();
-  renderProducts();
-  renderDashboard();
-  toast('حالت سود تغییر کرد.','success');
+  renderProfit(); renderProducts(); renderDashboard();
+  toast('تغییر کرد','success');
 }
 function saveProfitSettings(){
   if (!requireAuth()) return;
   const bp = parseNum($('baseProfitInput')?.value);
   const rr = parseNum($('refRateInput')?.value);
-  if (bp < 0){ toast('سود پایه نمی‌تواند منفی باشد.','error'); return; }
-  if (rr <= 0 && state.profitMode==='auto'){ toast('نرخ مرجع باید مثبت باشد.','error'); return; }
+  if (bp<0){ toast('سود منفی نیست','error'); return; }
+  if (rr<=0 && state.profitMode==='auto'){ toast('نرخ مرجع معتبر نیست','error'); return; }
   state.baseProfit = bp;
-  if (rr > 0) state.refRate = rr;
+  if (rr>0) state.refRate = rr;
   if (!saveState()) return;
-  toast('تنظیمات سود ذخیره شد.','success');
-  renderProfit();
-  renderProducts();
-  renderDashboard();
+  toast('ذخیره شد','success');
+  renderProfit(); renderProducts(); renderDashboard();
 }
 
-/* ---------- تنظیمات ---------- */
+/* ============ Settings ============ */
 function loadSettingsUI(){
-  if ($('setStoreName')) $('setStoreName').value = state.settings.storeName || '';
-  if ($('setMainCurrency')) $('setMainCurrency').value = state.settings.mainCurrency || 'toman';
-  if ($('setTheme')) $('setTheme').value = state.settings.theme || 'light';
-  if ($('setImgMaxW')) $('setImgMaxW').value = state.settings.imgMaxW || 600;
-  if ($('setImgQuality')) $('setImgQuality').value = state.settings.imgQuality || 0.7;
+  if ($('setStoreName')) $('setStoreName').value = state.settings.storeName||'';
+  if ($('setTheme')) $('setTheme').value = state.settings.theme||'light';
+  if ($('setImgMaxW')) $('setImgMaxW').value = state.settings.imgMaxW||600;
+  if ($('setImgQuality')) $('setImgQuality').value = state.settings.imgQuality||0.7;
+  if ($('lastBackupHint')) $('lastBackupHint').textContent = 'آخرین پشتیبان: ' + (state.lastBackup?new Date(state.lastBackup).toLocaleString('fa-IR'):'—');
 }
 function saveGeneralSettings(){
   if (!requireAuth()) return;
-  state.settings.storeName = ($('setStoreName')?.value || '').trim();
-  state.settings.mainCurrency = $('setMainCurrency')?.value || 'toman';
-  saveState();
-  toast('تنظیمات ذخیره شد.','success');
+  state.settings.storeName = ($('setStoreName')?.value||'').trim();
+  saveState(); toast('ذخیره شد','success');
 }
 function saveImageSettings(){
   if (!requireAuth()) return;
-  const w = parseInt($('setImgMaxW')?.value) || 600;
-  const q = parseFloat($('setImgQuality')?.value) || 0.7;
-  if (w < 100 || w > 2000){ toast('حداکثر عرض بین ۱۰۰ تا ۲۰۰۰ باشد.','error'); return; }
-  if (q < 0.1 || q > 1){ toast('کیفیت بین ۰.۱ تا ۱ باشد.','error'); return; }
-  state.settings.imgMaxW = w;
-  state.settings.imgQuality = q;
-  saveState();
-  toast('تنظیمات تصویر ذخیره شد.','success');
+  const w = parseInt($('setImgMaxW')?.value)||600;
+  const q = parseFloat($('setImgQuality')?.value)||0.7;
+  if (w<100||w>2000){ toast('عرض 100-2000','error'); return; }
+  if (q<0.1||q>1){ toast('کیفیت 0.1-1','error'); return; }
+  state.settings.imgMaxW=w; state.settings.imgQuality=q;
+  saveState(); toast('ذخیره شد','success');
 }
 async function changePassword(){
   if (!requireAuth()) return;
-  const oldPw = $('oldPw')?.value || '';
-  const np1 = $('newPw')?.value || '';
-  const np2 = $('newPw2')?.value || '';
-  if (!oldPw || !np1 || !np2){ toast('همه فیلدها را پر کنید.','error'); return; }
-  if (np1.length < 6){ toast('رمز جدید حداقل ۶ کاراکتر باشد.','error'); return; }
-  if (np1 !== np2){ toast('رمزها یکسان نیستند.','error'); return; }
+  const op = $('oldPw')?.value||'', n1 = $('newPw')?.value||'', n2 = $('newPw2')?.value||'';
+  if (!op||!n1||!n2){ toast('همه فیلدها','error'); return; }
+  if (n1.length<6){ toast('حداقل ۶ کاراکتر','error'); return; }
+  if (n1!==n2){ toast('رمزها یکسان نیستند','error'); return; }
   try{
-    const oldHash = await hashPassword(oldPw, state.auth.salt, state.auth.iterations);
-    if (oldHash !== state.auth.hash){ toast('رمز فعلی نادرست است.','error'); return; }
+    const oh = await hashPassword(op, state.auth.salt, state.auth.iterations);
+    if (oh!==state.auth.hash){ toast('رمز فعلی نادرست','error'); return; }
     const salt = randomSaltB64();
-    const hash = await hashPassword(np1, salt, state.auth.iterations);
-    state.auth.salt = salt;
-    state.auth.hash = hash;
+    const hash = await hashPassword(n1, salt, state.auth.iterations);
+    state.auth.salt = salt; state.auth.hash = hash;
     saveState();
     $('oldPw').value=''; $('newPw').value=''; $('newPw2').value='';
-    toast('رمز عبور تغییر کرد.','success');
-    lockPanel();
+    toast('تغییر کرد','success'); lockPanel();
   }catch(e){ toast(e.message,'error'); }
 }
-function resetAppSettings(){
-  if (!requireAuth()) return;
-  if (!confirm('همه تنظیمات به حالت پیش‌فرض بازگردند؟ (محصولات و داده‌ها حفظ می‌شوند)')) return;
-  state.settings = defaultState().settings;
-  state.baseProfit = 20;
-  state.profitMode = 'auto';
-  saveState();
-  applyTheme(state.settings.theme);
-  loadSettingsUI();
-  renderAll();
-  toast('تنظیمات بازگردانده شد.','success');
-}
 
-/* ---------- پشتیبان‌گیری ---------- */
-function renderBackupInfo(){
-  const el = $('lastBackupHint');
-  if (el) el.textContent = state.lastBackup ? 'آخرین پشتیبان‌گیری: ' + new Date(state.lastBackup).toLocaleString('fa-IR') : 'آخرین پشتیبان‌گیری: —';
-}
+/* ============ Backup ============ */
 function exportBackup(){
   if (!requireAuth()) return;
-  const backup = Object.assign({}, state);
-  // پاک کردن اطلاعات حساس از پشتیبان (فقط هش و salt باقی می‌ماند که خودشان رمز نیستند)
-  const blob = new Blob([JSON.stringify(backup, null, 2)], { type:'application/json' });
+  const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `backup_price_manager_${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `backup_${new Date().toISOString().slice(0,10)}.json`;
   a.click();
-  state.lastBackup = nowISO();
-  saveState();
-  renderBackupInfo();
-  toast('پشتیبان دانلود شد.','success');
+  state.lastBackup = nowISO(); saveState(); loadSettingsUI();
+  toast('دانلود شد','success');
 }
 function exportCSV(){
   if (!requireAuth()) return;
-  const rows = [['نام','کد','دسته','قیمت خرید','واحد','هزینه جانبی','بهای تمام‌شده','فروش نهایی','سود']];
+  const rows = [['نام','کد','دسته','خرید','واحد','هزینه','تمام‌شده','فروش','سود']];
   state.products.forEach(p=>{
-    const cost = computeCost(p);
-    const sugg = computeSuggestedSell(p);
-    const sell = getFinalSell(p) ?? sugg.suggested;
-    const cat = state.categories.find(c=>c.id===p.categoryId);
-    rows.push([
-      p.name, p.code||'', cat?cat.name:'',
-      p.buyPrice, p.buyCurrency, p.extraCost||0,
-      cost.total??'', sell??'', (cost.total && sell) ? (sell-cost.total) : ''
-    ]);
+    const c = computeCost(p);
+    const s = computeSuggested(p);
+    const sell = getFinalSell(p) ?? s.suggested;
+    const cat = state.categories.find(x=>x.id===p.categoryId);
+    rows.push([p.name, p.code||'', cat?cat.name:'', p.buyPrice, p.buyCurrency, p.extraCost||0, c.total??'', sell??'', (c.total&&sell)?sell-c.total:'']);
   });
   const csv = '\uFEFF' + rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `products_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
-  toast('CSV دانلود شد.','success');
+  toast('CSV دانلود شد','success');
 }
 function restoreBackup(input){
   if (!requireAuth()) return;
-  const file = input.files && input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e=>{
+  const f = input.files?.[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = e=>{
     try{
       const d = JSON.parse(e.target.result);
-      if (!d || typeof d !== 'object' || !Array.isArray(d.products)) throw new Error('ساختار نامعتبر');
-      if (!confirm(`فایل شامل ${d.products.length} محصول است. داده‌های فعلی جایگزین می‌شوند. ادامه؟`)) return;
+      if (!d||!Array.isArray(d.products)) throw new Error('ساختار نامعتبر');
+      if (!confirm(`${d.products.length} محصول. جایگزین شود؟`)) return;
       state = Object.assign(defaultState(), d);
-      if (!Array.isArray(state.categories)) state.categories = [];
-      if (!Array.isArray(state.rates)) state.rates = [];
       if (!state.auth) state.auth = defaultState().auth;
       saveState();
-      applyTheme(state.settings.theme || 'light');
+      applyTheme(state.settings.theme||'light');
       renderAll();
-      toast('بازیابی موفق.','success');
-    }catch(err){
-      toast('فایل نامعتبر: ' + err.message,'error');
-    }
+      toast('بازیابی شد','success');
+    }catch(err){ toast('فایل نامعتبر','error'); }
   };
-  reader.readAsText(file);
+  r.readAsText(f);
   input.value = '';
 }
 function confirmClearAll(){
   if (!requireAuth()) return;
-  const step1 = confirm('⚠️ همه داده‌ها پاک می‌شوند. مطمئنید؟');
-  if (!step1) return;
-  const step2 = confirm('این آخرین هشدار است. ادامه می‌دهید؟');
-  if (!step2) return;
-  // حفظ رمز عبور
+  if (!confirm('همه داده‌ها پاک شوند؟')) return;
+  if (!confirm('آخرین هشدار! ادامه؟')) return;
   const savedAuth = state.auth;
-  const savedAttempts = state.loginAttempts;
   state = defaultState();
   state.auth = savedAuth;
-  state.loginAttempts = savedAttempts;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  renderAll();
-  toast('همه داده‌ها پاک شد.','success');
+  saveState(); renderAll();
+  toast('پاک شد','success');
 }
 
-/* ---------- OCR ---------- */
-function openOCR(){
-  if (!requireAuth()) return;
-  $('modalTitle').textContent = '📄 استخراج متن از تصویر';
-  $('modalBody').innerHTML = `
-    <div class="field mb-10"><label>تصویر محصول</label><input type="file" id="ocrFile" accept="image/*"></div>
-    <div id="ocrPreview" class="mt-10"></div>
-    <div class="progress mt-10" id="ocrProgressWrap" style="display:none"><div id="ocrProgress"></div></div>
-    <div class="mt-10"><label>متن استخراج‌شده (قابل ویرایش)</label><textarea id="ocrText" rows="6" placeholder="متن استخراج‌شده اینجا نمایش داده می‌شود..."></textarea></div>
-    <div class="hint mt-10" id="ocrHint">برای شروع، تصویر را انتخاب کنید.</div>
-  `;
-  $('modalFoot').innerHTML = `
-    <button class="btn btn-primary" id="ocrRunBtn" onclick="runOCR()" disabled>شروع استخراج</button>
-    <button class="btn btn-secondary" onclick="applyOCRToForm()">اعمال در فرم</button>
-    <button class="btn btn-secondary" onclick="closeModal()">بستن</button>
-  `;
-  openModal();
-  $('ocrFile').addEventListener('change', e=>{
-    const f = e.target.files[0];
-    if (!f) return;
-    const url = URL.createObjectURL(f);
-    $('ocrPreview').innerHTML = `<img src="${url}" style="max-width:200px;border-radius:8px">`;
-    $('ocrRunBtn').disabled = false;
-    $('ocrHint').textContent = 'آماده استخراج.';
-    $('ocrRunBtn').dataset.file = url;
-  });
-}
-async function runOCR(){
-  const btn = $('ocrRunBtn');
-  const fileUrl = btn.dataset.file;
-  if (!fileUrl){ toast('ابتدا تصویر را انتخاب کنید.','error'); return; }
-  btn.disabled = true;
-  btn.innerHTML = '<span class="loader"></span> در حال آماده‌سازی...';
-  try{
-    await loadTesseract();
-    $('ocrProgressWrap').style.display = 'block';
-    const result = await Tesseract.recognize(fileUrl, 'eng', {
-      logger: m=>{
-        if (m.status === 'recognizing text'){
-          const p = Math.round(m.progress*100);
-          $('ocrProgress').style.width = p + '%';
-          $('ocrHint').textContent = `در حال پردازش... ${p}%`;
-        }
-      }
-    });
-    $('ocrText').value = result.data.text || '';
-    $('ocrHint').textContent = 'استخراج کامل شد. متن را بررسی و در صورت نیاز ویرایش کنید.';
-    // پیشنهاد نام
-    const firstLine = (result.data.text||'').split('\n').find(l=>l.trim().length>2);
-    if (firstLine && $('pName') && !$('pName').value) $('pName').value = firstLine.trim().substring(0,60);
-  }catch(e){
-    toast('خطا در OCR: ' + e.message,'error');
-    $('ocrHint').textContent = 'استخراج ناموفق بود.';
-  }finally{
-    btn.disabled = false;
-    btn.textContent = 'شروع استخراج';
-  }
-}
-function applyOCRToForm(){
-  const txt = ($('ocrText')?.value || '').trim();
-  if (!txt){ toast('متنی برای اعمال وجود ندارد.','error'); return; }
-  // سعی کن قیمت پیدا کنی
-  const priceMatch = txt.replace(/[۰-۹]/g, d=>'0123456789'[faDigits.indexOf(d)]).match(/\d{4,}/);
-  if ($('pName') && !$('pName').value){
-    $('pName').value = txt.split('\n')[0].substring(0,80);
-  }
-  if (priceMatch && $('pBuy') && !$('pBuy').value){
-    $('pBuy').value = parseInt(priceMatch[0],10);
-  }
-  toast('مقادیر پیشنهادی اعمال شدند. لطفاً بررسی کنید.','success');
-  updateProductPreview();
-}
+/* ============ Modal ============ */
+function openModal(){ $('genericModal').classList.add('open'); }
+function closeModal(){ $('genericModal').classList.remove('open'); editingId=null; tempImageData=''; }
 
-/* ---------- اسکنر ---------- */
+/* ============ Scanner ============ */
 function openScanner(){
   if (!requireAuth()) return;
-  $('scannerMsg').textContent = 'برای شروع اسکن، دکمه زیر را بزنید.';
+  $('scannerMsg').textContent = 'برای شروع دکمه را بزنید';
   $('scannerResult').innerHTML = '';
   $('scanStartBtn').style.display = 'inline-flex';
   $('scanStopBtn').style.display = 'none';
@@ -1717,114 +1344,70 @@ function openScanner(){
 }
 async function startScanner(){
   if (!('BarcodeDetector' in window)){
-    $('scannerMsg').textContent = 'مرورگر شما از BarcodeDetector پشتیبانی نمی‌کند. از Chrome/Edge جدید استفاده کنید.';
-    return;
-  }
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    $('scannerMsg').textContent = 'دسترسی به دوربین در این محیط ممکن نیست (HTTPS لازم است).';
+    $('scannerMsg').textContent = 'مرورگر از اسکن پشتیبانی نمی‌کند. Chrome جدید استفاده کنید.';
     return;
   }
   try{
-    scanStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' } });
+    scanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
     $('scannerVideo').srcObject = scanStream;
     $('scannerVideo').style.display = 'block';
     $('scannerMsg').textContent = 'دوربین را روی بارکد بگیرید...';
     $('scanStartBtn').style.display = 'none';
     $('scanStopBtn').style.display = 'inline-flex';
-    const detector = new BarcodeDetector();
+    const det = new BarcodeDetector();
     scanInterval = setInterval(async ()=>{
       try{
-        const codes = await detector.detect($('scannerVideo'));
+        const codes = await det.detect($('scannerVideo'));
         if (codes.length){
           const val = codes[0].rawValue;
-          $('scannerResult').innerHTML = `<div class="card card-pad"><div class="text-sm muted">نتیجه اسکن:</div><div style="font-weight:700;font-size:16px">${escapeHtml(val)}</div><div class="mt-10"><button class="btn btn-primary btn-sm" onclick="useScannedCode('${escapeHtml(val).replace(/'/g,'&#39;')}')">استفاده در محصول</button></div></div>`;
-          toast('بارکد شناسایی شد!','success');
+          $('scannerResult').innerHTML = `<div class="card"><div class="text-sm muted">نتیجه:</div><div style="font-weight:700;font-size:16px">${escapeHtml(val)}</div><button class="btn btn-primary btn-block mt-12" onclick="useScannedCode('${escapeHtml(val).replace(/'/g,'&#39;')}')">استفاده</button></div>`;
+          toast('شناسایی شد','success');
           stopScanner();
         }
       }catch(_){}
     }, 500);
-  }catch(e){
-    $('scannerMsg').textContent = 'خطا در دسترسی به دوربین: ' + e.message;
-  }
+  }catch(e){ $('scannerMsg').textContent = 'خطا: '+e.message; }
 }
 function stopScanner(){
-  if (scanInterval){ clearInterval(scanInterval); scanInterval = null; }
-  if (scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream = null; }
-  $('scannerVideo').srcObject = null;
-  $('scannerVideo').style.display = 'none';
-  $('scanStartBtn').style.display = 'inline-flex';
-  $('scanStopBtn').style.display = 'none';
+  if (scanInterval){ clearInterval(scanInterval); scanInterval=null; }
+  if (scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream=null; }
+  $('scannerVideo').srcObject=null;
+  $('scannerVideo').style.display='none';
+  $('scanStartBtn').style.display='inline-flex';
+  $('scanStopBtn').style.display='none';
   $('scannerModal').classList.remove('open');
-  $('scannerMsg').textContent = 'اسکن متوقف شد.';
 }
 function useScannedCode(val){
   stopScanner();
-  // جستجو در محصولات
-  const found = state.products.find(p=>p.code===val || p.id===val);
-  if (found){
-    toast('محصول یافت شد.','success');
-    openProductModal(found.id);
-  }else{
-    toast('محصولی با این کد یافت نشد. فرم افزودن باز می‌شود.','warning');
-    openProductModal();
-    setTimeout(()=>{ if ($('pCode')) $('pCode').value = val; }, 100);
-  }
+  const found = state.products.find(p=>p.code===val||p.id===val);
+  if (found){ openProductModal(found.id); toast('یافت شد','success'); }
+  else{ openProductModal(); setTimeout(()=>{ if ($('pCode')) $('pCode').value = val; }, 100); }
 }
 
-/* ---------- مودال ---------- */
-function openModal(){ $('genericModal').classList.add('open'); }
-function closeModal(){ $('genericModal').classList.remove('open'); editingId = null; tempImageData=''; }
-
-/* ---------- Render all ---------- */
+/* ============ Render All ============ */
 function renderAll(){
-  renderDashboard();
-  renderProducts();
-  renderCategories();
-  renderRates();
-  renderProfit();
-  renderBackupInfo();
-  loadSettingsUI();
+  renderDashboard(); renderProducts(); renderCategories(); renderRates(); renderProfit(); loadSettingsUI();
 }
 
-/* ---------- رویدادها ---------- */
+/* ============ Init ============ */
 document.addEventListener('DOMContentLoaded', ()=>{
   loadState();
-  applyTheme(state.settings.theme || 'light');
-  if (!isAuthConfigured()){
-    showSetup();
-    $('setupPw').addEventListener('input', updateStrength);
-  }else{
-    showLogin();
-  }
+  applyTheme(state.settings.theme||'light');
+  if (!isAuthConfigured()){ showSetup(); $('setupPw').addEventListener('input', updateStrength); }
+  else showLogin();
   $('authBtn').addEventListener('click', handleAuth);
-  $('setupPw2').addEventListener('keydown', e=>{ if (e.key==='Enter') handleAuth(); });
-  $('loginPw').addEventListener('keydown', e=>{ if (e.key==='Enter') handleAuth(); });
-
-  // فعالیت
-  ['click','keydown','mousemove','touchstart'].forEach(ev=>{
-    document.addEventListener(ev, registerActivity, { passive:true });
-  });
-
-  // مودال با کلیک بیرون
-  $('genericModal').addEventListener('click', e=>{ if (e.target.id==='genericModal') closeModal(); });
-  $('scannerModal').addEventListener('click', e=>{ if (e.target.id==='scannerModal') stopScanner(); });
-
-  // بستن سایدبار موبایل با کلیک بیرون
-  document.addEventListener('click', e=>{
-    const sb = $('sidebar'); const mt = document.querySelector('.mobile-top');
-    if (window.innerWidth <= 1024 && sb && !sb.contains(e.target) && mt && !mt.contains(e.target)){
-      sb.classList.remove('open');
-    }
-  });
+  $('setupPw2').addEventListener('keydown', e=>{ if(e.key==='Enter') handleAuth(); });
+  $('loginPw').addEventListener('keydown', e=>{ if(e.key==='Enter') handleAuth(); });
+  ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, ()=>{ if(isUnlocked()) resetInactivity(); }, {passive:true}));
+  $('genericModal').addEventListener('click', e=>{ if(e.target.id==='genericModal') closeModal(); });
+  $('scannerModal').addEventListener('click', e=>{ if(e.target.id==='scannerModal') stopScanner(); });
+  navigate('dashboard');
 });
-
-// پاک‌سازی منابع هنگام بسته شدن
 window.addEventListener('beforeunload', ()=>{
   if (scanStream) scanStream.getTracks().forEach(t=>t.stop());
   if (scanInterval) clearInterval(scanInterval);
-  if (session.inactivityTimer) clearTimeout(session.inactivityTimer);
+  clearTimeout(session.inactivityTimer);
 });
 </script>
 </body>
 </html>
-```
