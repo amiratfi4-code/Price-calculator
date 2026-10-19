@@ -1,1184 +1,957 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#176b55">
-<title>مدیریت کالا و قیمت</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>انبار کالا | مدیریت محصولات</title>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
-:root {
-  --bg: #f3f6f5;
-  --card: #ffffff;
-  --text: #202a27;
-  --muted: #718078;
-  --primary: #176b55;
-  --primary-light: #e1f2eb;
-  --border: #dce5e0;
-  --danger: #bd3434;
-  --shadow: 0 4px 18px rgba(20, 55, 42, .07);
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Tahoma, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.9;
-}
-body.dark {
-  --bg: #151b19;
-  --card: #202925;
-  --text: #edf4f0;
-  --muted: #a6b5ad;
-  --primary: #57c5a0;
-  --primary-light: #263f35;
-  --border: #37463e;
-  --danger: #ff7777;
-  --shadow: 0 4px 18px rgba(0,0,0,.15);
-}
-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--card);
-  border-bottom: 1px solid var(--border);
-  padding: 12px 16px;
-}
-.topbar {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.brand { font-size: 17px; font-weight: bold; }
-.brand small { display: block; font-size: 11px; color: var(--muted); }
-main { max-width: 1100px; margin: auto; padding: 16px; padding-bottom: 100px; }
-h2 { font-size: 19px; margin: 8px 0 16px; }
-h3 { font-size: 15px; margin: 0 0 12px; }
-.muted { color: var(--muted); font-size: 12px; }
-.panel, .product-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: var(--shadow);
-}
-.formgrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.field { min-width: 0; }
-.field.full { grid-column: 1 / -1; }
-label { display: block; margin-bottom: 5px; font-size: 12px; color: var(--muted); }
-input, select, textarea {
-  width: 100%;
-  min-width: 0;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--bg);
-  color: var(--text);
-  padding: 10px;
-  font: inherit;
-  outline: none;
-}
-input:focus, select:focus, textarea:focus { border-color: var(--primary); }
-button, .button {
-  border: 0;
-  border-radius: 9px;
-  padding: 10px 14px;
-  background: var(--primary);
-  color: white;
-  font: inherit;
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-button.secondary, .button.secondary {
-  background: var(--primary-light);
-  color: var(--primary);
-}
-button.danger { background: var(--danger); color: white; }
-button.small { padding: 6px 10px; font-size: 12px; }
-.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.stat {
-  padding: 13px;
-  border-radius: 12px;
-  background: var(--primary-light);
-  min-width: 0;
-}
-.stat b { display: block; color: var(--primary); font-size: 18px; overflow-wrap: anywhere; }
-.stat span { font-size: 11px; color: var(--muted); }
-.price-preview {
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px dashed var(--primary);
-  background: var(--primary-light);
-  margin-top: 14px;
-}
-.price-line { padding: 7px 0; border-bottom: 1px solid var(--border); }
-.price-line:last-child { border-bottom: 0; }
-.price-number { font-weight: bold; color: var(--primary); font-size: 16px; }
-.price-words { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
-.nav {
-  position: fixed;
-  z-index: 20;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  padding: 8px;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-}
-.nav button {
-  flex: 1;
-  max-width: 160px;
-  padding: 9px 3px;
-  background: transparent;
-  color: var(--muted);
-  font-size: 11px;
-}
-.nav button.active { background: var(--primary-light); color: var(--primary); }
-.page { display: none; }
-.page.active { display: block; }
-.product-head { display: flex; justify-content: space-between; gap: 10px; align-items: start; }
-.product-title { font-size: 16px; font-weight: bold; overflow-wrap: anywhere; }
-.product-meta { color: var(--muted); font-size: 12px; }
-.product-prices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
-.price-box { padding: 10px; background: var(--bg); border-radius: 10px; min-width: 0; }
-.price-box b { display: block; color: var(--primary); overflow-wrap: anywhere; }
-.rate-current { border: 1px solid var(--primary); }
-.rate-old { border: 1px solid var(--border); }
-hr { border: 0; border-top: 1px solid var(--border); margin: 14px 0; }
-.notice { padding: 10px 12px; background: var(--primary-light); border-radius: 9px; font-size: 12px; }
-.empty { text-align: center; color: var(--muted); padding: 25px 10px; }
-.hidden { display: none !important; }
-#modalRoot:empty { display: none; }
-.modal-backdrop {
-  position: fixed; inset: 0; z-index: 50;
-  background: rgba(0,0,0,.55);
-  display: flex; align-items: center; justify-content: center;
-  padding: 16px;
-}
-.modal {
-  background: var(--card); color: var(--text);
-  border-radius: 15px; padding: 18px;
-  width: 100%; max-width: 420px; max-height: 90vh; overflow: auto;
-}
-img.product-photo { max-width: 100%; max-height: 180px; object-fit: contain; border-radius: 10px; }
-@media (max-width: 520px) {
-  main { padding: 11px; padding-bottom: 90px; }
-  .panel, .product-card { padding: 12px; }
-  .formgrid { grid-template-columns: 1fr; }
-  .field.full { grid-column: auto; }
-  .stats { grid-template-columns: 1fr 1fr; }
-  .product-prices { grid-template-columns: 1fr; }
-}
+  :root{
+    --bg:#0F1218; --panel:#1A1F2B; --border:#2A3142;
+    --text:#FFFFFF; --text-muted:#94A3B8;
+    --cyan:#22D3EE; --cyan-hover:#06B6D4;
+    --green:#10B981; --red:#F87171; --amber:#F59E0B;
+    --radius:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:"Vazirmatn","Tahoma",system-ui,sans-serif}
+  body{background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+
+  .sidebar{width:220px;background:var(--panel);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:20px 12px;position:fixed;right:0;top:0;bottom:0;z-index:100;overflow-y:auto}
+  .logo{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;margin-bottom:30px;padding:0 8px}
+  .logo-icon{width:32px;height:32px;background:var(--cyan);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .nav-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius);color:var(--text-muted);margin-bottom:4px;transition:all .2s;cursor:pointer;border:none;background:none;width:100%;text-align:right;font-size:14px;font-family:inherit}
+  .nav-item:hover{background:rgba(34,211,238,.08);color:var(--text)}
+  .nav-item.active{background:rgba(34,211,238,.15);color:var(--cyan);border-right:3px solid var(--cyan)}
+
+  .main{flex:1;margin-right:220px;padding:20px 24px;min-height:100vh}
+  .header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+  .page-title{font-size:22px;font-weight:700}
+  .search-box{flex:1;max-width:420px;position:relative}
+  .search-box input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px 11px 42px;color:var(--text);font-size:14px;outline:none;transition:border .2s;font-family:inherit}
+  .search-box input:focus{border-color:var(--cyan)}
+  .search-box::before{content:"🔍";position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.6}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:var(--radius);border:none;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+  .btn-primary{background:var(--cyan);color:#0F1218}
+  .btn-primary:hover{background:var(--cyan-hover)}
+  .btn-secondary{background:var(--panel);color:var(--text);border:1px solid var(--border)}
+  .btn-secondary:hover{border-color:var(--cyan);color:var(--cyan)}
+  .btn-danger{background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)}
+  .btn-danger:hover{background:rgba(248,113,113,.25)}
+  .btn-sm{padding:6px 10px;font-size:12px}
+
+  .content{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+
+  .table-card{background:var(--panel);border-radius:14px;border:1px solid var(--border);overflow:hidden}
+  .table-header,.product-row{display:grid;grid-template-columns:50px 1.6fr 1.1fr 1.1fr .7fr .9fr 100px;padding:12px 16px;align-items:center;border-bottom:1px solid var(--border)}
+  .table-header{background:rgba(0,0,0,.25);font-size:12px;color:var(--text-muted);font-weight:600}
+  .product-row:hover{background:rgba(34,211,238,.05)}
+  .product-row:last-child{border-bottom:none}
+  .thumb{width:40px;height:40px;border-radius:8px;background:#2A3142;object-fit:cover;display:flex;align-items:center;justify-content:center;font-size:18px;overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .product-name{font-size:14px;font-weight:600;margin-bottom:2px}
+  .product-code{font-size:12px;color:var(--text-muted)}
+  .price{font-size:12px;font-variant-numeric:tabular-nums;line-height:1.5}
+  .price-text{font-size:11px;color:var(--cyan);margin-top:2px}
+  .badge{display:inline-block;padding:3px 8px;border-radius:6px;font-size:12px;font-weight:600}
+  .badge-green{background:rgba(16,185,129,.15);color:var(--green)}
+  .badge-red{background:rgba(248,113,113,.15);color:var(--red)}
+  .badge-amber{background:rgba(245,158,11,.15);color:var(--amber)}
+  .actions{display:flex;gap:4px;justify-content:center}
+  .action-btn{width:28px;height:28px;border-radius:6px;border:none;background:transparent;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-size:14px}
+  .action-btn:hover{background:rgba(255,255,255,.08);color:var(--text)}
+  .empty{text-align:center;padding:40px;color:var(--text-muted);font-size:14px}
+
+  .form-panel{background:var(--panel);border-radius:14px;border:1px solid var(--border);padding:20px;position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto}
+  .form-title{font-size:16px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+  .form-group{margin-bottom:14px}
+  .form-group label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:6px;font-weight:500}
+  .form-group input,.form-group textarea,.form-group select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;outline:none;transition:border .2s;font-family:inherit}
+  .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--cyan)}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .scan-btn{width:100%;background:rgba(34,211,238,.12);border:1px dashed var(--cyan);color:var(--cyan);padding:12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px;transition:all .2s;font-family:inherit}
+  .scan-btn:hover{background:rgba(34,211,238,.2)}
+  .upload-zone{border:1px dashed var(--border);border-radius:8px;padding:18px;text-align:center;color:var(--text-muted);font-size:12px;cursor:pointer;transition:all .2s}
+  .upload-zone:hover{border-color:var(--cyan);color:var(--cyan)}
+  .price-box{background:rgba(0,0,0,.25);border-radius:10px;padding:14px;margin-top:16px}
+  .price-box-title{font-size:13px;font-weight:600;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+  .slider-row{display:flex;align-items:center;gap:10px;margin:10px 0}
+  input[type=range]{flex:1;accent-color:var(--cyan)}
+  .form-actions{display:flex;gap:10px;margin-top:18px}
+  .form-actions .btn{flex:1;justify-content:center}
+  .hint{font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.6;word-break:break-word}
+  .profit-mode{display:flex;gap:6px;margin-bottom:10px}
+  .profit-mode button{flex:1;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);font-size:12px;cursor:pointer;font-family:inherit;font-weight:600}
+  .profit-mode button.active{background:rgba(34,211,238,.15);color:var(--cyan);border-color:var(--cyan)}
+
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;overflow:auto}
+  .modal.open{display:flex}
+  .modal-content{background:var(--panel);border-radius:14px;padding:24px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;border:1px solid var(--border);position:relative}
+  .modal-close{position:absolute;top:12px;left:12px;width:32px;height:32px;border:none;background:rgba(255,255,255,.05);color:var(--text);border-radius:8px;cursor:pointer;font-size:18px}
+  .modal-close:hover{background:rgba(255,255,255,.1)}
+  .modal h3{margin-bottom:16px;font-size:17px}
+
+  .toast{position:fixed;bottom:20px;left:20px;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:10px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);z-index:2000;transform:translateY(100px);opacity:0;transition:all .3s;max-width:320px}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast.success{border-color:var(--green);color:var(--green)}
+  .toast.error{border-color:var(--red);color:var(--red)}
+
+  .mobile-header{display:none}
+  .hamburger{width:40px;height:40px;background:var(--panel);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;color:var(--text)}
+
+  .settings-grid{display:grid;gap:12px}
+  .rate-link{color:var(--cyan);text-decoration:none;font-size:12px}
+  .rate-link:hover{text-decoration:underline}
+  .rate-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:13px;border-bottom:1px dashed var(--border);gap:10px;flex-wrap:wrap}
+  .rate-row:last-child{border:none}
+
+  @media (max-width:1100px){
+    .sidebar{transform:translateX(100%);transition:transform .3s}
+    .sidebar.open{transform:translateX(0)}
+    .main{margin-right:0}
+    .content{grid-template-columns:1fr}
+    .form-panel{position:static;max-height:none}
+    .mobile-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  }
+  @media (max-width:760px){
+    .table-header,.product-row{grid-template-columns:40px 1.4fr 1fr 60px;font-size:12px}
+    .table-header span:nth-child(3),.product-row>:nth-child(3),
+    .table-header span:nth-child(4),.product-row>:nth-child(4),
+    .table-header span:nth-child(6),.product-row>:nth-child(6){display:none}
+    .header{flex-direction:column;align-items:stretch}
+    .search-box{max-width:100%}
+  }
 </style>
 </head>
-
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand">
-      مدیریت کالا و قیمت
-      <small>ثبت کالا، نرخ ارز و محاسبه قیمت فروش</small>
-    </div>
-    <button class="secondary small" type="button" onclick="toggleTheme()">تغییر پوسته</button>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo"><div class="logo-icon">📦</div><span>انبار کالا</span></div>
+  <nav>
+    <button class="nav-item active" onclick="showView('products',this)"><span>📦</span><span>محصولات</span></button>
+    <button class="nav-item" onclick="showView('rates',this)"><span>💵</span><span>نرخ دلار</span></button>
+    <button class="nav-item" onclick="showView('settings',this)"><span>⚙️</span><span>تنظیمات</span></button>
+  </nav>
+</aside>
+
+<main class="main">
+  <div class="mobile-header">
+    <div class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</div>
+    <div class="page-title">محصولات</div>
+    <div style="width:40px"></div>
   </div>
-</header>
 
-<main>
-  <section id="page-home" class="page active">
-    <h2>داشبورد</h2>
-    <div class="stats">
-      <div class="stat"><b id="totalProducts">۰</b><span>تعداد کالاها</span></div>
-      <div class="stat"><b id="currentDollarView">ثبت نشده</b><span>نرخ فعلی دلار</span></div>
-      <div class="stat"><b id="homeProfitView">۰٪</b><span>سود مؤثر مشترک</span></div>
-      <div class="stat"><b id="totalValueView">۰</b><span>ارزش تقریبی موجودی</span></div>
-    </div>
-
-    <div class="panel">
-      <h3>جستجوی کالا</h3>
-      <input id="searchProducts" type="search" placeholder="نام کالا، کد یا توضیحات..." oninput="renderProducts()">
-      <div class="actions">
-        <button type="button" onclick="showPage('product-form')">ثبت کالای جدید</button>
-        <button class="secondary" type="button" onclick="showPage('rates')">ثبت نرخ دلار</button>
+  <!-- PRODUCTS VIEW -->
+  <div id="view-products">
+    <div class="header">
+      <h1 class="page-title">محصولات</h1>
+      <div class="search-box"><input type="text" id="searchInput" placeholder="جستجو در نام، کد یا بارکد..." oninput="renderProducts()" /></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-secondary" onclick="exportBackup()">💾 پشتیبان</button>
+        <button class="btn btn-primary" onclick="resetForm()">+ ثبت کالای جدید</button>
       </div>
     </div>
-    <div id="productList"></div>
-  </section>
 
-  <section id="page-product-form" class="page">
-    <h2 id="productFormTitle">ثبت کالای جدید</h2>
-    <form id="productForm" onsubmit="saveProduct(event)">
-      <input type="hidden" id="pId">
-
-      <div class="panel">
-        <h3>اطلاعات کالا</h3>
-        <div class="formgrid">
-          <div class="field">
-            <label for="pName">نام کالا *</label>
-            <input id="pName" required maxlength="150">
-          </div>
-          <div class="field">
-            <label for="pCode">کد کالا</label>
-            <input id="pCode">
-          </div>
-          <div class="field">
-            <label for="pBuy">قیمت خرید (دلار)</label>
-            <input id="pBuy" type="number" min="0" step="any" value="0" oninput="updatePricePreview()">
-          </div>
-          <div class="field">
-            <label for="pManualPrice">قیمت فروش دستی (تومان، اختیاری)</label>
-            <input id="pManualPrice" type="number" min="0" step="any" placeholder="خالی = محاسبه خودکار" oninput="updatePricePreview()">
-          </div>
-          <div class="field">
-            <label for="pQuantity">موجودی</label>
-            <input id="pQuantity" type="number" min="0" step="1" value="1">
-          </div>
-          <div class="field">
-            <label for="pCategory">دسته‌بندی</label>
-            <input id="pCategory">
-          </div>
-          <div class="field full">
-            <label for="pDescription">توضیحات</label>
-            <textarea id="pDescription" rows="2"></textarea>
-          </div>
-          <div class="field full">
-            <label for="pPhoto">عکس کالا</label>
-            <input id="pPhoto" type="file" accept="image/*" onchange="previewPhoto(event)">
-            <img id="pPhotoPreview" class="product-photo hidden" alt="پیش‌نمایش عکس">
-          </div>
-          <div class="field full">
-            <label for="pBarcode">بارکد یا شناسه QR</label>
-            <input id="pBarcode" placeholder="در صورت نیاز وارد کنید">
-          </div>
-        </div>
-
-        <div class="price-preview">
-          <h3>پیش‌نمایش قیمت</h3>
-          <div class="price-line">
-            <div>قیمت خرید به تومان</div>
-            <div class="price-number" id="previewBuyNumber">۰ تومان</div>
-            <div class="price-words" id="previewBuyWords">صفر تومان</div>
-          </div>
-          <div class="price-line">
-            <div>قیمت فروش</div>
-            <div class="price-number" id="previewSaleNumber">۰ تومان</div>
-            <div class="price-words" id="previewSaleWords">صفر تومان</div>
-          </div>
-          <div class="muted" id="previewProfitInfo">سود مشترک: —</div>
-        </div>
-
-        <div class="actions">
-          <button type="submit">ذخیره کالا</button>
-          <button class="secondary" type="button" onclick="resetProductForm()">پاک کردن فرم</button>
-          <button class="secondary" type="button" onclick="showPage('home')">بازگشت</button>
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">💵</span>
+        <div>
+          <div style="font-size:12px;color:var(--text-muted)">نرخ فعلی دلار</div>
+          <div style="font-size:16px;font-weight:700;color:var(--cyan)" id="bannerCurrentRate">—</div>
         </div>
       </div>
-    </form>
-  </section>
-
-  <section id="page-rates" class="page">
-    <h2>نرخ دلار</h2>
-    <div class="panel">
-      <h3>نرخ فعلی و قبلی</h3>
-      <div class="stats">
-        <div class="stat rate-current">
-          <b id="rateCurrentView">ثبت نشده</b>
-          <span>نرخ فعلی (تومان)</span>
-        </div>
-        <div class="stat rate-old">
-          <b id="ratePreviousView">ثبت نشده</b>
-          <span>نرخ قبلی (تومان)</span>
-        </div>
+      <div>
+        <div style="font-size:12px;color:var(--text-muted)">نرخ قبلی</div>
+        <div style="font-size:14px;font-weight:600" id="bannerPrevRate">—</div>
       </div>
-
-      <div class="notice">
-        نرخ دلار به‌صورت دستی ثبت می‌شود. برای مشاهده نرخ‌های آنلاین می‌توانید از سایت نرخ‌خارا استفاده کنید.
-        <div style="margin-top:8px">
-          <a class="button secondary" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">باز کردن سایت نرخ‌خارا</a>
-        </div>
+      <div>
+        <div style="font-size:12px;color:var(--text-muted)">تغییر</div>
+        <div id="bannerChange">—</div>
       </div>
-
-      <hr>
-      <form id="rateForm" onsubmit="saveRate(event)">
-        <div class="formgrid">
-          <div class="field">
-            <label for="rateValue">نرخ دلار به تومان *</label>
-            <input id="rateValue" type="number" min="1" step="any" required>
-          </div>
-          <div class="field">
-            <label for="rateDate">تاریخ ثبت</label>
-            <input id="rateDate" type="date">
-          </div>
-          <div class="field full">
-            <label for="rateNote">توضیحات نرخ</label>
-            <input id="rateNote" placeholder="اختیاری">
-          </div>
-        </div>
-        <div class="actions">
-          <button type="submit">ثبت نرخ</button>
-        </div>
-      </form>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a class="rate-link" href="https://nerkhara.com/" target="_blank" rel="noopener">🔗 نرخ‌ارا</a>
+        <button class="btn btn-secondary btn-sm" onclick="updateRate()">🔄 به‌روزرسانی</button>
+      </div>
     </div>
 
-    <div class="panel">
-      <h3>تاریخچه نرخ دلار</h3>
-      <div id="rateHistory"></div>
+    <div class="content">
+      <div class="table-card">
+        <div class="table-header">
+          <span>تصویر</span><span>نام / کد</span><span>خرید</span><span>فروش</span>
+          <span>سود</span><span>تغییر</span><span>عملیات</span>
+        </div>
+        <div id="productList"></div>
+      </div>
+
+      <div class="form-panel">
+        <div class="form-title" id="formTitle">📦 ثبت کالای جدید</div>
+
+        <div class="form-group">
+          <label>نام محصول *</label>
+          <input type="text" id="fName" placeholder="مثال: گوشی سامسونگ A54" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>کد محصول</label>
+            <input type="text" id="fCode" placeholder="SM-A546E" />
+          </div>
+          <div class="form-group">
+            <label>بارکد</label>
+            <input type="text" id="fBarcode" placeholder="بارکد" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <button class="scan-btn" onclick="startScan()">📷 اسکن بارکد</button>
+          <button class="scan-btn" onclick="document.getElementById('ocrInput').click()">🖼️ OCR تصویر</button>
+          <input type="file" id="ocrInput" accept="image/*" style="display:none" onchange="runOCR(this)" />
+        </div>
+
+        <div class="form-group">
+          <label>قیمت خرید (تومان)</label>
+          <input type="text" id="fBuy" placeholder="مبلغ خرید" oninput="recalcForm()" />
+          <div class="hint" id="buyWords">—</div>
+        </div>
+        <div class="form-group">
+          <label>خرید دلاری (USD)</label>
+          <input type="number" id="fBuyUSD" placeholder="مثلاً 200" oninput="usdToToman()" />
+          <div class="hint" id="usdHint">معادل تومانی: —</div>
+        </div>
+
+        <div class="price-box">
+          <div class="price-box-title">
+            <span>مدیریت سود</span>
+            <span class="badge badge-amber" id="profitModeBadge">خودکار</span>
+          </div>
+          <div class="profit-mode">
+            <button id="modeAutoBtn" class="active" onclick="setProfitMode('auto')">خودکار (تکی)</button>
+            <button id="modeFixedBtn" onclick="setProfitMode('fixed')">ثابت برای همه</button>
+          </div>
+          <div class="slider-row">
+            <span style="font-size:12px;color:var(--text-muted)">درصد سود</span>
+            <input type="range" id="fProfit" min="0" max="100" value="25" oninput="recalcForm()" />
+            <span style="font-size:13px;font-weight:600;width:40px;text-align:left" id="profitLbl">۲۵٪</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-top:8px">
+            <span>قیمت فروش پیشنهادی:</span>
+            <strong style="color:var(--green)" id="suggestedSell">—</strong>
+          </div>
+          <div class="hint" id="suggestedSellWords">—</div>
+        </div>
+
+        <div class="form-group" style="margin-top:14px">
+          <label>قیمت فروش (تومان) — اختیاری</label>
+          <input type="text" id="fSell" placeholder="مبلغ فروش" oninput="recalcForm()" />
+          <div class="hint" id="sellWords">—</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>تصویر</label>
+            <div class="upload-zone" onclick="document.getElementById('imgInput').click()">☁️ آپلود</div>
+            <input type="file" id="imgInput" accept="image/*" style="display:none" onchange="loadImage(this)" />
+            <img id="previewImg" style="max-width:100%;margin-top:8px;border-radius:8px;display:none" />
+          </div>
+          <div class="form-group">
+            <label>یادداشت</label>
+            <textarea id="fNote" rows="3" placeholder="توضیحات..."></textarea>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-secondary" onclick="resetForm()">لغو</button>
+          <button class="btn btn-primary" onclick="saveProduct()">✓ ذخیره</button>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <section id="page-settings" class="page">
-    <h2>تنظیمات</h2>
+  <!-- RATES VIEW -->
+  <div id="view-rates" style="display:none">
+    <div class="header"><h1 class="page-title">تاریخچهٔ نرخ دلار</h1>
+      <a class="rate-link" href="https://nerkhara.com/" target="_blank" rel="noopener">🔗 نرخ‌ارا</a>
+    </div>
+    <div class="table-card" style="padding:20px">
+      <div class="form-row" style="margin-bottom:16px">
+        <div class="form-group"><label>نرخ جدید (تومان)</label><input type="number" id="newRate" placeholder="60500" /></div>
+        <div class="form-group"><label>توضیح</label><input type="text" id="rateNote" placeholder="اختیاری" /></div>
+      </div>
+      <button class="btn btn-primary" onclick="addRateManual()">+ افزودن نرخ</button>
+      <div id="rateHistory" style="margin-top:20px"></div>
+    </div>
+  </div>
 
-    <div class="panel">
-      <h3>تنظیم سود مشترک همه کالاها</h3>
-      <div class="formgrid">
-        <div class="field">
-          <label for="profitMode">روش محاسبه سود</label>
-          <select id="profitMode" onchange="updateProfitSummary()">
-            <option value="auto">خودکار بر اساس افزایش دلار</option>
-            <option value="manual">دستی و ثابت</option>
+  <!-- SETTINGS VIEW -->
+  <div id="view-settings" style="display:none">
+    <div class="header"><h1 class="page-title">تنظیمات</h1></div>
+    <div class="table-card" style="padding:20px">
+      <div class="settings-grid">
+        <div class="form-group">
+          <label>سود پیش‌فرض (٪)</label>
+          <input type="number" id="setProfit" onchange="saveSettings()" />
+        </div>
+        <div class="form-group">
+          <label>حالت سود پیش‌فرض</label>
+          <select id="setMode" onchange="saveSettings()">
+            <option value="auto">خودکار (تکی)</option>
+            <option value="fixed">ثابت برای همه</option>
           </select>
         </div>
-        <div class="field">
-          <label for="profitDefault">سود پایه / سود ثابت (%)</label>
-          <input id="profitDefault" type="number" min="0" step="any" value="20" oninput="updateProfitSummary()">
-        </div>
-        <div class="field full">
-          <div class="stats">
-            <div class="stat">
-              <b id="effectiveProfitView">۲۰٪</b>
-              <span>سود مؤثر فعلی</span>
-            </div>
-            <div class="stat">
-              <b id="profitDollarChangeView">۰٪</b>
-              <span>تغییر نرخ دلار نسبت به مبنا</span>
-            </div>
-          </div>
-          <div class="notice">
-            در حالت خودکار، فقط افزایش درصدی دلار به سود پایه اضافه می‌شود و کاهش دلار سود را کاهش نمی‌دهد. در حالت دستی، درصد سود ثابت است؛ قیمت خرید و فروش همچنان با نرخ فعلی دلار محاسبه می‌شود.
-          </div>
-        </div>
-        <div class="field">
-          <label for="extraDefault">هزینه اضافی پیش‌فرض (تومان)</label>
-          <input id="extraDefault" type="number" min="0" step="any" value="0">
-        </div>
-        <div class="field">
-          <label for="storeName">نام فروشگاه</label>
-          <input id="storeName">
+        <hr style="border-color:var(--border);margin:10px 0" />
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="exportBackup()">💾 دانلود پشتیبان</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('importInput').click()">📂 بازیابی از فایل</button>
+          <input type="file" id="importInput" accept="application/json" style="display:none" onchange="importBackup(this)" />
+          <button class="btn btn-danger" onclick="clearAll()">🗑️ پاک کردن همه</button>
         </div>
       </div>
-      <div class="actions">
-        <button type="button" onclick="saveFinance()">ذخیره تنظیمات مالی</button>
-      </div>
     </div>
-
-    <div class="panel">
-      <h3>امنیت مدیر</h3>
-      <div class="field">
-        <label for="adminPin">رمز مدیر جدید</label>
-        <input id="adminPin" type="password" inputmode="numeric" placeholder="برای تغییر رمز وارد کنید">
-      </div>
-      <div class="actions">
-        <button type="button" onclick="saveAdminPin()">ذخیره رمز</button>
-      </div>
-      <p class="muted">اطلاعات این نسخه در حافظه محلی همین مرورگر ذخیره می‌شود.</p>
-    </div>
-
-    <div class="panel">
-      <h3>پوسته برنامه</h3>
-      <div class="actions">
-        <button type="button" onclick="setTheme('light')">روشن</button>
-        <button class="secondary" type="button" onclick="setTheme('dark')">تیره</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="page-backup" class="page">
-    <h2>پشتیبان‌گیری و بازیابی</h2>
-    <div class="panel">
-      <h3>پشتیبان‌گیری</h3>
-      <p class="muted">از اطلاعات کالاها، نرخ‌ها و تنظیمات نسخه پشتیبان تهیه کنید.</p>
-      <div class="actions">
-        <button type="button" onclick="exportBackup()">دریافت فایل پشتیبان</button>
-      </div>
-      <hr>
-      <h3>بازیابی اطلاعات</h3>
-      <div class="field">
-        <label for="backupFile">انتخاب فایل پشتیبان</label>
-        <input id="backupFile" type="file" accept=".json,application/json">
-      </div>
-      <div class="actions">
-        <button class="secondary" type="button" onclick="importBackup()">بازیابی فایل</button>
-      </div>
-    </div>
-  </section>
+  </div>
 </main>
 
-<nav class="nav">
-  <button class="active" data-page="home" onclick="showPage('home')">خانه</button>
-  <button data-page="product-form" onclick="resetProductForm();showPage('product-form')">ثبت کالا</button>
-  <button data-page="rates" onclick="showPage('rates')">نرخ دلار</button>
-  <button data-page="settings" onclick="showPage('settings')">تنظیمات</button>
-  <button data-page="backup" onclick="showPage('backup')">پشتیبان</button>
-</nav>
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
 
-<div id="modalRoot"></div>
+<div class="modal" id="scanModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="stopScan()">×</button>
+    <h3>📷 اسکن بارکد</h3>
+    <video id="scanVideo" style="width:100%;border-radius:8px;margin-top:10px;background:#000" autoplay playsinline muted></video>
+    <div class="hint" style="margin-top:8px">دوربین را روی بارکد بگیرید...</div>
+  </div>
+</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<div class="toast" id="toast"></div>
 
-<!-- بخش ۲ از ۳ از ادامه همین خط آغاز می‌شود. --><script>
-'use strict';
+<script>
+/* ================== Persian digit & words ================== */
+const PERSIAN_DIGITS = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
 
-const DBKEY = 'price_manager_complete_v1';
-
-const initialDB = {
-  products: [],
-  rates: [],
-  settings: {
-    profit: 20,
-    profitMode: 'auto',
-    profitReferenceRate: 0,
-    extra: 0,
-    storeName: '',
-    adminPin: '',
-    theme: 'light'
-  }
-};
-
-let db = loadDB();
-let editingPhoto = '';
-let editingRateId = null;
-
-function loadDB() {
-  try {
-    const saved = localStorage.getItem(DBKEY);
-    if (!saved) return structuredClone(initialDB);
-    const parsed = JSON.parse(saved);
-    return {
-      products: Array.isArray(parsed.products) ? parsed.products : [],
-      rates: Array.isArray(parsed.rates) ? parsed.rates : [],
-      settings: { ...initialDB.settings, ...(parsed.settings || {}) }
-    };
-  } catch (error) {
-    console.error('خطا در بارگذاری اطلاعات:', error);
-    return structuredClone(initialDB);
-  }
+function toPersianDigits(str){
+  return String(str).replace(/\d/g, d => PERSIAN_DIGITS[+d]);
 }
 
-function saveDB() {
-  localStorage.setItem(DBKEY, JSON.stringify(db));
-}
-
-function uid() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-}
-
-function faNum(value, decimals = 0) {
-  const n = Number(value);
-  if (!Number.isFinite(n)) return '۰';
-  return n.toLocaleString('fa-IR', {
-    maximumFractionDigits: decimals,
-    minimumFractionDigits: 0
+function formatNum(n, decimals = 0){
+  if (n === null || n === undefined || n === '' || isNaN(n)) return '—';
+  const s = Number(n).toLocaleString('en-US', {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals
   });
+  return toPersianDigits(s);
 }
 
-function money(value) {
-  return faNum(Math.round(Number(value) || 0)) + ' تومان';
-}
+function numToPersianWords(input){
+  const n = Math.floor(Math.abs(Number(input)));
+  if (!n) return 'صفر';
+  if (isNaN(n)) return '';
 
-function currentRate() {
-  const sorted = [...db.rates].sort((a, b) =>
-    Number(b.timestamp || 0) - Number(a.timestamp || 0)
-  );
-  if (sorted.length) return Number(sorted[0].value) || 0;
-  return 0;
-}
+  const yekan  = ['','یک','دو','سه','چهار','پنج','شش','هفت','هشت','نه'];
+  const dahgan = ['','','بیست','سی','چهل','پنجاه','شصت','هفتاد','هشتاد','نود'];
+  const dahyek = ['ده','یازده','دوازده','سیزده','چهارده','پانزده','شانزده','هفده','هجده','نوزده'];
+  const sadgan = ['','صد','دویست','سیصد','چهارصد','پانصد','ششصد','هفتصد','هشتصد','نهصد'];
+  const scales = ['','هزار','میلیون','میلیارد','تریلیون','بیلیارد'];
 
-function previousRate() {
-  const sorted = [...db.rates].sort((a, b) =>
-    Number(b.timestamp || 0) - Number(a.timestamp || 0)
-  );
-  return sorted.length > 1 ? Number(sorted[1].value) || 0 : 0;
-}
-
-function getProfitDetails() {
-  const base = Math.max(0, Number(db.settings.profit) || 0);
-  const rate = currentRate();
-  const reference = Number(db.settings.profitReferenceRate) || 0;
-
-  let change = 0;
-  if (rate > 0 && reference > 0) {
-    change = ((rate - reference) / reference) * 100;
-  }
-
-  const mode = db.settings.profitMode || 'auto';
-  const effective = mode === 'auto'
-    ? base + Math.max(0, change)
-    : base;
-
-  return { base, rate, reference, change, effective, mode };
-}
-
-function effectiveProfit() {
-  return getProfitDetails().effective;
-}
-
-function salePrice(product) {
-  const manual = Number(product.manualPrice) || 0;
-  if (manual > 0) return manual;
-
-  const buyUSD = Math.max(0, Number(product.buyUSD) || 0);
-  const rate = currentRate();
-  if (!rate) return 0;
-
-  const buyToman = buyUSD * rate;
-  const extra = Math.max(0, Number(product.extra ?? db.settings.extra) || 0);
-  return buyToman * (1 + effectiveProfit() / 100) + extra;
-}
-
-function buyPriceToman(product) {
-  return Math.max(0, Number(product.buyUSD) || 0) * currentRate();
-}
-
-function numberToPersianWords(value) {
-  let n = Math.round(Number(value) || 0);
-  if (n === 0) return 'صفر';
-
-  if (n < 0) return 'منفی ' + numberToPersianWords(Math.abs(n));
-
-  const ones = [
-    '', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه',
-    'ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده',
-    'شانزده', 'هفده', 'هجده', 'نوزده'
-  ];
-
-  const tens = [
-    '', '', 'بیست', 'سی', 'چهل', 'پنجاه',
-    'شصت', 'هفتاد', 'هشتاد', 'نود'
-  ];
-
-  const hundreds = [
-    '', 'یکصد', 'دویست', 'سیصد', 'چهارصد',
-    'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'
-  ];
-
-  const scales = ['', 'هزار', 'میلیون', 'میلیارد', 'تریلیون'];
-
-  function under1000(num) {
+  function threeDigit(num){
     const parts = [];
-    const h = Math.floor(num / 100);
-    const r = num % 100;
-
-    if (h) parts.push(hundreds[h]);
-
-    if (r < 20) {
-      if (ones[r]) parts.push(ones[r]);
-    } else {
-      const t = Math.floor(r / 10);
-      const o = r % 10;
-      if (tens[t]) parts.push(tens[t]);
-      if (o) parts.push(ones[o]);
+    if (num >= 100){
+      parts.push(sadgan[Math.floor(num / 100)]);
+      num %= 100;
     }
-
+    if (num >= 20){
+      parts.push(dahgan[Math.floor(num / 10)]);
+      num %= 10;
+      if (num > 0) parts.push(yekan[num]);
+    } else if (num >= 10){
+      parts.push(dahyek[num - 10]);
+    } else if (num > 0){
+      parts.push(yekan[num]);
+    }
     return parts.join(' و ');
   }
 
-  const parts = [];
-  let scale = 0;
-
-  while (n > 0) {
-    const group = n % 1000;
-
-    if (group) {
-      let text = under1000(group);
-      if (scales[scale]) text += ' ' + scales[scale];
-      parts.unshift(text);
+  const result = [];
+  let rest = n;
+  let scaleIdx = 0;
+  while (rest > 0){
+    const chunk = rest % 1000;
+    if (chunk > 0){
+      let w = threeDigit(chunk);
+      if (scales[scaleIdx]) w += ' ' + scales[scaleIdx];
+      result.unshift(w);
     }
+    rest = Math.floor(rest / 1000);
+    scaleIdx++;
+  }
+  return result.join(' و ');
+}
 
-    n = Math.floor(n / 1000);
-    scale++;
+function moneyWords(n){
+  const num = Number(n);
+  if (!num || isNaN(num)) return '—';
+  return numToPersianWords(num) + ' تومان';
+}
+
+function stripDigits(s){
+  return String(s || '').replace(/[۰-۹]/g, d => PERSIAN_DIGITS.indexOf(d)).replace(/[^\d]/g, '');
+}
+function parseNum(s){
+  if (typeof s === 'number') return isFinite(s) ? Math.floor(s) : 0;
+  const cleaned = stripDigits(s);
+  return cleaned ? parseInt(cleaned, 10) : 0;
+}
+
+/* ================== Storage ================== */
+const STORE_KEY = 'anbar_kala_v2';
+let state = {
+  products: [],
+  rates: [],
+  currentRate: 60500,
+  prevRate: 60000,
+  settings: { profit: 25, mode: 'auto' },
+  profitMode: 'auto',
+  editingId: null,
+};
+
+function defaultState(){
+  return {
+    products: [],
+    rates: [
+      { value: 60500, note: 'نرخ امروز', date: new Date().toISOString() },
+      { value: 60000, note: 'نرخ قبلی', date: new Date(Date.now() - 86400000).toISOString() },
+    ],
+    currentRate: 60500,
+    prevRate: 60000,
+    settings: { profit: 25, mode: 'auto' },
+    profitMode: 'auto',
+    editingId: null,
+  };
+}
+
+function loadState(){
+  let data = null;
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) data = JSON.parse(raw);
+  } catch(e){ console.warn(e); }
+
+  if (!data || !Array.isArray(data.products)){
+    state = defaultState();
+    seedDemo();
+    saveState();
+  } else {
+    state = Object.assign(defaultState(), data);
+    if (!state.products.length) seedDemo();
+    if (!Array.isArray(state.rates) || !state.rates.length){
+      state.rates = defaultState().rates;
+    }
   }
 
-  return parts.join(' و ');
+  // اطمینان از هماهنگی profitMode
+  if (!state.profitMode) state.profitMode = state.settings.mode || 'auto';
+  if (!state.settings) state.settings = { profit: 25, mode: 'auto' };
+  if (state.settings.profit == null) state.settings.profit = 25;
+  if (!state.settings.mode) state.settings.mode = 'auto';
+
+  // نرخ فعلی/قبلی را با آرایه هماهنگ کن
+  if (state.rates.length){
+    state.currentRate = Number(state.rates[0].value) || state.currentRate;
+    state.prevRate = state.rates[1] ? Number(state.rates[1].value) : state.currentRate;
+  }
 }
 
-function moneyWords(value) {
-  return numberToPersianWords(Math.round(Number(value) || 0)) + ' تومان';
+function saveState(){
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch(e){ console.warn('save failed', e); }
 }
 
-function updatePricePreview() {
-  const product = {
-    buyUSD: Number(document.getElementById('pBuy')?.value) || 0,
-    manualPrice: Number(document.getElementById('pManualPrice')?.value) || 0,
-    extra: Number(db.settings.extra) || 0
-  };
-
-  const buy = buyPriceToman(product);
-  const sale = salePrice(product);
-
-  setText('previewBuyNumber', money(buy));
-  setText('previewBuyWords', moneyWords(buy));
-  setText('previewSaleNumber', money(sale));
-  setText('previewSaleWords', moneyWords(sale));
-
-  const details = getProfitDetails();
-  setText(
-    'previewProfitInfo',
-    'سود مشترک: ' + faNum(details.effective, 2) + '٪' +
-    (details.mode === 'auto' ? ' (خودکار)' : ' (ثابت)')
-  );
+function seedDemo(){
+  if (state.products.length) return;
+  state.products = [
+    { id:'p1', name:'گوشی سامسونگ A54', code:'SM-A546E/DS', barcode:'', buy:12400000, sell:14800000, profit:25, prev:0, img:'', note:'' },
+    { id:'p2', name:'هدفون انکر Q30',     code:'A3028',       barcode:'', buy:2350000,  sell:3190000,  profit:25, prev:0, img:'', note:'' },
+    { id:'p3', name:'شارژر انکر ۳۵ وات',  code:'A2144',       barcode:'', buy:580000,   sell:780000,   profit:25, prev:0, img:'', note:'' },
+  ];
 }
 
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value;
-}
+/* ================== Render ================== */
+function renderProducts(){
+  const list = document.getElementById('productList');
+  const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
 
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.toggle('active', page.id === 'page-' + name);
-  });
+  let items = state.products.slice();
+  if (q){
+    items = items.filter(p =>
+      (p.name || '').toLowerCase().includes(q) ||
+      (p.code || '').toLowerCase().includes(q) ||
+      (p.barcode || '').toLowerCase().includes(q)
+    );
+  }
 
-  document.querySelectorAll('.nav button').forEach(button => {
-    button.classList.toggle('active', button.dataset.page === name);
-  });
-
-  if (name === 'home') renderHome();
-  if (name === 'rates') renderRates();
-  if (name === 'settings') fillSettings();
-  if (name === 'product-form') updatePricePreview();
-}
-
-function renderHome() {
-  renderProducts();
-
-  setText('totalProducts', faNum(db.products.length));
-  setText(
-    'currentDollarView',
-    currentRate() ? faNum(currentRate()) : 'ثبت نشده'
-  );
-  setText('homeProfitView', faNum(effectiveProfit(), 2) + '٪');
-
-  const total = db.products.reduce((sum, product) => {
-    return sum + salePrice(product) * Math.max(0, Number(product.quantity) || 0);
-  }, 0);
-
-  setText('totalValueView', money(total));
-}
-
-function renderProducts() {
-  const container = document.getElementById('productList');
-  if (!container) return;
-
-  const query = (document.getElementById('searchProducts')?.value || '')
-    .trim()
-    .toLocaleLowerCase();
-
-  const products = db.products.filter(product => {
-    const text = [
-      product.name, product.code, product.category, product.description
-    ].join(' ').toLocaleLowerCase();
-
-    return text.includes(query);
-  });
-
-  if (!products.length) {
-    container.innerHTML = '<div class="panel empty">کالایی یافت نشد.</div>';
+  if (!items.length){
+    list.innerHTML = `<div class="empty">کالایی یافت نشد. اولین کالا را ثبت کنید.</div>`;
     return;
   }
 
-  container.innerHTML = products.map(product => {
-    const buy = buyPriceToman(product);
-    const sale = salePrice(product);
-    const image = product.photo
-      ? '<img class="product-photo" src="' + escapeAttr(product.photo) + '" alt="عکس کالا">'
-      : '';
+  list.innerHTML = items.map(p => {
+    const profit   = computeProfit(p);
+    const sell     = Number(p.sell) || 0;
+    const buy      = Number(p.buy) || 0;
+    const change   = (p.prev && sell) ? ((sell - p.prev) / p.prev * 100) : 0;
+    const changeCls = change > 0 ? 'badge-green' : change < 0 ? 'badge-red' : 'badge-amber';
+    const changeArrow = change > 0 ? '↑' : change < 0 ? '↓' : '—';
 
     return `
-      <article class="product-card">
-        <div class="product-head">
-          <div>
-            <div class="product-title">${escapeHTML(product.name || 'بدون نام')}</div>
-            <div class="product-meta">
-              کد: ${escapeHTML(product.code || '—')}
-              | موجودی: ${faNum(product.quantity || 0)}
-            </div>
-            <div class="product-meta">
-              دسته‌بندی: ${escapeHTML(product.category || '—')}
-            </div>
-          </div>
-          <div>${image}</div>
+      <div class="product-row">
+        <div class="thumb">${p.img ? `<img src="${p.img}" alt="">` : '📦'}</div>
+        <div>
+          <div class="product-name">${escapeHtml(p.name || '—')}</div>
+          <div class="product-code">${escapeHtml(p.code || '')} ${p.barcode ? '• ' + escapeHtml(p.barcode) : ''}</div>
         </div>
-
-        <div class="product-prices">
-          <div class="price-box">
-            <span class="muted">قیمت خرید</span>
-            <b>${money(buy)}</b>
-            <div class="price-words">${moneyWords(buy)}</div>
-          </div>
-          <div class="price-box">
-            <span class="muted">قیمت فروش</span>
-            <b>${money(sale)}</b>
-            <div class="price-words">${moneyWords(sale)}</div>
-          </div>
+        <div class="price">
+          ${formatNum(buy)}
+          <div class="price-text">${moneyWords(buy)}</div>
         </div>
-
-        ${product.description
-          ? '<p class="muted">' + escapeHTML(product.description) + '</p>'
-          : ''}
-
+        <div class="price">
+          ${formatNum(sell)}
+          <div class="price-text">${moneyWords(sell)}</div>
+        </div>
+        <div><span class="badge badge-green">${formatNum(profit, 1)}٪</span></div>
+        <div><span class="badge ${changeCls}">${changeArrow} ${formatNum(Math.abs(change), 1)}٪</span></div>
         <div class="actions">
-          <button class="small" onclick="editProduct('${escapeAttr(product.id)}')">ویرایش</button>
-          <button class="small secondary" onclick="showProductCode('${escapeAttr(product.id)}')">QR / بارکد</button>
-          <button class="small danger" onclick="deleteProduct('${escapeAttr(product.id)}')">حذف</button>
+          <button class="action-btn" title="بارکد/QR" onclick="showBarcode('${p.id}')">🏷️</button>
+          <button class="action-btn" title="ویرایش" onclick="editProduct('${p.id}')">✏️</button>
+          <button class="action-btn" title="حذف" onclick="deleteProduct('${p.id}')">🗑️</button>
         </div>
-        <div id="code-${escapeAttr(product.id)}"></div>
-      </article>
+      </div>
     `;
   }).join('');
 }
 
-function escapeHTML(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  })[char]);
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-function escapeAttr(value) {
-  return escapeHTML(value);
-}
-
-function saveProduct(event) {
-  event.preventDefault();
-
-  const name = document.getElementById('pName').value.trim();
-  if (!name) {
-    alert('نام کالا را وارد کنید.');
-    return;
+function computeProfit(p){
+  // اگر حالت ثابت است، از settings؛ وگرنه از خود کالا
+  if (state.profitMode === 'fixed' || state.settings.mode === 'fixed'){
+    return Number(state.settings.profit) || 0;
   }
-
-  const id = document.getElementById('pId').value || uid();
-
-  const product = {
-    id,
-    name,
-    code: document.getElementById('pCode').value.trim(),
-    buyUSD: Math.max(0, Number(document.getElementById('pBuy').value) || 0),
-    manualPrice: Math.max(0, Number(document.getElementById('pManualPrice').value) || 0),
-    quantity: Math.max(0, Number(document.getElementById('pQuantity').value) || 0),
-    category: document.getElementById('pCategory').value.trim(),
-    description: document.getElementById('pDescription').value.trim(),
-    barcode: document.getElementById('pBarcode').value.trim(),
-    photo: editingPhoto,
-    updatedAt: Date.now()
-  };
-
-  const index = db.products.findIndex(item => item.id === id);
-
-  if (index >= 0) {
-    db.products[index] = { ...db.products[index], ...product };
-  } else {
-    product.createdAt = Date.now();
-    db.products.unshift(product);
-  }
-
-  saveDB();
-  resetProductForm();
-  renderHome();
-  showPage('home');
-  alert('اطلاعات کالا ذخیره شد.');
+  if (p.profit !== undefined && p.profit !== null && p.profit !== '') return Number(p.profit);
+  return Number(state.settings.profit) || 0;
 }
 
-function editProduct(id) {
-  const product = db.products.find(item => item.id === id);
-  if (!product) return;
+/* ================== Rate banner ================== */
+function renderRateBanner(){
+  const cur  = Number(state.currentRate) || 0;
+  const prev = Number(state.prevRate) || 0;
 
-  document.getElementById('pId').value = product.id;
-  document.getElementById('pName').value = product.name || '';
-  document.getElementById('pCode').value = product.code || '';
-  document.getElementById('pBuy').value = product.buyUSD || 0;
-  document.getElementById('pManualPrice').value = product.manualPrice || '';
-  document.getElementById('pQuantity').value = product.quantity ?? 1;
-  document.getElementById('pCategory').value = product.category || '';
-  document.getElementById('pDescription').value = product.description || '';
-  document.getElementById('pBarcode').value = product.barcode || '';
+  document.getElementById('bannerCurrentRate').textContent = formatNum(cur) + ' تومان';
+  document.getElementById('bannerPrevRate').textContent    = formatNum(prev) + ' تومان';
 
-  editingPhoto = product.photo || '';
-
-  const image = document.getElementById('pPhotoPreview');
-  if (editingPhoto) {
-    image.src = editingPhoto;
-    image.classList.remove('hidden');
-  } else {
-    image.removeAttribute('src');
-    image.classList.add('hidden');
-  }
-
-  setText('productFormTitle', 'ویرایش کالا');
-  updatePricePreview();
-  showPage('product-form');
+  const diff = cur - prev;
+  const pct  = prev ? (diff / prev * 100) : 0;
+  const cls  = diff > 0 ? 'badge-green' : diff < 0 ? 'badge-red' : 'badge-amber';
+  const arrow = diff > 0 ? '↑' : diff < 0 ? '↓' : '—';
+  document.getElementById('bannerChange').innerHTML =
+    `<span class="badge ${cls}">${arrow} ${formatNum(Math.abs(diff))} (${formatNum(Math.abs(pct), 1)}٪)</span>`;
 }
 
-function resetProductForm() {
-  document.getElementById('productForm').reset();
-  document.getElementById('pId').value = '';
-  document.getElementById('pBuy').value = '0';
-  document.getElementById('pQuantity').value = '1';
-  document.getElementById('pPhoto').value = '';
-  document.getElementById('pPhotoPreview').classList.add('hidden');
-  document.getElementById('pPhotoPreview').removeAttribute('src');
-
-  editingPhoto = '';
-  setText('productFormTitle', 'ثبت کالای جدید');
-  updatePricePreview();
+function updateRate(){
+  const input = prompt('نرخ جدید دلار (تومان):', state.currentRate);
+  if (input === null) return;
+  const v = parseNum(input);
+  if (!v){ toast('نرخ نامعتبر', 'error'); return; }
+  state.prevRate = state.currentRate;
+  state.currentRate = v;
+  state.rates.unshift({ value: v, note: 'به‌روزرسانی دستی', date: new Date().toISOString() });
+  saveState();
+  renderRateBanner();
+  renderRatesView();
+  recalcForm();
+  toast('نرخ به‌روزرسانی شد', 'success');
 }
 
-function deleteProduct(id) {
-  if (!confirm('این کالا حذف شود؟')) return;
-
-  db.products = db.products.filter(product => product.id !== id);
-  saveDB();
-  renderHome();
+function addRateManual(){
+  const v = parseNum(document.getElementById('newRate').value);
+  const note = (document.getElementById('rateNote').value || '').trim();
+  if (!v){ toast('نرخ نامعتبر', 'error'); return; }
+  state.prevRate = state.currentRate;
+  state.currentRate = v;
+  state.rates.unshift({ value: v, note, date: new Date().toISOString() });
+  document.getElementById('newRate').value = '';
+  document.getElementById('rateNote').value = '';
+  saveState();
+  renderRateBanner();
+  renderRatesView();
+  recalcForm();
+  toast('نرخ افزوده شد', 'success');
 }
 
-function previewPhoto(event) {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  if (!file.type.startsWith('image/')) {
-    alert('لطفاً یک فایل تصویری انتخاب کنید.');
-    event.target.value = '';
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    editingPhoto = String(reader.result || '');
-    const image = document.getElementById('pPhotoPreview');
-    image.src = editingPhoto;
-    image.classList.remove('hidden');
-  };
-  reader.readAsDataURL(file);
-}
-
-function showProductCode(id) {
-  const product = db.products.find(item => item.id === id);
-  if (!product) return;
-
-  const container = document.getElementById('code-' + id);
-  if (!container) return;
-
-  container.innerHTML = '';
-  const value = product.barcode || product.code || product.id;
-
-  if (typeof QRCode !== 'undefined') {
-    const target = document.createElement('div');
-    target.style.marginTop = '12px';
-    container.appendChild(target);
-    new QRCode(target, {
-      text: String(value),
-      width: 150,
-      height: 150
-    });
-  } else {
-    container.textContent = 'کتابخانه QR در دسترس نیست. شناسه: ' + value;
-  }
-}
-
-function updateProfitSummary() {
-  const mode = document.getElementById('profitMode')?.value || 'auto';
-  const base = Math.max(0, Number(document.getElementById('profitDefault')?.value) || 0);
-
-  const rate = currentRate();
-  const reference = Number(db.settings.profitReferenceRate) || 0;
-
-  let change = 0;
-  if (rate > 0 && reference > 0) {
-    change = ((rate - reference) / reference) * 100;
-  }
-
-  const effective = mode === 'auto'
-    ? base + Math.max(0, change)
-    : base;
-
-  setText('effectiveProfitView', faNum(effective, 2) + '٪');
-  setText(
-    'profitDollarChangeView',
-    (change > 0 ? '+' : '') + faNum(change, 2) + '٪'
-  );
-}
-
-function fillSettings() {
-  document.getElementById('profitMode').value = db.settings.profitMode || 'auto';
-  document.getElementById('profitDefault').value = db.settings.profit ?? 20;
-  document.getElementById('extraDefault').value = db.settings.extra ?? 0;
-  document.getElementById('storeName').value = db.settings.storeName || '';
-  updateProfitSummary();
-}
-
-function saveFinance() {
-  const oldMode = db.settings.profitMode || 'auto';
-  const oldProfit = Number(db.settings.profit) || 0;
-
-  const newMode = document.getElementById('profitMode').value;
-  const newProfit = Math.max(0, Number(document.getElementById('profitDefault').value) || 0);
-
-  db.settings.profitMode = newMode;
-  db.settings.profit = newProfit;
-  db.settings.extra = Math.max(0, Number(document.getElementById('extraDefault').value) || 0);
-  db.settings.storeName = document.getElementById('storeName').value.trim();
-
-  if (
-    newMode === 'auto' &&
-    (oldMode !== 'auto' || oldProfit !== newProfit)
-  ) {
-    db.settings.profitReferenceRate = currentRate();
-  }
-
-  saveDB();
-  updateProfitSummary();
-  updatePricePreview();
-  renderHome();
-  alert('تنظیمات مالی ذخیره شد.');
-}
-
-function saveRate(event) {
-  event.preventDefault();
-
-  const value = Number(document.getElementById('rateValue').value);
-  if (!Number.isFinite(value) || value <= 0) {
-    alert('نرخ معتبر وارد کنید.');
-    return;
-  }
-
-  const dateValue = document.getElementById('rateDate').value;
-  const oldRate = currentRate();
-
-  const rate = {
-    id: uid(),
-    value,
-    date: dateValue || new Date().toISOString().slice(0, 10),
-    note: document.getElementById('rateNote').value.trim(),
-    timestamp: Date.now()
-  };
-
-  db.rates.push(rate);
-
-  if (
-    db.settings.profitMode === 'auto' &&
-    !(Number(db.settings.profitReferenceRate) > 0)
-  ) {
-    db.settings.profitReferenceRate = oldRate || value;
-  }
-
-  saveDB();
-  document.getElementById('rateForm').reset();
-  document.getElementById('rateDate').value = new Date().toISOString().slice(0, 10);
-
-  renderRates();
-  renderHome();
-  updatePricePreview();
-  updateProfitSummary();
-
-  alert('نرخ دلار ثبت شد.');
-}
-
-function renderRates() {
-  const sorted = [...db.rates].sort((a, b) =>
-    Number(b.timestamp || 0) - Number(a.timestamp || 0)
-  );
-
-  setText('rateCurrentView', sorted.length ? faNum(sorted[0].value) : 'ثبت نشده');
-  setText('ratePreviousView', sorted.length > 1 ? faNum(sorted[1].value) : 'ثبت نشده');
-
-  const container = document.getElementById('rateHistory');
-  if (!container) return;
-
-  if (!sorted.length) {
-    container.innerHTML = '<div class="empty">هنوز نرخی ثبت نشده است.</div>';
-    return;
-  }
-
-  container.innerHTML = sorted.map((rate, index) => `
-    <div class="product-card">
-      <div class="product-head">
-        <div>
-          <b>${index === 0 ? 'نرخ فعلی' : 'نرخ ثبت‌شده'}: ${faNum(rate.value)} تومان</b>
-          <div class="muted">تاریخ: ${escapeHTML(rate.date || '—')}</div>
-          ${rate.note ? '<div class="muted">' + escapeHTML(rate.note) + '</div>' : ''}
-        </div>
-        <div class="actions">
-          <button class="small danger" onclick="deleteRate('${escapeAttr(rate.id)}')">حذف</button>
-        </div>
-      </div>
+function renderRatesView(){
+  const el = document.getElementById('rateHistory');
+  if (!state.rates.length){ el.innerHTML = '<div class="empty">تاریخچه‌ای موجود نیست</div>'; return; }
+  el.innerHTML = state.rates.map(r => `
+    <div class="rate-row">
+      <span><strong>${formatNum(r.value)}</strong> تومان</span>
+      <span style="font-size:11px;color:var(--text-muted)">${escapeHtml(r.note || '')}</span>
+      <span style="font-size:11px;color:var(--text-muted)">${new Date(r.date).toLocaleDateString('fa-IR')}</span>
     </div>
   `).join('');
-
-  updateProfitSummary();
 }
 
-function deleteRate(id) {
-  if (!confirm('این نرخ از تاریخچه حذف شود؟')) return;
+/* ================== Form ================== */
+let tempImage = '';
 
-  db.rates = db.rates.filter(rate => rate.id !== id);
-  saveDB();
-  renderRates();
-  renderHome();
-  updatePricePreview();
-  updateProfitSummary();
+function resetForm(){
+  state.editingId = null;
+  document.getElementById('formTitle').textContent = '📦 ثبت کالای جدید';
+  ['fName','fCode','fBarcode','fBuy','fBuyUSD','fSell','fNote'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('fProfit').value = state.settings.profit;
+  document.getElementById('profitLbl').textContent = toPersianDigits(state.settings.profit) + '٪';
+  const img = document.getElementById('previewImg');
+  img.style.display = 'none';
+  img.removeAttribute('src');
+  tempImage = '';
+  setProfitMode(state.settings.mode || 'auto');
+  document.getElementById('buyWords').textContent = '—';
+  document.getElementById('usdHint').textContent = 'معادل تومانی: —';
+  document.getElementById('sellWords').textContent = '—';
+  recalcForm();
 }
 
-function setTheme(theme) {
-  db.settings.theme = theme === 'dark' ? 'dark' : 'light';
-  saveDB();
-  applyTheme();
-}
-
-function toggleTheme() {
-  setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
-}
-
-function applyTheme() {
-  document.body.classList.toggle('dark', db.settings.theme === 'dark');
-}
-
-function saveAdminPin() {
-  const pin = document.getElementById('adminPin').value.trim();
-  if (!pin) {
-    alert('برای تغییر رمز، ابتدا رمز جدید را وارد کنید.');
-    return;
-  }
-
-  db.settings.adminPin = pin;
-  document.getElementById('adminPin').value = '';
-  saveDB();
-  alert('رمز مدیر ذخیره شد.');
-}
-
-function exportBackup() {
-  const blob = new Blob(
-    [JSON.stringify(db, null, 2)],
-    { type: 'application/json;charset=utf-8' }
-  );
-
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'product-manager-backup-' + new Date().toISOString().slice(0, 10) + '.json';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}
-
-function importBackup() {
-  const file = document.getElementById('backupFile').files?.[0];
-  if (!file) {
-    alert('ابتدا فایل پشتیبان را انتخاب کنید.');
-    return;
-  }
-
-  if (!confirm('اطلاعات فعلی با اطلاعات فایل پشتیبان جایگزین شود؟')) return;
-
+function loadImage(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
   const reader = new FileReader();
-  reader.onload = () => {
-    try {
-      const parsed = JSON.parse(String(reader.result || ''));
-
-      if (
-        !parsed ||
-        !Array.isArray(parsed.products) ||
-        !Array.isArray(parsed.rates) ||
-        typeof parsed.settings !== 'object'
-      ) {
-        throw new Error('ساختار فایل نامعتبر است.');
-      }
-
-      db = {
-        products: parsed.products,
-        rates: parsed.rates,
-        settings: { ...initialDB.settings, ...parsed.settings }
-      };
-
-      saveDB();
-      applyTheme();
-      fillSettings();
-      renderRates();
-      renderHome();
-      updatePricePreview();
-
-      alert('بازیابی انجام شد.');
-    } catch (error) {
-      alert('فایل پشتیبان معتبر نیست یا قابل خواندن نیست.');
-      console.error(error);
-    }
+  reader.onload = e => {
+    tempImage = e.target.result;
+    const img = document.getElementById('previewImg');
+    img.src = tempImage;
+    img.style.display = 'block';
   };
-
-  reader.readAsText(file);
+  reader.readAsDataURL(file);
+  input.value = '';
 }
 
-function initializeApp() {
-  if (!db.settings.profitMode) db.settings.profitMode = 'auto';
+function setProfitMode(mode){
+  state.profitMode = (mode === 'fixed') ? 'fixed' : 'auto';
+  document.getElementById('modeAutoBtn').classList.toggle('active',  state.profitMode === 'auto');
+  document.getElementById('modeFixedBtn').classList.toggle('active', state.profitMode === 'fixed');
+  document.getElementById('profitModeBadge').textContent = state.profitMode === 'fixed' ? 'ثابت' : 'خودکار';
+  if (state.profitMode === 'fixed'){
+    document.getElementById('fProfit').value = state.settings.profit;
+  }
+  recalcForm();
+}
 
-  if (db.settings.profitReferenceRate == null) {
-    db.settings.profitReferenceRate = 0;
+function recalcForm(){
+  const buy    = parseNum(document.getElementById('fBuy').value);
+  const profit = Number(document.getElementById('fProfit').value) || 0;
+
+  document.getElementById('profitLbl').textContent = toPersianDigits(profit) + '٪';
+  document.getElementById('buyWords').textContent  = moneyWords(buy);
+
+  const suggested = Math.round(buy * (1 + profit / 100));
+  document.getElementById('suggestedSell').textContent      = formatNum(suggested) + ' تومان';
+  document.getElementById('suggestedSellWords').textContent = moneyWords(suggested);
+
+  const sellInput = document.getElementById('fSell');
+  const sell = parseNum(sellInput.value);
+
+  // اگر کاربر فیلد فروش را دستی پر نکرده و خرید معتبر است، مقدار پیشنهادی را در placeholder نشان بده
+  if (!sellInput.value && suggested) {
+    sellInput.placeholder = 'پیشنهاد: ' + formatNum(suggested);
   }
 
-  document.getElementById('rateDate').value = new Date().toISOString().slice(0, 10);
-
-  applyTheme();
-  fillSettings();
-  renderRates();
-  renderHome();
-  updatePricePreview();
-  saveDB();
+  document.getElementById('sellWords').textContent = sell ? moneyWords(sell) : '—';
 }
 
-initializeApp();
-</script><script>
-/* قفل مدیر با رمز، در صورت تعریف رمز */
-(function () {
-  const originalShowPage = window.showPage;
+function usdToToman(){
+  const usd = parseNum(document.getElementById('fBuyUSD').value);
+  const toman = usd * Number(state.currentRate);
+  document.getElementById('usdHint').textContent = 'معادل تومانی: ' + formatNum(toman) + ' تومان';
+  if (toman){
+    document.getElementById('fBuy').value = toman;
+  }
+  recalcForm();
+}
 
-  window.showPage = function (name) {
-    if (name === 'settings' && db.settings.adminPin) {
-      const entered = prompt('رمز مدیر را وارد کنید:');
-      if (entered !== db.settings.adminPin) {
-        alert('رمز واردشده صحیح نیست.');
-        return;
-      }
-    }
+function saveProduct(){
+  const name = document.getElementById('fName').value.trim();
+  if (!name){ toast('نام محصول الزامی است', 'error'); return; }
 
-    originalShowPage(name);
+  const buy  = parseNum(document.getElementById('fBuy').value);
+  const sellRaw = parseNum(document.getElementById('fSell').value);
+  const profit = Number(document.getElementById('fProfit').value) || 0;
+  const sell = sellRaw || Math.round(buy * (1 + profit / 100));
+
+  const data = {
+    name,
+    code:    document.getElementById('fCode').value.trim(),
+    barcode: document.getElementById('fBarcode').value.trim(),
+    buy,
+    sell,
+    profit,
+    note: document.getElementById('fNote').value.trim(),
+    img:  tempImage || '',
   };
-})();
-</script>
 
+  if (state.editingId){
+    const idx = state.products.findIndex(p => p.id === state.editingId);
+    if (idx >= 0){
+      const old = state.products[idx];
+      state.products[idx] = Object.assign({}, old, data, { prev: old.sell || 0 });
+    }
+    toast('کالا ویرایش شد', 'success');
+  } else {
+    state.products.unshift(Object.assign({ id: 'p' + Date.now(), prev: 0 }, data));
+    toast('کالا ثبت شد', 'success');
+  }
+
+  saveState();
+  renderProducts();
+  resetForm();
+}
+
+function editProduct(id){
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+
+  state.editingId = id;
+  document.getElementById('formTitle').textContent = '✏️ ویرایش کالا';
+  document.getElementById('fName').value    = p.name || '';
+  document.getElementById('fCode').value    = p.code || '';
+  document.getElementById('fBarcode').value = p.barcode || '';
+  document.getElementById('fBuy').value     = p.buy || '';
+  document.getElementById('fSell').value    = p.sell || '';
+  document.getElementById('fProfit').value  = p.profit != null ? p.profit : state.settings.profit;
+  document.getElementById('fNote').value    = p.note || '';
+
+  tempImage = p.img || '';
+  const img = document.getElementById('previewImg');
+  if (tempImage){ img.src = tempImage; img.style.display = 'block'; }
+  else { img.style.display = 'none'; img.removeAttribute('src'); }
+
+  setProfitMode(state.profitMode);
+  recalcForm();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteProduct(id){
+  if (!confirm('این کالا حذف شود؟')) return;
+  state.products = state.products.filter(p => p.id !== id);
+  saveState();
+  renderProducts();
+  toast('کالا حذف شد', 'success');
+}
+
+/* ================== Barcode / QR ================== */
+function showBarcode(id){
+  const p = state.products.find(x => x.id === id);
+  if (!p) return;
+  const code = p.barcode || p.code || p.id;
+  const body = document.getElementById('modalBody');
+  body.innerHTML = `
+    <h3>🏷️ بارکد و QR</h3>
+    <div style="text-align:center;margin-top:14px">
+      <img src="https://barcode.tec-it.com/barcode.ashx?data=${encodeURIComponent(code)}&code=Code128&dpi=96"
+           style="background:#fff;padding:8px;border-radius:8px;max-width:100%" alt="barcode"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'"/>
+      <div style="display:none;font-size:12px;color:var(--red);margin-top:6px">بارکد در دسترس نیست</div>
+      <div style="margin-top:10px;font-size:12px;color:var(--text-muted)">${escapeHtml(code)}</div>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(code)}"
+           style="margin-top:14px;background:#fff;padding:8px;border-radius:8px" alt="qr"/>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){ document.getElementById('modal').classList.remove('open'); }
+
+/* ================== Camera scan ================== */
+let scanStream = null, scanTimer = null;
+
+async function startScan(){
+  if (!('BarcodeDetector' in window)){
+    toast('مرورگر از اسکن بارکد پشتیبانی نمی‌کند (Chrome/Edge جدید لازم است)', 'error');
+    return;
+  }
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    toast('دسترسی به دوربین در این محیط ممکن نیست (HTTPS لازم است)', 'error');
+    return;
+  }
+  try {
+    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    const video = document.getElementById('scanVideo');
+    video.srcObject = scanStream;
+    document.getElementById('scanModal').classList.add('open');
+
+    const detector = new BarcodeDetector();
+    scanTimer = setInterval(async () => {
+      try {
+        const barcodes = await detector.detect(video);
+        if (barcodes.length){
+          document.getElementById('fBarcode').value = barcodes[0].rawValue;
+          stopScan();
+          toast('بارکد شناسایی شد', 'success');
+        }
+      } catch(_){}
+    }, 500);
+  } catch(e){
+    console.warn(e);
+    toast('دسترسی به دوربین ممکن نشد', 'error');
+  }
+}
+
+function stopScan(){
+  document.getElementById('scanModal').classList.remove('open');
+  if (scanTimer){ clearInterval(scanTimer); scanTimer = null; }
+  if (scanStream){
+    scanStream.getTracks().forEach(t => t.stop());
+    scanStream = null;
+  }
+  const v = document.getElementById('scanVideo');
+  if (v) v.srcObject = null;
+}
+
+/* ================== OCR ================== */
+async function runOCR(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
+  if (typeof Tesseract === 'undefined'){
+    toast('موتور OCR بارگذاری نشد', 'error');
+    input.value = '';
+    return;
+  }
+  toast('در حال پردازش تصویر...');
+  try {
+    const { data } = await Tesseract.recognize(file, 'eng');
+    const text = (data.text || '').replace(/\s+/g, ' ').trim();
+    if (!text){ toast('متنی یافت نشد', 'error'); return; }
+    document.getElementById('fName').value = text.substring(0, 80);
+    toast('متن استخراج شد', 'success');
+  } catch(e){
+    console.warn(e);
+    toast('خطا در OCR', 'error');
+  } finally {
+    input.value = '';
+  }
+}
+
+/* ================== Settings ================== */
+function saveSettings(){
+  state.settings.profit = Number(document.getElementById('setProfit').value) || 0;
+  state.settings.mode   = document.getElementById('setMode').value;
+  state.profitMode      = state.settings.mode;
+  saveState();
+  setProfitMode(state.profitMode);
+  renderProducts();
+  toast('تنظیمات ذخیره شد', 'success');
+}
+
+function loadSettingsUI(){
+  document.getElementById('setProfit').value = state.settings.profit;
+  document.getElementById('setMode').value   = state.settings.mode;
+}
+
+/* ================== Backup ================== */
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'anbar-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  toast('پشتیبان دانلود شد', 'success');
+}
+
+function importBackup(input){
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const d = JSON.parse(e.target.result);
+      if (!d || typeof d !== 'object') throw new Error('bad');
+      state = Object.assign(defaultState(), d);
+      if (!Array.isArray(state.products)) state.products = [];
+      if (!Array.isArray(state.rates) || !state.rates.length) state.rates = defaultState().rates;
+      if (!state.profitMode) state.profitMode = state.settings.mode || 'auto';
+      saveState();
+      renderAll();
+      resetForm();
+      toast('بازیابی موفق', 'success');
+    } catch(err){
+      toast('فایل نامعتبر', 'error');
+    }
+  };
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function clearAll(){
+  if (!confirm('همهٔ داده‌ها پاک شوند؟')) return;
+  localStorage.removeItem(STORE_KEY);
+  state = defaultState();
+  seedDemo();
+  saveState();
+  renderAll();
+  resetForm();
+  toast('همهٔ داده‌ها پاک شد', 'success');
+}
+
+/* ================== Views ================== */
+function showView(name, btn){
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.getElementById('view-products').style.display = name === 'products' ? '' : 'none';
+  document.getElementById('view-rates').style.display    = name === 'rates'    ? '' : 'none';
+  document.getElementById('view-settings').style.display = name === 'settings' ? '' : 'none';
+  if (name === 'rates')    renderRatesView();
+  if (name === 'settings') loadSettingsUI();
+}
+
+/* ================== Toast ================== */
+let toastTimer;
+function toast(msg, type){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+/* ================== Init ================== */
+function renderAll(){
+  renderProducts();
+  renderRateBanner();
+  renderRatesView();
+  loadSettingsUI();
+  setProfitMode(state.profitMode);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  renderAll();
+  resetForm();
+
+  document.getElementById('modal').addEventListener('click', e => {
+    if (e.target.id === 'modal') closeModal();
+  });
+
+  document.addEventListener('click', e => {
+    const sb = document.getElementById('sidebar');
+    const hb = document.querySelector('.hamburger');
+    if (window.innerWidth <= 1100 && sb && !sb.contains(e.target) && hb && !hb.contains(e.target)){
+      sb.classList.remove('open');
+    }
+  });
+});
+</script>
 </body>
 </html>
