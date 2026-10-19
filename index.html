@@ -4,7 +4,11 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
 <meta name="theme-color" content="#0ea5e9" />
-<title>مدیریت قیمت | موبایل</title>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="مدیریت قیمت" />
+<title>مدیریت قیمت | PWA</title>
+<link rel="apple-touch-icon" id="appleIcon" />
 <style>
 :root{
   --bg:#f5f7fb; --panel:#ffffff; --panel-2:#f0f3f9; --border:#e2e8f0;
@@ -26,21 +30,21 @@ a{color:var(--primary);text-decoration:none}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit;touch-action:manipulation}
 input,select,textarea{font-family:inherit;font-size:16px}
 
-/* ===== Top Header ===== */
+/* Header */
 .app-header{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .app-header .title{font-size:17px;font-weight:800}
-.app-header .subtitle{font-size:11px;color:var(--muted);margin-top:1px}
+.app-header .subtitle{font-size:11px;color:var(--muted);margin-top:1px;display:flex;align-items:center;gap:6px}
+.offline-dot{width:7px;height:7px;border-radius:50%;background:var(--success);display:inline-block}
+.offline-dot.off{background:var(--danger)}
 .header-actions{display:flex;gap:8px}
 .icon-btn{width:40px;height:40px;border-radius:12px;background:var(--panel-2);display:inline-flex;align-items:center;justify-content:center;font-size:18px;transition:all .15s}
 .icon-btn:active{transform:scale(.94)}
 
-/* ===== Content ===== */
 .content{padding:16px}
 .view{display:none;animation:fadeIn .2s}
 .view.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== Stats ===== */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
 .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;position:relative;overflow:hidden}
 .stat-card .lbl{font-size:11px;color:var(--muted);margin-bottom:4px}
@@ -51,65 +55,57 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .stat-card.primary .lbl,.stat-card.primary .ftr{color:rgba(255,255,255,.85)}
 .stat-card.green{border-color:color-mix(in srgb,var(--success) 30%,var(--border))}
 .stat-card.green .val{color:var(--success)}
-.stat-card.red .val{color:var(--danger)}
-.stat-card.amber .val{color:var(--warning)}
 
-/* ===== Cards ===== */
 .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
 .card-title{font-size:14px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
 
-/* ===== Buttons ===== */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 18px;border-radius:12px;font-size:14px;font-weight:700;transition:all .15s;border:1px solid transparent;white-space:nowrap;min-height:44px}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:var(--primary);color:#fff}
 .btn-secondary{background:var(--panel-2);color:var(--text);border-color:var(--border)}
 .btn-danger{background:color-mix(in srgb,var(--danger) 12%,transparent);color:var(--danger)}
+.btn-success{background:var(--success);color:#fff}
 .btn-block{width:100%}
 .btn-sm{padding:8px 12px;font-size:12px;min-height:36px}
-.btn:disabled{opacity:.5;cursor:not-allowed}
 
-/* ===== Forms ===== */
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .field label{font-size:12px;color:var(--muted);font-weight:600}
 .field input,.field select,.field textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--panel-2);color:var(--text);outline:none;transition:border .15s,box-shadow .15s;font-size:16px}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent)}
 .field .hint{font-size:11px;color:var(--muted)}
-.field.error input,.field.error select{border-color:var(--danger)}
+.field.error input{border-color:var(--danger)}
 .field .err-msg{font-size:11px;color:var(--danger);display:none}
 .field.error .err-msg{display:block}
 textarea{resize:vertical;min-height:70px}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:380px){.form-row{grid-template-columns:1fr}}
 
-/* ===== Product cards (mobile) ===== */
 .product-list{display:flex;flex-direction:column;gap:10px}
 .product-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);position:relative}
 .product-card .head{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
-.product-card .pthumb{width:48px;height:48px;border-radius:12px;object-fit:cover;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0}
-.product-card .pthumb img{width:100%;height:100%;object-fit:cover}
-.product-card .pname{font-weight:700;font-size:15px;line-height:1.4}
-.product-card .pmeta{font-size:11px;color:var(--muted);margin-top:2px}
-.product-card .rows{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:10px 0}
-.product-card .row-item{background:var(--panel-2);border-radius:10px;padding:8px 10px}
-.product-card .row-item .l{font-size:10px;color:var(--muted);margin-bottom:2px}
-.product-card .row-item .v{font-weight:700;font-size:12px;line-height:1.3}
-.product-card .actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
-.product-card .actions .icon-btn{width:36px;height:36px;font-size:15px}
-.product-card .badge-sell{position:absolute;top:12px;left:12px;font-size:10px;padding:3px 8px}
+.pthumb{width:48px;height:48px;border-radius:12px;object-fit:cover;background:var(--panel-2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0}
+.pthumb img{width:100%;height:100%;object-fit:cover}
+.pname{font-weight:700;font-size:15px;line-height:1.4}
+.pmeta{font-size:11px;color:var(--muted);margin-top:2px}
+.rows{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin:10px 0}
+.row-item{background:var(--panel-2);border-radius:10px;padding:8px 10px}
+.row-item .l{font-size:10px;color:var(--muted);margin-bottom:2px}
+.row-item .v{font-weight:700;font-size:12px;line-height:1.3}
+.actions{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+.actions .icon-btn{width:36px;height:36px;font-size:15px}
 .badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-green{background:color-mix(in srgb,var(--success) 15%,transparent);color:var(--success)}
 .badge-red{background:color-mix(in srgb,var(--danger) 15%,transparent);color:var(--danger)}
 .badge-amber{background:color-mix(in srgb,var(--warning) 18%,transparent);color:var(--warning)}
 .badge-blue{background:color-mix(in srgb,var(--primary) 15%,transparent);color:var(--primary)}
 .badge-gray{background:var(--panel-2);color:var(--muted)}
+.badge-sell{position:absolute;top:12px;left:12px;font-size:10px;padding:3px 8px}
 
-/* ===== Empty ===== */
 .empty{padding:40px 20px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--border);border-radius:var(--radius);margin:14px 0}
 .empty .big{font-size:48px;margin-bottom:10px;display:block;opacity:.7}
 .empty h3{font-size:15px;color:var(--text);margin-bottom:6px}
 .empty p{font-size:13px;margin-bottom:16px}
 
-/* ===== Search & Filters ===== */
 .search-bar{position:relative;margin-bottom:10px}
 .search-bar input{width:100%;padding:13px 42px 13px 14px;border-radius:12px;border:1px solid var(--border);background:var(--panel);color:var(--text);outline:none;font-size:15px}
 .search-bar input:focus{border-color:var(--primary)}
@@ -119,18 +115,15 @@ textarea{resize:vertical;min-height:70px}
 .chip{padding:7px 14px;border-radius:999px;background:var(--panel);border:1px solid var(--border);font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;flex-shrink:0}
 .chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 
-/* ===== Floating Action Button ===== */
-.fab{position:fixed;bottom:calc(84px + var(--safe-bottom));left:16px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--info));color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px color-mix(in srgb,var(--primary) 40%,transparent);z-index:60;transition:all .2s}
+.fab{position:fixed;bottom:calc(84px + var(--safe-bottom));left:16px;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--info));color:#fff;font-size:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px color-mix(in srgb,var(--primary) 40%,transparent);z-index:60}
 .fab:active{transform:scale(.92)}
 
-/* ===== Bottom Navigation ===== */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--panel);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 4px calc(8px + var(--safe-bottom));z-index:55;box-shadow:0 -2px 10px rgba(0,0,0,.04)}
 .nav-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:10px;color:var(--muted);font-size:10px;font-weight:600;transition:all .15s;max-width:90px}
 .nav-tab .nav-ico{font-size:20px;line-height:1}
 .nav-tab.active{color:var(--primary)}
 .nav-tab.active .nav-ico{transform:scale(1.1)}
 
-/* ===== Modal (full-screen on mobile) ===== */
 .modal{position:fixed;inset:0;background:rgba(3,7,18,.6);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
 .modal.open{display:flex}
 .modal-sheet{background:var(--panel);border-radius:20px 20px 0 0;width:100%;max-height:92vh;display:flex;flex-direction:column;animation:slideUp .25s ease}
@@ -138,11 +131,10 @@ textarea{resize:vertical;min-height:70px}
 .modal-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);flex-shrink:0}
 .modal-head h3{font-size:16px}
 .modal-close{width:36px;height:36px;border-radius:10px;background:var(--panel-2);font-size:18px;display:flex;align-items:center;justify-content:center}
-.modal-body{padding:18px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.modal-body{padding:18px;overflow-y:auto;flex:1}
 .modal-foot{padding:14px 18px calc(14px + var(--safe-bottom));border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;background:var(--panel)}
 .modal-foot .btn{flex:1}
 
-/* ===== Toast ===== */
 .toast-container{position:fixed;bottom:calc(90px + var(--safe-bottom));left:14px;right:14px;z-index:300;display:flex;flex-direction:column;gap:8px;pointer-events:none}
 .toast{padding:12px 16px;border-radius:12px;background:var(--panel);border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.15);font-size:13px;font-weight:600;animation:toastIn .25s;pointer-events:auto}
 .toast.success{border-color:var(--success);color:var(--success)}
@@ -150,7 +142,6 @@ textarea{resize:vertical;min-height:70px}
 .toast.warning{border-color:var(--warning);color:var(--warning)}
 @keyframes toastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 
-/* ===== Auth ===== */
 .auth-screen{position:fixed;inset:0;background:linear-gradient(160deg,var(--bg),var(--panel-2));display:flex;align-items:center;justify-content:center;z-index:400;padding:24px;overflow-y:auto}
 .auth-box{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px 22px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 .auth-icon{width:72px;height:72px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--info));margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff}
@@ -159,12 +150,10 @@ textarea{resize:vertical;min-height:70px}
 .pw-wrap{position:relative}
 .pw-wrap input{padding-left:48px}
 .pw-toggle{position:absolute;left:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:10px;background:transparent;color:var(--muted);font-size:16px}
-.pw-toggle:active{background:var(--panel-2)}
 .strength-bar{height:5px;border-radius:3px;background:var(--panel-2);overflow:hidden;margin-top:8px}
 .strength-bar span{display:block;height:100%;width:0;transition:width .3s,background .3s}
 .auth-error{font-size:12px;color:var(--danger);text-align:center;margin-top:10px;min-height:18px}
 
-/* ===== Preview ===== */
 .preview-box{background:var(--panel-2);border:1px solid var(--border);border-radius:12px;padding:12px;margin-top:12px}
 .preview-row{display:flex;justify-content:space-between;padding:6px 0;font-size:12px;border-bottom:1px dashed var(--border);gap:8px}
 .preview-row:last-child{border:none}
@@ -173,7 +162,6 @@ textarea{resize:vertical;min-height:70px}
 .preview-row .words{font-size:10px;color:var(--primary);font-weight:500;margin-top:2px}
 .preview-total{border-top:2px solid var(--border);margin-top:6px;padding-top:10px;font-size:13px}
 
-/* ===== Misc ===== */
 .hidden{display:none !important}
 .muted{color:var(--muted)}
 .text-sm{font-size:12px}
@@ -191,9 +179,52 @@ textarea{resize:vertical;min-height:70px}
 .tab.active{background:var(--panel);color:var(--primary);box-shadow:var(--shadow)}
 .rate-link{display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;background:var(--panel-2);border-radius:12px;font-size:13px;font-weight:600;margin-top:10px}
 .divider{height:1px;background:var(--border);margin:14px 0}
+
+/* ===== INVOICE PRINT ===== */
+#invoiceArea{display:none}
+@media print{
+  body > *:not(#invoiceArea){ display:none !important; }
+  #invoiceArea{ display:block !important; }
+  body{background:#fff !important;color:#000 !important;padding:0 !important;font-size:12px}
+  .inv-page{ width:100%; padding:10mm; page-break-after:always; }
+  .inv-head{ display:flex; justify-content:space-between; align-items:flex-start; border-bottom:2px solid #000; padding-bottom:8px; margin-bottom:12px; }
+  .inv-head h1{ font-size:20px; }
+  .inv-head .meta{ font-size:11px; text-align:left; line-height:1.8; }
+  .inv-table{ width:100%; border-collapse:collapse; margin-bottom:12px; }
+  .inv-table th, .inv-table td{ border:1px solid #000; padding:6px 8px; text-align:right; font-size:11px; }
+  .inv-table th{ background:#f0f0f0; font-weight:700; }
+  .inv-total-row{ display:flex; justify-content:space-between; padding:6px 0; font-size:12px; border-bottom:1px dashed #999; }
+  .inv-total-row.grand{ font-size:14px; font-weight:800; border-top:2px solid #000; border-bottom:2px solid #000; padding:8px 0; margin-top:6px; }
+  .inv-words{ margin-top:10px; padding:8px; background:#f5f5f5; border-radius:4px; font-size:11px; }
+  .inv-foot{ margin-top:20px; display:flex; justify-content:space-between; font-size:11px; }
+  .inv-sign{ text-align:center; border-top:1px dashed #999; padding-top:6px; margin-top:30px; width:45%; }
+}
+.inv-page{ background:#fff; color:#000; padding:20px; font-family:var(--font); }
+
+/* Offline banner */
+.offline-banner{position:fixed;top:0;left:0;right:0;background:var(--danger);color:#fff;padding:8px;text-align:center;font-size:12px;font-weight:700;z-index:9999;transform:translateY(-100%);transition:transform .3s}
+.offline-banner.show{transform:translateY(0)}
+
+/* Install banner */
+.install-banner{position:fixed;bottom:calc(84px + var(--safe-bottom));right:14px;left:14px;background:linear-gradient(135deg,var(--primary),var(--info));color:#fff;padding:14px 16px;border-radius:14px;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:65;display:none;align-items:center;justify-content:space-between;gap:12px;animation:slideUp .3s}
+.install-banner.show{display:flex}
+.install-banner .txt{flex:1;font-size:13px;line-height:1.5}
+.install-banner .txt strong{display:block;margin-bottom:2px}
+.install-banner button{padding:8px 14px;border-radius:10px;background:#fff;color:var(--primary);font-weight:700;font-size:12px}
+.install-banner .close-x{background:transparent;color:#fff;font-size:20px;padding:4px 8px}
 </style>
 </head>
 <body>
+
+<!-- Offline banner -->
+<div class="offline-banner" id="offlineBanner">📡 اتصال اینترنت قطع است — برنامه در حالت آفلاین کار می‌کند</div>
+
+<!-- Install banner -->
+<div class="install-banner" id="installBanner">
+  <div class="txt"><strong>📲 نصب برنامه</strong>برای دسترسی سریع، روی صفحه اصلی نصب کنید</div>
+  <button onclick="doInstall()">نصب</button>
+  <button class="close-x" onclick="dismissInstall()">×</button>
+</div>
 
 <!-- ===== AUTH ===== -->
 <div class="auth-screen" id="authScreen">
@@ -229,7 +260,7 @@ textarea{resize:vertical;min-height:70px}
     </div>
     <div class="auth-error" id="authError"></div>
     <button class="btn btn-primary btn-block" id="authBtn" style="margin-top:14px">ایجاد رمز و ورود</button>
-    <div class="text-sm muted mt-16" style="text-align:center;line-height:1.8">⚠️ این برنامه محلی است و امنیت آن برای جلوگیری از دسترسی عادی است، نه جایگزین سرور.</div>
+    <div class="text-sm muted mt-16" style="text-align:center;line-height:1.8">⚠️ این برنامه محلی است و امنیت آن برای جلوگیری از دسترسی عادی است.</div>
   </div>
 </div>
 
@@ -238,7 +269,7 @@ textarea{resize:vertical;min-height:70px}
   <header class="app-header">
     <div>
       <div class="title" id="pageTitle">داشبورد</div>
-      <div class="subtitle" id="pageSubtitle">نمای کلی</div>
+      <div class="subtitle"><span class="offline-dot" id="onlineDot"></span><span id="pageSubtitle">نمای کلی</span></div>
     </div>
     <div class="header-actions">
       <button class="icon-btn" onclick="toggleTheme()" title="تم">🌓</button>
@@ -247,20 +278,17 @@ textarea{resize:vertical;min-height:70px}
   </header>
 
   <main class="content">
-    <!-- DASHBOARD -->
     <div id="view-dashboard" class="view active">
       <div class="stats-grid" id="statsGrid"></div>
+      <div class="card"><div class="card-title">💵 نرخ دلار</div><div id="dashRateBox"></div></div>
+      <div class="card"><div class="card-title">🕒 آخرین محصولات</div><div id="dashRecent"></div></div>
       <div class="card">
-        <div class="card-title">💵 نرخ دلار</div>
-        <div id="dashRateBox"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">🕒 آخرین محصولات</div>
-        <div id="dashRecent"></div>
+        <div class="card-title">🧾 لیست قیمت / فاکتور</div>
+        <p class="text-sm muted mb-10">فاکتور تک‌محصولی یا لیست قیمت همه محصولات را چاپ کنید.</p>
+        <button class="btn btn-primary btn-block mb-10" onclick="openInvoiceMenu()">🧾 ساخت فاکتور / لیست قیمت</button>
       </div>
     </div>
 
-    <!-- PRODUCTS -->
     <div id="view-products" class="view">
       <div class="search-bar"><input type="text" id="searchInput" placeholder="جستجو..." oninput="renderProducts()"></div>
       <div class="chips" id="catChips"></div>
@@ -274,88 +302,66 @@ textarea{resize:vertical;min-height:70px}
       <div class="flex-between mt-12" id="paginationBar"></div>
     </div>
 
-    <!-- CATEGORIES -->
     <div id="view-categories" class="view">
       <button class="btn btn-primary btn-block mb-10" onclick="openCategoryModal()">+ دسته جدید</button>
       <div id="categoriesList" class="product-list"></div>
     </div>
 
-    <!-- RATES -->
     <div id="view-rates" class="view">
       <div class="card">
         <div class="card-title">ثبت نرخ جدید</div>
-        <div class="field">
-          <label>نرخ دلار (تومان)</label>
-          <input type="number" id="newRateInput" placeholder="مثلاً 60500" min="1">
-          <div class="hint" id="newRateHint">—</div>
-        </div>
-        <div class="field">
-          <label>توضیح (اختیاری)</label>
-          <input type="text" id="newRateNote" placeholder="نرخ بازار آزاد">
-        </div>
+        <div class="field"><label>نرخ دلار (تومان)</label><input type="number" id="newRateInput" placeholder="60500" min="1"><div class="hint" id="newRateHint">—</div></div>
+        <div class="field"><label>توضیح</label><input type="text" id="newRateNote" placeholder="نرخ بازار آزاد"></div>
         <button class="btn btn-primary btn-block" onclick="addRate()">ثبت نرخ</button>
-        <a class="rate-link" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">🔗 مشاهده نرخ در نرخ‌آرا</a>
+        <a class="rate-link" href="https://nerkhara.com/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">🔗 نرخ‌آرا</a>
       </div>
-      <div class="card">
-        <div class="card-title">وضعیت فعلی</div>
-        <div id="rateStatusBox"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">تاریخچه</div>
-        <div id="ratesHistoryList"></div>
-      </div>
+      <div class="card"><div class="card-title">وضعیت فعلی</div><div id="rateStatusBox"></div></div>
+      <div class="card"><div class="card-title">تاریخچه</div><div id="ratesHistoryList"></div></div>
     </div>
 
-    <!-- PROFIT -->
     <div id="view-profit" class="view">
       <div class="tabs">
         <button class="tab" id="tabAuto" onclick="setProfitMode('auto')">خودکار</button>
         <button class="tab" id="tabFixed" onclick="setProfitMode('fixed')">ثابت</button>
       </div>
       <div class="card">
-        <div class="field">
-          <label>درصد سود پایه</label>
-          <input type="number" id="baseProfitInput" min="0" max="500" step="0.1">
-        </div>
-        <div class="field">
-          <label>نرخ مرجع دلار (تومان)</label>
-          <input type="number" id="refRateInput" min="1">
-          <div class="hint">برای محاسبه افزایش خودکار سود</div>
-        </div>
+        <div class="field"><label>درصد سود پایه</label><input type="number" id="baseProfitInput" min="0" max="500" step="0.1"></div>
+        <div class="field"><label>نرخ مرجع دلار</label><input type="number" id="refRateInput" min="1"><div class="hint">برای محاسبه افزایش خودکار سود</div></div>
         <button class="btn btn-primary btn-block" onclick="saveProfitSettings()">ذخیره</button>
         <div class="hint mt-12" id="profitCalcHint"></div>
       </div>
-      <div class="card">
-        <div class="card-title">محاسبه فعلی</div>
-        <div id="profitStatusBox"></div>
-      </div>
+      <div class="card"><div class="card-title">محاسبه فعلی</div><div id="profitStatusBox"></div></div>
     </div>
 
-    <!-- SETTINGS -->
     <div id="view-settings" class="view">
       <div class="card">
         <div class="card-title">🏪 کسب‌وکار</div>
         <div class="field"><label>نام فروشگاه</label><input type="text" id="setStoreName"></div>
+        <div class="field"><label>آدرس (برای فاکتور)</label><input type="text" id="setStoreAddr" placeholder="اختیاری"></div>
+        <div class="field"><label>تلفن (برای فاکتور)</label><input type="text" id="setStorePhone" placeholder="اختیاری"></div>
         <button class="btn btn-primary btn-block" onclick="saveGeneralSettings()">ذخیره</button>
       </div>
       <div class="card">
-        <div class="card-title">🎨 ظاهر</div>
-        <div class="field">
-          <label>تم</label>
-          <select id="setTheme" onchange="applyTheme(this.value)"><option value="light">روشن</option><option value="dark">تاریک</option></select>
-        </div>
+        <div class="card-title">📲 نصب برنامه (PWA)</div>
+        <p class="text-sm muted mb-10">برای نصب روی صفحه اصلی و کار آفلاین</p>
+        <button class="btn btn-primary btn-block" onclick="triggerInstall()">📲 نصب برنامه</button>
+        <div class="hint mt-8" id="pwaHint">—</div>
       </div>
       <div class="card">
-        <div class="card-title">🖼️ فشرده‌سازی تصویر</div>
+        <div class="card-title">🎨 ظاهر</div>
+        <div class="field"><label>تم</label><select id="setTheme" onchange="applyTheme(this.value)"><option value="light">روشن</option><option value="dark">تاریک</option></select></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🖼️ تصویر</div>
         <div class="field"><label>حداکثر عرض (px)</label><input type="number" id="setImgMaxW" min="100" max="2000"></div>
-        <div class="field"><label>کیفیت (0.1-1)</label><input type="number" id="setImgQuality" min="0.1" max="1" step="0.05"></div>
+        <div class="field"><label>کیفیت</label><input type="number" id="setImgQuality" min="0.1" max="1" step="0.05"></div>
         <button class="btn btn-primary btn-block" onclick="saveImageSettings()">ذخیره</button>
       </div>
       <div class="card">
         <div class="card-title">🔑 تغییر رمز</div>
         <div class="field"><label>رمز فعلی</label><input type="password" id="oldPw"></div>
         <div class="field"><label>رمز جدید</label><input type="password" id="newPw"></div>
-        <div class="field"><label>تکرار رمز جدید</label><input type="password" id="newPw2"></div>
+        <div class="field"><label>تکرار</label><input type="password" id="newPw2"></div>
         <button class="btn btn-primary btn-block" onclick="changePassword()">تغییر رمز</button>
       </div>
       <div class="card">
@@ -371,19 +377,17 @@ textarea{resize:vertical;min-height:70px}
       <div class="card">
         <div class="card-title">ℹ️ درباره</div>
         <div class="text-sm" style="line-height:2">
-          <div><strong>نسخه:</strong> ۱.۰.۰</div>
+          <div><strong>نسخه:</strong> ۲.۰.۰ (PWA + فاکتور)</div>
           <div><strong>ذخیره:</strong> localStorage</div>
-          <div class="muted mt-8">داده‌ها به سروری ارسال نمی‌شوند.</div>
+          <div><strong>حالت:</strong> <span id="swStatus">در حال بررسی...</span></div>
         </div>
-        <button class="btn btn-danger btn-block mt-12" onclick="confirmClearAll()">🗑️ پاک کردن همه داده‌ها</button>
+        <button class="btn btn-danger btn-block mt-12" onclick="confirmClearAll()">🗑️ پاک کردن همه</button>
       </div>
     </div>
   </main>
 
-  <!-- FAB -->
   <button class="fab" id="fab" onclick="openProductModal()">+</button>
 
-  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <button class="nav-tab active" data-view="dashboard" onclick="navigate('dashboard')"><span class="nav-ico">🏠</span>داشبورد</button>
     <button class="nav-tab" data-view="products" onclick="navigate('products')"><span class="nav-ico">📦</span>محصولات</button>
@@ -393,25 +397,22 @@ textarea{resize:vertical;min-height:70px}
   </nav>
 </div>
 
-<!-- ===== MODAL ===== -->
+<!-- Modal -->
 <div class="modal" id="genericModal">
   <div class="modal-sheet">
-    <div class="modal-head">
-      <h3 id="modalTitle">—</h3>
-      <button class="modal-close" onclick="closeModal()">×</button>
-    </div>
+    <div class="modal-head"><h3 id="modalTitle">—</h3><button class="modal-close" onclick="closeModal()">×</button></div>
     <div class="modal-body" id="modalBody"></div>
     <div class="modal-foot" id="modalFoot"></div>
   </div>
 </div>
 
-<!-- ===== SCANNER ===== -->
+<!-- Scanner -->
 <div class="modal" id="scannerModal">
   <div class="modal-sheet">
     <div class="modal-head"><h3>📷 اسکن بارکد</h3><button class="modal-close" onclick="stopScanner()">×</button></div>
     <div class="modal-body">
       <video id="scannerVideo" style="width:100%;border-radius:12px;background:#000;display:none" autoplay playsinline muted></video>
-      <div id="scannerMsg" class="text-sm muted mt-12" style="text-align:center">برای شروع، دکمه زیر را بزنید.</div>
+      <div id="scannerMsg" class="text-sm muted mt-12" style="text-align:center">برای شروع دکمه را بزنید</div>
       <div id="scannerResult" class="mt-12"></div>
     </div>
     <div class="modal-foot">
@@ -421,25 +422,30 @@ textarea{resize:vertical;min-height:70px}
   </div>
 </div>
 
+<!-- Invoice area (print only) -->
+<div id="invoiceArea"></div>
+
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-/* ============ Constants ============ */
+/* ============================================================
+   CONSTANTS
+   ============================================================ */
 const STORAGE_KEY = 'price_manager_complete_v1';
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 const INACTIVITY_MS = 5 * 60 * 1000;
 const PAGE_SIZE = 10;
 
 let state = null;
 let session = { unlocked:false, inactivityTimer:null };
 let scanStream = null, scanInterval = null;
-let currentPage = 1;
-let currentSort = 'date-desc';
-let currentView = 'dashboard';
-let editingId = null;
-let tempImageData = '';
+let currentPage = 1, currentSort = 'date-desc', currentView = 'dashboard';
+let editingId = null, tempImageData = '';
+let deferredPrompt = null;
 
-/* ============ Utils ============ */
+/* ============================================================
+   UTILS
+   ============================================================ */
 const $ = id => document.getElementById(id);
 const faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
 const toFa = s => String(s).replace(/\d/g, d => faDigits[+d]);
@@ -461,7 +467,9 @@ const nowISO = () => new Date().toISOString();
 const uid = () => 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
 const escapeHtml = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-/* ============ Number to Persian Words ============ */
+/* ============================================================
+   PERSIAN NUMBERS
+   ============================================================ */
 function numToPersianWords(input){
   const n = Math.floor(Math.abs(Number(input)));
   if (!isFinite(n)) return '';
@@ -492,18 +500,53 @@ function moneyWords(n, cur='toman'){
   if (frac>0) w += ' و ' + numToPersianWords(frac) + ' صدم';
   return w + (cur==='usd'?' دلار':' تومان');
 }
+function toJalali(date){
+  const d = new Date(date);
+  const gy = d.getFullYear(), gm = d.getMonth()+1, gd = d.getDate();
+  const g_d_m = [0,31,59,90,120,151,181,212,243,273,304,334];
+  let jy = (gy <= 1600) ? 0 : 979;
+  let gy2 = (gy <= 1600) ? gy - 621 : gy - 1600;
+  const gm2 = (gm > 2) ? gm + 1 : gm;
+  let days = (365*gy2) + Math.floor((gy2+3)/4) - Math.floor((gy2+99)/100) + Math.floor((gy2+399)/400) - 80 + gd + g_d_m[gm2-1];
+  jy += 33 * Math.floor(days/12053);
+  days %= 12053;
+  jy += 4 * Math.floor(days/1461);
+  days %= 1461;
+  jy += Math.floor((days-1)/365);
+  if (days > 365) days = (days-1) % 365;
+  const jm = (days < 186) ? 1 + Math.floor(days/31) : 7 + Math.floor((days-186)/30);
+  const jd = 1 + ((days < 186) ? (days % 31) : ((days-186) % 30));
+  return { jy, jm, jd };
+}
+function jalaliStr(date){
+  const j = toJalali(date);
+  return toFa(`${j.jy}/${String(j.jm).padStart(2,'0')}/${String(j.jd).padStart(2,'0')}`);
+}
+function jalaliDateTime(date){
+  const d = new Date(date);
+  const j = toJalali(d);
+  const hh = String(d.getHours()).padStart(2,'0');
+  const mm = String(d.getMinutes()).padStart(2,'0');
+  return toFa(`${j.jy}/${String(j.jm).padStart(2,'0')}/${String(j.jd).padStart(2,'0')} ${hh}:${mm}`);
+}
 
-/* ============ Storage ============ */
+/* ============================================================
+   STORAGE
+   ============================================================ */
 function defaultState(){
   return {
     schemaVersion: SCHEMA_VERSION,
     products: [], categories: [], rates: [],
     currentRate: null, refRate: null,
     profitMode: 'auto', baseProfit: 20,
-    settings: { storeName:'فروشگاه من', mainCurrency:'toman', theme:'light', imgMaxW:600, imgQuality:0.7 },
+    settings: {
+      storeName:'فروشگاه من', storeAddr:'', storePhone:'',
+      mainCurrency:'toman', theme:'light', imgMaxW:600, imgQuality:0.7
+    },
     auth: { salt:null, hash:null, iterations:200000 },
     loginAttempts: { count:0, lockUntil:0 },
     lastBackup: null,
+    invoiceCounter: 1000,
   };
 }
 function loadState(){
@@ -517,6 +560,7 @@ function loadState(){
     if (!Array.isArray(state.rates)) state.rates = [];
     if (!state.auth) state.auth = defaultState().auth;
     if (!state.loginAttempts) state.loginAttempts = defaultState().loginAttempts;
+    if (!state.settings) state.settings = defaultState().settings;
   }catch(e){ console.error(e); state = defaultState(); }
 }
 function saveState(){
@@ -524,7 +568,9 @@ function saveState(){
   catch(e){ toast('خطا در ذخیره‌سازی','error'); return false; }
 }
 
-/* ============ Crypto ============ */
+/* ============================================================
+   CRYPTO
+   ============================================================ */
 async function hashPassword(pw, saltB64, iter){
   if (!crypto?.subtle) throw new Error('Web Crypto در دسترس نیست');
   const enc = new TextEncoder();
@@ -540,12 +586,11 @@ function randomSaltB64(){
 }
 const isAuthConfigured = () => !!(state.auth?.salt && state.auth?.hash);
 const isUnlocked = () => session.unlocked === true;
-function requireAuth(){
-  if (!isUnlocked()){ toast('ابتدا وارد شوید','error'); return false; }
-  return true;
-}
+function requireAuth(){ if (!isUnlocked()){ toast('ابتدا وارد شوید','error'); return false; } return true; }
 
-/* ============ Auth UI ============ */
+/* ============================================================
+   AUTH UI
+   ============================================================ */
 function lockPanel(){
   session.unlocked = false;
   clearTimeout(session.inactivityTimer);
@@ -646,7 +691,9 @@ function updateStrength(){
   b.style.background = s<40?'var(--danger)':s<75?'var(--warning)':'var(--success)';
 }
 
-/* ============ Theme ============ */
+/* ============================================================
+   THEME
+   ============================================================ */
 function applyTheme(t){
   document.documentElement.setAttribute('data-theme', t);
   state.settings.theme = t;
@@ -657,7 +704,9 @@ function toggleTheme(){
   applyTheme(cur==='dark'?'light':'dark');
 }
 
-/* ============ Toast ============ */
+/* ============================================================
+   TOAST
+   ============================================================ */
 function toast(msg, type='success'){
   const c = $('toastContainer');
   const el = document.createElement('div');
@@ -667,7 +716,9 @@ function toast(msg, type='success'){
   setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.remove(),300); }, 2800);
 }
 
-/* ============ Calculation ============ */
+/* ============================================================
+   CALCULATION
+   ============================================================ */
 function getCurrentRate(){
   const r = Number(state.currentRate);
   return (isFinite(r) && r>0) ? r : null;
@@ -706,7 +757,9 @@ function getFinalSell(p){
   return (p.sellPrice!==null && p.sellPrice!==undefined && p.sellPrice!=='') ? Number(p.sellPrice) : null;
 }
 
-/* ============ Navigation ============ */
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
 function navigate(view){
   if (!isUnlocked()) return;
   currentView = view;
@@ -727,7 +780,9 @@ function navigate(view){
   if (view==='settings') loadSettingsUI();
 }
 
-/* ============ Dashboard ============ */
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
 function renderDashboard(){
   const ps = state.products;
   const rate = getCurrentRate(), ref = getRefRate();
@@ -737,44 +792,19 @@ function renderDashboard(){
     const s = computeSuggested(p);
     const sell = getFinalSell(p) ?? s.suggested;
     if (c.total===null || sell===null){ incomplete++; return; }
-    totalBuy += c.total;
-    totalSell += sell;
-    totalProfit += sell - c.total;
+    totalBuy += c.total; totalSell += sell; totalProfit += sell - c.total;
   });
   const change = (rate && ref) ? ((rate-ref)/ref)*100 : null;
   const cls = change===null?'badge-gray':change>0?'badge-green':change<0?'badge-red':'badge-gray';
   const arr = change===null?'—':change>0?'↑':change<0?'↓':'—';
-
   $('statsGrid').innerHTML = `
-    <div class="stat-card primary">
-      <div class="lbl">محصولات</div>
-      <div class="val">${toFa(ps.length)}</div>
-      <div class="ftr">کالای ثبت‌شده</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">دسته‌ها</div>
-      <div class="val">${toFa(state.categories.length)}</div>
-      <div class="ftr">گروه فعال</div>
-    </div>
-    <div class="stat-card">
-      <div class="lbl">ارزش خرید</div>
-      <div class="val small">${totalBuy>0?fmtMoney(totalBuy):'نرخ موجود نیست'}</div>
-    </div>
-    <div class="stat-card green">
-      <div class="lbl">ارزش فروش</div>
-      <div class="val small">${totalSell>0?fmtMoney(totalSell):'—'}</div>
-    </div>
-    <div class="stat-card green">
-      <div class="lbl">سود پیش‌بینی</div>
-      <div class="val small">${totalProfit>0?fmtMoney(totalProfit):'—'}</div>
-    </div>
-    <div class="stat-card ${incomplete>0?'amber':''}">
-      <div class="lbl">اطلاعات ناقص</div>
-      <div class="val">${toFa(incomplete)}</div>
-      <div class="ftr">نیاز به تکمیل</div>
-    </div>
+    <div class="stat-card primary"><div class="lbl">محصولات</div><div class="val">${toFa(ps.length)}</div><div class="ftr">کالای ثبت‌شده</div></div>
+    <div class="stat-card"><div class="lbl">دسته‌ها</div><div class="val">${toFa(state.categories.length)}</div><div class="ftr">گروه فعال</div></div>
+    <div class="stat-card"><div class="lbl">ارزش خرید</div><div class="val small">${totalBuy>0?fmtMoney(totalBuy):'نرخ موجود نیست'}</div></div>
+    <div class="stat-card green"><div class="lbl">ارزش فروش</div><div class="val small">${totalSell>0?fmtMoney(totalSell):'—'}</div></div>
+    <div class="stat-card green"><div class="lbl">سود پیش‌بینی</div><div class="val small">${totalProfit>0?fmtMoney(totalProfit):'—'}</div></div>
+    <div class="stat-card ${incomplete>0?'amber':''}"><div class="lbl">اطلاعات ناقص</div><div class="val">${toFa(incomplete)}</div><div class="ftr">نیاز به تکمیل</div></div>
   `;
-
   const rb = $('dashRateBox');
   if (!state.rates.length){
     rb.innerHTML = `<div class="text-sm muted">هنوز نرخی ثبت نشده</div><button class="btn btn-primary btn-block mt-12" onclick="navigate('rates')">ثبت نرخ</button>`;
@@ -784,10 +814,9 @@ function renderDashboard(){
       <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(last.value)}</span></div>
       <div class="preview-row"><span class="label">مرجع</span><span class="val">${ref?fmtMoney(ref):'—'}</span></div>
       <div class="preview-row"><span class="label">تغییر</span><span class="val"><span class="badge ${cls}">${arr} ${change!==null?fmt(Math.abs(change),1)+'٪':'—'}</span></span></div>
-      <div class="preview-row"><span class="label">آخرین ثبت</span><span class="val text-sm">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
+      <div class="preview-row"><span class="label">آخرین ثبت</span><span class="val text-sm">${jalaliDateTime(last.date)}</span></div>
     `;
   }
-
   const rec = ps.slice().sort((a,b)=>new Date(b.updatedAt||b.createdAt)-new Date(a.updatedAt||a.createdAt)).slice(0,4);
   const rc = $('dashRecent');
   if (!rec.length){
@@ -804,7 +833,9 @@ function renderDashboard(){
   }
 }
 
-/* ============ Products ============ */
+/* ============================================================
+   PRODUCTS
+   ============================================================ */
 function setSort(sort, btn){
   currentSort = sort;
   document.querySelectorAll('#sortChips .chip').forEach(c=>c.classList.remove('active'));
@@ -812,7 +843,6 @@ function setSort(sort, btn){
   renderProducts();
 }
 function renderProducts(){
-  // chips دسته‌ها
   const catChips = $('catChips');
   const curCat = catChips.dataset.active || '';
   catChips.innerHTML = `<button class="chip ${!curCat?'active':''}" onclick="filterCat('',this)">همه</button>` +
@@ -870,6 +900,7 @@ function renderProducts(){
           <div class="row-item"><div class="l">سود</div><div class="v" style="color:${profit>=0?'var(--success)':'var(--danger)'}">${profit!==null?fmt(pct,1)+'٪':'—'}</div></div>
         </div>
         <div class="actions">
+          <button class="icon-btn" onclick="openSingleInvoice('${p.id}')" title="فاکتور">🧾</button>
           <button class="icon-btn" onclick="openProductModal('${p.id}')" title="ویرایش">✏️</button>
           <button class="icon-btn" onclick="confirmDeleteProduct('${p.id}')" title="حذف">🗑️</button>
         </div>
@@ -892,7 +923,9 @@ function filterCat(id, btn){
 }
 function changePage(d){ currentPage += d; renderProducts(); }
 
-/* ============ Product Modal ============ */
+/* ============================================================
+   PRODUCT MODAL
+   ============================================================ */
 function openProductModal(id){
   if (!requireAuth()) return;
   editingId = id || null;
@@ -920,6 +953,7 @@ function openProductModal(id){
   `;
   $('modalFoot').innerHTML = `
     <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
+    ${isEdit?`<button class="btn btn-secondary" onclick="openSingleInvoice('${id}')">🧾 فاکتور</button>`:''}
     <button class="btn btn-primary" onclick="saveProduct()">${isEdit?'ذخیره':'ثبت'}</button>
   `;
   openModal();
@@ -965,7 +999,7 @@ async function handleImageUpload(input){
     tempImageData = d;
     $('pImagePreview').innerHTML = `<img src="${d}" style="max-width:100px;border-radius:10px">`;
     $('pImageHint').textContent = `${toFa(Math.round(d.length*0.75/1024))} کیلوبایت`;
-  }catch(e){ toast('خطا در پردازش تصویر','error'); }
+  }catch(e){ toast('خطا در پردازش','error'); }
   input.value = '';
 }
 function compressImage(file, maxW, q){
@@ -984,7 +1018,7 @@ function compressImage(file, maxW, q){
       img.onerror = ()=>rej(new Error('bad'));
       img.src = r.result;
     };
-    r.onerror = ()=>rej(new Error('read fail'));
+    r.onerror = ()=>rej(new Error('read'));
     r.readAsDataURL(file);
   });
 }
@@ -1033,7 +1067,9 @@ function confirmDeleteProduct(id){
   renderProducts(); renderDashboard();
 }
 
-/* ============ Categories ============ */
+/* ============================================================
+   CATEGORIES
+   ============================================================ */
 function renderCategories(){
   const list = $('categoriesList');
   if (!state.categories.length){
@@ -1111,7 +1147,9 @@ function transferAndDelete(id){
   renderCategories(); renderDashboard(); renderProducts();
 }
 
-/* ============ Rates ============ */
+/* ============================================================
+   RATES
+   ============================================================ */
 function renderRates(){
   const cur = getCurrentRate(), ref = getRefRate();
   const box = $('rateStatusBox');
@@ -1124,7 +1162,7 @@ function renderRates(){
         <div class="preview-row"><span class="label">نرخ فعلی</span><span class="val">${fmtMoney(cur)}</span></div>
         <div class="preview-row"><span class="label">مرجع</span><span class="val">${ref?fmtMoney(ref):'—'}</span></div>
         <div class="preview-row"><span class="label">تغییر</span><span class="val">${change!==null?`<span class="badge ${change>=0?'badge-green':'badge-red'}">${fmt(change,1)}٪</span>`:'—'}</span></div>
-        <div class="preview-row"><span class="label">آخرین</span><span class="val text-sm">${new Date(last.date).toLocaleString('fa-IR')}</span></div>
+        <div class="preview-row"><span class="label">آخرین</span><span class="val text-sm">${jalaliDateTime(last.date)}</span></div>
       `;
     }
   }
@@ -1136,7 +1174,7 @@ function renderRates(){
     hist.innerHTML = state.rates.slice(0,10).map((r,i)=>`
       <div class="flex-between" style="padding:8px 0;border-bottom:1px dashed var(--border)">
         <div><div style="font-weight:700">${fmtMoney(r.value)}</div>
-        <div class="text-sm muted">${new Date(r.date).toLocaleString('fa-IR')} ${r.note?'· '+escapeHtml(r.note):''}</div></div>
+        <div class="text-sm muted">${jalaliDateTime(r.date)} ${r.note?'· '+escapeHtml(r.note):''}</div></div>
         <div style="display:flex;gap:4px">
           ${i===0?'<span class="badge badge-blue">فعال</span>':''}
           <button class="icon-btn" onclick="editRate(${i})">✏️</button>
@@ -1176,7 +1214,9 @@ function deleteRate(i){
   saveState(); renderRates(); renderDashboard(); renderProducts();
 }
 
-/* ============ Profit ============ */
+/* ============================================================
+   PROFIT
+   ============================================================ */
 function renderProfit(){
   $('tabAuto').classList.toggle('active', state.profitMode==='auto');
   $('tabFixed').classList.toggle('active', state.profitMode==='fixed');
@@ -1227,17 +1267,33 @@ function saveProfitSettings(){
   renderProfit(); renderProducts(); renderDashboard();
 }
 
-/* ============ Settings ============ */
+/* ============================================================
+   SETTINGS
+   ============================================================ */
 function loadSettingsUI(){
   if ($('setStoreName')) $('setStoreName').value = state.settings.storeName||'';
+  if ($('setStoreAddr')) $('setStoreAddr').value = state.settings.storeAddr||'';
+  if ($('setStorePhone')) $('setStorePhone').value = state.settings.storePhone||'';
   if ($('setTheme')) $('setTheme').value = state.settings.theme||'light';
   if ($('setImgMaxW')) $('setImgMaxW').value = state.settings.imgMaxW||600;
   if ($('setImgQuality')) $('setImgQuality').value = state.settings.imgQuality||0.7;
-  if ($('lastBackupHint')) $('lastBackupHint').textContent = 'آخرین پشتیبان: ' + (state.lastBackup?new Date(state.lastBackup).toLocaleString('fa-IR'):'—');
+  if ($('lastBackupHint')) $('lastBackupHint').textContent = 'آخرین پشتیبان: ' + (state.lastBackup?jalaliDateTime(state.lastBackup):'—');
+  const pwa = $('pwaHint');
+  if (pwa){
+    if (window.matchMedia('(display-mode: standalone)').matches){
+      pwa.textContent = '✅ برنامه در حالت نصب‌شده اجرا می‌شود';
+    }else if (deferredPrompt){
+      pwa.textContent = 'آماده نصب — دکمه بالا را بزنید';
+    }else{
+      pwa.textContent = 'مرورگر از نصب پشتیبانی نمی‌کند یا قبلاً نصب شده';
+    }
+  }
 }
 function saveGeneralSettings(){
   if (!requireAuth()) return;
   state.settings.storeName = ($('setStoreName')?.value||'').trim();
+  state.settings.storeAddr = ($('setStoreAddr')?.value||'').trim();
+  state.settings.storePhone = ($('setStorePhone')?.value||'').trim();
   saveState(); toast('ذخیره شد','success');
 }
 function saveImageSettings(){
@@ -1267,7 +1323,9 @@ async function changePassword(){
   }catch(e){ toast(e.message,'error'); }
 }
 
-/* ============ Backup ============ */
+/* ============================================================
+   BACKUP
+   ============================================================ */
 function exportBackup(){
   if (!requireAuth()) return;
   const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
@@ -1328,11 +1386,354 @@ function confirmClearAll(){
   toast('پاک شد','success');
 }
 
-/* ============ Modal ============ */
+/* ============================================================
+   MODAL
+   ============================================================ */
 function openModal(){ $('genericModal').classList.add('open'); }
 function closeModal(){ $('genericModal').classList.remove('open'); editingId=null; tempImageData=''; }
 
-/* ============ Scanner ============ */
+/* ============================================================
+   INVOICE
+   ============================================================ */
+function openInvoiceMenu(){
+  if (!requireAuth()) return;
+  $('modalTitle').textContent = '🧾 فاکتور / لیست قیمت';
+  $('modalBody').innerHTML = `
+    <p class="text-sm muted mb-10">نوع خروجی را انتخاب کنید:</p>
+    <button class="btn btn-primary btn-block mb-10" onclick="closeModal(); openAllPricesInvoice()">📋 لیست قیمت همه محصولات</button>
+    <div class="divider"></div>
+    <p class="text-sm muted mb-10">یا یک محصول را برای فاکتور انتخاب کنید:</p>
+    <div id="invoiceProductList" style="max-height:300px;overflow-y:auto"></div>
+  `;
+  $('modalFoot').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">بستن</button>`;
+  openModal();
+  const list = $('invoiceProductList');
+  if (!state.products.length){
+    list.innerHTML = '<div class="text-sm muted">محصولی برای فاکتور نیست</div>';
+  }else{
+    list.innerHTML = state.products.map(p=>{
+      const c = computeCost(p);
+      const s = computeSuggested(p);
+      const sell = getFinalSell(p) ?? s.suggested;
+      return `<div class="flex-between" style="padding:8px 0;border-bottom:1px dashed var(--border)">
+        <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px">${escapeHtml(p.name)}</div>
+        <div class="text-sm muted">${sell!==null?fmtMoney(sell):'—'}</div></div>
+        <button class="btn btn-primary btn-sm" onclick="closeModal(); openSingleInvoice('${p.id}')">فاکتور</button>
+      </div>`;
+    }).join('');
+  }
+}
+function openSingleInvoice(id){
+  if (!requireAuth()) return;
+  const p = state.products.find(x=>x.id===id);
+  if (!p) return;
+  const c = computeCost(p);
+  const s = computeSuggested(p);
+  const final = getFinalSell(p);
+  const unitPrice = final ?? s.suggested ?? 0;
+  $('modalTitle').textContent = '🧾 فاکتور فروش';
+  $('modalBody').innerHTML = `
+    <div class="field"><label>نام مشتری</label><input type="text" id="invCustomer" placeholder="اختیاری"></div>
+    <div class="field"><label>شماره فاکتور</label><input type="text" id="invNumber" value="${toFa(state.invoiceCounter+1)}"></div>
+    <div class="form-row">
+      <div class="field"><label>تعداد</label><input type="number" id="invQty" value="1" min="1" step="1" oninput="updateInvoicePreview()"></div>
+      <div class="field"><label>قیمت واحد</label><input type="number" id="invUnitPrice" value="${Math.round(unitPrice)}" min="0" step="any" oninput="updateInvoicePreview()"></div>
+    </div>
+    <div class="form-row">
+      <div class="field"><label>تخفیف (٪)</label><input type="number" id="invDiscount" value="0" min="0" max="100" step="0.1" oninput="updateInvoicePreview()"></div>
+      <div class="field"><label>مالیات (٪)</label><input type="number" id="invTax" value="0" min="0" max="100" step="0.1" oninput="updateInvoicePreview()"></div>
+    </div>
+    <div class="preview-box" id="invoicePreviewBox"></div>
+  `;
+  $('modalFoot').innerHTML = `
+    <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
+    <button class="btn btn-primary" onclick="printSingleInvoice('${id}')">🖨️ چاپ فاکتور</button>
+  `;
+  openModal();
+  updateInvoicePreview();
+}
+function updateInvoicePreview(){
+  const qty = parseNum($('invQty')?.value)||1;
+  const unit = parseNum($('invUnitPrice')?.value)||0;
+  const disc = parseNum($('invDiscount')?.value)||0;
+  const tax = parseNum($('invTax')?.value)||0;
+  const subtotal = qty * unit;
+  const discAmount = subtotal * disc / 100;
+  const afterDisc = subtotal - discAmount;
+  const taxAmount = afterDisc * tax / 100;
+  const grand = afterDisc + taxAmount;
+  const el = $('invoicePreviewBox');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="preview-row"><span class="label">جمع جزء</span><span class="val">${fmtMoney(subtotal)}</span></div>
+    <div class="preview-row"><span class="label">تخفیف</span><span class="val">${fmtMoney(discAmount)}</span></div>
+    <div class="preview-row"><span class="label">مالیات</span><span class="val">${fmtMoney(taxAmount)}</span></div>
+    <div class="preview-row preview-total"><span class="label">مبلغ کل</span><span class="val" style="color:var(--success)">${fmtMoney(grand)}</span></div>
+    <div class="words" style="margin-top:6px;font-size:11px;color:var(--primary)">${moneyWords(grand)}</div>
+  `;
+}
+function buildInvoiceHTML(opts){
+  const { customer, invoiceNo, dateStr, items, discountPct, taxPct, showCustomer } = opts;
+  const subtotal = items.reduce((s,i)=>s + i.qty * i.unit, 0);
+  const discAmount = subtotal * (discountPct||0) / 100;
+  const afterDisc = subtotal - discAmount;
+  const taxAmount = afterDisc * (taxPct||0) / 100;
+  const grand = afterDisc + taxAmount;
+  const storeName = state.settings.storeName || 'فروشگاه';
+  const storeAddr = state.settings.storeAddr || '';
+  const storePhone = state.settings.storePhone || '';
+
+  const rows = items.map((i,idx)=>`
+    <tr>
+      <td>${toFa(idx+1)}</td>
+      <td>${escapeHtml(i.name)}</td>
+      <td>${toFa(i.qty)}</td>
+      <td>${fmt(i.unit)}</td>
+      <td>${fmt(i.qty * i.unit)}</td>
+    </tr>
+  `).join('');
+
+  return `
+    <div class="inv-page">
+      <div class="inv-head">
+        <div>
+          <h1>${escapeHtml(storeName)}</h1>
+          ${storeAddr?`<div style="font-size:11px;margin-top:4px">${escapeHtml(storeAddr)}</div>`:''}
+          ${storePhone?`<div style="font-size:11px">تلفن: ${toFa(storePhone)}</div>`:''}
+        </div>
+        <div class="meta">
+          <div><strong>فاکتور فروش</strong></div>
+          <div>شماره: ${toFa(invoiceNo)}</div>
+          <div>تاریخ: ${dateStr}</div>
+          ${showCustomer && customer?`<div>مشتری: ${escapeHtml(customer)}</div>`:''}
+        </div>
+      </div>
+      <table class="inv-table">
+        <thead>
+          <tr><th style="width:40px">ردیف</th><th>شرح کالا</th><th style="width:60px">تعداد</th><th style="width:110px">قیمت واحد (تومان)</th><th style="width:120px">جمع (تومان)</th></tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="inv-total-row"><span>جمع جزء</span><span>${fmt(subtotal)} تومان</span></div>
+      ${discountPct>0?`<div class="inv-total-row"><span>تخفیف (${toFa(discountPct)}٪)</span><span>${fmt(discAmount)} تومان</span></div>`:''}
+      ${taxPct>0?`<div class="inv-total-row"><span>مالیات (${toFa(taxPct)}٪)</span><span>${fmt(taxAmount)} تومان</span></div>`:''}
+      <div class="inv-total-row grand"><span>مبلغ قابل پرداخت</span><span>${fmt(grand)} تومان</span></div>
+      <div class="inv-words"><strong>به حروف:</strong> ${moneyWords(grand)}</div>
+      <div class="inv-foot">
+        <div class="inv-sign">مهر و امضای فروشنده</div>
+        <div class="inv-sign">امضای خریدار</div>
+      </div>
+    </div>
+  `;
+}
+function printSingleInvoice(id){
+  const p = state.products.find(x=>x.id===id);
+  if (!p) return;
+  const qty = parseNum($('invQty')?.value)||1;
+  const unit = parseNum($('invUnitPrice')?.value)||0;
+  const disc = parseNum($('invDiscount')?.value)||0;
+  const tax = parseNum($('invTax')?.value)||0;
+  const customer = ($('invCustomer')?.value||'').trim();
+  const invoiceNo = ($('invNumber')?.value||'').trim() || toFa(state.invoiceCounter+1);
+  state.invoiceCounter = (state.invoiceCounter||1000) + 1;
+  saveState();
+
+  $('invoiceArea').innerHTML = buildInvoiceHTML({
+    customer, invoiceNo, dateStr: jalaliStr(new Date()),
+    items: [{ name: p.name, qty, unit }],
+    discountPct: disc, taxPct: tax, showCustomer: true,
+  });
+  closeModal();
+  setTimeout(()=>window.print(), 200);
+}
+function openAllPricesInvoice(){
+  if (!requireAuth()) return;
+  $('modalTitle').textContent = '📋 لیست قیمت';
+  $('modalBody').innerHTML = `
+    <div class="field"><label>عنوان لیست</label><input type="text" id="listTitle" value="لیست قیمت محصولات"></div>
+    <div class="field"><label>مشتری (اختیاری)</label><input type="text" id="listCustomer"></div>
+    <div class="hint">همه محصولات با قیمت فروش فعلی چاپ می‌شوند.</div>
+  `;
+  $('modalFoot').innerHTML = `
+    <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
+    <button class="btn btn-primary" onclick="printAllPrices()">🖨️ چاپ</button>
+  `;
+  openModal();
+}
+function printAllPrices(){
+  const items = [];
+  state.products.forEach(p=>{
+    const c = computeCost(p);
+    const s = computeSuggested(p);
+    const final = getFinalSell(p);
+    const sell = final ?? s.suggested;
+    if (sell!==null) items.push({ name: p.name, qty: 1, unit: Math.round(sell) });
+  });
+  if (!items.length){ toast('محصولی با قیمت معتبر نیست','error'); return; }
+
+  $('invoiceArea').innerHTML = buildInvoiceHTML({
+    customer: ($('listCustomer')?.value||'').trim(),
+    invoiceNo: 'لیست قیمت',
+    dateStr: jalaliStr(new Date()),
+    items,
+    discountPct: 0, taxPct: 0, showCustomer: true,
+  });
+  closeModal();
+  setTimeout(()=>window.print(), 200);
+}
+
+/* ============================================================
+   PWA: Service Worker + Manifest via Blob
+   ============================================================ */
+function generateIcon(size){
+  const c = document.createElement('canvas');
+  c.width = size; c.height = size;
+  const ctx = c.getContext('2d');
+  const grd = ctx.createLinearGradient(0,0,size,size);
+  grd.addColorStop(0,'#0ea5e9');
+  grd.addColorStop(1,'#6366f1');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,size,size);
+  ctx.font = `bold ${size*0.5}px sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#fff';
+  ctx.fillText('₿', size/2, size/2 + size*0.02);
+  return c.toDataURL('image/png');
+}
+
+async function setupPWA(){
+  try{
+    // آیکون‌ها
+    const icon192 = generateIcon(192);
+    const icon512 = generateIcon(512);
+    document.getElementById('appleIcon').href = icon192;
+
+    // manifest
+    const manifest = {
+      name: 'مدیریت قیمت و محصولات',
+      short_name: 'مدیریت قیمت',
+      description: 'مدیریت محصولات، قیمت‌گذاری، سود و نرخ ارز',
+      start_url: location.href.split('?')[0],
+      scope: location.href.substring(0, location.href.lastIndexOf('/') + 1),
+      display: 'standalone',
+      orientation: 'portrait',
+      background_color: '#f5f7fb',
+      theme_color: '#0ea5e9',
+      lang: 'fa',
+      dir: 'rtl',
+      icons: [
+        { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'any' },
+        { src: icon192, sizes: '192x192', type: 'image/png', purpose: 'maskable' },
+        { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'any' },
+        { src: icon512, sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+      ],
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifest)], {type:'application/manifest+json'});
+    const manifestURL = URL.createObjectURL(manifestBlob);
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = manifestURL;
+    document.head.appendChild(link);
+
+    // Service Worker
+    if ('serviceWorker' in navigator){
+      const swCode = `
+const CACHE = 'price_manager_v2';
+const ASSETS = [
+  './',
+  self.registration.scope,
+  'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'
+];
+self.addEventListener('install', e=>{
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS).catch(()=>{})));
+});
+self.addEventListener('activate', e=>{
+  e.waitUntil(
+    caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())
+  );
+});
+self.addEventListener('fetch', e=>{
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    caches.match(e.request).then(cached=>{
+      if (cached) return cached;
+      return fetch(e.request).then(res=>{
+        if (res && res.status === 200){
+          const clone = res.clone();
+          caches.open(CACHE).then(c=>c.put(e.request, clone)).catch(()=>{});
+        }
+        return res;
+      }).catch(()=>{
+        if (e.request.mode === 'navigate') return caches.match(self.registration.scope);
+      });
+    })
+  );
+});
+`;
+      const swBlob = new Blob([swCode], {type:'application/javascript'});
+      const swURL = URL.createObjectURL(swBlob);
+      try{
+        const reg = await navigator.serviceWorker.register(swURL, {scope: './'});
+        console.log('SW registered', reg);
+        $('swStatus').textContent = 'فعال ✅';
+      }catch(err){
+        console.warn('SW fail', err);
+        $('swStatus').textContent = 'غیرفعال (احتمالاً file:// یا HTTP)';
+      }
+    }else{
+      $('swStatus').textContent = 'پشتیبانی نمی‌شود';
+    }
+  }catch(err){
+    console.warn('PWA setup failed', err);
+    if ($('swStatus')) $('swStatus').textContent = 'خطا';
+  }
+}
+
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  $('installBanner').classList.add('show');
+  loadSettingsUI();
+});
+window.addEventListener('appinstalled', ()=>{
+  toast('برنامه نصب شد!','success');
+  deferredPrompt = null;
+  $('installBanner').classList.remove('show');
+});
+function doInstall(){
+  if (!deferredPrompt){ toast('نصب از منوی مرورگر امکان‌پذیر است','warning'); return; }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(choice=>{
+    if (choice.outcome === 'accepted') toast('در حال نصب...','success');
+    deferredPrompt = null;
+    $('installBanner').classList.remove('show');
+  });
+}
+function triggerInstall(){ doInstall(); }
+function dismissInstall(){ $('installBanner').classList.remove('show'); }
+
+/* ============================================================
+   ONLINE/OFFLINE
+   ============================================================ */
+function updateOnlineStatus(){
+  const dot = $('onlineDot');
+  const banner = $('offlineBanner');
+  if (navigator.onLine){
+    dot?.classList.remove('off');
+    banner?.classList.remove('show');
+  }else{
+    dot?.classList.add('off');
+    banner?.classList.add('show');
+  }
+}
+window.addEventListener('online', ()=>{ updateOnlineStatus(); toast('اتصال برقرار شد','success'); });
+window.addEventListener('offline', ()=>{ updateOnlineStatus(); toast('حالت آفلاین','warning'); });
+
+/* ============================================================
+   SCANNER
+   ============================================================ */
 function openScanner(){
   if (!requireAuth()) return;
   $('scannerMsg').textContent = 'برای شروع دکمه را بزنید';
@@ -1344,7 +1745,7 @@ function openScanner(){
 }
 async function startScanner(){
   if (!('BarcodeDetector' in window)){
-    $('scannerMsg').textContent = 'مرورگر از اسکن پشتیبانی نمی‌کند. Chrome جدید استفاده کنید.';
+    $('scannerMsg').textContent = 'مرورگر از اسکن پشتیبانی نمی‌کند';
     return;
   }
   try{
@@ -1384,17 +1785,24 @@ function useScannedCode(val){
   else{ openProductModal(); setTimeout(()=>{ if ($('pCode')) $('pCode').value = val; }, 100); }
 }
 
-/* ============ Render All ============ */
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
 function renderAll(){
   renderDashboard(); renderProducts(); renderCategories(); renderRates(); renderProfit(); loadSettingsUI();
 }
 
-/* ============ Init ============ */
+/* ============================================================
+   INIT
+   ============================================================ */
 document.addEventListener('DOMContentLoaded', ()=>{
   loadState();
   applyTheme(state.settings.theme||'light');
+  updateOnlineStatus();
+
   if (!isAuthConfigured()){ showSetup(); $('setupPw').addEventListener('input', updateStrength); }
   else showLogin();
+
   $('authBtn').addEventListener('click', handleAuth);
   $('setupPw2').addEventListener('keydown', e=>{ if(e.key==='Enter') handleAuth(); });
   $('loginPw').addEventListener('keydown', e=>{ if(e.key==='Enter') handleAuth(); });
@@ -1402,6 +1810,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
   $('genericModal').addEventListener('click', e=>{ if(e.target.id==='genericModal') closeModal(); });
   $('scannerModal').addEventListener('click', e=>{ if(e.target.id==='scannerModal') stopScanner(); });
   navigate('dashboard');
+
+  // PWA
+  setTimeout(setupPWA, 500);
 });
 window.addEventListener('beforeunload', ()=>{
   if (scanStream) scanStream.getTracks().forEach(t=>t.stop());
