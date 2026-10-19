@@ -1530,6 +1530,34 @@ init();
   );
 
   console.log("Supabase client initialized");
+  async function registerUser(email, password) {
+  const { data, error } = await supabaseClient.auth.signUp({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert("خطا در ثبت‌نام: " + error.message);
+    return;
+  }
+
+  alert("ثبت‌نام انجام شد. اگر تأیید ایمیل فعال باشد، ایمیلت را بررسی کن.");
+}
+
+async function loginUser(email, password) {
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    alert("خطا در ورود: " + error.message);
+    return;
+  }
+
+  alert("ورود موفق بود.");
+  console.log("کاربر واردشده:", data.user.id);
+}
 </script>
 async function callBrightApi() {
   const { data, error } = await supabaseClient.functions.invoke(
