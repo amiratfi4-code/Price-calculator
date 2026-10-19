@@ -2,653 +2,516 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>قیمت‌یار | مدیریت کالا و قیمت</title>
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#171923">
+<title>قیمت‌یار | مدیریت کالا</title>
 <style>
-:root {
-  --bg:#151719; --panel:#1d2023; --panel2:#24282c;
-  --border:#343a3f; --text:#f1f4f6; --muted:#9ca6ad;
-  --cyan:#65d6e8; --green:#61d6a6; --red:#ff858b;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0; background:var(--bg); color:var(--text);
-  font-family:"Vazirmatn",sans-serif; font-size:14px;
-}
-button,input,select,textarea { font:inherit; }
-button { cursor:pointer; }
-.app { display:flex; min-height:100vh; }
-.sidebar {
-  width:240px; flex-shrink:0; padding:22px 15px;
-  background:#191c1f; border-left:1px solid var(--border);
-}
-.brand { font-size:23px; font-weight:800; margin-bottom:30px; }
-.brand span { color:var(--cyan); }
-.brand small { display:block; color:var(--muted); font-size:11px; font-weight:400; }
-.nav-label { color:var(--muted); font-size:11px; margin:22px 10px 10px; }
-.nav-btn {
-  display:flex; gap:12px; align-items:center; width:100%;
-  padding:12px; margin:4px 0; border:0; border-radius:10px;
-  background:transparent; color:#c4ccd1; text-align:right;
-}
-.nav-btn:hover,.nav-btn.active { background:#173238; color:var(--cyan); }
-.nav-btn i { width:20px; text-align:center; }
-.main { flex:1; min-width:0; padding:26px; }
-.topbar { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom:26px; }
-h1 { font-size:23px; margin:0 0 6px; }
-h2 { font-size:18px; margin:0 0 16px; }
-h3 { font-size:15px; margin:0 0 12px; }
-.subtitle { color:var(--muted); font-size:12px; }
-.btn {
-  border:1px solid var(--border); background:var(--panel2);
-  color:var(--text); border-radius:10px; padding:10px 14px;
-}
-.btn:hover { border-color:var(--cyan); }
-.btn-primary { background:var(--cyan); border-color:var(--cyan); color:#102126; font-weight:700; }
-.btn-danger { color:var(--red); }
-.stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:14px; margin-bottom:24px; }
-.stat,.panel,.settings-card { background:var(--panel); border:1px solid var(--border); border-radius:15px; padding:18px; }
-.stat-top { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
-.stat-icon { color:var(--cyan); }
-.stat-value { font-size:23px; font-weight:800; margin-top:12px; overflow-wrap:anywhere; }
-.stat-foot { font-size:11px; color:var(--muted); margin-top:5px; }
-.panel { margin-bottom:20px; }
-.toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:16px; }
-.search-wrap { flex:1; min-width:180px; position:relative; }
-.search-wrap i { position:absolute; right:13px; top:14px; color:var(--muted); }
-.search-wrap input { padding-right:38px; width:100%; }
-input,select,textarea {
-  background:#171a1d; color:var(--text); border:1px solid var(--border);
-  border-radius:10px; padding:11px 12px; min-width:0; width:100%;
-}
-input:focus,select:focus,textarea:focus { outline:1px solid var(--cyan); border-color:var(--cyan); }
-.table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:720px; }
-th,td { text-align:right; padding:14px 10px; border-bottom:1px solid var(--border); }
-th { color:var(--muted); font-size:12px; font-weight:500; }
-.product-name { font-weight:600; }
-.product-code { color:var(--muted); font-size:11px; margin-top:4px; }
-.price { white-space:nowrap; }
-.badge { display:inline-block; padding:5px 8px; border-radius:7px; background:#17372f; color:var(--green); font-size:11px; }
-.badge.loss { background:#3a2327; color:var(--red); }
-.row-actions { display:flex; gap:6px; }
-.row-actions button { padding:7px 9px; border-radius:8px; border:1px solid var(--border); background:var(--panel2); color:var(--text); }
-.row-actions .delete { color:var(--red); }
-.empty { padding:30px; text-align:center; color:var(--muted); }
-.section { display:none; }
-.section.active { display:block; }
-.grid2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.field { display:flex; flex-direction:column; gap:7px; margin-bottom:14px; }
-.field label { color:#c6cdd2; font-size:12px; }
-.form-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; }
-.note { color:var(--muted); font-size:12px; line-height:1.9; }
-.price-result { background:#173238; border-radius:12px; padding:16px; margin:14px 0; }
-.price-result strong { color:var(--cyan); font-size:22px; }
-.lock-overlay {
-  position:fixed; inset:0; z-index:9999; display:none;
-  align-items:center; justify-content:center; padding:20px; background:#151719;
-}
-.lock-overlay.active { display:flex; }
-.lock-card {
-  width:min(400px,100%); padding:28px; border-radius:20px;
-  border:1px solid var(--border); background:var(--panel); text-align:center;
-}
-.lock-icon {
-  width:65px; height:65px; display:grid; place-items:center;
-  margin:0 auto 18px; border-radius:20px; background:#173238;
-  color:var(--cyan); font-size:25px;
-}
-.lock-error { color:var(--red); font-size:12px; margin-top:10px; }
-.hidden { display:none!important; }
-.footer-note { color:var(--muted); font-size:11px; margin-top:20px; line-height:1.8; }
-@media(max-width:1000px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:700px) {
-  .app { display:block; }
-  .sidebar { width:100%; border-left:0; border-bottom:1px solid var(--border); padding:12px; }
-  .brand { margin:0 8px 12px; }
-  .sidebar nav { display:flex; overflow-x:auto; gap:5px; }
-  .nav-label { display:none; }
-  .nav-btn { width:auto; flex-shrink:0; padding:10px; font-size:12px; }
-  .main { padding:16px 12px; }
-  .topbar { align-items:flex-start; }
-  h1 { font-size:20px; }
-  .stats { gap:9px; }
-  .stat { padding:13px; }
-  .stat-value { font-size:18px; }
-  .grid2 { grid-template-columns:1fr; }
-}
+:root{--bg:#171923;--surface:#242735;--text:#f3f4f6;--muted:#a4aaba;--line:#383d4d;--accent:#16a34a;--soft:#303646;--danger:#dc3545}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px Tahoma,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--text)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+header{background:var(--surface);border-bottom:1px solid var(--line);padding:12px;position:sticky;top:0;z-index:4}
+.top{max-width:1100px;margin:auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:21px;font-weight:bold;white-space:nowrap}
+.logo{display:inline-grid;place-items:center;width:37px;height:37px;border-radius:10px;background:var(--accent);color:white;margin-left:7px}
+.search{display:flex;flex:1;min-width:170px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.search input{border:0;min-width:0}
+.search button{border:0;background:var(--accent);color:white;padding:0 15px}
+main{max-width:1100px;margin:auto;padding:17px 12px 40px}
+.panel,.stat,.product{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.panel{padding:15px;margin-bottom:14px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+h1{font-size:21px;margin:0 0 8px}
+h2{font-size:17px;margin:0 0 13px}
+h3{font-size:15px}
+.muted,.note{color:var(--muted);line-height:1.9}
+.note{font-size:12px}
+.actions{display:flex;gap:7px;flex-wrap:wrap}
+.btn{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--soft);color:var(--text)}
+.primary{background:var(--accent);border-color:var(--accent);color:white}
+.danger{color:#ff8c94}
+.small{padding:7px 9px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0}
+.stat{padding:13px;min-width:0}
+.stat-label{font-size:12px;color:var(--muted)}
+.stat-value{font-size:17px;font-weight:bold;margin-top:9px;overflow-wrap:anywhere}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.tab{padding:10px 13px;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--text)}
+.tab.active{background:var(--accent);color:white}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}
+.product{padding:13px;min-width:0}
+.product h3{overflow-wrap:anywhere;margin:12px 0 8px}
+.product-price{font-size:19px;font-weight:bold;color:var(--accent);margin:10px 0}
+.details{font-size:12px;line-height:2;color:var(--muted);overflow-wrap:anywhere}
+.product-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:11px}
+.tag{display:inline-block;border-radius:6px;padding:5px 7px;background:var(--soft);font-size:11px;color:var(--muted)}
+.filters{display:flex;gap:8px;margin-bottom:13px}
+.filters input{flex:1;min-width:0}
+.filters select{max-width:150px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.field label{font-size:12px;color:var(--muted)}
+.full{grid-column:1/-1}
+textarea{resize:vertical;min-height:70px}
+.hidden{display:none!important}
+.empty{text-align:center;padding:30px 10px;color:var(--muted);line-height:2}
+.themes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.theme{padding:0;border:2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);color:var(--text);text-align:right}
+.theme.selected{border-color:var(--accent)}
+.swatches{display:flex;gap:5px;padding:10px}
+.swatch{height:24px;flex:1;border-radius:5px;border:1px solid #8885}
+.theme-name{padding:0 9px 10px;font-size:12px}
+hr{border:0;border-top:1px solid var(--line);margin:17px 0}
+.history-row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--line)}
+.modal{position:fixed;inset:0;z-index:10;background:#0009;display:flex;justify-content:center;align-items:center;padding:12px;overflow:auto}
+.modal-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;width:100%;max-width:570px;max-height:94vh;overflow:auto}
+footer{text-align:center;padding:15px;color:var(--muted);font-size:12px}
+@media(max-width:740px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}.themes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:470px){.products{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}.stats{gap:5px}.stat{padding:9px}.stat-value{font-size:14px}header{position:relative}.brand{font-size:18px}}
 </style>
 </head>
-
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand">قیمت<span>یار</span><small>مدیریت هوشمند کالا و قیمت</small></div>
-    <div class="nav-label">منوی اصلی</div>
-    <nav>
-      <button class="nav-btn active" data-section="dashboard"><i class="fa-solid fa-chart-pie"></i> داشبورد</button>
-      <button class="nav-btn" data-section="products"><i class="fa-solid fa-boxes-stacked"></i> کالاها</button>
-      <button class="nav-btn" data-section="pricing"><i class="fa-solid fa-calculator"></i> مدیریت قیمت</button>
-      <button class="nav-btn" data-section="settings"><i class="fa-solid fa-gear"></i> تنظیمات</button>
-    </nav>
-    <p class="footer-note">نسخهٔ مرورگری<br>اطلاعات در همین مرورگر ذخیره می‌شوند.</p>
-  </aside>
+<header>
+ <div class="top">
+  <div class="brand"><span class="logo">٪</span>قیمت‌یار</div>
+  <div class="search">
+   <input id="globalSearch" placeholder="جست‌وجوی نام، کد یا QR کالا" aria-label="جست‌وجوی کالا">
+   <button onclick="goProducts()">⌕</button>
+  </div>
+  <button class="btn" onclick="openAdmin()">ورود مدیر</button>
+ </div>
+</header>
 
-  <main class="main">
-    <header class="topbar">
-      <div>
-        <h1 id="pageTitle">داشبورد</h1>
-        <div class="subtitle">نمای کلی موجودی و قیمت کالاها</div>
-      </div>
-      <button class="btn" id="lockButton"><i class="fa-solid fa-lock"></i> قفل برنامه</button>
-    </header>
+<main>
+ <section class="panel">
+  <div class="row">
+   <div><h1>جست‌وجو و قیمت کالاها</h1><div class="muted">قیمت فروش با آخرین نرخ دلار محاسبه می‌شود.</div></div>
+   <span class="tag" id="roleLabel">حالت مهمان</span>
+  </div>
+ </section>
 
-    <section id="dashboard" class="section active">
-      <div class="stats">
-        <div class="stat"><div class="stat-top">تعداد کالاها <i class="fa-solid fa-box stat-icon"></i></div><div class="stat-value" id="statCount">۰</div><div class="stat-foot">کالاهای ثبت‌شده</div></div>
-        <div class="stat"><div class="stat-top">ارزش خرید <i class="fa-solid fa-wallet stat-icon"></i></div><div class="stat-value" id="statInventory">۰</div><div class="stat-foot">تومان</div></div>
-        <div class="stat"><div class="stat-top">سود تخمینی <i class="fa-solid fa-chart-line stat-icon"></i></div><div class="stat-value" id="statProfit">۰</div><div class="stat-foot">بر اساس قیمت‌های ثبت‌شده</div></div>
-        <div class="stat"><div class="stat-top">نرخ دلار <i class="fa-solid fa-dollar-sign stat-icon"></i></div><div class="stat-value" id="statDollar">—</div><div class="stat-foot">تومان</div></div>
-      </div>
-      <div class="panel">
-        <div class="toolbar">
-          <h2 style="margin:0;flex:1">آخرین کالاها</h2>
-          <button class="btn btn-primary" id="dashboardAdd"><i class="fa-solid fa-plus"></i> افزودن کالا</button>
-        </div>
-        <div class="table-wrap"><table><thead><tr><th>نام کالا</th><th>قیمت خرید</th><th>قیمت فروش</th><th>سود</th><th>عملیات</th></tr></thead><tbody id="dashboardRows"></tbody></table></div>
-      </div>
-    </section>
+ <section class="stats">
+  <div class="stat"><div class="stat-label">تعداد کالاها</div><div class="stat-value" id="statCount">۰</div></div>
+  <div class="stat"><div class="stat-label">ارزش خرید موجودی</div><div class="stat-value" id="statCost">۰ تومان</div></div>
+  <div class="stat"><div class="stat-label">ارزش فروش موجودی</div><div class="stat-value" id="statSale">۰ تومان</div></div>
+ </section>
 
-    <section id="products" class="section">
-      <div class="panel">
-        <div class="toolbar">
-          <div class="search-wrap"><i class="fa-solid fa-search"></i><input id="searchInput" placeholder="جست‌وجوی نام، کد یا بارکد کالا"></div>
-          <button class="btn btn-primary" id="addButton"><i class="fa-solid fa-plus"></i> افزودن کالا</button>
-          <button class="btn" id="exportButton"><i class="fa-solid fa-download"></i> پشتیبان‌گیری</button>
-          <button class="btn" id="importButton"><i class="fa-solid fa-upload"></i> بازیابی</button>
-          <input id="importFile" type="file" accept="application/json" class="hidden">
-        </div>
-        <div class="table-wrap"><table>
-          <thead><tr><th>کالا</th><th>بارکد</th><th>قیمت خرید</th><th>قیمت فروش</th><th>سود</th><th>عملیات</th></tr></thead>
-          <tbody id="productRows"></tbody>
-        </table></div>
-      </div>
-    </section>
+ <nav class="tabs">
+  <button class="tab active" data-page="products" onclick="showPage('products')">▦ کالاها</button>
+  <button class="tab" data-page="rates" onclick="showPage('rates')">💱 نرخ دلار</button>
+  <button class="tab" data-page="themes" onclick="showPage('themes')">🎨 تم سایت</button>
+  <button class="tab admin-only hidden" data-page="settings" onclick="showPage('settings')">⚙ مدیریت</button>
+ </nav>
 
-    <section id="pricing" class="section">
-      <div class="panel">
-        <h2>تنظیم نرخ ارز و سود</h2>
-        <div class="grid2">
-          <div class="field"><label for="dollarRate">نرخ دلار (تومان)</label><input id="dollarRate" type="number" min="0" step="1" placeholder="مثلاً 100000"></div>
-          <div class="field"><label for="profitRate">درصد سود هدف</label><input id="profitRate" type="number" min="0" max="10000" step="1" value="20"></div>
-          <div class="field"><label for="rounding">گرد کردن قیمت</label><select id="rounding"><option value="1">بدون گرد کردن</option><option value="1000">۱٬۰۰۰ تومان</option><option value="10000">۱۰٬۰۰۰ تومان</option><option value="100000">۱۰۰٬۰۰۰ تومان</option></select></div>
-        </div>
-        <button class="btn btn-primary" id="savePricing">ذخیره تنظیمات قیمت</button>
-        <p class="note">قیمت فروش پیشنهادی برابر قیمت تمام‌شده به‌علاوهٔ درصد سود هدف است.</p>
-      </div>
-      <div class="panel">
-        <h2>محاسبهٔ قیمت کالا</h2>
-        <div class="field"><label for="calculatorProduct">انتخاب کالا</label><select id="calculatorProduct"></select></div>
-        <div class="price-result"><div class="subtitle">قیمت فروش پیشنهادی</div><strong id="suggestedPrice">—</strong><p id="calculationDetail" class="note"></p></div>
-        <button class="btn btn-primary" id="applyOnePrice">ثبت قیمت پیشنهادی برای این کالا</button>
-        <button class="btn" id="applyAllPrices">ثبت قیمت پیشنهادی برای همهٔ کالاها</button>
-      </div>
-    </section>
+ <section id="productsPage">
+  <div class="panel">
+   <div class="row"><h2>فهرست کالاها</h2><button class="btn primary admin-only hidden" onclick="editProduct()">＋ ثبت کالا</button></div>
+   <div class="filters">
+    <input id="productSearch" placeholder="جست‌وجوی کالا، کد یا QR" oninput="renderProducts()">
+    <select id="sortOrder" onchange="renderProducts()">
+     <option value="new">جدیدترین</option><option value="name">نام</option><option value="price">قیمت فروش</option>
+    </select>
+   </div>
+   <div id="productList" class="products"></div>
+   <div id="emptyProducts" class="empty hidden">کالایی پیدا نشد.</div>
+  </div>
+ </section>
 
-    <section id="settings" class="section">
-      <div class="panel">
-        <h2>تنظیمات امنیت و اطلاعات</h2>
-        <div class="field"><label for="autoLock">قفل خودکار پس از عدم فعالیت</label><select id="autoLock"><option value="1">۱ دقیقه</option><option value="5">۵ دقیقه</option><option value="10">۱۰ دقیقه</option><option value="15">۱۵ دقیقه</option><option value="30">۳۰ دقیقه</option></select></div>
-        <button class="btn btn-primary" id="changePassword">تغییر رمز عبور</button>
-        <button class="btn btn-danger" id="deleteAll">حذف همهٔ کالاها</button>
-        <p class="note">رمز در این نسخه به‌صورت هش ذخیره می‌شود؛ این قفل برای محدودیت معمولی است و امنیت سروری ایجاد نمی‌کند.</p>
-      </div>
-    </section>
-  </main>
+ <section id="ratesPage" class="hidden">
+  <div class="panel">
+   <h2>آخرین نرخ دلار</h2>
+   <div class="stat-value" id="currentRate">ثبت نشده</div>
+   <div class="muted" id="currentRateDate"></div>
+   <hr>
+   <h2>ثبت نرخ جدید دلار</h2>
+   <form id="rateForm">
+    <div class="field"><label for="newRate">نرخ دلار به تومان</label><input id="newRate" type="number" min="1" step="any" required placeholder="مثلاً ۱۰۰۰۰۰"></div>
+    <div class="field" style="margin-top:12px"><label for="rateNote">توضیح (اختیاری)</label><input id="rateNote" maxlength="120" placeholder="مثلاً نرخ اعلام‌شده امروز"></div>
+    <button class="btn primary" style="margin-top:12px">ثبت نرخ جدید</button>
+   </form>
+   <p class="note">مهمان می‌تواند نرخ جدید ثبت کند، اما نمی‌تواند نرخ‌های قبلی را ویرایش یا حذف کند. با ثبت نرخ جدید، قیمت‌های فروش کالاها به‌روزرسانی می‌شوند.</p>
+  </div>
+  <div class="panel">
+   <h2>تاریخچه نرخ دلار</h2>
+   <div id="rateHistory"></div>
+  </div>
+ </section>
+
+ <section id="themesPage" class="hidden">
+  <div class="panel">
+   <h2>انتخاب تم رنگی</h2>
+   <p class="muted">تغییر تم برای مهمان و مدیر آزاد است و در همین مرورگر ذخیره می‌شود.</p>
+   <div id="themeList" class="themes"></div>
+  </div>
+ </section>
+
+ <section id="settingsPage" class="hidden">
+  <div class="panel">
+   <h2>تنظیمات قیمت‌گذاری</h2>
+   <form id="settingsForm">
+    <div class="fields">
+     <div class="field"><label for="defaultProfit">سود پیش‌فرض (درصد)</label><input id="defaultProfit" type="number" min="-100" step="any" required></div>
+     <div class="field"><label for="defaultExtra">هزینه اضافه پیش‌فرض (تومان)</label><input id="defaultExtra" type="number" min="0" step="any" required></div>
+    </div>
+    <button class="btn primary" style="margin-top:12px">ذخیره تنظیمات</button>
+   </form>
+  </div>
+  <div class="panel">
+   <h2>رمز مدیر</h2>
+   <p class="note" id="passwordStatus"></p>
+   <form id="passwordForm">
+    <div class="field"><label for="newPassword">رمز جدید (حداقل ۶ نویسه)</label><input id="newPassword" type="password" minlength="6" required autocomplete="new-password"></div>
+    <button class="btn primary" style="margin-top:12px">تنظیم یا تغییر رمز مدیر</button>
+   </form>
+   <button class="btn" style="margin-top:10px" onclick="logoutAdmin()">خروج از حساب مدیر</button>
+  </div>
+  <div class="panel">
+   <h2>پشتیبان‌گیری و بازیابی</h2>
+   <div class="actions">
+    <button class="btn primary" onclick="exportData()">دریافت فایل پشتیبان</button>
+    <button class="btn" onclick="document.getElementById('importFile').click()">بازیابی فایل پشتیبان</button>
+    <input class="hidden" id="importFile" type="file" accept=".json,application/json" onchange="importData(event)">
+   </div>
+  </div>
+  <div class="panel">
+   <h2>حذف اطلاعات</h2>
+   <button class="btn danger" onclick="clearProducts()">حذف تمام کالاها</button>
+   <button class="btn danger" onclick="clearRateHistory()">حذف تاریخچه نرخ دلار</button>
+   <p class="note">عملیات حذف قابل بازگشت نیست؛ ابتدا پشتیبان بگیر.</p>
+  </div>
+ </section>
+</main>
+
+<footer>قیمت‌یار · اطلاعات در همین مرورگر ذخیره می‌شود.</footer>
+
+<div id="productModal" class="modal hidden">
+ <div class="modal-card">
+  <div class="row"><h2 id="formTitle">ثبت کالا</h2><button class="btn" onclick="closeProduct()">✕</button></div>
+  <form id="productForm">
+   <input id="pId" type="hidden">
+   <div class="fields">
+    <div class="field full"><label for="pName">نام کالا *</label><input id="pName" required maxlength="150"></div>
+    <div class="field"><label for="pCode">کد کالا</label><input id="pCode" maxlength="200"></div>
+    <div class="field"><label for="pQty">تعداد موجودی</label><input id="pQty" type="number" min="0" step="1" value="1" required></div>
+    <div class="field"><label for="pCurrency">ارز خرید</label><select id="pCurrency"><option value="IRR">تومان</option><option value="USD">دلار</option></select></div>
+    <div class="field"><label for="pBuy">قیمت خرید *</label><input id="pBuy" type="number" min="0" step="any" value="0" required></div>
+    <div class="field"><label for="pExtra">هزینه اضافه (تومان)</label><input id="pExtra" type="number" min="0" step="any" value="0" required></div>
+    <div class="field"><label for="pProfit">سود (درصد)</label><input id="pProfit" type="number" min="-100" step="any" value="20" required></div>
+    <div class="field"><label for="pCategory">دسته‌بندی</label><input id="pCategory" maxlength="80"></div>
+    <div class="field full"><label for="pQR">کد QR / بارکد</label><input id="pQR" maxlength="500"></div>
+    <div class="field full"><label for="pDesc">توضیحات</label><textarea id="pDesc" maxlength="500"></textarea></div>
+   </div>
+   <hr>
+   <div class="muted">قیمت تمام‌شده هر واحد</div><div id="previewCost" class="product-price">۰ تومان</div>
+   <div class="muted">قیمت فروش هر واحد</div><div id="previewSale" class="product-price">۰ تومان</div>
+   <button class="btn primary" style="margin-top:10px">ذخیره کالا</button>
+   <button class="btn" type="button" onclick="closeProduct()">انصراف</button>
+  </form>
+ </div>
 </div>
 
-<div class="lock-overlay" id="lockOverlay" role="dialog" aria-modal="true">
-  <div class="lock-card">
-    <div class="lock-icon"><i class="fa-solid fa-lock"></i></div>
-    <h2 id="lockTitle">قفل برنامه</h2>
-    <p id="lockDescription" class="subtitle">برای ادامه رمز را وارد کن.</p>
-    <form id="lockForm">
-      <div id="currentPasswordWrap" class="field"><label for="currentPassword">رمز فعلی</label><input id="currentPassword" type="password" autocomplete="current-password" maxlength="128"></div>
-      <div id="newPasswordWrap" class="field hidden"><label for="newPassword">رمز جدید (حداقل ۸ کاراکتر)</label><input id="newPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password"></div>
-      <div id="confirmPasswordWrap" class="field hidden"><label for="confirmPassword">تکرار رمز جدید</label><input id="confirmPassword" type="password" minlength="8" maxlength="128" autocomplete="new-password"></div>
-      <div id="lockError" class="lock-error" role="alert"></div>
-      <button id="lockSubmit" class="btn btn-primary" style="width:100%" type="submit">ورود</button>
-    </form>
-  </div>
-</div>
-
-<div class="lock-overlay" id="productOverlay" style="z-index:1000">
-  <div class="lock-card" style="text-align:right;max-height:90vh;overflow:auto;width:min(620px,100%)">
-    <h2 id="productFormTitle">افزودن کالا</h2>
-    <form id="productForm">
-      <input id="productId" type="hidden">
-      <div class="field"><label for="productName">نام کالا *</label><input id="productName" required maxlength="100"></div>
-      <div class="grid2">
-        <div class="field"><label for="productCode">کد کالا</label><input id="productCode" maxlength="80"></div>
-        <div class="field"><label for="productBarcode">بارکد</label><input id="productBarcode" maxlength="200"></div>
-        <div class="field"><label for="productCurrency">واحد قیمت خرید</label><select id="productCurrency"><option value="IRR">تومان</option><option value="USD">دلار آمریکا</option></select></div>
-        <div class="field"><label for="productForeignPrice">قیمت خرید به دلار</label><input id="productForeignPrice" type="number" min="0" step="0.01"></div>
-        <div class="field"><label for="productBuy">قیمت خرید به تومان *</label><input id="productBuy" type="number" min="0" step="1" required></div>
-        <div class="field"><label for="productExtraCost">هزینهٔ جانبی (تومان)</label><input id="productExtraCost" type="number" min="0" step="1" value="0"></div>
-        <div class="field"><label for="productSell">قیمت فروش (تومان) *</label><input id="productSell" type="number" min="0" step="1" required></div>
-        <div class="field"><label for="productImage">تصویر کالا</label><input id="productImage" type="file" accept="image/*"></div>
-      </div>
-      <img id="imagePreview" alt="پیش‌نمایش تصویر" class="hidden" style="max-width:100px;max-height:100px;object-fit:contain;margin-bottom:12px">
-      <div class="field"><label for="productNotes">یادداشت</label><textarea id="productNotes" rows="3" maxlength="2000"></textarea></div>
-      <div class="form-actions"><button class="btn btn-primary" type="submit">ذخیره کالا</button><button class="btn" type="button" id="cancelProduct">انصراف</button></div>
-    </form>
-  </div>
+<div id="adminModal" class="modal hidden">
+ <div class="modal-card">
+  <h2 id="adminTitle">ورود مدیر</h2>
+  <p class="muted" id="adminHelp">برای دسترسی مدیریتی، رمز را وارد کن.</p>
+  <form id="adminForm">
+   <div class="field"><label for="adminPassword">رمز مدیر</label><input id="adminPassword" type="password" required autocomplete="current-password"></div>
+   <p id="adminError" class="note"></p>
+   <button class="btn primary" style="margin-top:10px">ادامه</button>
+   <button class="btn" type="button" onclick="closeAdmin()">انصراف</button>
+  </form>
+ </div>
 </div>
 
 <script>
-(() => {
-  "use strict";
-  const $ = id => document.getElementById(id);
-  const PRODUCT_KEY = "priceyar_products_unified_v1";
-  const PRICING_KEY = "priceyar_pricing_unified_v1";
-  const PASSWORD_KEY = "priceyar_password_unified_v1";
-  const SECURITY_KEY = "priceyar_security_unified_v1";
-  let products = [];
-  let imageData = "";
-  let activityTime = Date.now();
-  let lockMode = "unlock";
+"use strict";
+const K={
+ products:"priceyar_final_products_v1",
+ settings:"priceyar_final_settings_v1",
+ theme:"priceyar_final_theme_v1",
+ password:"priceyar_final_password_v1",
+ rates:"priceyar_final_rates_v1"
+};
+const THEMES={
+ "تیره":{bg:"#171923",surface:"#242735",text:"#f3f4f6",muted:"#a4aaba",line:"#383d4d",accent:"#16a34a",soft:"#303646"},
+ "خاکستری":{bg:"#e5e7eb",surface:"#fff",text:"#30343b",muted:"#6b7280",line:"#d1d5db",accent:"#6b7280",soft:"#f3f4f6"},
+ "آبی":{bg:"#dbeafe",surface:"#fff",text:"#1e3a5f",muted:"#64748b",line:"#bfdbfe",accent:"#2563eb",soft:"#eff6ff"},
+ "سبز":{bg:"#dcfce7",surface:"#fff",text:"#14532d",muted:"#647568",line:"#bbf7d0",accent:"#16a34a",soft:"#f0fdf4"},
+ "روشن":{bg:"#fff",surface:"#fff",text:"#222",muted:"#777",line:"#e5e5e5",accent:"#777",soft:"#f5f5f5"},
+ "قرمز و سفید":{bg:"#fff1f1",surface:"#fff",text:"#333",muted:"#777",line:"#f4d5d5",accent:"#e53935",soft:"#fff5f5"},
+ "سبز و سفید":{bg:"#f0fff4",surface:"#fff",text:"#23432d",muted:"#738078",line:"#e0eae2",accent:"#198754",soft:"#e4f5e9"},
+ "آبی و سفید":{bg:"#eff6ff",surface:"#fff",text:"#1e3a5f",muted:"#64748b",line:"#d7e7fa",accent:"#1976d2",soft:"#eaf3ff"}
+};
+function read(key,fallback){try{const x=localStorage.getItem(key);return x===null?fallback:JSON.parse(x)}catch{return fallback}}
+function write(key,value){localStorage.setItem(key,JSON.stringify(value))}
+let products=read(K.products,[]);
+if(!Array.isArray(products))products=[];
+let settings=Object.assign({profit:20,extra:0},read(K.settings,{}));
+let rates=read(K.rates,[]);
+if(!Array.isArray(rates))rates=[];
+let isAdmin=false,adminAction="login";
 
-  const format = value => new Intl.NumberFormat("fa-IR", {maximumFractionDigits:0}).format(Number(value)||0);
-  const toman = value => format(value) + " تومان";
-  const esc = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-
-  function loadProducts() {
-    try {
-      const value = JSON.parse(localStorage.getItem(PRODUCT_KEY) || "[]");
-      products = Array.isArray(value) ? value : [];
-    } catch { products = []; }
+function el(id){return document.getElementById(id)}
+function val(id){return el(id).value}
+function n(v){const x=Number(v);return Number.isFinite(x)?x:0}
+function safeNum(v){return Math.max(0,n(v))}
+function money(v){return Math.round(n(v)).toLocaleString("fa-IR")+" تومان"}
+function fmt(v){return n(v).toLocaleString("fa-IR")}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,9)}
+function dateText(iso){const d=new Date(iso);return Number.isNaN(d.getTime())?"تاریخ نامشخص":d.toLocaleString("fa-IR")}
+function activeRate(){return rates.length?safeNum(rates[rates.length-1].value):0}
+function baseCost(p){const buy=p.currency==="USD"?safeNum(p.buy)*activeRate():safeNum(p.buy);return buy+safeNum(p.extra)}
+function sale(p){return baseCost(p)*(1+n(p.profit)/100)}
+function margin(p){return sale(p)-baseCost(p)}
+function admin(){return isAdmin}
+function requireAdmin(){if(!admin()){alert("برای این عملیات باید به‌عنوان مدیر وارد شوی.");return false}return true}
+function saveProducts(){write(K.products,products)}
+function saveRates(){write(K.rates,rates)}
+function showPage(name){
+ ["products","rates","themes","settings"].forEach(p=>el(p+"Page").classList.toggle("hidden",p!==name));
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+ if(name==="settings"&&!isAdmin){alert("این بخش مخصوص مدیر است.");showPage("products");return}
+ if(name==="rates"){renderRates()}
+ if(name==="themes"){renderThemes()}
+ if(name==="settings"){el("defaultProfit").value=settings.profit;el("defaultExtra").value=settings.extra;el("passwordStatus").textContent=localStorage.getItem(K.password)?"رمز مدیر تنظیم شده است.":"هنوز رمزی تعیین نشده؛ رمز مدیر را تنظیم کن."}
+}
+function goProducts(){el("productSearch").value=val("globalSearch");showPage("products");renderProducts()}
+function applyTheme(name){
+ if(!THEMES[name])name="تیره";
+ const t=THEMES[name];
+ Object.entries(t).forEach(([k,v])=>document.documentElement.style.setProperty("--"+k,v));
+ localStorage.setItem(K.theme,name);
+ renderThemes();
+}
+function renderThemes(){
+ const current=localStorage.getItem(K.theme)||"تیره";
+ el("themeList").innerHTML=Object.entries(THEMES).map(([name,t])=>`
+ <button class="theme ${name===current?"selected":""}" data-theme="${esc(name)}">
+ <div class="swatches" style="background:${t.bg}">
+ <span class="swatch" style="background:${t.bg}"></span>
+ <span class="swatch" style="background:${t.surface}"></span>
+ <span class="swatch" style="background:${t.accent}"></span>
+ </div><div class="theme-name">${esc(name)}</div></button>`).join("");
+}
+el("themeList").addEventListener("click",e=>{
+ const b=e.target.closest("[data-theme]");if(b)applyTheme(b.dataset.theme)
+});
+function refreshRole(){
+ el("roleLabel").textContent=isAdmin?"مدیر وارد شده":"حالت مهمان";
+ document.querySelectorAll(".admin-only").forEach(x=>x.classList.toggle("hidden",!isAdmin));
+}
+function renderProducts(){
+ const q=(val("productSearch")+" "+val("globalSearch")).trim().toLocaleLowerCase();
+ let list=products.filter(p=>[p.name,p.code,p.qr,p.category,p.desc].some(v=>String(v||"").toLocaleLowerCase().includes(q)));
+ const sort=val("sortOrder");
+ if(sort==="name")list.sort((a,b)=>String(a.name).localeCompare(String(b.name),"fa"));
+ if(sort==="price")list.sort((a,b)=>sale(b)-sale(a));
+ if(sort==="new")list.reverse();
+ el("productList").innerHTML=list.map(p=>`
+ <article class="product">
+ <div class="row"><span class="tag">${esc(p.category||"بدون دسته‌بندی")}</span><span class="tag">موجودی: ${fmt(p.qty)}</span></div>
+ <h3>${esc(p.name)}</h3>
+ <div class="product-price">${money(sale(p))}</div>
+ <div class="details">
+ قیمت تمام‌شده: ${money(baseCost(p))}<br>
+ قیمت خرید: ${fmt(p.buy)} ${p.currency==="USD"?"دلار":"تومان"}<br>
+ هزینه اضافه: ${money(p.extra)}<br>
+ سود: ${fmt(p.profit)}٪
+ ${p.code?"<br>کد: "+esc(p.code):""}
+ ${p.qr?"<br>QR: "+esc(p.qr):""}
+ ${p.desc?"<br>توضیحات: "+esc(p.desc):""}
+ </div>
+ ${isAdmin?`<div class="product-actions"><button class="btn small" data-edit="${esc(p.id)}">ویرایش</button><button class="btn small danger" data-delete="${esc(p.id)}">حذف</button></div>`:""}
+ </article>`).join("");
+ el("emptyProducts").classList.toggle("hidden",list.length!==0);
+ el("statCount").textContent=fmt(products.length);
+ el("statCost").textContent=money(products.reduce((s,p)=>s+baseCost(p)*safeNum(p.qty),0));
+ el("statSale").textContent=money(products.reduce((s,p)=>s+sale(p)*safeNum(p.qty),0));
+}
+el("productList").addEventListener("click",e=>{
+ const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");
+ if(edit)editProduct(edit.dataset.edit);
+ if(del)deleteProduct(del.dataset.delete);
+});
+function openProduct(){el("productModal").classList.remove("hidden")}
+function closeProduct(){el("productModal").classList.add("hidden")}
+function editProduct(id){
+ if(!requireAdmin())return;
+ el("productForm").reset();
+ el("pId").value=id||"";
+ let p=products.find(x=>x.id===id);
+ if(p){
+  el("formTitle").textContent="ویرایش کالا";
+  el("pName").value=p.name||"";el("pCode").value=p.code||"";
+  el("pQR").value=p.qr||"";el("pQty").value=p.qty??0;
+  el("pCurrency").value=p.currency==="USD"?"USD":"IRR";
+  el("pBuy").value=p.buy??0;el("pExtra").value=p.extra??0;
+  el("pProfit").value=p.profit??settings.profit;
+  el("pCategory").value=p.category||"";el("pDesc").value=p.desc||"";
+ }else{
+  el("formTitle").textContent="ثبت کالای جدید";
+  el("pExtra").value=settings.extra;el("pProfit").value=settings.profit;
+  el("pQty").value=1;el("pBuy").value=0;
+ }
+ preview();openProduct();
+}
+function deleteProduct(id){
+ if(!requireAdmin())return;
+ const p=products.find(x=>x.id===id);
+ if(!p||!confirm("کالای «"+p.name+"» حذف شود؟"))return;
+ products=products.filter(x=>x.id!==id);saveProducts();renderProducts();
+}
+function preview(){
+ const p={currency:val("pCurrency"),buy:n(val("pBuy")),extra:n(val("pExtra")),profit:n(val("pProfit"))};
+ el("previewCost").textContent=money(baseCost(p));
+ el("previewSale").textContent=money(sale(p));
+}
+["pCurrency","pBuy","pExtra","pProfit"].forEach(id=>el(id).addEventListener("input",preview));
+el("productForm").addEventListener("submit",e=>{
+ e.preventDefault();if(!requireAdmin())return;
+ const name=val("pName").trim(),buy=n(val("pBuy")),extra=n(val("pExtra")),profit=n(val("pProfit")),qty=n(val("pQty"));
+ if(!name||buy<0||extra<0||qty<0||profit< -100){alert("لطفاً اطلاعات کالا را بررسی کن.");return}
+ const id=val("pId")||makeId();
+ const p={id,name,code:val("pCode").trim(),qr:val("pQR").trim(),qty,buy,currency:val("pCurrency"),extra,profit,category:val("pCategory").trim(),desc:val("pDesc").trim(),updatedAt:new Date().toISOString()};
+ const i=products.findIndex(x=>x.id===id);
+ if(i>=0)products[i]=p;else products.push(p);
+ saveProducts();closeProduct();renderProducts();
+});
+function editProductNew(){editProduct("")}
+function renderRates(){
+ const r=activeRate();
+ el("currentRate").textContent=r?money(r):"نرخ دلار ثبت نشده";
+ el("currentRateDate").textContent=r?("زمان ثبت: "+dateText(rates[rates.length-1].date)):"";
+ el("rateHistory").innerHTML=rates.length?rates.slice().reverse().map((x,i)=>`
+ <div class="history-row"><div><strong>${money(x.value)}</strong><div class="note">${dateText(x.date)}</div>${x.note?`<div class="note">${esc(x.note)}</div>`:""}</div>
+ ${isAdmin?`<button class="btn small danger" data-rate-delete="${esc(x.id)}">حذف نرخ</button>`:""}</div>`).join(""):'<div class="empty">تاریخچه‌ای وجود ندارد.</div>';
+}
+el("rateHistory").addEventListener("click",e=>{
+ const b=e.target.closest("[data-rate-delete]");if(!b)return;
+ if(!requireAdmin())return;
+ if(!confirm("این نرخ از تاریخچه حذف شود؟"))return;
+ rates=rates.filter(r=>r.id!==b.dataset.rateDelete);saveRates();renderRates();renderProducts();
+});
+el("rateForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const value=n(val("newRate"));
+ if(!Number.isFinite(value)||value<=0){alert("نرخ دلار باید عددی بیشتر از صفر باشد.");return}
+ rates.push({id:makeId(),value,date:new Date().toISOString(),note:val("rateNote").trim()});
+ saveRates();el("rateForm").reset();renderRates();renderProducts();
+ alert("نرخ جدید ثبت شد. قیمت کالاها بر اساس آخرین نرخ محاسبه می‌شود.");
+});
+el("settingsForm").addEventListener("submit",e=>{
+ e.preventDefault();if(!requireAdmin())return;
+ const profit=n(val("defaultProfit")),extra=n(val("defaultExtra"));
+ if(profit< -100||extra<0){alert("مقادیر واردشده معتبر نیستند.");return}
+ settings={profit,extra};write(K.settings,settings);alert("تنظیمات ذخیره شد.");
+});
+function openAdmin(){
+ adminAction=localStorage.getItem(K.password)?"login":"setup";
+ el("adminTitle").textContent=adminAction==="setup"?"تنظیم رمز اولیه مدیر":"ورود مدیر";
+ el("adminHelp").textContent=adminAction==="setup"?"برای اولین بار یک رمز مدیر تعیین کن.":"رمز مدیر را وارد کن.";
+ el("adminError").textContent="";el("adminPassword").value="";
+ el("adminModal").classList.remove("hidden");
+}
+function closeAdmin(){el("adminModal").classList.add("hidden")}
+async function hash(text){
+ if(!crypto.subtle)throw new Error("برای تنظیم رمز، سایت را در اتصال امن HTTPS باز کن.");
+ const bytes=new TextEncoder().encode(text);
+ const digest=await crypto.subtle.digest("SHA-256",bytes);
+ return Array.from(new Uint8Array(digest)).map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+el("adminForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const password=val("adminPassword");
+ if(password.length<6){el("adminError").textContent="رمز باید حداقل ۶ نویسه داشته باشد.";return}
+ try{
+  if(adminAction==="setup"){
+   if(localStorage.getItem(K.password)){el("adminError").textContent="رمز قبلاً تنظیم شده؛ وارد شو.";return}
+   localStorage.setItem(K.password,await hash(password));
+  }else{
+   if(await hash(password)!==localStorage.getItem(K.password)){el("adminError").textContent="رمز نادرست است.";return}
   }
-
-  function saveProducts() {
-    try {
-      localStorage.setItem(PRODUCT_KEY, JSON.stringify(products));
-      return true;
-    } catch {
-      alert("ذخیره انجام نشد؛ فضای مرورگر ممکن است پر شده باشد.");
-      return false;
-    }
-  }
-
-  function getPricing() {
-    try {
-      return JSON.parse(localStorage.getItem(PRICING_KEY) || '{"dollarRate":0,"profitRate":20,"rounding":1000}');
-    } catch { return {dollarRate:0,profitRate:20,rounding:1000}; }
-  }
-
-  function savePricingSettings(showMessage = true) {
-    const dollarRate = Number($("dollarRate").value);
-    const profitRate = Number($("profitRate").value);
-    const rounding = Number($("rounding").value);
-    if (!Number.isFinite(dollarRate) || dollarRate < 0 ||
-        !Number.isFinite(profitRate) || profitRate < 0 ||
-        profitRate > 10000 || !Number.isFinite(rounding) || rounding < 1) {
-      alert("نرخ ارز یا درصد سود معتبر نیست.");
-      return false;
-    }
-    localStorage.setItem(PRICING_KEY, JSON.stringify({dollarRate,profitRate,rounding}));
-    updateAll();
-    if (showMessage) alert("تنظیمات قیمت ذخیره شد.");
-    return true;
-  }
-
-  function costOf(product, pricing = getPricing()) {
-    const base = product.currency === "USD"
-      ? (Number(product.foreignPrice)||0) * pricing.dollarRate
-      : (Number(product.buy)||0);
-    return Math.round(base + (Number(product.extraCost)||0));
-  }
-
-  function suggested(product, pricing = getPricing()) {
-    return Math.round(costOf(product, pricing) * (1 + pricing.profitRate/100) / pricing.rounding) * pricing.rounding;
-  }
-
-  function profitPercent(product) {
-    const cost = costOf(product);
-    return cost > 0 ? ((Number(product.sell)-cost)/cost)*100 : null;
-  }
-
-  function profitLabel(product) {
-    const p = profitPercent(product);
-    if (p === null) return "—";
-    return `<span class="badge ${p < 0 ? "loss" : ""}">${p > 0 ? "+" : ""}${format(p)}٪</span>`;
-  }
-
-  function productRowsMarkup(product, compact = false) {
-    return `<tr>
-      <td><div class="product-name">${esc(product.name)}</div><div class="product-code">${esc(product.code || "بدون کد")}</div></td>
-      ${compact ? "" : `<td>${esc(product.barcode || "—")}</td>`}
-      <td class="price">${toman(costOf(product))}</td>
-      <td class="price">${toman(product.sell)}</td>
-      <td>${profitLabel(product)}</td>
-      <td><div class="row-actions"><button data-edit="${esc(product.id)}" title="ویرایش" type="button"><i class="fa-solid fa-pen"></i></button><button data-delete="${esc(product.id)}" class="delete" title="حذف" type="button"><i class="fa-solid fa-trash"></i></button></div></td>
-    </tr>`;
-  }
-
-  function fillProductSelect() {
-    const select = $("calculatorProduct");
-    const old = select.value;
-    select.innerHTML = '<option value="">انتخاب کالا</option>';
-    products.forEach(p => {
-      const option = document.createElement("option");
-      option.value = p.id;
-      option.textContent = p.name;
-      select.appendChild(option);
-    });
-    if (products.some(p => p.id === old)) select.value = old;
-  }
-
-  function updateAll() {
-    const pricing = getPricing();
-    $("statCount").textContent = format(products.length);
-    $("statInventory").textContent = format(products.reduce((s,p)=>s+costOf(p,pricing),0));
-    $("statProfit").textContent = format(products.reduce((s,p)=>s+(Number(p.sell)||0)-costOf(p,pricing),0));
-    $("statDollar").textContent = pricing.dollarRate ? format(pricing.dollarRate) : "—";
-
-    const query = $("searchInput").value.trim().toLocaleLowerCase();
-    const filtered = products.filter(p => [p.name,p.code,p.barcode,p.notes].join(" ").toLocaleLowerCase().includes(query));
-    $("productRows").innerHTML = filtered.length ? filtered.map(p=>productRowsMarkup(p)).join("") : `<tr><td colspan="6"><div class="empty">کالایی پیدا نشد.</div></td></tr>`;
-    $("dashboardRows").innerHTML = products.length ? products.slice(0,5).map(p=>productRowsMarkup(p,true)).join("") : `<tr><td colspan="5"><div class="empty">هنوز کالایی ثبت نشده است.</div></td></tr>`;
-    fillProductSelect();
-    updateCalculator();
-  }
-
-  function updateCalculator() {
-    const p = products.find(item => item.id === $("calculatorProduct").value);
-    if (!p) {
-      $("suggestedPrice").textContent = "—";
-      $("calculationDetail").textContent = "برای مشاهدهٔ قیمت، یک کالا انتخاب کن.";
-      return;
-    }
-    const pricing = getPricing();
-    $("suggestedPrice").textContent = toman(suggested(p,pricing));
-    $("calculationDetail").textContent = `قیمت تمام‌شده: ${toman(costOf(p,pricing))}؛ درصد سود هدف: ${format(pricing.profitRate)}٪.`;
-  }
-
-  function switchSection(id) {
-    document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
-    document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
-    const titles = {dashboard:"داشبورد",products:"مدیریت کالاها",pricing:"مدیریت قیمت",settings:"تنظیمات"};
-    $("pageTitle").textContent = titles[id] || "قیمت‌یار";
-  }
-
-  document.querySelectorAll(".nav-btn").forEach(button=>button.addEventListener("click",()=>switchSection(button.dataset.section)));
-  $("searchInput").addEventListener("input",updateAll);
-  $("calculatorProduct").addEventListener("change",updateCalculator);
-  $("savePricing").addEventListener("click",()=>savePricingSettings());
-  $("dashboardAdd").addEventListener("click",()=>openProductForm());
-  $("addButton").addEventListener("click",()=>openProductForm());
-
-  function openProductForm(product = null) {
-    $("productForm").reset();
-    $("productId").value = product?.id || "";
-    $("productFormTitle").textContent = product ? "ویرایش کالا" : "افزودن کالا";
-    $("productName").value = product?.name || "";
-    $("productCode").value = product?.code || "";
-    $("productBarcode").value = product?.barcode || "";
-    $("productCurrency").value = product?.currency || "IRR";
-    $("productForeignPrice").value = product?.foreignPrice ?? "";
-    $("productBuy").value = product?.buy ?? "";
-    $("productExtraCost").value = product?.extraCost ?? 0;
-    $("productSell").value = product?.sell ?? "";
-    $("productNotes").value = product?.notes || "";
-    imageData = product?.image || "";
-    $("imagePreview").src = imageData;
-    $("imagePreview").classList.toggle("hidden",!imageData);
-    updateCurrencyInputs();
-    $("productOverlay").classList.add("active");
-  }
-
-  function closeProductForm() {
-    $("productOverlay").classList.remove("active");
-  }
-
-  function updateCurrencyInputs() {
-    const dollar = $("productCurrency").value === "USD";
-    $("productForeignPrice").disabled = !dollar;
-    $("productBuy").disabled = dollar;
-    if (dollar) {
-      const price = Number($("productForeignPrice").value);
-      const rate = getPricing().dollarRate;
-      if (price >= 0 && rate > 0) $("productBuy").value = Math.round(price*rate);
-    }
-  }
-
-  $("productCurrency").addEventListener("change",updateCurrencyInputs);
-  $("productForeignPrice").addEventListener("input",updateCurrencyInputs);
-  $("cancelProduct").addEventListener("click",closeProductForm);
-  $("productOverlay").addEventListener("click",e=>{if(e.target===$("productOverlay"))closeProductForm();});
-
-  $("productImage").addEventListener("change",()=>{
-    const file = $("productImage").files[0];
-    if (!file) return;
-    if (!file.type.startsWith("image/") || file.size>1500000) {
-      alert("تصویر باید کمتر از ۱٫۵ مگابایت باشد.");
-      $("productImage").value="";
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      imageData = reader.result;
-      $("imagePreview").src=imageData;
-      $("imagePreview").classList.remove("hidden");
-    };
-    reader.readAsDataURL(file);
-  });
-
-  $("productForm").addEventListener("submit",e=>{
-    e.preventDefault();
-    const pricing = getPricing();
-    const currency = $("productCurrency").value;
-    const foreignPrice = Number($("productForeignPrice").value||0);
-    const extraCost = Number($("productExtraCost").value||0);
-    const id = $("productId").value;
-    const name = $("productName").value.trim();
-    const code = $("productCode").value.trim();
-
-    if (!name) return alert("نام کالا را وارد کن.");
-    if (currency==="USD" && (!(foreignPrice>0) || !(pricing.dollarRate>0))) return alert("قیمت دلاری و نرخ دلار باید معتبر باشند.");
-    if (!Number.isFinite(extraCost)||extraCost<0) return alert("هزینهٔ جانبی معتبر نیست.");
-
-    if (code && products.some(p=>p.id!==id && p.code.toLowerCase()===code.toLowerCase())) return alert("این کد کالا قبلاً ثبت شده است.");
-
-    const buy = currency==="USD" ? Math.round(foreignPrice*pricing.dollarRate) : Number($("productBuy").value);
-    const sell = Number($("productSell").value);
-    if (!Number.isFinite(buy)||buy<0||!Number.isFinite(sell)||sell<0) return alert("قیمت خرید و فروش را درست وارد کن.");
-
-    const old = products;
-    const item = {
-      id:id || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())),
-      name,code,barcode:$("productBarcode").value.trim(),
-      currency,foreignPrice:currency==="USD"?foreignPrice:null,
-      extraCost,buy,sell,notes:$("productNotes").value.trim(),image:imageData
-    };
-    products = id ? products.map(p=>p.id===id?item:p) : [item,...products];
-    if (!saveProducts()) { products=old; return; }
-    closeProductForm();
-    updateAll();
-  });
-
-  document.addEventListener("click",e=>{
-    const edit = e.target.closest("[data-edit]");
-    const del = e.target.closest("[data-delete]");
-    if (edit) {
-      const product=products.find(p=>p.id===edit.dataset.edit);
-      if(product) openProductForm(product);
-    }
-    if (del) {
-      const product=products.find(p=>p.id===del.dataset.delete);
-      if(product && confirm(`کالای «${product.name}» حذف شود؟`)) {
-        const old=products;
-        products=products.filter(p=>p.id!==product.id);
-        if(!saveProducts()) products=old;
-        updateAll();
-      }
-    }
-  });
-
-  $("applyOnePrice").addEventListener("click",()=>{
-    const p=products.find(item=>item.id===$("calculatorProduct").value);
-    if(!p) return alert("ابتدا یک کالا انتخاب کن.");
-    const old=products;
-    products=products.map(item=>item.id===p.id?{...item,sell:suggested(item)}:item);
-    if(!saveProducts()) products=old;
-    updateAll();
-  });
-
-  $("applyAllPrices").addEventListener("click",()=>{
-    if(!products.length) return alert("هنوز کالایی ثبت نشده است.");
-    if(!confirm("قیمت فروش همهٔ کالاها با قیمت پیشنهادی جایگزین شود؟")) return;
-    const old=products;
-    products=products.map(p=>({...p,sell:suggested(p)}));
-    if(!saveProducts()) products=old;
-    updateAll();
-  });
-
-  $("exportButton").addEventListener("click",()=>{
-    const payload = {
-      products,
-      pricing:getPricing(),
-      version:1
-    };
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;a.download="priceyar-backup.json";a.click();
-    URL.revokeObjectURL(url);
-  });
-
-  $("importButton").addEventListener("click",()=>$("importFile").click());
-  $("importFile").addEventListener("change",async()=>{
-    const file=$("importFile").files[0];
-    if(!file) return;
-    try {
-      const data=JSON.parse(await file.text());
-      if(!data || !Array.isArray(data.products)) throw new Error();
-      if(!confirm("اطلاعات فعلی با نسخهٔ پشتیبان جایگزین شوند؟")) return;
-      const oldProducts=products;
-      products=data.products;
-      if(!saveProducts()) {products=oldProducts;return;}
-      if(data.pricing) localStorage.setItem(PRICING_KEY,JSON.stringify(data.pricing));
-      const pricing=getPricing();
-      $("dollarRate").value=pricing.dollarRate??0;
-      $("profitRate").value=pricing.profitRate??20;
-      $("rounding").value=String(pricing.rounding??1000);
-      updateAll();
-      alert("بازیابی انجام شد.");
-    } catch { alert("فایل پشتیبان معتبر نیست."); }
-    finally { $("importFile").value=""; }
-  });
-
-  $("deleteAll").addEventListener("click",()=>{
-    if(!confirm("تمام کالاها حذف شوند؟ این کار قابل بازگشت نیست مگر پشتیبان داشته باشی.")) return;
-    const old=products;
-    products=[];
-    if(!saveProducts()) products=old;
-    updateAll();
-  });
-
-  async function hash(password) {
-    if(!crypto.subtle) throw new Error("برای تنظیم رمز، سایت را از طریق HTTPS باز کن.");
-    const bytes=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(password));
-    return Array.from(new Uint8Array(bytes)).map(b=>b.toString(16).padStart(2,"0")).join("");
-  }
-
-  function showLock(mode) {
-    lockMode=mode;
-    $("lockError").textContent="";
-    $("lockForm").reset();
-    $("currentPasswordWrap").classList.toggle("hidden",mode==="setup");
-    $("newPasswordWrap").classList.toggle("hidden",mode==="unlock");
-    $("confirmPasswordWrap").classList.toggle("hidden",mode==="unlock");
-    $("lockTitle").textContent=mode==="setup"?"تعیین رمز اولیه":mode==="change"?"تغییر رمز عبور":"برنامه قفل است";
-    $("lockDescription").textContent=mode==="setup"?"یک رمز حداقل ۸ کاراکتری انتخاب کن.":mode==="change"?"رمز فعلی و سپس رمز جدید را وارد کن.":"برای ادامه رمز عبور را وارد کن.";
-    $("lockSubmit").textContent=mode==="setup"?"ثبت رمز":mode==="change"?"تغییر رمز":"باز کردن قفل";
-    $("lockOverlay").classList.add("active");
-  }
-
-  function lockApp() {
-    sessionStorage.removeItem(PASSWORD_KEY);
-    showLock("unlock");
-  }
-
-  $("lockButton").addEventListener("click",lockApp);
-  $("changePassword").addEventListener("click",()=>{
-    if(!$("lockOverlay").classList.contains("active")) showLock("change");
-  });
-
-  $("lockForm").addEventListener("submit",async e=>{
-    e.preventDefault();
-    $("lockError").textContent="";
-    try {
-      const stored=localStorage.getItem("priceyar_password_hash_v1");
-      const current=$("currentPassword").value;
-      if(lockMode==="unlock" || lockMode==="change") {
-        if(!stored || await hash(current)!==stored) throw new Error("رمز فعلی اشتباه است.");
-      }
-      if(lockMode==="setup" || lockMode==="change") {
-        const next=$("newPassword").value;
-        if(next.length<8) throw new Error("رمز جدید باید حداقل ۸ کاراکتر داشته باشد.");
-        if(next!==$("confirmPassword").value) throw new Error("تکرار رمز با رمز جدید مطابقت ندارد.");
-        localStorage.setItem("priceyar_password_hash_v1",await hash(next));
-      }
-      sessionStorage.setItem(PASSWORD_KEY,"yes");
-      $("lockOverlay").classList.remove("active");
-      activityTime=Date.now();
-    } catch(err) {
-      $("lockError").textContent=err.message || "عملیات ناموفق بود.";
-    }
-  });
-
-  function loadSecuritySettings() {
-    let settings={autoLock:5};
-    try {settings=Object.assign(settings,JSON.parse(localStorage.getItem(SECURITY_KEY)||"{}"));} catch {}
-    $("autoLock").value=String(settings.autoLock||5);
-  }
-
-  $("autoLock").addEventListener("change",()=>{
-    localStorage.setItem(SECURITY_KEY,JSON.stringify({autoLock:Number($("autoLock").value)||5}));
-  });
-
-  function activity() {
-    if(!$("lockOverlay").classList.contains("active")) activityTime=Date.now();
-  }
-  ["pointerdown","keydown","touchstart"].forEach(type=>document.addEventListener(type,activity,{passive:true}));
-
-  setInterval(()=>{
-    if($("lockOverlay").classList.contains("active")) return;
-    let settings={autoLock:5};
-    try {settings=Object.assign(settings,JSON.parse(localStorage.getItem(SECURITY_KEY)||"{}"));} catch {}
-    if(Date.now()-activityTime >= (Number(settings.autoLock)||5)*60000) lockApp();
-  },5000);
-
-  function initialize() {
-    loadProducts();
-    const pricing=getPricing();
-    $("dollarRate").value=pricing.dollarRate??"";
-    $("profitRate").value=pricing.profitRate??20;
-    $("rounding").value=String(pricing.rounding??1000);
-    loadSecuritySettings();
-    updateAll();
-
-    if(!localStorage.getItem("priceyar_password_hash_v1")) showLock("setup");
-    else if(sessionStorage.getItem(PASSWORD_KEY)!=="yes") showLock("unlock");
-  }
-
-  initialize();
-})();
+  isAdmin=true;closeAdmin();refreshRole();renderProducts();showPage("products");
+ }catch(err){el("adminError").textContent=err.message||"خطا در بررسی رمز."}
+});
+function logoutAdmin(){isAdmin=false;refreshRole();showPage("products");renderProducts()}
+el("globalSearch").addEventListener("input",()=>{el("productSearch").value=val("globalSearch");renderProducts()});
+function exportData(){
+ if(!requireAdmin())return;
+ const data={version:1,products,rates,settings,exportedAt:new Date().toISOString()};
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="priceyar-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+async function importData(event){
+ if(!requireAdmin()){event.target.value="";return}
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ try{
+  const data=JSON.parse(await file.text());
+  if(!data||!Array.isArray(data.products)||!Array.isArray(data.rates)||!data.settings||typeof data.settings!=="object")throw new Error("ساختار فایل پشتیبان معتبر نیست.");
+  const validProducts=data.products.every(p=>p&&typeof p.id==="string"&&typeof p.name==="string"&&Number.isFinite(Number(p.buy))&&Number(p.buy)>=0&&["USD","IRR"].includes(p.currency));
+  const validRates=data.rates.every(r=>r&&typeof r.id==="string"&&Number.isFinite(Number(r.value))&&Number(r.value)>0&&typeof r.date==="string");
+  if(!validProducts||!validRates)throw new Error("اطلاعات فایل پشتیبان نامعتبر است.");
+  if(!confirm("اطلاعات فعلی با داده‌های فایل جایگزین شوند؟ ابتدا از داده‌های فعلی پشتیبان بگیر."))return;
+  products=data.products;rates=data.rates;
+  settings={profit:n(data.settings.profit),extra:safeNum(data.settings.extra)};
+  saveProducts();saveRates();write(K.settings,settings);
+  renderProducts();renderRates();alert("بازیابی انجام شد.");
+ }catch(err){alert("بازیابی ناموفق: "+err.message)}
+ finally{event.target.value=""}
+}
+function clearProducts(){
+ if(!requireAdmin())return;
+ if(confirm("تمام کالاها حذف شوند؟ این کار برگشت‌پذیر نیست.")){products=[];saveProducts();renderProducts()}
+}
+function clearRateHistory(){
+ if(!requireAdmin())return;
+ if(confirm("تمام تاریخچه نرخ دلار حذف شود؟ قیمت کالاهای دلاری تا ثبت نرخ جدید قابل محاسبه نخواهد بود.")){rates=[];saveRates();renderRates();renderProducts()}
+}
+el("newPassword").addEventListener("input",()=>{});
+el("passwordForm").addEventListener("submit",async e=>{
+ e.preventDefault();if(!requireAdmin())return;
+ const password=val("newPassword");
+ if(password.length<6){alert("رمز باید حداقل ۶ نویسه باشد.");return}
+ try{
+  localStorage.setItem(K.password,await hash(password));
+  el("newPassword").value="";el("passwordStatus").textContent="رمز مدیر ذخیره شد.";
+  alert("رمز مدیر تغییر کرد.");
+ }catch(err){alert(err.message)}
+});
+/* مهمان اجازه ویرایش کالاها را ندارد. */
+function editProduct(id){if(!requireAdmin())return;openProductEditor(id)}
+function openProductEditor(id){
+ el("productForm").reset();el("pId").value=id||"";
+ const p=products.find(x=>x.id===id);
+ if(p){
+  el("formTitle").textContent="ویرایش کالا";
+  el("pName").value=p.name||"";el("pCode").value=p.code||"";
+  el("pQR").value=p.qr||"";el("pQty").value=p.qty??0;
+  el("pCurrency").value=p.currency==="USD"?"USD":"IRR";
+  el("pBuy").value=p.buy??0;el("pExtra").value=p.extra??0;
+  el("pProfit").value=p.profit??settings.profit;
+  el("pCategory").value=p.category||"";el("pDesc").value=p.desc||"";
+ }else{
+  el("formTitle").textContent="ثبت کالای جدید";
+  el("pQty").value=1;el("pBuy").value=0;
+  el("pExtra").value=settings.extra;el("pProfit").value=settings.profit;
+ }
+ preview();openProduct();
+}
+function editProduct(){if(!requireAdmin())return;openProductEditor("")}
+function closeProduct(){el("productModal").classList.add("hidden")}
+function openProduct(){el("productModal").classList.remove("hidden")}
+function refreshAll(){refreshRole();renderProducts();renderRates();renderThemes()}
+const initialTheme=localStorage.getItem(K.theme)||"تیره";
+applyTheme(initialTheme);
+refreshAll();
+showPage("products");
 </script>
 </body>
 </html>
