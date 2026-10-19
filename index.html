@@ -43,12 +43,15 @@ input,select,textarea{font-family:inherit;font-size:16px}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
 .home-search{position:sticky;top:58px;z-index:30;background:var(--bg);padding:10px 0 8px;margin:-14px -14px 0;padding-left:14px;padding-right:14px}
-.search-bar{position:relative}
+.search-row{display:flex;gap:6px;align-items:center}
+.search-bar{position:relative;flex:1}
 .search-bar input{width:100%;padding:14px 46px 14px 16px;border-radius:16px;border:1.5px solid var(--border);background:var(--panel);color:var(--text);outline:none;font-size:15px;transition:border .2s,box-shadow .2s;box-shadow:var(--shadow)}
 .search-bar input:focus{border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 15%,transparent)}
 .search-bar::before{content:"🔍";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:17px;opacity:.6;pointer-events:none}
 .search-clear{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:10px;background:var(--panel-2);display:none;align-items:center;justify-content:center;font-size:14px;color:var(--muted)}
 .search-clear.show{display:inline-flex}
+.search-action-btn{width:46px;height:46px;border-radius:14px;background:var(--panel);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;box-shadow:var(--shadow);transition:all .15s}
+.search-action-btn:active{transform:scale(.94);background:var(--panel-2)}
 .search-hint{font-size:11px;color:var(--muted);margin-top:6px;padding-right:4px;min-height:16px}
 
 .chips-row{display:flex;gap:6px;overflow-x:auto;padding:8px 0 4px;margin:0 -14px;padding-left:14px;padding-right:14px;-webkit-overflow-scrolling:touch}
@@ -121,6 +124,11 @@ input,select,textarea{font-family:inherit;font-size:16px}
 .field .hint{font-size:11px;color:var(--muted)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:380px){.form-row{grid-template-columns:1fr}}
+
+.input-with-btn{display:flex;gap:6px}
+.input-with-btn input{flex:1}
+.input-with-btn .scan-icon-btn{width:44px;height:44px;border-radius:12px;background:var(--panel-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;align-self:flex-end}
+.input-with-btn .scan-icon-btn:active{transform:scale(.94)}
 
 .empty{padding:50px 20px;text-align:center;color:var(--muted);background:var(--panel);border:1px dashed var(--border);border-radius:var(--radius);margin:16px 0}
 .empty .big{font-size:52px;margin-bottom:12px;display:block;opacity:.7}
@@ -214,11 +222,11 @@ body[data-role="owner"] .owner-only{display:block}
   .inv-head h1{ font-size:20px; }
   .inv-head .meta{ font-size:11px; text-align:left; line-height:1.8; }
   .inv-table{ width:100%; border-collapse:collapse; margin-bottom:12px; }
-  .inv-table th, .inv-table td{ border:1px solid #000; padding:6px 8px; text-align:right; font-size:11px; }
+  .inv-table th, .inv-table td{ border:1px solid #000; padding:6px 8px; text-align:right; font-size:11px; vertical-align:top; }
   .inv-table th{ background:#f0f0f0; font-weight:700; }
   .inv-total-row{ display:flex; justify-content:space-between; padding:6px 0; font-size:12px; border-bottom:1px dashed #999; }
   .inv-total-row.grand{ font-size:14px; font-weight:800; border-top:2px solid #000; border-bottom:2px solid #000; padding:8px 0; margin-top:6px; }
-  .inv-words{ margin-top:10px; padding:8px; background:#f5f5f5; border-radius:4px; font-size:11px; }
+  .inv-words{ margin-top:10px; padding:8px; background:#f5f5f5; border-radius:4px; font-size:11px; line-height:1.8; }
   .inv-foot{ margin-top:20px; display:flex; justify-content:space-between; font-size:11px; }
   .inv-sign{ text-align:center; border-top:1px dashed #999; padding-top:6px; margin-top:30px; width:45%; }
 }
@@ -237,6 +245,10 @@ body[data-role="owner"] .owner-only{display:block}
 .recent-searches{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .recent-chip{padding:5px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--border);font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px;cursor:pointer}
 .recent-chip:active{background:var(--panel-2)}
+
+.qr-box{text-align:center;padding:16px;background:#fff;border-radius:12px;margin-top:12px}
+.qr-box img{max-width:180px;border-radius:8px}
+.barcode-img{max-width:100%;background:#fff;padding:8px;border-radius:8px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -248,13 +260,12 @@ body[data-role="owner"] .owner-only{display:block}
   <button class="close-x" onclick="dismissInstall()">×</button>
 </div>
 
-<!-- ===== AUTH (فقط مالک) ===== -->
+<!-- AUTH -->
 <div class="auth-screen" id="authScreen">
   <div class="auth-box">
     <div class="auth-icon">🔐</div>
     <h1 id="authTitle">ورود مالک</h1>
     <p id="authSub">برای دسترسی مدیریتی، رمز عبور را وارد کنید</p>
-
     <div id="setupFields" class="hidden">
       <div class="field">
         <label>تعیین رمز مالک</label>
@@ -273,7 +284,6 @@ body[data-role="owner"] .owner-only{display:block}
       </div>
       <button class="btn btn-primary btn-block" onclick="handleAuth()">تعیین رمز و ورود</button>
     </div>
-
     <div id="loginFields">
       <div class="field">
         <label>رمز عبور مالک</label>
@@ -285,13 +295,12 @@ body[data-role="owner"] .owner-only{display:block}
       <div class="auth-error" id="authError"></div>
       <button class="btn btn-primary btn-block" onclick="handleAuth()" style="margin-top:10px">ورود مالک</button>
     </div>
-
     <button class="btn btn-secondary btn-block" onclick="closeAuth()" style="margin-top:12px">ادامه به عنوان مهمان</button>
     <div class="text-sm muted mt-16" style="text-align:center;line-height:1.8">👤 مهمان: مشاهده، جستجو، فاکتور، ثبت نرخ. سایر عملیات فقط مالک.</div>
   </div>
 </div>
 
-<!-- ===== APP ===== -->
+<!-- APP -->
 <div id="appScreen">
   <header class="app-header">
     <div class="brand">
@@ -305,14 +314,18 @@ body[data-role="owner"] .owner-only{display:block}
   </header>
 
   <main class="content">
-    <!-- ===== HOME ===== -->
+    <!-- HOME -->
     <div id="view-home" class="view active">
       <div class="home-search">
-        <div class="search-bar">
-          <input type="text" id="searchInput" placeholder="جستجو در نام، کد، بارکد، دسته..." autocomplete="off" />
-          <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+        <div class="search-row">
+          <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="جستجو در نام، کد، بارکد، دسته..." autocomplete="off" />
+            <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+          </div>
+          <button class="search-action-btn" onclick="openSearchScanner()" title="اسکن بارکد/QR برای جستجو">📷</button>
+          <button class="search-action-btn" onclick="openImageSearch()" title="جستجو با تصویر">🖼️</button>
         </div>
-        <div class="search-hint" id="searchHint">جستجو در نام، کد، بارکد، دسته، یادداشت</div>
+        <div class="search-hint" id="searchHint">جستجو در نام، کد، بارکد، دسته، یادداشت · یا با دوربین/تصویر</div>
         <div class="recent-searches" id="recentSearches"></div>
         <div class="chips-row" id="catChips"></div>
       </div>
@@ -338,7 +351,7 @@ body[data-role="owner"] .owner-only{display:block}
       <div class="pagination" id="paginationBar"></div>
     </div>
 
-    <!-- ===== DASHBOARD (فقط مالک) ===== -->
+    <!-- DASHBOARD -->
     <div id="view-dashboard" class="view">
       <div class="guest-lock" id="dashGuestLock">🔐 برای مشاهدهٔ داشبورد وارد شوید</div>
       <div class="owner-only">
@@ -346,13 +359,13 @@ body[data-role="owner"] .owner-only{display:block}
         <div class="card"><div class="card-title">💵 نرخ دلار</div><div id="dashRateBox"></div></div>
         <div class="card"><div class="card-title">🕒 آخرین محصولات</div><div id="dashRecent"></div></div>
         <div class="card">
-          <div class="card-title">🧾 فاکتور</div>
+          <div class="card-title">🧾 فاکتور و لیست قیمت</div>
           <button class="btn btn-primary btn-block mb-10" onclick="openAllPricesInvoice()">📋 لیست قیمت همه محصولات</button>
         </div>
       </div>
     </div>
 
-    <!-- ===== CATEGORIES ===== -->
+    <!-- CATEGORIES -->
     <div id="view-categories" class="view">
       <div class="guest-lock" id="catGuestLock">🔐 برای مدیریت دسته‌ها وارد شوید</div>
       <div class="owner-only">
@@ -361,7 +374,7 @@ body[data-role="owner"] .owner-only{display:block}
       </div>
     </div>
 
-    <!-- ===== RATES ===== -->
+    <!-- RATES -->
     <div id="view-rates" class="view">
       <div class="card">
         <div class="card-title">ثبت نرخ جدید <span class="badge badge-blue">همه نقش‌ها</span></div>
@@ -388,7 +401,7 @@ body[data-role="owner"] .owner-only{display:block}
       </div>
     </div>
 
-    <!-- ===== SETTINGS ===== -->
+    <!-- SETTINGS -->
     <div id="view-settings" class="view">
       <div class="guest-lock" id="settingsGuestLock">🔐 تنظیمات فقط برای مالک قابل دسترسی است</div>
       <div class="owner-only">
@@ -440,9 +453,8 @@ body[data-role="owner"] .owner-only{display:block}
         <div class="card">
           <div class="card-title">ℹ️ درباره</div>
           <div class="text-sm" style="line-height:2">
-            <div><strong>نسخه:</strong> ۴.۰.۰</div>
+            <div><strong>نسخه:</strong> ۴.۴.۰</div>
             <div><strong>ذخیره:</strong> localStorage</div>
-            <div><strong>حالت:</strong> <span id="swStatus">—</span></div>
           </div>
           <button class="btn btn-danger btn-block mt-12" onclick="confirmClearAll()">🗑️ پاک کردن همه</button>
         </div>
@@ -473,7 +485,7 @@ body[data-role="owner"] .owner-only{display:block}
 <!-- Scanner -->
 <div class="modal" id="scannerModal">
   <div class="modal-sheet">
-    <div class="modal-head"><h3>📷 اسکن بارکد</h3><button class="modal-close" onclick="stopScanner()">×</button></div>
+    <div class="modal-head"><h3 id="scannerTitle">📷 اسکن بارکد</h3><button class="modal-close" onclick="stopScanner()">×</button></div>
     <div class="modal-body">
       <video id="scannerVideo" style="width:100%;border-radius:12px;background:#000;display:none" autoplay playsinline muted></video>
       <div id="scannerMsg" class="text-sm muted mt-12" style="text-align:center">برای شروع دکمه را بزنید</div>
@@ -502,6 +514,8 @@ const RECENT_SEARCHES_KEY = 'price_manager_recent_v1';
 let state = null;
 let session = { role: null, inactivityTimer: null };
 let scanStream = null, scanInterval = null;
+let scanMode = 'search';
+let scanTargetField = null;
 let currentPage = 1;
 let homeView = 'grid';
 let currentCatFilter = '';
@@ -509,6 +523,7 @@ let editingId = null;
 let tempImageData = '';
 let deferredPrompt = null;
 let recentSearches = [];
+let singleInvoiceData = null;
 
 /* ============================================================
    UTILS
@@ -642,7 +657,7 @@ function saveRecentSearches(){
   try{ localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(recentSearches.slice(0,6))); }catch(e){}
 }
 function addRecentSearch(q){
-  q = q.trim();
+  q = String(q||'').trim();
   if (!q || q.length < 2) return;
   recentSearches = recentSearches.filter(x=>x!==q);
   recentSearches.unshift(q);
@@ -892,10 +907,9 @@ function navigate(view){
 }
 
 /* ============================================================
-   HOME: Search + Products
+   HOME
    ============================================================ */
 function renderHome(){
-  // chips دسته‌ها
   const chips = $('catChips');
   chips.innerHTML = `<button class="chip ${!currentCatFilter?'active':''}" onclick="setCatFilter('',this)">همه</button>` +
     state.categories.map(c=>`<button class="chip ${currentCatFilter===c.id?'active':''}" onclick="setCatFilter('${c.id}',this)">${escapeHtml(c.name)}</button>`).join('');
@@ -903,7 +917,6 @@ function renderHome(){
   const q = ($('searchInput')?.value||'').trim();
   $('searchClear').classList.toggle('show', !!q);
 
-  // جمع‌آوری نتایج
   let items = searchProducts(q);
   if (currentCatFilter) items = items.filter(p=>p.categoryId===currentCatFilter);
 
@@ -926,19 +939,14 @@ function renderHome(){
   const start = (currentPage-1)*PAGE_SIZE;
   const pageItems = items.slice(start, start+PAGE_SIZE);
 
-  // اطلاعات نوار
   const info = $('toolbarInfo');
-  if (q){
-    info.textContent = `${toFa(total)} نتیجه برای «${q}»`;
-  }else{
-    info.textContent = `${toFa(total)} محصول`;
-  }
+  if (q) info.textContent = `${toFa(total)} نتیجه برای «${q}»`;
+  else info.textContent = `${toFa(total)} محصول`;
 
-  // نمایش
   const container = $('productsContainer');
   if (!pageItems.length){
     if (q){
-      container.innerHTML = `<div class="empty"><span class="big">🔍</span><h3>نتیجه‌ای یافت نشد</h3><p>عبارت دیگری امتحان کنید</p>${isOwner()?`<button class="btn btn-primary" onclick="openProductModal()">+ افزودن محصول</button>`:''}</div>`;
+      container.innerHTML = `<div class="empty"><span class="big">🔍</span><h3>نتیجه‌ای یافت نشد</h3><p>عبارت دیگری امتحان کنید یا با دوربین/تصویر جستجو کنید</p>${isOwner()?`<button class="btn btn-primary" onclick="openProductModal()">+ افزودن محصول</button>`:''}</div>`;
     }else{
       container.innerHTML = `<div class="empty"><span class="big">📦</span><h3>هنوز محصولی ثبت نشده</h3><p>${isOwner()?'اولین محصول را اضافه کنید':'مالک باید محصول اضافه کند'}</p>${isOwner()?`<button class="btn btn-primary" onclick="openProductModal()">+ افزودن محصول</button>`:''}</div>`;
     }
@@ -950,7 +958,6 @@ function renderHome(){
     container.appendChild(grid);
   }
 
-  // صفحه‌بندی
   $('paginationBar').innerHTML = total>PAGE_SIZE ? `
     <span>${toFa(start+1)}-${toFa(Math.min(start+PAGE_SIZE,total))} از ${toFa(total)}</span>
     <div style="display:flex;gap:6px">
@@ -962,20 +969,13 @@ function renderHome(){
   renderRecentSearches();
 }
 
-// جستجوی هوشمند
 function searchProducts(query){
   const all = state.products.slice();
   if (!query) return all;
   const q = query.toLowerCase().trim();
-  const normalized = q.replace(/[۰-۹]/g, d=>faDigits.indexOf(d));
   return all.filter(p=>{
-    const fields = [
-      p.name, p.code, p.barcode, p.note, p.id,
-      // نام دسته
-      state.categories.find(c=>c.id===p.categoryId)?.name || '',
-      // توضیحات تصویر
-      p.image ? (p.name || '') : '',
-    ];
+    const catName = state.categories.find(c=>c.id===p.categoryId)?.name || '';
+    const fields = [p.name, p.code, p.barcode, p.note, p.id, catName];
     return fields.some(f => f && String(f).toLowerCase().includes(q));
   });
 }
@@ -1008,22 +1008,113 @@ function renderProductCard(p){
   </div>`;
 }
 
-function setCatFilter(id, btn){
-  currentCatFilter = id;
-  currentPage = 1;
-  renderHome();
-}
+function setCatFilter(id, btn){ currentCatFilter = id; currentPage = 1; renderHome(); }
 function setHomeView(v){
   homeView = v;
   $('viewGridBtn').classList.toggle('active', v==='grid');
   $('viewListBtn').classList.toggle('active', v==='list');
   renderHome();
 }
-function clearSearch(){
-  $('searchInput').value = '';
-  renderHome();
-}
+function clearSearch(){ $('searchInput').value = ''; renderHome(); }
 function changePage(d){ currentPage += d; renderHome(); }
+
+/* ============================================================
+   IMAGE SEARCH
+   ============================================================ */
+function openImageSearch(){
+  $('modalTitle').textContent = '🖼️ جستجو با تصویر';
+  $('modalBody').innerHTML = `
+    <p class="text-sm muted mb-10">تصویری از کالا انتخاب کنید تا محصولات مشابه پیدا شوند.</p>
+    <input type="file" id="imgSearchInput" accept="image/*" style="width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:var(--panel-2);color:var(--text)">
+    <div id="imgSearchPreview" class="mt-12"></div>
+    <div id="imgSearchResults" class="mt-12"></div>
+  `;
+  $('modalFoot').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">بستن</button>`;
+  openModal();
+  setTimeout(()=>{
+    $('imgSearchInput').addEventListener('change', e=>{
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = ev=>{
+        $('imgSearchPreview').innerHTML = `<img src="${ev.target.result}" style="max-width:180px;border-radius:12px">`;
+        findSimilarByImage(ev.target.result);
+      };
+      reader.readAsDataURL(f);
+    });
+  }, 50);
+}
+
+async function findSimilarByImage(dataUrl){
+  const resultsBox = $('imgSearchResults');
+  resultsBox.innerHTML = `<div class="text-sm muted"><span class="loader"></span> در حال جستجو...</div>`;
+  try{
+    const img = await loadImageEl(dataUrl);
+    const color = averageColor(img);
+    const scored = [];
+    for (const p of state.products){
+      if (!p.image) continue;
+      try{
+        const pimg = await loadImageEl(p.image);
+        const pc = averageColor(pimg);
+        const dist = colorDistance(color, pc);
+        scored.push({ p, dist });
+      }catch(_){}
+    }
+    scored.sort((a,b)=>a.dist-b.dist);
+    const top = scored.slice(0,8);
+    if (!top.length){
+      resultsBox.innerHTML = `<div class="text-sm muted">تصویر مشابهی با محصولات ثبت‌شده یافت نشد.</div>`;
+      return;
+    }
+    resultsBox.innerHTML = `<div class="text-sm muted mb-10">${toFa(top.length)} نتیجهٔ مشابه:</div>` +
+      top.map(({p})=>{
+        const s = computeSuggested(p);
+        const sell = getFinalSell(p) ?? s.suggested;
+        return `<div class="card" style="padding:10px;display:flex;gap:10px;align-items:center;margin-bottom:8px">
+          <div class="pthumb" style="width:48px;height:48px;margin:0;flex-shrink:0">${p.image?`<img src="${p.image}">`:'📦'}</div>
+          <div style="flex:1"><div style="font-weight:700;font-size:13px">${escapeHtml(p.name)}</div>
+          <div class="text-sm muted">${sell!==null?fmtMoney(sell):'—'}</div></div>
+          <button class="btn btn-primary btn-sm" onclick="pickImageResult('${escapeHtml(p.name).replace(/'/g,'&#39;')}')">انتخاب</button>
+        </div>`;
+      }).join('');
+  }catch(e){
+    resultsBox.innerHTML = `<div class="text-sm" style="color:var(--danger)">خطا در تحلیل تصویر</div>`;
+  }
+}
+
+function loadImageEl(src){
+  return new Promise((res,rej)=>{
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = ()=>res(img);
+    img.onerror = ()=>rej(new Error('bad image'));
+    img.src = src;
+  });
+}
+function averageColor(img){
+  const c = document.createElement('canvas');
+  const size = 16;
+  c.width = size; c.height = size;
+  const ctx = c.getContext('2d');
+  ctx.drawImage(img, 0, 0, size, size);
+  const data = ctx.getImageData(0,0,size,size).data;
+  let r=0,g=0,b=0,n=0;
+  for(let i=0;i<data.length;i+=4){
+    if (data[i+3] < 128) continue;
+    r+=data[i]; g+=data[i+1]; b+=data[i+2]; n++;
+  }
+  return n ? {r:r/n, g:g/n, b:b/n} : {r:0,g:0,b:0};
+}
+function colorDistance(a,b){
+  return Math.sqrt((a.r-b.r)**2 + (a.g-b.g)**2 + (a.b-b.b)**2);
+}
+function pickImageResult(name){
+  $('searchInput').value = name;
+  closeModal();
+  renderHome();
+  toast('جستجو انجام شد','success');
+}
 
 /* ============================================================
    DASHBOARD
@@ -1183,7 +1274,7 @@ function renderRates(){
   if (roleHint){
     roleHint.textContent = isOwner()
       ? '👑 شما مالک هستید: می‌توانید نرخ ثبت، ویرایش و حذف کنید.'
-      : '👤 شما مهمان هستید: فقط می‌توانید نرخ جدید ثبت کنید. ویرایش و حذف فقط توسط مالک.';
+      : '👤 شما مهمان هستید: فقط می‌توانید نرخ جدید ثبت کنید.';
   }
   const histRole = $('historyRoleHint');
   if (histRole) histRole.textContent = isOwner() ? 'قابل ویرایش' : '🔒 فقط مشاهده';
@@ -1275,9 +1366,6 @@ function loadSettingsUI(){
   if ($('setImgMaxW')) $('setImgMaxW').value = state.settings.imgMaxW||600;
   if ($('setImgQuality')) $('setImgQuality').value = state.settings.imgQuality||0.7;
   if ($('lastBackupHint')) $('lastBackupHint').textContent = 'آخرین پشتیبان: ' + (state.lastBackup?jalaliDateTime(state.lastBackup):'—');
-  const sw = $('swStatus');
-  if (sw) sw.textContent = navigator.serviceWorker?.controller ? 'فعال ✅' : 'غیرفعال';
-  // تب سود
   $('tabAuto').classList.toggle('active', state.profitMode==='auto');
   $('tabFixed').classList.toggle('active', state.profitMode==='fixed');
   if ($('baseProfitInput')) $('baseProfitInput').value = state.baseProfit;
@@ -1419,13 +1507,11 @@ function confirmClearAll(){
    PRODUCT MODAL
    ============================================================ */
 function openProductModal(id){
-  if (id && !isOwner() && !isGuest()) return;
-  if (!id && !requireOwner()) return;
-  // اگر مهمان روی کارت زد، فقط فاکتور باز شود
   if (isGuest()){
     if (id) openSingleInvoice(id);
     return;
   }
+  if (!requireOwner()) return;
   editingId = id || null;
   tempImageData = '';
   const isEdit = !!id;
@@ -1433,8 +1519,21 @@ function openProductModal(id){
   $('modalTitle').textContent = isEdit?'✏️ ویرایش محصول':'➕ محصول جدید';
   $('modalBody').innerHTML = `
     <div class="field"><label>نام محصول *</label><input type="text" id="pName" value="${p?escapeHtml(p.name):''}" placeholder="گوشی سامسونگ A54"></div>
-    <div class="field"><label>کد محصول</label><input type="text" id="pCode" value="${p?escapeHtml(p.code||''):''}" placeholder="SM-A546E"></div>
-    <div class="field"><label>بارکد</label><input type="text" id="pBarcode" value="${p?escapeHtml(p.barcode||''):''}" placeholder="بارکد"></div>
+    <div class="field">
+      <label>کد محصول</label>
+      <div class="input-with-btn">
+        <input type="text" id="pCode" value="${p?escapeHtml(p.code||''):''}" placeholder="SM-A546E">
+        <button class="scan-icon-btn" onclick="openRegisterScanner('code')" title="اسکن">📷</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>بارکد / QR</label>
+      <div class="input-with-btn">
+        <input type="text" id="pBarcode" value="${p?escapeHtml(p.barcode||''):''}" placeholder="بارکد یا QR">
+        <button class="scan-icon-btn" onclick="openRegisterScanner('barcode')" title="اسکن QR/بارکد">📷</button>
+      </div>
+      ${p && p.barcode ? `<button class="btn btn-secondary btn-sm mt-8" onclick="showProductQRCode('${escapeHtml(p.barcode).replace(/'/g,'&#39;')}')">🔲 نمایش QR</button>` : ''}
+    </div>
     <div class="field"><label>دسته‌بندی</label><select id="pCategory"><option value="">— بدون دسته —</option>${state.categories.map(c=>`<option value="${c.id}" ${p&&p.categoryId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}</select></div>
     <div class="field"><label>تصویر</label><input type="file" id="pImage" accept="image/*" onchange="handleImageUpload(this)"><div class="hint" id="pImageHint">حداکثر ${state.settings.imgMaxW}px</div></div>
     <div id="pImagePreview" class="mt-8">${p&&p.image?`<img src="${p.image}" style="max-width:100px;border-radius:10px">`:''}</div>
@@ -1567,82 +1666,182 @@ function confirmDeleteProduct(id){
 }
 
 /* ============================================================
+   QR
+   ============================================================ */
+function showProductQRCode(text){
+  $('modalTitle').textContent = '🔲 QR کالا';
+  $('modalBody').innerHTML = `
+    <div class="qr-box">
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(text)}" alt="QR">
+      <div class="text-sm muted mt-12">${escapeHtml(text)}</div>
+    </div>
+    <div class="text-sm muted mt-12" style="text-align:center">این QR را می‌توانید چاپ کنید و روی کالا بچسبانید.</div>
+  `;
+  $('modalFoot').innerHTML = `<button class="btn btn-secondary" onclick="closeModal()">بستن</button>`;
+  openModal();
+}
+
+/* ============================================================
+   SCANNER
+   ============================================================ */
+function openSearchScanner(){
+  scanMode = 'search';
+  scanTargetField = null;
+  $('scannerTitle').textContent = '📷 اسکن برای جستجو';
+  $('scannerMsg').textContent = 'برای شروع دکمه را بزنید';
+  $('scannerResult').innerHTML = '';
+  $('scanStartBtn').style.display = 'inline-flex';
+  $('scanStopBtn').style.display = 'none';
+  $('scannerVideo').style.display = 'none';
+  $('scannerModal').classList.add('open');
+}
+
+function openRegisterScanner(targetField){
+  scanMode = 'register';
+  scanTargetField = targetField;
+  $('scannerTitle').textContent = '📷 اسکن برای ثبت';
+  $('scannerMsg').textContent = 'برای شروع دکمه را بزنید';
+  $('scannerResult').innerHTML = '';
+  $('scanStartBtn').style.display = 'inline-flex';
+  $('scanStopBtn').style.display = 'none';
+  $('scannerVideo').style.display = 'none';
+  $('scannerModal').classList.add('open');
+}
+
+async function startScanner(){
+  if (!('BarcodeDetector' in window)){ $('scannerMsg').textContent = 'مرورگر از اسکن پشتیبانی نمی‌کند'; return; }
+  if (!navigator.mediaDevices?.getUserMedia){ $('scannerMsg').textContent = 'دسترسی به دوربین ممکن نیست (HTTPS لازم است)'; return; }
+  try{
+    scanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    $('scannerVideo').srcObject = scanStream;
+    $('scannerVideo').style.display = 'block';
+    $('scannerMsg').textContent = 'دوربین را روی بارکد/QR بگیرید...';
+    $('scanStartBtn').style.display = 'none';
+    $('scanStopBtn').style.display = 'inline-flex';
+    const det = new BarcodeDetector();
+    scanInterval = setInterval(async ()=>{
+      try{
+        const codes = await det.detect($('scannerVideo'));
+        if (codes.length){
+          const val = codes[0].rawValue;
+          handleScanResult(val);
+          stopScanner();
+        }
+      }catch(_){}
+    }, 500);
+  }catch(e){ $('scannerMsg').textContent = 'خطا: '+e.message; }
+}
+
+function handleScanResult(val){
+  if (scanMode === 'register' && scanTargetField){
+    const el = $(scanTargetField === 'code' ? 'pCode' : 'pBarcode');
+    if (el){
+      el.value = val;
+      toast('کد اسکن شد و در فیلد قرار گرفت','success');
+    }
+  } else {
+    $('searchInput').value = val;
+    closeModal();
+    renderHome();
+    addRecentSearch(val);
+    toast('جستجو انجام شد','success');
+  }
+}
+
+function stopScanner(){
+  if (scanInterval){ clearInterval(scanInterval); scanInterval=null; }
+  if (scanStream){ scanStream.getTracks().forEach(t=>t.stop()); scanStream=null; }
+  $('scannerVideo').srcObject=null;
+  $('scannerVideo').style.display='none';
+  $('scanStartBtn').style.display='inline-flex';
+  $('scanStopBtn').style.display='none';
+  $('scannerModal').classList.remove('open');
+}
+
+/* ============================================================
    MODAL
    ============================================================ */
 function openModal(){ $('genericModal').classList.add('open'); }
-function closeModal(){ $('genericModal').classList.remove('open'); editingId=null; tempImageData=''; }
+function closeModal(){ $('genericModal').classList.remove('open'); editingId=null; tempImageData=''; singleInvoiceData=null; }
 
 /* ============================================================
-   INVOICE
+   INVOICE — تک‌کالا
    ============================================================ */
 function openSingleInvoice(id){
   if (!requireAuth()) return;
   const p = state.products.find(x=>x.id===id);
   if (!p) return;
+  const cat = state.categories.find(c=>c.id===p.categoryId);
+  const c = computeCost(p);
   const s = computeSuggested(p);
   const final = getFinalSell(p);
-  const unitPrice = final ?? s.suggested ?? 0;
+  const suggestedSell = final ?? s.suggested;
+  const buyUnit = Math.round(c.total || 0);
+  const sellUnit = Math.round(suggestedSell || 0);
+  const profitUnit = sellUnit - buyUnit;
+
+  singleInvoiceData = { id, buyUnit, sellUnit, p, cat };
+
   $('modalTitle').textContent = '🧾 فاکتور فروش';
   $('modalBody').innerHTML = `
     <div class="field"><label>نام مشتری</label><input type="text" id="invCustomer" placeholder="اختیاری"></div>
     <div class="field"><label>شماره فاکتور</label><input type="text" id="invNumber" value="${toFa(state.invoiceCounter+1)}"></div>
-    <div class="form-row">
-      <div class="field"><label>تعداد</label><input type="number" id="invQty" value="1" min="1" step="1" oninput="updateInvoicePreview()"></div>
-      <div class="field"><label>قیمت واحد</label><input type="number" id="invUnitPrice" value="${Math.round(unitPrice)}" min="0" step="any" oninput="updateInvoicePreview()"></div>
-    </div>
-    <div class="form-row">
-      <div class="field"><label>تخفیف (٪)</label><input type="number" id="invDiscount" value="0" min="0" max="100" step="0.1" oninput="updateInvoicePreview()"></div>
-      <div class="field"><label>مالیات (٪)</label><input type="number" id="invTax" value="0" min="0" max="100" step="0.1" oninput="updateInvoicePreview()"></div>
-    </div>
-    <div class="preview-box" id="invoicePreviewBox"></div>
+    <div class="field"><label>تعداد</label><input type="number" id="invQty" value="1" min="1" step="1" oninput="updateSingleInvoicePreview()"></div>
+    <div class="preview-box" id="singleInvPreview"></div>
   `;
   $('modalFoot').innerHTML = `
     <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
     <button class="btn btn-primary" onclick="printSingleInvoice('${id}')">🖨️ چاپ</button>
   `;
   openModal();
-  updateInvoicePreview();
+  updateSingleInvoicePreview();
 }
-function updateInvoicePreview(){
+
+function updateSingleInvoicePreview(){
+  const box = $('singleInvPreview');
+  if (!box || !singleInvoiceData) return;
   const qty = parseNum($('invQty')?.value)||1;
-  const unit = parseNum($('invUnitPrice')?.value)||0;
-  const disc = parseNum($('invDiscount')?.value)||0;
-  const tax = parseNum($('invTax')?.value)||0;
-  const subtotal = qty * unit;
-  const discAmount = subtotal * disc / 100;
-  const afterDisc = subtotal - discAmount;
-  const taxAmount = afterDisc * tax / 100;
-  const grand = afterDisc + taxAmount;
-  const el = $('invoicePreviewBox');
-  if (!el) return;
-  el.innerHTML = `
-    <div class="preview-row"><span class="label">جمع جزء</span><span class="val">${fmtMoney(subtotal)}</span></div>
-    <div class="preview-row"><span class="label">تخفیف</span><span class="val">${fmtMoney(discAmount)}</span></div>
-    <div class="preview-row"><span class="label">مالیات</span><span class="val">${fmtMoney(taxAmount)}</span></div>
-    <div class="preview-row preview-total"><span class="label">مبلغ کل</span><span class="val" style="color:var(--success)">${fmtMoney(grand)}</span></div>
-    <div class="words" style="margin-top:6px;font-size:11px;color:var(--primary)">${moneyWords(grand)}</div>
+  const { p, cat, buyUnit, sellUnit } = singleInvoiceData;
+  const totalBuy = buyUnit * qty;
+  const totalSell = sellUnit * qty;
+  const profit = totalSell - totalBuy;
+  box.innerHTML = `
+    <div class="preview-row"><span class="label">نام کالا</span><span class="val">${escapeHtml(p.name)}</span></div>
+    ${p.code?`<div class="preview-row"><span class="label">کد</span><span class="val">${escapeHtml(p.code)}</span></div>`:''}
+    ${p.barcode?`<div class="preview-row"><span class="label">بارکد</span><span class="val">${escapeHtml(p.barcode)}</span></div>`:''}
+    ${cat?`<div class="preview-row"><span class="label">دسته</span><span class="val">${escapeHtml(cat.name)}</span></div>`:''}
+    <div class="preview-row"><span class="label">تاریخ</span><span class="val">${jalaliStr(new Date())}</span></div>
+    <div class="preview-row"><span class="label">قیمت خرید واحد</span><span class="val">${fmtMoney(buyUnit)}<div class="words">${moneyWords(buyUnit)}</div></span></div>
+    <div class="preview-row"><span class="label">قیمت فروش واحد</span><span class="val">${fmtMoney(sellUnit)}<div class="words">${moneyWords(sellUnit)}</div></span></div>
+    <div class="preview-row"><span class="label">جمع خرید</span><span class="val">${fmtMoney(totalBuy)}</span></div>
+    <div class="preview-row"><span class="label">جمع فروش</span><span class="val">${fmtMoney(totalSell)}</span></div>
+    <div class="preview-row preview-total"><span class="label">سود</span><span class="val" style="color:${profit>=0?'var(--success)':'var(--danger)'}">${fmtMoney(profit)}</span></div>
   `;
 }
-function buildInvoiceHTML(opts){
-  const { customer, invoiceNo, dateStr, items, discountPct, taxPct, showCustomer } = opts;
-  const subtotal = items.reduce((s,i)=>s + i.qty * i.unit, 0);
-  const discAmount = subtotal * (discountPct||0) / 100;
-  const afterDisc = subtotal - discAmount;
-  const taxAmount = afterDisc * (taxPct||0) / 100;
-  const grand = afterDisc + taxAmount;
+
+function printSingleInvoice(id){
+  if (!requireAuth()) return;
+  const p = state.products.find(x=>x.id===id);
+  if (!p) return;
+  const cat = state.categories.find(c=>c.id===p.categoryId);
+  const qty = parseNum($('invQty')?.value)||1;
+  const buyUnit = singleInvoiceData?.buyUnit || 0;
+  const sellUnit = singleInvoiceData?.sellUnit || 0;
+  const customer = ($('invCustomer')?.value||'').trim();
+  const invoiceNo = ($('invNumber')?.value||'').trim() || toFa(state.invoiceCounter+1);
+  state.invoiceCounter = (state.invoiceCounter||1000) + 1;
+  saveState();
+
+  const totalBuy = buyUnit * qty;
+  const totalSell = sellUnit * qty;
+  const totalProfit = totalSell - totalBuy;
+
   const storeName = state.settings.storeName || 'فروشگاه';
   const storeAddr = state.settings.storeAddr || '';
   const storePhone = state.settings.storePhone || '';
-  const rows = items.map((i,idx)=>`
-    <tr>
-      <td>${toFa(idx+1)}</td>
-      <td>${escapeHtml(i.name)}</td>
-      <td>${toFa(i.qty)}</td>
-      <td>${fmt(i.unit)}</td>
-      <td>${fmt(i.qty * i.unit)}</td>
-    </tr>
-  `).join('');
-  return `
+  const dateStr = jalaliStr(new Date());
+
+  $('invoiceArea').innerHTML = `
     <div class="inv-page">
       <div class="inv-head">
         <div>
@@ -1654,76 +1853,198 @@ function buildInvoiceHTML(opts){
           <div><strong>فاکتور فروش</strong></div>
           <div>شماره: ${toFa(invoiceNo)}</div>
           <div>تاریخ: ${dateStr}</div>
-          ${showCustomer && customer?`<div>مشتری: ${escapeHtml(customer)}</div>`:''}
+          ${customer?`<div>مشتری: ${escapeHtml(customer)}</div>`:''}
         </div>
       </div>
+
       <table class="inv-table">
         <thead>
-          <tr><th style="width:40px">ردیف</th><th>شرح کالا</th><th style="width:60px">تعداد</th><th style="width:110px">قیمت واحد (تومان)</th><th style="width:120px">جمع (تومان)</th></tr>
+          <tr>
+            <th style="width:36px">#</th>
+            <th>نام کالا</th>
+            <th style="width:70px">کد</th>
+            ${p.barcode?`<th style="width:80px">بارکد</th>`:''}
+            <th style="width:50px">تعداد</th>
+            <th style="width:130px">قیمت خرید (تومان)</th>
+            <th style="width:130px">قیمت فروش (تومان)</th>
+          </tr>
         </thead>
-        <tbody>${rows}</tbody>
+        <tbody>
+          <tr>
+            <td style="text-align:center;vertical-align:top">${toFa(1)}</td>
+            <td>
+              <strong>${escapeHtml(p.name)}</strong>
+              ${cat?`<div style="font-size:10px;color:#555">${escapeHtml(cat.name)}</div>`:''}
+            </td>
+            <td style="text-align:center;vertical-align:top">${p.code?toFa(escapeHtml(p.code)):'—'}</td>
+            ${p.barcode?`<td style="text-align:center;vertical-align:top">${toFa(escapeHtml(p.barcode))}</td>`:''}
+            <td style="text-align:center;vertical-align:top">${toFa(qty)}</td>
+            <td style="text-align:left;vertical-align:top">
+              <div>${fmt(buyUnit)}</div>
+              <div style="font-size:9px;color:#555;margin-top:2px;font-weight:400">${moneyWords(buyUnit)}</div>
+            </td>
+            <td style="text-align:left;vertical-align:top">
+              <div>${fmt(sellUnit)}</div>
+              <div style="font-size:9px;color:#555;margin-top:2px;font-weight:400">${moneyWords(sellUnit)}</div>
+            </td>
+          </tr>
+        </tbody>
       </table>
-      <div class="inv-total-row"><span>جمع جزء</span><span>${fmt(subtotal)} تومان</span></div>
-      ${discountPct>0?`<div class="inv-total-row"><span>تخفیف (${toFa(discountPct)}٪)</span><span>${fmt(discAmount)} تومان</span></div>`:''}
-      ${taxPct>0?`<div class="inv-total-row"><span>مالیات (${toFa(taxPct)}٪)</span><span>${fmt(taxAmount)} تومان</span></div>`:''}
-      <div class="inv-total-row grand"><span>مبلغ قابل پرداخت</span><span>${fmt(grand)} تومان</span></div>
-      <div class="inv-words"><strong>به حروف:</strong> ${moneyWords(grand)}</div>
+
+      <div class="inv-total-row"><span>جمع خرید (${toFa(qty)} عدد)</span><span>${fmt(totalBuy)} تومان</span></div>
+      <div class="inv-total-row"><span>جمع فروش (${toFa(qty)} عدد)</span><span>${fmt(totalSell)} تومان</span></div>
+      <div class="inv-total-row grand"><span>سود کل</span><span>${fmt(totalProfit)} تومان</span></div>
+
+      <div class="inv-words">
+        <div><strong>جمع خرید به حروف:</strong> ${moneyWords(totalBuy)}</div>
+        <div style="margin-top:6px"><strong>مبلغ فروش به حروف:</strong> ${moneyWords(totalSell)}</div>
+        <div style="margin-top:6px"><strong>سود کل به حروف:</strong> ${moneyWords(totalProfit)}</div>
+      </div>
+
       <div class="inv-foot">
         <div class="inv-sign">مهر و امضای فروشنده</div>
         <div class="inv-sign">امضای خریدار</div>
       </div>
     </div>
   `;
-}
-function printSingleInvoice(id){
-  if (!requireAuth()) return;
-  const p = state.products.find(x=>x.id===id);
-  if (!p) return;
-  const qty = parseNum($('invQty')?.value)||1;
-  const unit = parseNum($('invUnitPrice')?.value)||0;
-  const disc = parseNum($('invDiscount')?.value)||0;
-  const tax = parseNum($('invTax')?.value)||0;
-  const customer = ($('invCustomer')?.value||'').trim();
-  const invoiceNo = ($('invNumber')?.value||'').trim() || toFa(state.invoiceCounter+1);
-  state.invoiceCounter = (state.invoiceCounter||1000) + 1;
-  saveState();
-  $('invoiceArea').innerHTML = buildInvoiceHTML({
-    customer, invoiceNo, dateStr: jalaliStr(new Date()),
-    items: [{ name: p.name, qty, unit }],
-    discountPct: disc, taxPct: tax, showCustomer: true,
-  });
   closeModal();
   setTimeout(()=>window.print(), 200);
 }
+
+/* ============================================================
+   INVOICE — لیست همه محصولات
+   ============================================================ */
 function openAllPricesInvoice(){
   if (!requireAuth()) return;
-  $('modalTitle').textContent = '📋 لیست قیمت';
+  $('modalTitle').textContent = '📋 لیست قیمت همه محصولات';
   $('modalBody').innerHTML = `
     <div class="field"><label>عنوان لیست</label><input type="text" id="listTitle" value="لیست قیمت محصولات"></div>
-    <div class="field"><label>مشتری (اختیاری)</label><input type="text" id="listCustomer"></div>
-    <div class="hint">همه محصولات با قیمت فروش فعلی چاپ می‌شوند.</div>
+    <div class="field"><label>نام مشتری / فروشگاه (اختیاری)</label><input type="text" id="listCustomer"></div>
+    <div class="hint">همه محصولات با نام کامل، کد کالا، تاریخ، قیمت خرید و قیمت فروش — به عدد و به حروف — چاپ می‌شوند.</div>
   `;
   $('modalFoot').innerHTML = `
     <button class="btn btn-secondary" onclick="closeModal()">لغو</button>
-    <button class="btn btn-primary" onclick="printAllPrices()">🖨️ چاپ</button>
+    <button class="btn btn-primary" onclick="printAllPrices()">🖨️ چاپ لیست</button>
   `;
   openModal();
 }
+
 function printAllPrices(){
   if (!requireAuth()) return;
-  const items = [];
-  state.products.forEach(p=>{
+  const listTitle = ($('listTitle')?.value||'').trim() || 'لیست قیمت محصولات';
+  const customer = ($('listCustomer')?.value||'').trim();
+  const dateStr = jalaliStr(new Date());
+  const storeName = state.settings.storeName || 'فروشگاه';
+  const storeAddr = state.settings.storeAddr || '';
+  const storePhone = state.settings.storePhone || '';
+
+  const rows = [];
+  let totalBuy = 0;
+  let totalSell = 0;
+
+  state.products.forEach((p, idx)=>{
+    const c = computeCost(p);
     const s = computeSuggested(p);
-    const sell = getFinalSell(p) ?? s.suggested;
-    if (sell!==null) items.push({ name: p.name, qty: 1, unit: Math.round(sell) });
+    const final = getFinalSell(p);
+    const buyUnit = c.total;
+    const sellUnit = final ?? s.suggested;
+    if (buyUnit === null || sellUnit === null) return;
+    totalBuy += buyUnit;
+    totalSell += sellUnit;
+    rows.push({
+      idx: idx + 1,
+      name: p.name,
+      code: p.code || '—',
+      date: jalaliStr(p.createdAt || new Date()),
+      buy: Math.round(buyUnit),
+      sell: Math.round(sellUnit),
+    });
   });
-  if (!items.length){ toast('محصولی با قیمت معتبر نیست','error'); return; }
-  $('invoiceArea').innerHTML = buildInvoiceHTML({
-    customer: ($('listCustomer')?.value||'').trim(),
-    invoiceNo: 'لیست قیمت',
-    dateStr: jalaliStr(new Date()),
-    items, discountPct: 0, taxPct: 0, showCustomer: true,
-  });
+
+  if (!rows.length){
+    toast('هیچ محصولی با قیمت معتبر وجود ندارد','error');
+    return;
+  }
+
+  const totalProfit = totalSell - totalBuy;
+
+  const rowsHtml = rows.map(r=>`
+    <tr>
+      <td style="text-align:center;vertical-align:top">${toFa(r.idx)}</td>
+      <td>${escapeHtml(r.name)}</td>
+      <td style="text-align:center;vertical-align:top">${toFa(escapeHtml(r.code))}</td>
+      <td style="text-align:center;vertical-align:top">${r.date}</td>
+      <td style="text-align:left;vertical-align:top">
+        <div>${fmt(r.buy)}</div>
+        <div style="font-size:9px;color:#555;margin-top:2px;font-weight:400">${moneyWords(r.buy)}</div>
+      </td>
+      <td style="text-align:left;vertical-align:top">
+        <div>${fmt(r.sell)}</div>
+        <div style="font-size:9px;color:#555;margin-top:2px;font-weight:400">${moneyWords(r.sell)}</div>
+      </td>
+    </tr>
+  `).join('');
+
+  $('invoiceArea').innerHTML = `
+    <div class="inv-page">
+      <div class="inv-head">
+        <div>
+          <h1>${escapeHtml(storeName)}</h1>
+          ${storeAddr?`<div style="font-size:11px;margin-top:4px">${escapeHtml(storeAddr)}</div>`:''}
+          ${storePhone?`<div style="font-size:11px">تلفن: ${toFa(storePhone)}</div>`:''}
+        </div>
+        <div class="meta">
+          <div><strong>${escapeHtml(listTitle)}</strong></div>
+          <div>تاریخ: ${dateStr}</div>
+          ${customer?`<div>مشتری: ${escapeHtml(customer)}</div>`:''}
+          <div>تعداد اقلام: ${toFa(rows.length)}</div>
+        </div>
+      </div>
+
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th>نام کالا</th>
+            <th style="width:100px">کد کالا</th>
+            <th style="width:90px">تاریخ</th>
+            <th style="width:140px">قیمت خرید (تومان)</th>
+            <th style="width:140px">قیمت فروش (تومان)</th>
+          </tr>
+        </thead>
+        <tbody>${rowsHtml}</tbody>
+        <tfoot>
+          <tr style="background:#f0f0f0;font-weight:800">
+            <td colspan="4" style="text-align:left">جمع کل</td>
+            <td style="text-align:left">
+              <div>${fmt(totalBuy)}</div>
+              <div style="font-size:9px;color:#333;margin-top:2px;font-weight:400">${moneyWords(totalBuy)}</div>
+            </td>
+            <td style="text-align:left">
+              <div>${fmt(totalSell)}</div>
+              <div style="font-size:9px;color:#333;margin-top:2px;font-weight:400">${moneyWords(totalSell)}</div>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="inv-total-row"><span>جمع کل خرید</span><span>${fmt(totalBuy)} تومان</span></div>
+      <div class="inv-total-row"><span>جمع کل فروش</span><span>${fmt(totalSell)} تومان</span></div>
+      <div class="inv-total-row grand"><span>سود کل</span><span>${fmt(totalProfit)} تومان</span></div>
+
+      <div class="inv-words">
+        <div><strong>جمع خرید به حروف:</strong> ${moneyWords(totalBuy)}</div>
+        <div style="margin-top:6px"><strong>جمع فروش به حروف:</strong> ${moneyWords(totalSell)}</div>
+        <div style="margin-top:6px"><strong>سود کل به حروف:</strong> ${moneyWords(totalProfit)}</div>
+      </div>
+
+      <div class="inv-foot">
+        <div class="inv-sign">مهر و امضای فروشنده</div>
+        <div class="inv-sign">امضای خریدار</div>
+      </div>
+    </div>
+  `;
+
   closeModal();
   setTimeout(()=>window.print(), 200);
 }
@@ -1807,10 +2128,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   updateOnlineStatus();
   setupPWA();
 
-  // ورود پیش‌فرض به عنوان مهمان
   loginGuest();
 
-  // جستجو
   const searchInput = $('searchInput');
   let searchTimer;
   searchInput.addEventListener('input', ()=>{
@@ -1825,7 +2144,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }, 200);
   });
 
-  // کیبورد Enter
   searchInput.addEventListener('keydown', e=>{
     if (e.key === 'Enter'){
       e.preventDefault();
@@ -1840,6 +2158,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   ['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev, ()=>{ if(isOwner()) resetInactivity(); }, {passive:true}));
   $('genericModal').addEventListener('click', e=>{ if(e.target.id==='genericModal') closeModal(); });
+  $('scannerModal').addEventListener('click', e=>{ if(e.target.id==='scannerModal') stopScanner(); });
 });
 window.addEventListener('beforeunload', ()=>{
   if (scanStream) scanStream.getTracks().forEach(t=>t.stop());
